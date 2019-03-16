@@ -7,6 +7,7 @@ app = Flask(__name__, static_folder='uploads')
 app.config['CKEDITOR_FILE_UPLOADER'] = 'ck_upload'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:24WKisxian@localhost/yt_media'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS '] = False
+app.config['CKEDITOR_PKG_TYPE'] = 'full'
 app.secret_key = b'_5#y2L"F4Q8\r{A#!|Dz\n\xec]/'
 
 db.init_app(app)
