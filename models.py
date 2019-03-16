@@ -100,6 +100,18 @@ class Story(db.Model):
     tag = db.relationship(Tag)
     person = db.relationship(Person)
 
+class Comment(db.Model):
+
+    __tablename__ = 'story_comments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.String(512), nullable=False)
+    uid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    story_id = db.Column(db.Integer, db.ForeignKey('stories.id'))
+    create_time = db.Column(TIMESTAMP, default=func.now())
+
+    story = db.relationship(Story, backref='comments', uselist=False)
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.filter_by(id=int(user_id)).first()

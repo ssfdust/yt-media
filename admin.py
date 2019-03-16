@@ -5,7 +5,7 @@ from jinja2 import Markup
 from flask_admin import form
 from wtforms import TextAreaField
 from utils import gen_hash_filename
-from models import User, Topic, Person, Tag, Story
+from models import User, Topic, Person, Tag, Story, Comment
 from ext import admin, db
 import os
 
@@ -81,9 +81,16 @@ class StoryView(ModelView):
                                       thumbnail_size=(100, 100, True))
     }
 
+class CommentView(ModelView):
+    form_excluded_columns = ['create_time']
+    form_overrides = {
+        'comment': TextAreaField
+    }
+
 
 admin.add_view(UserView(User, db.session))
 admin.add_view(TagView(Tag, db.session))
 admin.add_view(TopicView(Person, db.session))
 admin.add_view(TopicView(Topic, db.session))
+admin.add_view(CommentView(Comment, db.session))
 admin.add_view(StoryView(Story, db.session))
