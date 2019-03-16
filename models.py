@@ -90,6 +90,7 @@ class Story(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
     text = db.Column(LONGTEXT)
+    thumbnail = db.Column(db.String(512), nullable=False)
     uid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, default=1)
     tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), nullable=True)
     topic_id = db.Column(db.Integer, db.ForeignKey('topics.id'))

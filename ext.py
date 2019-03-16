@@ -4,6 +4,6 @@ from flask_login import LoginManager
 from flask_ckeditor import CKEditor
 
 db = SQLAlchemy()
-admin = Admin()
+admin = Admin(base_template='my_master.html')
 login_manager = LoginManager()
 ckeditor = CKEditor()

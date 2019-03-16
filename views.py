@@ -1,4 +1,4 @@
-from flask import jsonify, request, url_for, send_from_directory
+from flask import jsonify, request, url_for, send_from_directory, render_template
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db
 from models import User, Topic, Person, Tag, Story
@@ -61,3 +61,7 @@ def register():
 def logout():
     logout_user()
     return jsonify({'code': 0, 'msg': 'success'})
+
+@app.route('/index')
+def index():
+    return render_template('index.html')
