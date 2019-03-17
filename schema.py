@@ -10,6 +10,9 @@ class PersonSchema(ModelSchema):
 
 class StorySchema(ModelSchema):
     create_time = fields.DateTime(format='%Y-%m-%d %H:%M:%S')
+    tag = fields.String(attribute='tag.name', default=None)
+    topic = fields.String(attribute='topic.name', default=None)
+    person = fields.String(attribute='person.name', default=None)
 
     class Meta:
         model = Story
