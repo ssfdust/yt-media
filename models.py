@@ -45,7 +45,7 @@ class Topic(db.Model):
     name = db.Column(db.String(100), nullable=False)
     thumbnail = db.Column(db.String(512), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
-    uid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    uid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, default=1)
     create_time = db.Column(TIMESTAMP, default=func.now())
     user = db.relationship(User)
 
@@ -100,6 +100,10 @@ class Story(db.Model):
     user = db.relationship(User)
     tag = db.relationship(Tag)
     person = db.relationship(Person)
+    topic = db.relationship(Topic)
+
+    def __repr__(self):
+        return "{}".format(self.name)
 
 class Comment(db.Model):
 
@@ -110,8 +114,12 @@ class Comment(db.Model):
     uid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     story_id = db.Column(db.Integer, db.ForeignKey('stories.id'))
     create_time = db.Column(TIMESTAMP, default=func.now())
+    user = db.relationship(User)
 
     story = db.relationship(Story, backref='comments', uselist=False)
+
+    def __repr__(self):
+        return "{}".format(self.comment)
 
 @login_manager.user_loader
 def load_user(user_id):
