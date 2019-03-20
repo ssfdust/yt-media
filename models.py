@@ -56,7 +56,7 @@ class Person(db.Model):
 
     __tablename__ = 'persons'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, comment='人物ID')
     name = db.Column(db.String(100), nullable=False)
     thumbnail = db.Column(db.String(512), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
