@@ -230,7 +230,7 @@ class StoryItemView(MethodView):
                 'msg': 'story doesn\'t exist'
             })
 
-@blp.route('/api/comment')
+@blp.route('/comment')
 class CommentView(MethodView):
     @blp.doc(summary='单个故事评论',
              description='根据故事ID返回整个故事评论')
@@ -250,7 +250,7 @@ class CommentView(MethodView):
     @login_required
     @blp.doc(summary='评论单个故事',
              description='根据故事ID提交评论')
-    @blp.arguments(CommentSchema(only=['comment', 'story_id']))
+    @blp.arguments(CommentSchema(only=['comment', 'id']))
     @blp.response(MsgSchema)
     def post(self, args):
         json = request.get_json(force=True)
