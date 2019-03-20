@@ -19,6 +19,7 @@ marshmallow-sqlalchemy = "^0.16.1"
 marshmallow = "=v3.0.0rc4"
 flask-rest-api = "^0.14.0"
 flask-shell-ipython = "^0.4.0"
+requests = "^2.21"
 
 [tool.poetry.dev-dependencies]
 
