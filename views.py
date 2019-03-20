@@ -11,10 +11,9 @@ from flask_rest_api import Blueprint
 from app import app, db
 from models import Comment, Person, Story, Tag, Topic, User
 from schema import (
-    CommentSchema, InfoRetSchema, LoginMsgSchema, LoginSchema, PersonSchema,
-    StorySchema, TagSchema, TopicSchema, MsgSchema, PersonRetSchema, BaseArgSchema,
-    TopicRetSchema, TagArgSchema, TagRetSchema, StoryArgSchema, StoryRetSchema,
-    StoryItemSchema
+    BaseArgSchema, CommentSchema, InfoRetSchema, LoginMsgSchema, LoginSchema,
+    MsgSchema, PersonRetSchema, StoryArgSchema, StoryItemSchema, CmtRetSchema,
+    StoryRetSchema, StorySchema, TagArgSchema, TagRetSchema, TopicRetSchema
 )
 from utils import gen_hash_filename, generate_md5
 
@@ -107,11 +106,9 @@ class PersonView(MethodView):
         if person_id:
             persons = persons.filter_by(id=person_id)
         items = persons.order_by(Person.create_time.desc()).limit(num).all()
-        schema = PersonSchema(many=True)
-        ret = schema.dump(items)
         return {
-            'data': ret,
-            'total': num,
+            'data': items,
+            'total': len(items),
             'code': 0
         }
 
@@ -128,12 +125,9 @@ class TopicView(MethodView):
         if topic_id:
             topics = topics.filter_by(id=topic_id)
         items = topics.order_by(Topic.create_time.desc()).limit(num).all()
-        schema = TopicSchema(many=True)
-
-        ret = schema.dump(items)
 
         return {
-            'data': ret,
+            'data': items,
             'total': len(items),
             'code': 0
         }
@@ -158,12 +152,9 @@ class TagView(MethodView):
             tags = tags.filter_by(is_great=is_great)
 
         items = tags.order_by(Tag.create_time.desc()).limit(num).all()
-        schema = TagSchema(many=True)
-
-        ret = schema.dump(items)
 
         return {
-            'data': ret,
+            'data': items,
             'total': len(items),
             'code': 0
         }
@@ -202,21 +193,17 @@ class GetStory(MethodView):
         else:
             items = stories.order_by(Story.hits.desc()).limit(number).all()
 
-        schema = StorySchema(many=True, exclude=['text'])
-
-        ret = schema.dump(items)
-
         return {
             'code': 0,
-            'total': len(ret),
-            'data': ret,
+            'total': len(items),
+            'data': items
         }
 
-@blp.route('/api/story/item', methods=['GET'])
+@blp.route('/story/item', methods=['GET'])
 class StoryItemView(MethodView):
     @blp.doc(summary='单个故事详情',
              description='根据ID返回整个故事内容')
-    @blp.arguments(BaseArgSchema, location='query')
+    @blp.arguments(BaseArgSchema(only=('id',)), location='query')
     @blp.response(StoryItemSchema)
     @blp.response(MsgSchema)
     def get(self, args):
@@ -243,27 +230,35 @@ class StoryItemView(MethodView):
                 'msg': 'story doesn\'t exist'
             })
 
-@app.route('/api/comment', methods=['GET', 'POST'])
-@login_required
-def create_or_get_post():
-    if request.method == 'GET':
-        story_id = request.args.get('id')
+@blp.route('/api/comment')
+class CommentView(MethodView):
+    @blp.doc(summary='单个故事评论',
+             description='根据故事ID返回整个故事评论')
+    @blp.arguments(BaseArgSchema(only=('id',)), location='query')
+    @blp.response(CmtRetSchema())
+    def get(self, args):
+        print(args)
+        story_id = args.get('id')
         comments = Comment.query.filter_by(story_id=story_id).all()
-        schema = CommentSchema(many=True)
 
-        ret = schema.dump(comments)
-
-        return jsonify({
+        return {
             'code': 0,
-            'data': ret
-        })
-    elif request.method == 'POST':
+            'total': len(comments),
+            'data': comments
+        }
+
+    @login_required
+    @blp.doc(summary='评论单个故事',
+             description='根据故事ID提交评论')
+    @blp.arguments(CommentSchema(only=['comment', 'story_id']))
+    @blp.response(MsgSchema)
+    def post(self, args):
         json = request.get_json(force=True)
         comment = Comment(uid=current_user.id, **json)
         db.session.add(comment)
         db.session.commit()
 
-        return jsonify({
+        return {
             'code': 0,
             'msg': 'create successfully'
-        })
+        }

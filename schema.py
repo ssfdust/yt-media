@@ -55,7 +55,7 @@ class BaseRetSchema(Schema):
     total = fields.Int(description='返回的条目数量')
 
 class PersonRetSchema(BaseRetSchema):
-    data = fields.Nested(PersonSchema(many=True))
+    data = fields.List(fields.Nested(PersonSchema()))
 
 @rest_api.definition('Story')
 class StorySchema(ModelSchema):
@@ -69,7 +69,7 @@ class StorySchema(ModelSchema):
         model = Story
 
 class StoryRetSchema(BaseRetSchema):
-    data = fields.Nested(StorySchema(many=True))
+    data = fields.List(fields.Nested(StorySchema()))
 
 class StoryItemSchema(BaseRetSchema):
     data = fields.Nested(StorySchema())
@@ -82,7 +82,7 @@ class TagSchema(ModelSchema):
         model = Tag
 
 class TagRetSchema(BaseRetSchema):
-    data = fields.Nested(TagSchema(many=True))
+    data = fields.List(fields.Nested(TagSchema()))
 
 @rest_api.definition('Topic')
 class TopicSchema(ModelSchema):
@@ -92,12 +92,15 @@ class TopicSchema(ModelSchema):
         model = Topic
 
 class TopicRetSchema(BaseRetSchema):
-    data = fields.Nested(TopicSchema(many=True))
+    data = fields.List(fields.Nested(TopicSchema()))
 
-@rest_api.definition('Comment')
+@rest_api.definition('comment')
 class CommentSchema(ModelSchema):
     create_time = fields.DateTime(format='%Y-%m-%d %H:%M:%S')
     commenter = fields.String(attribute='user.username')
 
     class Meta:
         model = Comment
+
+class CmtRetSchema(BaseRetSchema):
+    data = fields.List(fields.Nested(CommentSchema()))
