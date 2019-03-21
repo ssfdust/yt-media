@@ -43,7 +43,6 @@ class InfoRetSchema(Schema):
     code = fields.Int(description='返回码 成功为0 找不到为404 无权访问为403')
     userinfo = fields.Nested(UserInfoSchema)
 
-@rest_api.definition('Person')
 class PersonSchema(ModelSchema):
     create_time = fields.DateTime(format='%Y-%m-%d %H:%M:%S')
 
@@ -57,13 +56,11 @@ class BaseRetSchema(Schema):
 class PersonRetSchema(BaseRetSchema):
     data = fields.List(fields.Nested(PersonSchema()))
 
-@rest_api.definition('Story')
 class StorySchema(ModelSchema):
     create_time = fields.DateTime(format='%Y-%m-%d %H:%M:%S')
     tag = fields.String(attribute='tag.name', default=None)
     topic = fields.String(attribute='topic.name', default=None)
     person = fields.String(attribute='person.name', default=None)
-    number = fields.Int(default=1, dump_to='num', description='最大返回数量')
 
     class Meta:
         model = Story
@@ -90,11 +87,11 @@ class TopicSchema(ModelSchema):
 
     class Meta:
         model = Topic
+        exclude = ['user']
 
 class TopicRetSchema(BaseRetSchema):
     data = fields.List(fields.Nested(TopicSchema()))
 
-@rest_api.definition('comment')
 class CommentSchema(ModelSchema):
     create_time = fields.DateTime(format='%Y-%m-%d %H:%M:%S')
     commenter = fields.String(attribute='user.username')

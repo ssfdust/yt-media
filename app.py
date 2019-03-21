@@ -3,10 +3,10 @@ from ext import db, login_manager, ckeditor, rest_api
 from admin import admin
 #  from flask_cors import CORS
 
-app = Flask(__name__, static_folder='uploads')
+app = Flask("app", static_folder='uploads')
 app.config['CKEDITOR_FILE_UPLOADER'] = 'ck_upload'
 app.config['OPENAPI_VERSION'] = '3.0.2'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:24WKisxian@localhost/yt_media'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/yt_media'
 app.config['CKEDITOR_PKG_TYPE'] = 'full'
 app.config['OPENAPI_REDOC_PATH'] = 'redoc'
 app.config['OPENAPI_REDOC_VERSION'] = 'next'
