@@ -40,15 +40,11 @@ class AMQPStore(object):
         key,
         value=None,
         exchange=None,
-        expires=None,
-        limit=999,
-        routing_key=None,
-        max_length=None,
-        auto_delete=False,
+        **kwargs
     ):
         self.key = key
-        self.limit = limit
-        self.max_length = max_length
+        self.limit = kwargs.get("limit", 999)
+        self.max_length = kwargs.get("max_length")
         self.value = value
         self.values = []
         #  if exchange is None and '_' in key:
@@ -56,15 +52,15 @@ class AMQPStore(object):
         self.exchange = Exchange(exchange)
         #  if not routing_key:
         #      routing_key = key
-        self.routing_key = routing_key
+        self.routing_key = kwargs.get("routing_key")
         self.queue = Queue(
             self.key,
             self.exchange,
             durable=True,
-            max_length=max_length,
+            max_length=kwargs.get("max_length"),
             routing_key=self.routing_key,
-            auto_delete=auto_delete,
-            expires=expires,
+            auto_delete=kwargs.get("auto_delete", False),
+            expires=kwargs.get("expires"),
         )
 
     def save(self, expiration=None):
