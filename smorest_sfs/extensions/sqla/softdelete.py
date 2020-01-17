@@ -34,7 +34,9 @@ class QueryWithSoftDelete(BaseQuery):
         obj._with_deleted = kwargs.pop("_with_deleted", False)
         if len(args) > 0:
             super(QueryWithSoftDelete, obj).__init__(*args, **kwargs)
-            return obj.filter_by(deleted=False) if not obj._with_deleted else obj
+            return (
+                obj.filter_by(deleted=False) if not obj._with_deleted else obj
+            )
         return obj
 
     def __init__(self, *args, **kwargs):  # pylint: disable=W0231
@@ -53,12 +55,18 @@ class QueryWithSoftDelete(BaseQuery):
 
     def get(self, ident):
         obj = self.with_deleted()._get(ident)  # pylint: disable=W0212
-        return obj if obj is None or self._with_deleted or not obj.deleted else None
+        return (
+            obj
+            if obj is None or self._with_deleted or not obj.deleted
+            else None
+        )
 
     def filter_like_by(self, **kwargs):
         """like方法"""
         clauses = [
-            _entity_descriptor(self._joinpoint_zero(), key).like("%{}%".format(value))
+            _entity_descriptor(self._joinpoint_zero(), key).like(
+                "%{}%".format(value)
+            )
             for key, value in kwargs.items()
         ]
         return self.filter(*clauses)

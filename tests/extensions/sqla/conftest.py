@@ -27,7 +27,9 @@ def postgresql_dsn(postgresql_db_user, db_name):
         configuration = toml.load("app/config/testing.toml")
         return configuration["SQLALCHEMY_DATABASE_URI"]
     except FileNotFoundError:
-        return "postgresql://{0}@localhost/{1}".format(postgresql_db_user, db_name)
+        return "postgresql://{0}@localhost/{1}".format(
+            postgresql_db_user, db_name
+        )
 
 
 @pytest.fixture(scope="package")

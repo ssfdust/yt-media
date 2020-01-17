@@ -27,20 +27,23 @@ class TestApi(FixturesInjectBase):
         self.api.register_blueprint(blp)
 
     @pytest.mark.parametrize(
-        "meta", [(
-            {
-                "links": {
-                    "first": "/?page=1&per_page=5",
-                    "last": "/?page=4&per_page=5",
-                    "next": "/?page=3&per_page=5",
-                    "prev": "/?page=1&per_page=5",
-                },
-                "page": 2,
-                "pages": 4,
-                "per_page": 5,
-                "total": 20,
-            }
-        )]
+        "meta",
+        [
+            (
+                {
+                    "links": {
+                        "first": "/?page=1&per_page=5",
+                        "last": "/?page=4&per_page=5",
+                        "next": "/?page=3&per_page=5",
+                        "prev": "/?page=1&per_page=5",
+                    },
+                    "page": 2,
+                    "pages": 4,
+                    "per_page": 5,
+                    "total": 20,
+                }
+            )
+        ],
     )
     def test_api(self, meta):
         # pylint: disable=W0613

@@ -121,7 +121,9 @@ class CRUDMixin:
 
         db.session.add(instance)
 
-        loadable_fields = [k for k, v in schema.fields.items() if not v.dump_only]
+        loadable_fields = [
+            k for k, v in schema.fields.items() if not v.dump_only
+        ]
 
         with db.session.no_autoflush:
             for field in loadable_fields:

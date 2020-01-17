@@ -64,7 +64,9 @@ class TestSqla:
 
         item = TestBaseCRUD.get_by_id(cruds[0].id)
         assert item is cruds[0]
-        TestBaseCRUD.update_by_id(item.id, TestSchema, TestBaseCRUD(name="111"))
+        TestBaseCRUD.update_by_id(
+            item.id, TestSchema, TestBaseCRUD(name="111")
+        )
         item = TestBaseCRUD.get_by_id(cruds[0].id)
         assert item.name == "111"
         TestBaseCRUD.delete_by_id(item.id)

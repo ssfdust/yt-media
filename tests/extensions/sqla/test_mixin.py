@@ -81,7 +81,9 @@ class TestSqlaCRUD(object):
         assert simple.deleted is True
 
         cnt = (
-            db.session.query(SimpleDelete).filter(SimpleDelete.id == simple.id).count()
+            db.session.query(SimpleDelete)
+            .filter(SimpleDelete.id == simple.id)
+            .count()
         )
         assert cnt == 1
 
@@ -148,7 +150,11 @@ class TestSqlaCRUD(object):
         assert new_parnet.id == parent.id + 1
         tmp_parent = TestParent(name="add2", children=[child2, child3])
         parent.update_by_ma(ParentSchema(), tmp_parent)
-        parent = db.session.query(TestParent).filter(TestParent.id == parent.id).one()
+        parent = (
+            db.session.query(TestParent)
+            .filter(TestParent.id == parent.id)
+            .one()
+        )
         #  assert parent.children == [child2, child3
         #                            ] or parent.children == [child3, child2]
         parent.children.sort(key=lambda x: x.id)

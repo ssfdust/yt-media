@@ -35,13 +35,7 @@ class AMQPStore(object):
     :param auto_delete: 是否自动删除
     """
 
-    def __init__(
-        self,
-        key,
-        value=None,
-        exchange=None,
-        **kwargs
-    ):
+    def __init__(self, key, value=None, exchange=None, **kwargs):
         self.key = key
         self.limit = kwargs.get("limit", 999)
         self.max_length = kwargs.get("max_length")

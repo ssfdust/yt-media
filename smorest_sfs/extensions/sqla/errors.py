@@ -17,7 +17,7 @@ class CharsTooLong(Exception):
 
 err_mapping = {
     UniqueViolation: DuplicateEntry,
-    StringDataRightTruncation: CharsTooLong
+    StringDataRightTruncation: CharsTooLong,
 }
 
 

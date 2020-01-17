@@ -42,6 +42,7 @@ class Model(CRUDMixin, db.Model):
 
 # https://speakerdeck.com/zzzeek/building-the-app
 
+
 class SurrogatePK:
     """
     数据库表栏目模板
@@ -67,14 +68,18 @@ class SurrogatePK:
         nullable=False,
         doc="修改时间",
         default=datetime.utcnow(),
-        info={"marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}},
+        info={
+            "marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}
+        },
     )
     created = db.Column(
         db.DateTime(True),
         nullable=False,
         doc="创建时间",
         default=datetime.utcnow(),
-        info={"marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}},
+        info={
+            "marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}
+        },
     )
 
     @classmethod

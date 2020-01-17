@@ -28,6 +28,7 @@ def init_flaskapp(db):
 @pytest.fixture(scope="package")
 def db():
     from smorest_sfs.extensions import db as db_instance
+
     return db_instance
 
 
@@ -39,6 +40,7 @@ def TestPagination(db):
         __tablename__ = "test_pagination"
 
         name = db.Column(db.String(10))
+
     return TestPagination
 
 
@@ -72,6 +74,7 @@ def TestSchema():
     class TestSchema(ma.Schema):
         id = ma.fields.Int(dump_only=True)
         name = ma.fields.String()
+
     return TestSchema
 
 

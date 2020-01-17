@@ -3,6 +3,7 @@
 import unittest
 import pytest
 
+
 class FixturesInjectBase:
 
     fixture_names = ()

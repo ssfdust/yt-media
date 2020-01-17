@@ -34,11 +34,6 @@ mail = Mail()
 
 def init_app(app):
     """拓展组件的初始化"""
-    for ext in [
-        db,
-        ma,
-        babel,
-        mail
-    ]:
+    for ext in [db, ma, babel, mail]:
         ext.init_app(app)
     api.init_app(app, spec_kwargs=spec_kwargs)

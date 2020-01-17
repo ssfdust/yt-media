@@ -33,7 +33,9 @@ class PaginationParametersSchema(ma.Schema):
     class Meta:
         ordered = True
 
-    page = ma.fields.Integer(missing=1, validate=ma.validate.Range(min=1), doc="页码")
+    page = ma.fields.Integer(
+        missing=1, validate=ma.validate.Range(min=1), doc="页码"
+    )
     per_page = ma.fields.Integer(
         missing=10, validate=ma.validate.Range(min=1, max=100), doc="分页数目"
     )
@@ -92,7 +94,9 @@ def paginate(max_per_page: int = 10):
 
         # 注入apidoc显示注释等内容
         func._apidoc = getattr(func, "_apidoc", {})  # pylint: disable=W0212
-        func._apidoc.setdefault("parameters", []).append(parameters)  # pylint: disable=W0212
+        func._apidoc.setdefault("parameters", []).append(
+            parameters
+        )  # pylint: disable=W0212
 
         @functools.wraps(func)
         def wrapped(*args, **kwargs):
