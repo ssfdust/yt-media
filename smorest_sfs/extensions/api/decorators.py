@@ -39,6 +39,26 @@ class PaginationParametersSchema(ma.Schema):
     )
 
 
+def generate_links(p, per_page, **kwargs):
+    links = {}
+    if p.has_next:
+        links["next"] = url_for(
+            request.endpoint, page=p.next_num, per_page=per_page, **kwargs
+        )
+    if p.has_prev:
+        links["prev"] = url_for(
+            request.endpoint, page=p.prev_num, per_page=per_page, **kwargs
+        )
+    links["first"] = url_for(
+        request.endpoint, page=1, per_page=per_page, **kwargs
+    )
+    links["last"] = url_for(
+        request.endpoint, page=p.pages, per_page=per_page, **kwargs
+    )
+
+    return links
+
+
 def paginate(max_per_page: int = 10):
     """
     分页装饰器
@@ -71,8 +91,8 @@ def paginate(max_per_page: int = 10):
         }
 
         # 注入apidoc显示注释等内容
-        func._apidoc = getattr(func, "_apidoc", {})
-        func._apidoc.setdefault("parameters", []).append(parameters)
+        func._apidoc = getattr(func, "_apidoc", {})  # pylint: disable=W0212
+        func._apidoc.setdefault("parameters", []).append(parameters)  # pylint: disable=W0212
 
         @functools.wraps(func)
         def wrapped(*args, **kwargs):
@@ -88,23 +108,7 @@ def paginate(max_per_page: int = 10):
                 "pages": p.pages,
             }
 
-            links = {}
-            if p.has_next:
-                links["next"] = url_for(
-                    request.endpoint, page=p.next_num, per_page=per_page, **kwargs
-                )
-            if p.has_prev:
-                links["prev"] = url_for(
-                    request.endpoint, page=p.prev_num, per_page=per_page, **kwargs
-                )
-            links["first"] = url_for(
-                request.endpoint, page=1, per_page=per_page, **kwargs
-            )
-            links["last"] = url_for(
-                request.endpoint, page=p.pages, per_page=per_page, **kwargs
-            )
-
-            meta["links"] = links
+            meta["links"] = generate_links(p, per_page, **kwargs)
             result = {"data": p.items, "meta": meta, "code": 0}
 
             return result
