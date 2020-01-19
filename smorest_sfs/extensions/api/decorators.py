@@ -94,9 +94,9 @@ def paginate(max_per_page: int = 10):
 
         # 注入apidoc显示注释等内容
         func._apidoc = getattr(func, "_apidoc", {})  # pylint: disable=W0212
-        func._apidoc.setdefault("parameters", []).append(
+        func._apidoc.setdefault("parameters", []).append(  # pylint: disable=W0212
             parameters
-        )  # pylint: disable=W0212
+        )
 
         @functools.wraps(func)
         def wrapped(*args, **kwargs):

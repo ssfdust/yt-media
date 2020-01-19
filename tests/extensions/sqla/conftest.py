@@ -1,111 +1,93 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import pytest
 import os
-import toml
-import sqlalchemy as sa
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm.session import close_all_sessions
+import pytest
+from marshmallow import Schema, fields
+from flask import Flask
+from smorest_sfs.extensions.sqla import CRUDMixin, SurrogatePK
+from smorest_sfs.extensions import babel
 
 
-@pytest.fixture(scope="package")
-def db_name():
-    return os.environ.get("APP_TEST_DB", "flask_test_db")
+def get_inited_app(db):
+    # pylint: disable=W0621
+    flask_app = Flask("TestSqla")
+    flask_app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+        "PG_URI", "postgresql://postgres@localhost/postgres"
+    )
+    flask_app.config["BABEL_DEFAULT_TIMEZONE"] = "Asia/Shanghai"
+    db.init_app(flask_app)
+    babel.init_app(flask_app)
 
-
-@pytest.fixture(scope="package")
-def postgresql_db_user():
-    return os.environ.get("APP_TEST_DB_USER", "postgres")
-
-
-@pytest.fixture(scope="package")
-def postgresql_dsn(postgresql_db_user, db_name):
-    try:
-        configuration = toml.load("app/config/testing.toml")
-        return configuration["SQLALCHEMY_DATABASE_URI"]
-    except FileNotFoundError:
-        return "postgresql://{0}@localhost/{1}".format(
-            postgresql_db_user, db_name
-        )
+    return flask_app
 
 
 @pytest.fixture(scope="package")
 def db():
-    from app.extensions.sqla.sqla import SQLAlchemy
+    from smorest_sfs.extensions.sqla import db as db_instance
 
-    db_module = SQLAlchemy()
-
-    yield db_module
+    return db_instance
 
 
 @pytest.fixture(scope="package")
-def app(postgresql_dsn, db):
-    from flask import Flask
-    from app.extensions import babel
-
-    app = Flask("TestSqla")
-    app.config["SQLALCHEMY_DATABASE_URI"] = postgresql_dsn
-    app.config["BABEL_DEFAULT_TIMEZONE"] = "Asia/Shanghai"
-    db.init_app(app)
-    babel.init_app(app)
-
-    with app.app_context():
-        db.create_all()
-        yield app
-        db.session.commit()
-        db.drop_all()
-
-
-@pytest.fixture
-def engine(postgresql_dsn):
-    engine = create_engine(postgresql_dsn)
-    # engine.echo = True
-    return engine
-
-
-@pytest.fixture
-def connection(engine):
-    return engine.connect()
-
-
-@pytest.fixture
-def Base():
-    return declarative_base()
-
-
-@pytest.fixture
-def Sample(Base):
+def TestCRUDTable(db):
     # pylint: disable=W0621
-    class Sample(Base):
-        __tablename__ = "sample"
-        id = sa.Column(sa.Integer, autoincrement=True, primary_key=True)
-        name = sa.Column(sa.Unicode(255))
+    class TestCRUDTable(SurrogatePK, db.Model):
+        __tablename__ = "sqla_test_crud_table"
 
-    return Sample
+        name = db.Column(db.String(80), unique=True)
+
+    return TestCRUDTable
 
 
-@pytest.fixture
-def init_models(Sample):
+@pytest.fixture(scope="package")
+def TestParentTable(db):
+    # pylint: disable=W0621
+    class TestParentTable(SurrogatePK, db.Model):
+        __tablename__ = "test_crud_parent_table"
+
+    return TestParentTable
+
+
+@pytest.fixture(scope="package")
+def TestChildTable(db, TestParentTable):
+    # pylint: disable=W0621
+    class TestChildTable(SurrogatePK, db.Model):
+        __tablename__ = "test_crud_child_table"
+        pid = db.Column(db.Integer, db.ForeignKey(TestParentTable.id))
+        parnet = db.relationship(
+            TestParentTable,
+            backref=db.backref("children", active_history=True),
+            active_history=True,
+        )
+    return TestChildTable
+
+
+@pytest.fixture(scope="package")
+def tables(TestCRUDTable, TestChildTable):
     # pylint: disable=W0613, W0621
     pass
 
 
-@pytest.fixture
-def session(request, engine, connection, Base, init_models):
-    sa.orm.configure_mappers()
-    Base.metadata.create_all(connection)
-    Session = sessionmaker(bind=connection)
-    session = Session()
+@pytest.fixture(scope="package", autouse=True)
+def app(db, tables):
+    # pylint: disable=W0621, W0613
+    flask_app = get_inited_app(db)
 
-    def teardown():
-        close_all_sessions()
-        Base.metadata.drop_all(connection)
-        connection.close()
-        engine.dispose()
+    with flask_app.app_context():
+        db.create_all()
+        yield flask_app
+        db.session.rollback()
+        bind = db.get_engine()
+        tables = [db.metadata.tables[table]
+                  for table in ["sqla_test_crud_table"]]
+        db.metadata.drop_all(bind=bind, tables=tables)
 
-    request.addfinalizer(teardown)
-
-    return session
+@pytest.fixture(scope="package")
+def TestChildSchema():
+    # pylint: disable=W0621, W0613
+    class TestChildSchema(Schema):
+        id = fields.Int()
+        pid = fields.Int()
+        name = fields.Str()
+    return TestChildSchema
