@@ -5,8 +5,8 @@
 from copy import copy
 
 import pytest
-from marshmallow import Schema, fields
 from smorest_sfs.extensions.sqla import CharsTooLong, DuplicateEntry
+from tests.utils import FixturesInjectBase
 
 
 class TestSqlaCRUD:
@@ -75,43 +75,40 @@ class TestComplexUpdate(FixturesInjectBase):
     fixture_names = ("TestChildTable", "TestParentTable",
                      "TestChildSchema", "TestParentSchema")
 
-    def test_update_by_ma(self, db):
-        class TestChildSchema(Schema):
-            id = fields.Int()
-            pid = fields.Int()
-            name = fields.Str()
+    def test_no_keys_in_schema_should_update_nothing(self):
+        item = self.TestParentTable.create(name="keep_the_name")
+        schema = self.TestChildSchema(only=("id", ))
+        item.update_by_ma(schema, self.TestChildTable(name="change_the_name"))
+        assert item.name == "keep_the_name"
 
-        class TestParentSchema(Schema):
-            name = fields.Str()
-            children = fields.List(fields.Nested(ChildSchema))
-
-        child1 = TestChild(name="1")
-        child2 = TestChild(name="2")
-        parent = TestParent.create(name="1", children=[child1, child2])
-        modtime = copy.copy(parent.modified)
-        child3 = TestChild(name="3")
-        tmp_parent = TestParent(name="add1", children=[child1, child3])
-        parent.update_by_ma(ParentSchema, tmp_parent, commit=False)
-        assert tmp_parent.id is None
-        assert parent.children == [child1, child3]
-        assert parent.name == "add1"
-        new_parnet = TestParent().create()
-        assert new_parnet.id == parent.id + 1
-        tmp_parent = TestParent(name="add2", children=[child2, child3])
-        parent.update_by_ma(ParentSchema(), tmp_parent)
-        parent = (
-            db.session.query(TestParent)
-            .filter(TestParent.id == parent.id)
-            .one()
-        )
-        #  assert parent.children == [child2, child3
-        #                            ] or parent.children == [child3, child2]
-        parent.children.sort(key=lambda x: x.id)
-        for sample, child in zip([child2, child3], parent.children):
-            assert sample.id == child.id
-            assert sample.name == child.name
-            assert sample.pid == child.pid
-        assert parent.name == "add2"
-        new_parnet = TestParent().create()
-        assert new_parnet.id == parent.id + 2
-        assert parent.modified > modtime
+    #  def test_update_by_ma_in_complex(self):
+    #      child1 = self.TestChild()
+    #      child2 = TestChild()
+    #      parent = TestParent.create(name="1", children=[child1, child2])
+    #      modtime = copy.copy(parent.modified)
+    #      child3 = TestChild(name="3")
+    #      tmp_parent = TestParent(name="add1", children=[child1, child3])
+    #      parent.update_by_ma(ParentSchema, tmp_parent, commit=False)
+    #      assert tmp_parent.id is None
+    #      assert parent.children == [child1, child3]
+    #      assert parent.name == "add1"
+    #      new_parnet = TestParent().create()
+    #      assert new_parnet.id == parent.id + 1
+    #      tmp_parent = TestParent(name="add2", children=[child2, child3])
+    #      parent.update_by_ma(ParentSchema(), tmp_parent)
+    #      parent = (
+    #          db.session.query(TestParent)
+    #          .filter(TestParent.id == parent.id)
+    #          .one()
+    #      )
+    #      #  assert parent.children == [child2, child3
+    #      #                            ] or parent.children == [child3, child2]
+    #      parent.children.sort(key=lambda x: x.id)
+    #      for sample, child in zip([child2, child3], parent.children):
+    #          assert sample.id == child.id
+    #          assert sample.name == child.name
+    #          assert sample.pid == child.pid
+    #      assert parent.name == "add2"
+    #      new_parnet = TestParent().create()
+    #      assert new_parnet.id == parent.id + 2
+    #      assert parent.modified > modtime

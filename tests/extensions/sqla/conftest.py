@@ -5,7 +5,7 @@ import os
 import pytest
 from marshmallow import Schema, fields
 from flask import Flask
-from smorest_sfs.extensions.sqla import CRUDMixin, SurrogatePK
+from smorest_sfs.extensions.sqla import SurrogatePK, Model
 from smorest_sfs.extensions import babel
 
 
@@ -32,7 +32,7 @@ def db():
 @pytest.fixture(scope="package")
 def TestCRUDTable(db):
     # pylint: disable=W0621
-    class TestCRUDTable(SurrogatePK, db.Model):
+    class TestCRUDTable(SurrogatePK, Model):
         __tablename__ = "sqla_test_crud_table"
 
         name = db.Column(db.String(80), unique=True)
@@ -43,8 +43,9 @@ def TestCRUDTable(db):
 @pytest.fixture(scope="package")
 def TestParentTable(db):
     # pylint: disable=W0621
-    class TestParentTable(SurrogatePK, db.Model):
+    class TestParentTable(SurrogatePK, Model):
         __tablename__ = "test_crud_parent_table"
+        name = db.Column(db.String(80), unique=True)
 
     return TestParentTable
 
@@ -52,8 +53,9 @@ def TestParentTable(db):
 @pytest.fixture(scope="package")
 def TestChildTable(db, TestParentTable):
     # pylint: disable=W0621
-    class TestChildTable(SurrogatePK, db.Model):
+    class TestChildTable(SurrogatePK, Model):
         __tablename__ = "test_crud_child_table"
+        name = db.Column(db.String(80), unique=True)
         pid = db.Column(db.Integer, db.ForeignKey(TestParentTable.id))
         parnet = db.relationship(
             TestParentTable,
@@ -80,7 +82,9 @@ def app(db, tables):
         db.session.rollback()
         bind = db.get_engine()
         tables = [db.metadata.tables[table]
-                  for table in ["sqla_test_crud_table"]]
+                  for table in ["sqla_test_crud_table",
+                                "test_crud_child_table",
+                                "test_crud_parent_table"]]
         db.metadata.drop_all(bind=bind, tables=tables)
 
 @pytest.fixture(scope="package")
@@ -91,3 +95,12 @@ def TestChildSchema():
         pid = fields.Int()
         name = fields.Str()
     return TestChildSchema
+
+
+@pytest.fixture(scope="package")
+def TestParentSchema(TestChildSchema):
+    # pylint: disable=W0621, W0613
+    class TestParentSchema(Schema):
+        name = fields.Str()
+        children = fields.List(fields.Nested(TestChildSchema))
+    return TestParentSchema

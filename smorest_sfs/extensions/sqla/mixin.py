@@ -38,6 +38,9 @@ from .db_instance import db
 from .errors import pgerr_to_customerr
 
 
+BLACK_LIST = ["id", "deleted", "modified", "created"]
+
+
 class CRUDMixin:
     """CRUD基础模块(create, read, update, delete) """
 
@@ -121,18 +124,26 @@ class CRUDMixin:
 
         db.session.add(instance)
 
-        loadable_fields = [
-            k for k, v in schema.fields.items() if not v.dump_only
-        ]
-
-        with db.session.no_autoflush:
-            for field in loadable_fields:
-                set_attribute(self, field, get_attribute(instance, field))
-                del_attribute(instance, field)
+        loadable_fields = self._get_loadable_fileds(schema)
+        self._setattr_from_instance(loadable_fields, instance)
 
         db.session.expunge(instance)
 
         return self.save(commit)
+
+    @staticmethod
+    def _get_loadable_fileds(schema):
+        return [
+            k for k, v in schema.fields.items()
+            if not v.dump_only and k not in BLACK_LIST
+        ]
+
+    def _setattr_from_instance(self, fields, instance):
+        with db.session.no_autoflush:
+            for field in fields:
+                set_attribute(self, field, get_attribute(instance, field))
+                del_attribute(instance, field)
+
 
     def commit(self):
         """提交以及错误处理"""
