@@ -1,0 +1,34 @@
+language: python
+python:
+  - "3.8"
+sudo: false
+env:
+    global:
+        - CC_TEST_REPORTER_ID=1dbbc0a693f184d81a4cf1430116855dd646950d1cd54981f5ae8e1f0a32c41f
+notifications:
+  email: false
+services:
+    - rabbitmq
+    - postgresql
+addons:
+  postgresql: "11.2"
+  apt:
+      packages:
+          - rabbitmq-server
+before_install:
+    - sudo apt-get update
+    - sudo apt-get --yes remove postgresql\*
+    - sudo apt-get install -y postgresql-11 postgresql-client-11
+    - sudo cp /etc/postgresql/{9.6,11}/main/pg_hba.conf
+    - sudo service postgresql restart 11 
+    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    - chmod +x ./cc-test-reporter
+    - ./cc-test-reporter before-build
+install:
+    - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+    - PATH="${PATH}:$HOME/.poetry/bin"
+    - poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
+script:
+    - inv app.tests --cov smorest_sfs
+after_success:
+    - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
