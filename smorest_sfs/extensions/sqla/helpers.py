@@ -3,6 +3,9 @@
 
 
 from datetime import datetime
+from sqlalchemy.sql import expression
+from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.types import DateTime
 
 
 def set_default_for_instance(instance):
@@ -10,3 +13,14 @@ def set_default_for_instance(instance):
         setattr(instance, key, datetime.utcnow())
     setattr(instance, "deleted", False)
     return instance
+
+
+class utcnow(expression.FunctionElement):
+    # pylint: disable=R0901
+    type = DateTime()
+
+
+@compiles(utcnow, "postgresql")
+def pg_utcnow(element, compiler, **kw):
+    # pylint: disable=W0613
+    return "TIMEZONE('utc', CURRENT_TIMESTAMP)"

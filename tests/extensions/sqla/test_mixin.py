@@ -23,6 +23,7 @@ class TestSqlaCRUD:
     def test_save_should_update_modified(self, TestCRUDTable):
         item = TestCRUDTable.create(name="save_should_update_modified")
         pre_modified = copy(item.modified)
+        item.name = "save_should_updated"
         item.save()
         assert item.modified > pre_modified
 
@@ -30,7 +31,10 @@ class TestSqlaCRUD:
         item = TestCRUDTable.create(name="update_never_success")
         pre_modified = copy(item.modified)
         item.update(name="update_should_success")
-        assert item.name == "update_should_success" and item.modified > pre_modified
+        assert (
+            item.name == "update_should_success"
+            and item.modified > pre_modified
+        )
 
     def test_update_should_not_update_blacked_keys(self, TestCRUDTable):
         item = TestCRUDTable.create(name=1)
@@ -41,30 +45,38 @@ class TestSqlaCRUD:
             created="2008-04-12",
             modified="2008-04-12",
         )
-        assert item.name == "update_should_not_update_blacked_keys" and \
-            item.id != 10000 and \
-            item.deleted is False and \
-            item.modified.strftime("%Y-%M-%d") != "2008-04-12" and \
-            item.created.strftime("%Y-%M-%d") != "2008-04-12"
+        assert (
+            item.name == "update_should_not_update_blacked_keys"
+            and item.id != 10000
+            and item.deleted is False
+            and item.modified.strftime("%Y-%M-%d") != "2008-04-12"
+            and item.created.strftime("%Y-%M-%d") != "2008-04-12"
+        )
 
     def test_soft_delete_id_should_exists(self, TestCRUDTable, db):
         item = TestCRUDTable.create(name="soft_delete_id_should_exists")
         item.delete()
 
-        assert item.deleted is True and \
-            db.session.query(TestCRUDTable).get(item.id) is not None
+        assert (
+            item.deleted is True
+            and db.session.query(TestCRUDTable).get(item.id) is not None
+        )
 
     def test_hard_delete_id_never_exists(self, TestCRUDTable, db):
         item = TestCRUDTable.create(name="hard_delete_id_never_exists")
         item.hard_delete()
 
-        assert item.deleted is False and \
-            db.session.query(TestCRUDTable).get(item.id) is None
+        assert (
+            item.deleted is False
+            and db.session.query(TestCRUDTable).get(item.id) is None
+        )
 
     def test_errors(self, TestCRUDTable):
-        very_long_text = ("sdjiasdjuwhqyuh1274yh7hsduaihsduwhqeuhquiehuhdnuq"
-                          "sajdasoijdsahjduhasduhsaduhasudhausidhuashduhaish"
-                          "sadasdasdasdasdasdasd")
+        very_long_text = (
+            "sdjiasdjuwhqyuh1274yh7hsduaihsduwhqeuhquiehuhdnuq"
+            "sajdasoijdsahjduhasduhsaduhasudhausidhuashduhaish"
+            "sadasdasdasdasdasdasd"
+        )
         with pytest.raises(DuplicateEntry):
             TestCRUDTable.create(name="duplicate_entry")
             TestCRUDTable.create(name="duplicate_entry")
@@ -91,8 +103,7 @@ class TestUpdateBySchema(FixturesInjectBase):
 
     @pytest.mark.usefixtures("TestTableTeardown")
     def test_normal_schema_should_update_successfully(self):
-        self.create_item_and_schema(None,
-                                    name="the_name_should_be_changed")
+        self.create_item_and_schema(None, name="the_name_should_be_changed")
         self.do_init_update_by_schema(name="the_changed_name")
         assert self.item.name == "the_changed_name"
 
@@ -105,74 +116,136 @@ class TestUpdateBySchema(FixturesInjectBase):
     @pytest.mark.usefixtures("TestTableTeardown")
     @pytest.mark.parametrize("key", ["id", "deleted", "modified", "created"])
     def test_blacked_keys_in_schema_should_update_nothing(self, key):
-        self.create_item_and_schema((key, ), name="the_blacked_key_should_not_be_changed")
-        temp_instance = self.do_init_update_by_schema(name="the_key_should_never_changed")
+        self.create_item_and_schema(
+            (key,), name="the_blacked_key_should_not_be_changed"
+        )
+        temp_instance = self.do_init_update_by_schema(
+            name="the_key_should_never_changed"
+        )
         updated_val = getattr(temp_instance, key)
         assert self.item.name != updated_val
 
     @pytest.mark.usefixtures("TestTableTeardown")
     def test_temp_instance_should_not_be_saved(self):
-        self.create_item_and_schema(None, name="temp_instance_should_not_be_saved")
+        self.create_item_and_schema(
+            None, name="temp_instance_should_not_be_saved"
+        )
         temp_instance = self.do_init_update_by_schema(name="the_id_is_none")
         assert temp_instance.id is None
 
     @pytest.mark.usefixtures("TestTableTeardown")
     def test_temp_instance_should_not_in_session(self, db):
-        item = self.TestParentTable.create(name=f"keep_the_name")
-        schema = self.TestParentSchema()
-        temp_instance = self.TestParentTable(name="change_the_name")
-        temp_instance = set_default_for_instance(temp_instance)
-        item.update_by_ma(schema, temp_instance)
+        self.create_item_and_schema(
+            None, name="temp_instance_should_not_in_session"
+        )
+        temp_instance = self.do_init_update_by_schema(
+            name="the_temp_instance_not_in_session"
+        )
         assert temp_instance not in db.session
 
     @pytest.mark.usefixtures("TestTableTeardown")
     def test_temp_instance_should_be_flushed(self, db):
-        item = self.TestParentTable.create(name=f"keep_the_name")
-        schema = self.TestParentSchema()
-        temp_instance = self.TestParentTable(name="change_the_name")
-        temp_instance = set_default_for_instance(temp_instance)
-        item.update_by_ma(schema, temp_instance)
+        self.create_item_and_schema(
+            None, name="temp_instance_should_not_be_flushed"
+        )
+        temp_instance = self.do_init_update_by_schema(
+            name="the_temp_instance_not_be_flushed"
+        )
         db.session.flush()
         assert temp_instance.id is None
 
     @pytest.mark.usefixtures("TestTableTeardown")
     def test_temp_instance_should_be_commited(self, db):
-        item = self.TestParentTable.create(name=f"keep_the_name")
-        schema = self.TestParentSchema()
-        temp_instance = self.TestParentTable(name="change_the_name")
-        temp_instance = set_default_for_instance(temp_instance)
-        item.update_by_ma(schema, temp_instance)
+        self.create_item_and_schema(
+            None, name="temp_instance_should_not_be_commited"
+        )
+        temp_instance = self.do_init_update_by_schema(
+            name="the_temp_instance_not_be_commited"
+        )
         db.session.commit()
         assert temp_instance.id is None
 
-    #  def test_update_by_ma_in_complex(self):
-    #      child1 = self.TestChild()
-    #      child2 = TestChild()
-    #      parent = TestParent.create(name="1", children=[child1, child2])
-    #      modtime = copy.copy(parent.modified)
-    #      child3 = TestChild(name="3")
-    #      tmp_parent = TestParent(name="add1", children=[child1, child3])
-    #      parent.update_by_ma(ParentSchema, tmp_parent, commit=False)
-    #      assert tmp_parent.id is None
-    #      assert parent.children == [child1, child3]
-    #      assert parent.name == "add1"
-    #      new_parnet = TestParent().create()
-    #      assert new_parnet.id == parent.id + 1
-    #      tmp_parent = TestParent(name="add2", children=[child2, child3])
-    #      parent.update_by_ma(ParentSchema(), tmp_parent)
-    #      parent = (
-    #          db.session.query(TestParent)
-    #          .filter(TestParent.id == parent.id)
-    #          .one()
-    #      )
-    #      #  assert parent.children == [child2, child3
-    #      #                            ] or parent.children == [child3, child2]
-    #      parent.children.sort(key=lambda x: x.id)
-    #      for sample, child in zip([child2, child3], parent.children):
-    #          assert sample.id == child.id
-    #          assert sample.name == child.name
-    #          assert sample.pid == child.pid
-    #      assert parent.name == "add2"
-    #      new_parnet = TestParent().create()
-    #      assert new_parnet.id == parent.id + 2
-    #      assert parent.modified > modtime
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_temp_instance_should_be_flushed_after_query(self, db):
+        self.create_item_and_schema(
+            None, name="should_not_be_flushed_after_query"
+        )
+        temp_instance = self.do_init_update_by_schema(
+            name="should_not_be_flushed_after_query"
+        )
+        query_cls = temp_instance.__class__
+        query_cls.query.first()
+        assert temp_instance.id is None and temp_instance not in db.session
+
+
+class TestComplexParentChildrenUpdateBySchema(FixturesInjectBase):
+    fixture_names = (
+        "TestChildSchema",
+        "TestChildTable",
+        "TestParentSchema",
+        "TestParentTable",
+        "db",
+    )
+
+    @pytest.fixture
+    def children_lst(self):
+        return [
+            self.TestChildTable.create(name=name)
+            for name in ["1", "2", "3", "4", "5"]
+        ]
+
+    @pytest.fixture
+    def origin_a_children_lst(self, children_lst):
+        return children_lst[0:3]
+
+    @pytest.fixture
+    def origin_b_children_lst(self, children_lst):
+        return children_lst[0:2]
+
+    @pytest.fixture
+    def modified_a_children_lst(self, children_lst):
+        return [children_lst[3]]
+
+    @pytest.fixture
+    def a_children_lst_after_b_modified(self, children_lst):
+        return [children_lst[2]]
+
+    @pytest.fixture
+    def parent_a(self, origin_a_children_lst):
+        parent = self.TestParentTable.create(
+            name="A", children=origin_a_children_lst
+        )
+        return parent
+
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_complex_update_by_ma(self, parent_a, modified_a_children_lst):
+        temp_parent = self.TestParentTable(
+            name="modified_a", children=modified_a_children_lst
+        )
+        pre_modified = copy(parent_a.modified)
+        parent_a.update_by_ma(self.TestParentSchema, temp_parent)
+        assert (
+            temp_parent.id is None
+            and parent_a.children == modified_a_children_lst
+            and parent_a.name == "modified_a"
+            and parent_a.modified > pre_modified
+            and temp_parent not in self.db.session
+        )
+
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_created_new_instance_after_update_by_ma(
+        self, parent_a, a_children_lst_after_b_modified, origin_b_children_lst
+    ):
+        temp_parent = self.TestParentTable(
+            name="modified_a_complex", children=parent_a.children
+        )
+        parent_a.update_by_ma(self.TestParentSchema, temp_parent)
+        new_parenet = self.TestParentTable.create(
+            name="B", children=origin_b_children_lst
+        )
+        assert (
+            new_parenet.id == parent_a.id + 1
+            and parent_a.name == "modified_a_complex"
+            and new_parenet.children == origin_b_children_lst
+            and parent_a.children == a_children_lst_after_b_modified
+        )

@@ -1,76 +1,90 @@
 """测试sqla"""
 
 import pytest
-from marshmallow import Schema, fields
-from sqlalchemy.exc import ProgrammingError
 from werkzeug.exceptions import NotFound
-from app.extensions.sqla import Model, SurrogatePK
+from tests.utils import FixturesInjectBase
 
 
-class TestSqla:
-    def test_soft_delete(self, app, db):
-        class SoftDelete(Model):
-            id = db.Column(db.Integer, primary_key=True)
-            deleted = db.Column(db.Boolean, default=False)
+class ItemsFixtureBase(FixturesInjectBase):
+    @pytest.fixture
+    def crud_items(self):
+        return [
+            self.TestCRUDTable.create(name=name)
+            for name in ["aaabbb", "bbbbcccc", "bbcccc", "bbc"]
+        ]
 
-        for _ in range(10):
-            last = SoftDelete.create()
 
-        assert SoftDelete.query.count() == 10
-        last.delete()
-        assert SoftDelete.query.count() == 9
-        item = SoftDelete.query.with_deleted().get(last.id)
-        assert item is not None
-        assert SoftDelete.query.with_deleted().count() == 10
+class TestBaseQuery(ItemsFixtureBase):
+    fixture_names = ("TestCRUDTable",)
 
-    def test_filter_like_by(self, app, db):
-        class FilterLikeBy(Model):
-            id = db.Column(db.Integer, primary_key=True)
-            name = db.Column(db.String(50))
-            deleted = db.Column(db.Boolean, default=False)
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_soft_delete(self, crud_items):
+        pre_cnt = self.TestCRUDTable.query.count()
+        deleted_one = crud_items[0]
+        deleted_one.delete()
 
-        try:
-            FilterLikeBy.__table__.create(db.get_engine())
-        except ProgrammingError:
-            pass
-        FilterLikeBy.create(name="aaaabbbb")
-        FilterLikeBy.create(name="bbbbcccc")
-        FilterLikeBy.create(name="bbcccc")
-        FilterLikeBy.create(name="bbc")
-        cnt = FilterLikeBy.query.filter_like_by(name="bc").count()
+        direct_get_by_id = self.TestCRUDTable.query.filter_by(
+            id=deleted_one.id
+        ).first()
+        with_deleted_get_by_id = self.TestCRUDTable.query.with_deleted().get(
+            deleted_one.id
+        )
+        cur_cnt = self.TestCRUDTable.query.count()
+
+        assert (
+            direct_get_by_id is None
+            and with_deleted_get_by_id is deleted_one
+            and cur_cnt == pre_cnt - 1
+        )
+
+    @pytest.mark.usefixtures("TestTableTeardown", "crud_items")
+    def test_filter_like_by(self):
+        cnt = self.TestCRUDTable.query.filter_like_by(name="bc").count()
         assert cnt == 3
 
-    def test_surrogate_pk(self, app, db):
-        class TestPk(SurrogatePK):
-
-            name = db.Column(db.String(1))
-
+    def test_surrogatepk_keys(self):
         for key in ["id", "deleted", "modified", "created"]:
-            assert hasattr(TestPk, key)
+            assert hasattr(self.TestCRUDTable, key)
 
-    def test_base_crud(self, app, db):
-        class TestBaseCRUD(Model, SurrogatePK):
-            name = db.Column(db.String(4))
-
-        class TestSchema(Schema):
-            name = fields.Str()
-
-        try:
-            TestBaseCRUD.__table__.create(db.get_engine())
-        except ProgrammingError:
-            pass
-
-        cruds = [TestBaseCRUD.create(name=str(i)) for i in range(10)]
-
-        item = TestBaseCRUD.get_by_id(cruds[0].id)
-        assert item is cruds[0]
-        TestBaseCRUD.update_by_id(
-            item.id, TestSchema, TestBaseCRUD(name="111")
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_surrogatepk_defaults(self):
+        item = self.TestCRUDTable.create(name="test_defaults")
+        assert (
+            item.id is not None
+            and item.deleted is False
+            and item.created.strftime("%Y-%m-%d %H:%M:%S")
+            and item.modified.strftime("%Y-%m-%d %H:%M:%S")
         )
-        item = TestBaseCRUD.get_by_id(cruds[0].id)
-        assert item.name == "111"
-        TestBaseCRUD.delete_by_id(item.id)
+
+
+class TestBaseRUDByID(ItemsFixtureBase):
+    fixture_names = ("TestCRUDTable", "TestParentSchema", "TestParentTable")
+
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_base_read_by_id(self, crud_items):
+        item = crud_items[0]
+        assert self.TestCRUDTable.get_by_id(item.id) == item
+
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_base_delete_by_id(self, crud_items):
+        item = crud_items[0]
+        self.TestCRUDTable.delete_by_id(item.id)
         with pytest.raises(NotFound):
-            item = TestBaseCRUD.get_by_id(cruds[0].id)
-        TestBaseCRUD.delete_by_ids([i.id for i in cruds[1:6]])
-        assert TestBaseCRUD.query.count() == 4
+            self.TestCRUDTable.get_by_id(item.id)
+
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_base_delete_by_idlst(self, crud_items):
+        items = crud_items[0:-1]
+        idlst = [item.id for item in items]
+        self.TestCRUDTable.delete_by_ids(idlst)
+        for item_id in idlst:
+            with pytest.raises(NotFound):
+                self.TestCRUDTable.get_by_id(item_id)
+
+    def test_base_update_by_id(self, db):
+        item = self.TestParentTable.create(name="base_update_by_id")
+        temp_item = self.TestParentTable(name="test_update_by_id")
+        self.TestParentTable.update_by_id(
+            item.id, self.TestParentSchema, temp_item
+        )
+        assert temp_item not in db.session and item.name == "test_update_by_id"

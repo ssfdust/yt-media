@@ -24,8 +24,6 @@
     id, deleted, modified, created为系统默认字段
 """
 
-from datetime import datetime
-import psycopg2
 import sqlalchemy as sa
 from sqlalchemy.orm.attributes import (
     get_attribute,
@@ -63,9 +61,6 @@ class CRUDMixin:
         for attr, value in kwargs.items():
             setattr(self, attr, value)
 
-        # 更新修改时间
-        setattr(self, "modified", datetime.utcnow())
-
         return self.save(commit)
 
     def save(self, commit=True):
@@ -73,7 +68,6 @@ class CRUDMixin:
 
         保存对象并更新保存时间
         """
-        setattr(self, "modified", datetime.utcnow())
         db.session.add(self)
         if commit:
             self.commit()
@@ -134,7 +128,8 @@ class CRUDMixin:
     @staticmethod
     def _get_loadable_fileds(schema):
         return [
-            k for k, v in schema.fields.items()
+            k
+            for k, v in schema.fields.items()
             if not v.dump_only and k not in BLACK_LIST
         ]
 
@@ -143,7 +138,6 @@ class CRUDMixin:
             for field in fields:
                 set_attribute(self, field, get_attribute(instance, field))
                 del_attribute(instance, field)
-
 
     def commit(self):
         """提交以及错误处理"""

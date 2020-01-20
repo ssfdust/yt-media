@@ -8,12 +8,14 @@ from smorest_sfs.extensions import babel
 from smorest_sfs.extensions.api import Api
 from smorest_sfs.extensions.sqla import SurrogatePK, Model
 from smorest_sfs.extensions.marshal.bases import BasePageSchema
+from tests.utils import drop_tables
 
 
-all_tables = ["test_pagination"]
+TABLES = ["test_pagination"]
 
 
 def init_flaskapp(db):
+    # pylint: disable=W0621
     flask_app = Flask("TestApi")
     flask_app.config["OPENAPI_VERSION"] = "3.0.2"
     flask_app.config["BABEL_DEFAULT_TIMEZONE"] = "Asia/Shanghai"
@@ -45,21 +47,14 @@ def TestPagination(db):
 
 
 @pytest.fixture(scope="package")
-def available_tables(db, TestPagination):
-    # pylint: disable=W0621
-    return [db.metadata.tables[table] for table in all_tables]
-
-
-@pytest.fixture(scope="package")
-def app(db, available_tables):
+def app(db):
     # pylint: disable=W0621
     flask_app = init_flaskapp(db)
 
     with flask_app.app_context():
         db.create_all()
         yield flask_app
-        engine = db.get_engine()
-        db.metadata.drop_all(bind=engine, tables=available_tables)
+        drop_tables(db, TABLES)
 
 
 @pytest.fixture(scope="package")
@@ -90,8 +85,8 @@ def TestPageSchema(TestSchema):
 
 @pytest.fixture(scope="package", autouse=True)
 def setup_db(app, db, TestPagination):
+    # pylint: disable=W0613, W0621
     db.create_all()
-
     data = [TestPagination(name=str(i + 1)) for i in range(20)]
     db.session.bulk_save_objects(data)
     db.session.commit()

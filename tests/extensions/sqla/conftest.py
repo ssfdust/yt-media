@@ -2,11 +2,21 @@
 # -*- coding: utf-8 -*-
 
 import os
+import datetime
 import pytest
 from marshmallow import Schema, fields
 from flask import Flask
 from smorest_sfs.extensions.sqla import SurrogatePK, Model
 from smorest_sfs.extensions import babel
+from tests.utils import drop_tables
+
+
+FAKE_TIME = datetime.datetime(1994, 9, 11, 8, 20)
+TABLES = [
+    "sqla_test_crud_table",
+    "test_crud_child_table",
+    "test_crud_parent_table",
+]
 
 
 def get_inited_app(db):
@@ -62,6 +72,7 @@ def TestChildTable(db, TestParentTable):
             backref=db.backref("children", active_history=True),
             active_history=True,
         )
+
     return TestChildTable
 
 
@@ -80,12 +91,8 @@ def app(db, tables):
         db.create_all()
         yield flask_app
         db.session.rollback()
-        bind = db.get_engine()
-        tables = [db.metadata.tables[table]
-                  for table in ["sqla_test_crud_table",
-                                "test_crud_child_table",
-                                "test_crud_parent_table"]]
-        db.metadata.drop_all(bind=bind, tables=tables)
+        drop_tables(db, TABLES)
+
 
 @pytest.fixture(scope="package")
 def TestChildSchema():
@@ -97,6 +104,7 @@ def TestChildSchema():
         deleted = fields.Boolean()
         modified = fields.DateTime()
         created = fields.DateTime()
+
     return TestChildSchema
 
 
@@ -108,6 +116,7 @@ def TestParentSchema(TestChildSchema):
 
         class Meta:
             exclude = ["pid"]
+
     return TestParentSchema
 
 
@@ -115,8 +124,22 @@ def TestParentSchema(TestChildSchema):
 def TestTableTeardown(db):
     # pylint: disable=W0621, W0613
     yield
-    for table in ["sqla_test_crud_table",
-                  "test_crud_child_table",
-                  "test_crud_parent_table"]:
+    for table in [
+        "sqla_test_crud_table",
+        "test_crud_child_table",
+        "test_crud_parent_table",
+    ]:
         db.session.execute(f"TRUNCATE TABLE {table} CASCADE")
     db.session.commit()
+
+
+@pytest.fixture
+def mock_utcnow(monkeypatch):
+    class FakeDt:
+        @classmethod
+        def utcnow(cls):
+            return FAKE_TIME
+
+    monkeypatch.setattr(
+        "smorest_sfs.extensions.sqla.surrogatepk.datetime", FakeDt
+    )

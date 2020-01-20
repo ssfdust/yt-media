@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from datetime import datetime
 from .db_instance import db
+from .helpers import utcnow
 
 # https://speakerdeck.com/zzzeek/building-the-app
 class SurrogatePK:
@@ -28,7 +28,8 @@ class SurrogatePK:
         db.DateTime(True),
         nullable=False,
         doc="修改时间",
-        default=datetime.utcnow(),
+        server_default=utcnow(),
+        onupdate=db.select([utcnow()]),
         info={
             "marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}
         },
@@ -37,7 +38,7 @@ class SurrogatePK:
         db.DateTime(True),
         nullable=False,
         doc="创建时间",
-        default=datetime.utcnow(),
+        server_default=utcnow(),
         info={
             "marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}
         },
