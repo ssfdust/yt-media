@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import pytest
 from flask import Flask
 import marshmallow as ma
@@ -19,7 +20,9 @@ def init_flaskapp(db):
     flask_app = Flask("TestApi")
     flask_app.config["OPENAPI_VERSION"] = "3.0.2"
     flask_app.config["BABEL_DEFAULT_TIMEZONE"] = "Asia/Shanghai"
-    flask_app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://"
+    flask_app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+        "PG_URI", "postgresql://postgres@localhost/postgres"
+    )
 
     babel.init_app(flask_app)
     db.init_app(flask_app)
@@ -54,6 +57,7 @@ def app(db):
     with flask_app.app_context():
         db.create_all()
         yield flask_app
+        db.session.rollback()
         drop_tables(db, TABLES)
 
 

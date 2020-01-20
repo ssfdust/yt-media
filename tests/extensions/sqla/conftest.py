@@ -131,15 +131,3 @@ def TestTableTeardown(db):
     ]:
         db.session.execute(f"TRUNCATE TABLE {table} CASCADE")
     db.session.commit()
-
-
-@pytest.fixture
-def mock_utcnow(monkeypatch):
-    class FakeDt:
-        @classmethod
-        def utcnow(cls):
-            return FAKE_TIME
-
-    monkeypatch.setattr(
-        "smorest_sfs.extensions.sqla.surrogatepk.datetime", FakeDt
-    )

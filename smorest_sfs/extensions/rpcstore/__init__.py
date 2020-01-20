@@ -19,11 +19,14 @@
     rabbitMQ存储模块
 """
 
+from flask import current_app
+from kombu import Connection
 from kombu import Exchange, Queue
+from kombu.pools import producers, connections
 from amqp.exceptions import NotFound
 
 
-class AMQPStore(object):
+class AMQPStore:
     """
     存储器
 
@@ -41,6 +44,7 @@ class AMQPStore(object):
         self.max_length = kwargs.get("max_length")
         self.value = value
         self.values = []
+        self.msgs = []
         #  if exchange is None and '_' in key:
         #      exchange = key.split('_')[0]
         self.exchange = Exchange(exchange)
@@ -62,10 +66,6 @@ class AMQPStore(object):
 
         :param expiration 过期时间
         """
-        from kombu import Connection
-        from flask import current_app
-        from kombu.pools import producers
-
         conn = Connection(current_app.config["CELERY_BROKER_URL"], heartbeat=0)
 
         with producers[conn].acquire(block=True) as producer:
@@ -88,31 +88,47 @@ class AMQPStore(object):
         重载数值
         """
         self.value = None
-        msgs = []
         self.values = []
+        self._collect_msgs(no_ack)
+        self._handle_msgs(no_ack, requeue)
+
+        return self.value
+
+    @staticmethod
+    def calculate_requeue_able(no_ack, requeue):
+        if no_ack is False and requeue is False:
+            return False
+        return True
+
+    def _handle_msgs(self, no_ack, requeue):
+        if no_ack:
+            return
+        if self.calculate_requeue_able(no_ack, requeue):
+            self._requeue_msgs()
+        else:
+            self._ack_msgs()
+
+    def _requeue_msgs(self):
+        for msg in self.msgs:
+            msg.requeue()
+
+    def _ack_msgs(self):
+        for msg in self.msgs:
+            msg.ack()
+
+    def _collect_msgs(self, no_ack):
+        self.msgs = []
         for i in self.extract_from_queue(no_ack):
             self.value = i.payload
             self.values.append(self.value)
-            msgs.append(i)
-
-        if no_ack is False and requeue is False:
-            for i in msgs:
-                i.ack()
-        if requeue is True:
-            for i in msgs:
-                i.requeue()
-
-        return self.value
+            self.msgs.append(i)
 
     def extract_from_queue(self, no_ack=False):
         """
         从队列加载并返回列表
         """
-        from kombu import Connection, pools
-        from flask import current_app
-
         conn = Connection(current_app.config["CELERY_BROKER_URL"], heartbeat=0)
-        pool = pools.connections[conn]
+        pool = connections[conn]
 
         with pool.acquire_channel(block=True) as (_, channel):
             binding = self.queue(channel)
