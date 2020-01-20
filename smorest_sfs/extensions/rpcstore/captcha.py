@@ -18,7 +18,7 @@
     验证码模块
 """
 
-import random
+import secrets
 import string
 from . import AMQPStore
 
@@ -50,7 +50,7 @@ class CaptchaStore(AMQPStore):
     def _generate_captcha(self, length):
         """生成验证码"""
         passwd_str = string.digits + string.ascii_letters
-        code = "".join([random.choice(passwd_str) for i in range(length)])
+        code = "".join([secrets.choice(passwd_str) for i in range(length)])
         self.value = code
 
     def generate_captcha(self, length=4):
