@@ -1,0 +1,6 @@
+engines:
+  bandit:
+    enabled: true
+    checks:
+      assert_used:
+        enabled: false
