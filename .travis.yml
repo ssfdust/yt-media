@@ -31,4 +31,4 @@ install:
 script:
     - pytest tests --cov smorest_sfs --cov-report term-missing
 after_success:
-    - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT --debug
+    - ./cc-test-reporter after-build --debug
