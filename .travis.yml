@@ -32,3 +32,4 @@ script:
     - inv app.tests --cov smorest_sfs
 after_success:
     - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
