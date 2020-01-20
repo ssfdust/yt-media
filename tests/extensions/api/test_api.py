@@ -24,7 +24,7 @@ class TestApi(FixturesInjectBase):
                 """List pets"""
                 return TestPagination.query.order_by(TestPagination.id)
 
-        self.api.register_blueprint(blp)
+        self.api.register_blueprint(blp, base_prefix="/pets", url_prefix="/")
 
     @pytest.mark.parametrize(
         "meta",
@@ -32,10 +32,10 @@ class TestApi(FixturesInjectBase):
             (
                 {
                     "links": {
-                        "first": "/?page=1&per_page=5",
-                        "last": "/?page=4&per_page=5",
-                        "next": "/?page=3&per_page=5",
-                        "prev": "/?page=1&per_page=5",
+                        "first": "/pets/?page=1&per_page=5",
+                        "last": "/pets/?page=4&per_page=5",
+                        "next": "/pets/?page=3&per_page=5",
+                        "prev": "/pets/?page=1&per_page=5",
                     },
                     "page": 2,
                     "pages": 4,
@@ -48,7 +48,7 @@ class TestApi(FixturesInjectBase):
     def test_api(self, meta):
         # pylint: disable=W0613
         self.setup_blp()
-        data = self.get_test_json("/?page=2&per_page=5")
+        data = self.get_test_json("pets/?page=2&per_page=5")
 
         assert data["meta"] == meta
 
