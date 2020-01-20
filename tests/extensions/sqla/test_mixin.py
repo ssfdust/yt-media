@@ -6,6 +6,7 @@ from copy import copy
 
 import pytest
 from smorest_sfs.extensions.sqla import CharsTooLong, DuplicateEntry
+from smorest_sfs.extensions.sqla.helpers import set_default_for_instance
 from tests.utils import FixturesInjectBase
 
 
@@ -71,15 +72,78 @@ class TestSqlaCRUD:
             TestCRUDTable.create(name=very_long_text)
 
 
-class TestComplexUpdate(FixturesInjectBase):
-    fixture_names = ("TestChildTable", "TestParentTable",
-                     "TestChildSchema", "TestParentSchema")
+class TestUpdateBySchema(FixturesInjectBase):
+    fixture_names = ("TestParentTable", "TestParentSchema")
 
+    def do_init_update_by_schema(self, **kwargs):
+        temp_instance = self.TestParentTable(**kwargs)
+        temp_instance = set_default_for_instance(temp_instance)
+        self.item.update_by_ma(self.schema, temp_instance)
+        return temp_instance
+
+    def create_item_and_schema(self, schema_kwargs, **item_kwargs):
+        setattr(self, "item", self.TestParentTable(**item_kwargs))
+        setattr(self, "schema", self.TestParentSchema(only=schema_kwargs))
+
+    def teardown_method(self, _):
+        setattr(self, "item", None)
+        setattr(self, "schema", None)
+
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_normal_schema_should_update_successfully(self):
+        self.create_item_and_schema(None,
+                                    name="the_name_should_be_changed")
+        self.do_init_update_by_schema(name="the_changed_name")
+        assert self.item.name == "the_changed_name"
+
+    @pytest.mark.usefixtures("TestTableTeardown")
     def test_no_keys_in_schema_should_update_nothing(self):
-        item = self.TestParentTable.create(name="keep_the_name")
-        schema = self.TestChildSchema(only=("id", ))
-        item.update_by_ma(schema, self.TestChildTable(name="change_the_name"))
-        assert item.name == "keep_the_name"
+        self.create_item_and_schema((), name="the_name_should_not_be_changed")
+        self.do_init_update_by_schema(name="the_name_should_never_changed")
+        assert self.item.name == "the_name_should_not_be_changed"
+
+    @pytest.mark.usefixtures("TestTableTeardown")
+    @pytest.mark.parametrize("key", ["id", "deleted", "modified", "created"])
+    def test_blacked_keys_in_schema_should_update_nothing(self, key):
+        self.create_item_and_schema((key, ), name="the_blacked_key_should_not_be_changed")
+        temp_instance = self.do_init_update_by_schema(name="the_key_should_never_changed")
+        updated_val = getattr(temp_instance, key)
+        assert self.item.name != updated_val
+
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_temp_instance_should_not_be_saved(self):
+        self.create_item_and_schema(None, name="temp_instance_should_not_be_saved")
+        temp_instance = self.do_init_update_by_schema(name="the_id_is_none")
+        assert temp_instance.id is None
+
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_temp_instance_should_not_in_session(self, db):
+        item = self.TestParentTable.create(name=f"keep_the_name")
+        schema = self.TestParentSchema()
+        temp_instance = self.TestParentTable(name="change_the_name")
+        temp_instance = set_default_for_instance(temp_instance)
+        item.update_by_ma(schema, temp_instance)
+        assert temp_instance not in db.session
+
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_temp_instance_should_be_flushed(self, db):
+        item = self.TestParentTable.create(name=f"keep_the_name")
+        schema = self.TestParentSchema()
+        temp_instance = self.TestParentTable(name="change_the_name")
+        temp_instance = set_default_for_instance(temp_instance)
+        item.update_by_ma(schema, temp_instance)
+        db.session.flush()
+        assert temp_instance.id is None
+
+    @pytest.mark.usefixtures("TestTableTeardown")
+    def test_temp_instance_should_be_commited(self, db):
+        item = self.TestParentTable.create(name=f"keep_the_name")
+        schema = self.TestParentSchema()
+        temp_instance = self.TestParentTable(name="change_the_name")
+        temp_instance = set_default_for_instance(temp_instance)
+        item.update_by_ma(schema, temp_instance)
+        db.session.commit()
+        assert temp_instance.id is None
 
     #  def test_update_by_ma_in_complex(self):
     #      child1 = self.TestChild()

@@ -94,13 +94,29 @@ def TestChildSchema():
         id = fields.Int()
         pid = fields.Int()
         name = fields.Str()
+        deleted = fields.Boolean()
+        modified = fields.DateTime()
+        created = fields.DateTime()
     return TestChildSchema
 
 
 @pytest.fixture(scope="package")
 def TestParentSchema(TestChildSchema):
     # pylint: disable=W0621, W0613
-    class TestParentSchema(Schema):
-        name = fields.Str()
+    class TestParentSchema(TestChildSchema):
         children = fields.List(fields.Nested(TestChildSchema))
+
+        class Meta:
+            exclude = ["pid"]
     return TestParentSchema
+
+
+@pytest.fixture
+def TestTableTeardown(db):
+    # pylint: disable=W0621, W0613
+    yield
+    for table in ["sqla_test_crud_table",
+                  "test_crud_child_table",
+                  "test_crud_parent_table"]:
+        db.session.execute(f"TRUNCATE TABLE {table} CASCADE")
+    db.session.commit()
