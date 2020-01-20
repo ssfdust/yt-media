@@ -29,7 +29,7 @@ install:
     - PATH="${PATH}:$HOME/.poetry/bin"
     - poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
 script:
-    - inv app.tests --cov smorest_sfs
+    - pytest tests --cov smorest_sfs --cov-report term-missing
 after_success:
     - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
