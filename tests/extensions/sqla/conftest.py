@@ -3,10 +3,12 @@
 
 import os
 import datetime
+from typing import Any, Type, NoReturn
+from flask import Flask
 import pytest
 from marshmallow import Schema, fields
-from flask import Flask
 from smorest_sfs.extensions.sqla import SurrogatePK, Model
+from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.extensions import babel
 from tests.utils import drop_tables
 
@@ -19,7 +21,7 @@ TABLES = [
 ]
 
 
-def get_inited_app(db):
+def get_inited_app(db: SQLAlchemy) -> Flask:
     # pylint: disable=W0621
     flask_app = Flask("TestSqla")
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
@@ -33,14 +35,14 @@ def get_inited_app(db):
 
 
 @pytest.fixture(scope="package")
-def db():
+def db() -> SQLAlchemy:
     from smorest_sfs.extensions.sqla import db as db_instance
 
     return db_instance
 
 
 @pytest.fixture(scope="package")
-def TestCRUDTable(db):
+def TestCRUDTable(db: SQLAlchemy) -> Model:
     # pylint: disable=W0621
     class TestCRUDTable(SurrogatePK, Model):
         __tablename__ = "sqla_test_crud_table"
@@ -51,7 +53,7 @@ def TestCRUDTable(db):
 
 
 @pytest.fixture(scope="package")
-def TestParentTable(db):
+def TestParentTable(db: SQLAlchemy) -> Model:
     # pylint: disable=W0621
     class TestParentTable(SurrogatePK, Model):
         __tablename__ = "test_crud_parent_table"
@@ -61,7 +63,7 @@ def TestParentTable(db):
 
 
 @pytest.fixture(scope="package")
-def TestChildTable(db, TestParentTable):
+def TestChildTable(db: SQLAlchemy, TestParentTable: Type[Model]) -> Model:
     # pylint: disable=W0621
     class TestChildTable(SurrogatePK, Model):
         __tablename__ = "test_crud_child_table"
@@ -77,13 +79,13 @@ def TestChildTable(db, TestParentTable):
 
 
 @pytest.fixture(scope="package")
-def tables(TestCRUDTable, TestChildTable):
+def tables(TestCRUDTable: Type[Model], TestChildTable: Type[Model]) -> NoReturn:
     # pylint: disable=W0613, W0621
     pass
 
 
 @pytest.fixture(scope="package", autouse=True)
-def app(db, tables):
+def app(db: SQLAlchemy, tables: Any) -> Flask:
     # pylint: disable=W0621, W0613
     flask_app = get_inited_app(db)
 

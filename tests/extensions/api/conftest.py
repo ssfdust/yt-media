@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import os
-import pytest
+from typing import Any, Type
 from flask import Flask
+import pytest
 import marshmallow as ma
+from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.extensions import babel
 from smorest_sfs.extensions.api import Api
 from smorest_sfs.extensions.sqla import SurrogatePK, Model
@@ -15,7 +17,7 @@ from tests.utils import drop_tables
 TABLES = ["test_pagination"]
 
 
-def init_flaskapp(db):
+def init_flaskapp(db: SQLAlchemy) -> Flask:
     # pylint: disable=W0621
     flask_app = Flask("TestApi")
     flask_app.config["OPENAPI_VERSION"] = "3.0.2"
@@ -31,14 +33,14 @@ def init_flaskapp(db):
 
 
 @pytest.fixture(scope="package")
-def db():
+def db() -> SQLAlchemy:
     from smorest_sfs.extensions import db as db_instance
 
     return db_instance
 
 
 @pytest.fixture(scope="package")
-def TestPagination(db):
+def TestPagination(db: SQLAlchemy) -> Model:
     # pylint: disable=W0621
     class TestPagination(SurrogatePK, Model):
 
@@ -50,7 +52,7 @@ def TestPagination(db):
 
 
 @pytest.fixture(scope="package")
-def app(db):
+def app(db: SQLAlchemy) -> Flask:
     # pylint: disable=W0621
     flask_app = init_flaskapp(db)
 
@@ -62,13 +64,13 @@ def app(db):
 
 
 @pytest.fixture(scope="package")
-def api(app):
+def api(app: Flask) -> Api:
     # pylint: disable=W0621
     return Api(app)
 
 
 @pytest.fixture(scope="package")
-def TestSchema():
+def TestSchema() -> ma.Schema:
     # pylint: disable=W0621
     class TestSchema(ma.Schema):
         id = ma.fields.Int(dump_only=True)
@@ -78,7 +80,7 @@ def TestSchema():
 
 
 @pytest.fixture(scope="package")
-def TestPageSchema(TestSchema):
+def TestPageSchema(TestSchema: ma.Schema) -> ma.Schema:
     # pylint: disable=W0621
     class TestPageSchema(BasePageSchema):
 
@@ -88,7 +90,7 @@ def TestPageSchema(TestSchema):
 
 
 @pytest.fixture(scope="package", autouse=True)
-def setup_db(app, db, TestPagination):
+def setup_db(app: Flask, db: SQLAlchemy, TestPagination: Type[Model]):
     # pylint: disable=W0613, W0621
     db.create_all()
     data = [TestPagination(name=str(i + 1)) for i in range(20)]

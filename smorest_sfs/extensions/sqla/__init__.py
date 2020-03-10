@@ -25,16 +25,7 @@
     核心部分从一个flask-restful项目中摘录出来，现在已经找不到了
 """
 
-from .db_instance import db
-from .softdelete import QueryWithSoftDelete
-from .mixin import CRUDMixin
 from .surrogatepk import SurrogatePK
 from .errors import CharsTooLong, DuplicateEntry
-
-
-class Model(CRUDMixin, db.Model):
-    """简单的CRUD处理"""
-
-    query_class = QueryWithSoftDelete
-
-    __abstract__ = True
+from .model import Model
+from .db_instance import db

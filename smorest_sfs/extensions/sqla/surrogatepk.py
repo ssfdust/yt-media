@@ -4,7 +4,7 @@ from typing import Union, Any, List
 from marshmallow import Schema
 from .db_instance import db
 from .helpers import utcnow
-from . import Model
+from .model import Model
 
 # https://speakerdeck.com/zzzeek/building-the-app
 class SurrogatePK:

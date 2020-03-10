@@ -7,7 +7,7 @@ class TestCapture:
     @pytest.mark.parametrize(
         "key", [("test1"), ("test2"), ("test3"), ("test4"), ("test6"),]
     )
-    def test_save_restore_capture(self, key):
+    def test_save_restore_capture(self, key: str):
         store = CaptchaStore(key)
         store.generate_captcha()
         value = store.value[:]

@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from flask import Flask
 
 
 @pytest.fixture(scope="package")
-def app():
-    from flask import Flask
+def app() -> Flask:
 
     return Flask("TestMa")

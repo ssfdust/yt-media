@@ -1,6 +1,7 @@
 """测试API"""
-import pytest
+from typing import Dict
 from flask.views import MethodView
+import pytest
 from flask_smorest import Blueprint
 from smorest_sfs.extensions.api.decorators import paginate
 from tests.utils import FixturesInjectBase
@@ -45,14 +46,14 @@ class TestApi(FixturesInjectBase):
             )
         ],
     )
-    def test_api(self, meta):
+    def test_api(self, meta: Dict):
         # pylint: disable=W0613
         self.setup_blp()
         data = self.get_test_json("pets/?page=2&per_page=5")
 
         assert data["meta"] == meta
 
-    def get_test_json(self, url):
+    def get_test_json(self, url: str) -> Dict:
         test_client = self.app.test_client()
         resp = test_client.get(url)
         return resp.json

@@ -19,7 +19,6 @@ from typing import Any, Union
 from flask_sqlalchemy import BaseQuery
 from sqlalchemy.orm.base import _entity_descriptor
 from .db_instance import db
-from . import Model
 
 
 class QueryWithSoftDelete(BaseQuery):
@@ -31,7 +30,7 @@ class QueryWithSoftDelete(BaseQuery):
 
     _with_deleted = False
 
-    def __new__(cls, *args: Any, **kwargs: Any) -> Model:
+    def __new__(cls, *args: Any, **kwargs: Any) -> db.Model:
         obj = super(QueryWithSoftDelete, cls).__new__(cls)
         obj._with_deleted = kwargs.pop("_with_deleted", False)
         if len(args) > 0:
@@ -51,11 +50,11 @@ class QueryWithSoftDelete(BaseQuery):
             _with_deleted=True,
         )
 
-    def _get(self, ident) -> Union[Model, None]:
+    def _get(self, ident) -> Union[db.Model, None]:
         """提供原本的get方法"""
         return super(QueryWithSoftDelete, self).get(ident)
 
-    def get(self, ident) -> Union[Model, None]:
+    def get(self, ident) -> Union[db.Model, None]:
         obj = self.with_deleted()._get(ident)  # pylint: disable=W0212
         return (
             obj

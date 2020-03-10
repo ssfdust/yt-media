@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """测试基本类型"""
+from typing import Dict
 import pytest
 from smorest_sfs.extensions.marshal.bases import BaseMsgSchema
 from smorest_sfs.extensions.marshal.bases import BaseIntListSchema
@@ -22,7 +23,7 @@ class TestBasesMaClass:
             ({"lst": [1, 2, 3, 4]}, [1, 2, 3, 4]),
         ],
     )
-    def test_base_int_list(self, data, result):
+    def test_base_int_list(self, data: Dict, result: Dict):
 
         schema = BaseIntListSchema()
         rv = schema.load(data)
@@ -63,7 +64,7 @@ class TestBasesMaClass:
             )
         ],
     )
-    def test_base_page(self, data, result):
+    def test_base_page(self, data: Dict, result: Dict):
 
         schema = BasePageSchema()
         rv = schema.dump(data)

@@ -35,7 +35,6 @@ from marshmallow import Schema
 
 from .db_instance import db
 from .errors import pgerr_to_customerr
-from . import Model
 
 
 BLACK_LIST = ["id", "deleted", "modified", "created"]
@@ -44,7 +43,7 @@ BLACK_LIST = ["id", "deleted", "modified", "created"]
 class UByMaMixin:
     """根据marshmallow对象更新"""
 
-    def save(self, commit: bool = True) -> Model:
+    def save(self, commit: bool = True) -> db.Model:
         """保存对象
 
         保存对象并更新保存时间
@@ -62,7 +61,7 @@ class UByMaMixin:
         schema: Union[Schema, Type[Schema]],
         instance: Any,
         commit: bool = True,
-    ) -> Model:
+    ) -> db.Model:
         """根据marshmallow以及SQLa实例更新
 
         :param schema: Schema Schema类或实例
@@ -106,7 +105,7 @@ class UByMaMixin:
             if not v.dump_only and k not in BLACK_LIST
         ]
 
-    def _setattr_from_instance(self, fields: List[str], instance: Model):
+    def _setattr_from_instance(self, fields: List[str], instance: db.Model):
         with db.session.no_autoflush:
             for field in fields:
                 set_attribute(self, field, get_attribute(instance, field))
@@ -117,13 +116,13 @@ class CRUDMixin(UByMaMixin):
     """CRUD基础模块(create, read, update, delete) """
 
     @classmethod
-    def create(cls, **kwargs: Any) -> Model:
+    def create(cls, **kwargs: Any) -> db.Model:
         """新建一条数据 """
         commit = kwargs.get("commit", True)
         instance = cls(**kwargs)
         return instance.save(commit)
 
-    def update(self, commit: bool = True, **kwargs: Any) -> Model:
+    def update(self, commit: bool = True, **kwargs: Any) -> db.Model:
         """根据特定字段更新
 
         更新除系统字段以外的字段，并更新修改时间
@@ -138,7 +137,7 @@ class CRUDMixin(UByMaMixin):
 
         return self.save() if commit else self
 
-    def delete(self, commit: bool = True) -> Model:
+    def delete(self, commit: bool = True) -> db.Model:
         """软删除对象
 
         将数据库行的deleted字段设置为ture

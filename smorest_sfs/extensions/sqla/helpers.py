@@ -8,7 +8,7 @@ from datetime import datetime
 from sqlalchemy.sql import expression
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.types import DateTime
-from . import Model
+from .model import Model
 
 
 def set_default_for_instance(instance: Model) -> Model:
