@@ -24,6 +24,7 @@
     id, deleted, modified, created为系统默认字段
 """
 
+from typing import Any, Union, List, Type
 import sqlalchemy as sa
 from sqlalchemy.orm.attributes import (
     get_attribute,
@@ -34,62 +35,34 @@ from marshmallow import Schema
 
 from .db_instance import db
 from .errors import pgerr_to_customerr
+from . import Model
 
 
 BLACK_LIST = ["id", "deleted", "modified", "created"]
 
 
-class CRUDMixin:
-    """CRUD基础模块(create, read, update, delete) """
+class UByMaMixin:
+    """根据marshmallow对象更新"""
 
-    @classmethod
-    def create(cls, **kwargs):
-        """新建一条数据 """
-        commit = kwargs.get("commit", True)
-        instance = cls(**kwargs)
-        return instance.save(commit)
-
-    def update(self, commit=True, **kwargs):
-        """根据特定字段更新
-
-        更新除系统字段以外的字段，并更新修改时间
-        """
-        # 过滤id, deleted, modified, created字段
-        for key in ["id", "deleted", "modified", "created"]:
-            kwargs.pop(key, None)
-
-        for attr, value in kwargs.items():
-            setattr(self, attr, value)
-
-        return self.save(commit)
-
-    def save(self, commit=True):
+    def save(self, commit: bool = True) -> Model:
         """保存对象
 
         保存对象并更新保存时间
         """
         db.session.add(self)
         if commit:
-            self.commit()
+            try:
+                db.session.commit()
+            except (sa.exc.DataError, sa.exc.IntegrityError) as e:
+                pgerr_to_customerr(e)
         return self
 
-    def delete(self, commit=True):
-        """软删除对象
-
-        将数据库行的deleted字段设置为ture
-        """
-        self.deleted = True
-        self.update(commit=commit)
-
-    def hard_delete(self, commit=True):
-        """彻底删除对象
-
-        从数据库中彻底删除行
-        """
-        db.session.delete(self)
-        return commit and self.commit()
-
-    def update_by_ma(self, schema, instance, commit=True):
+    def update_by_ma(
+        self,
+        schema: Union[Schema, Type[Schema]],
+        instance: Any,
+        commit: bool = True,
+    ) -> Model:
         """根据marshmallow以及SQLa实例更新
 
         :param schema: Schema Schema类或实例
@@ -123,25 +96,60 @@ class CRUDMixin:
 
         db.session.expunge(instance)
 
-        return self.save(commit)
+        return self.save(commit) if commit else self
 
     @staticmethod
-    def _get_loadable_fileds(schema):
+    def _get_loadable_fileds(schema) -> List[str]:
         return [
             k
             for k, v in schema.fields.items()
             if not v.dump_only and k not in BLACK_LIST
         ]
 
-    def _setattr_from_instance(self, fields, instance):
+    def _setattr_from_instance(self, fields: List[str], instance: Model):
         with db.session.no_autoflush:
             for field in fields:
                 set_attribute(self, field, get_attribute(instance, field))
                 del_attribute(instance, field)
 
-    def commit(self):
-        """提交以及错误处理"""
-        try:
-            db.session.commit()
-        except (sa.exc.DataError, sa.exc.IntegrityError) as e:
-            pgerr_to_customerr(e)
+
+class CRUDMixin(UByMaMixin):
+    """CRUD基础模块(create, read, update, delete) """
+
+    @classmethod
+    def create(cls, **kwargs: Any) -> Model:
+        """新建一条数据 """
+        commit = kwargs.get("commit", True)
+        instance = cls(**kwargs)
+        return instance.save(commit)
+
+    def update(self, commit: bool = True, **kwargs: Any) -> Model:
+        """根据特定字段更新
+
+        更新除系统字段以外的字段，并更新修改时间
+        """
+        # pylint: disable
+        # 过滤id, deleted, modified, created字段
+        for key in ["id", "deleted", "modified", "created"]:
+            kwargs.pop(key, None)
+
+        for attr, value in kwargs.items():
+            setattr(self, attr, value)
+
+        return self.save() if commit else self
+
+    def delete(self, commit: bool = True) -> Model:
+        """软删除对象
+
+        将数据库行的deleted字段设置为ture
+        """
+        self.deleted = True
+        return self.update(commit=commit)
+
+    def hard_delete(self, commit: bool = True) -> Union[bool, None]:
+        """彻底删除对象
+
+        从数据库中彻底删除行
+        """
+        db.session.delete(self)
+        return commit and db.session.commit()

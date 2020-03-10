@@ -19,8 +19,11 @@
 """
 
 import functools
+from typing import Dict, Callable, Union, List, Any
 from flask import request, url_for
+from flask_sqlalchemy import Pagination
 import marshmallow as ma
+from smorest_sfs.extensions.sqla import Model
 
 
 class PaginationParametersSchema(ma.Schema):
@@ -41,7 +44,7 @@ class PaginationParametersSchema(ma.Schema):
     )
 
 
-def generate_links(p, per_page, **kwargs):
+def generate_links(p: Pagination, per_page: int, **kwargs: Any) -> Dict:
     links = {}
     if p.has_next:
         links["next"] = url_for(
@@ -61,7 +64,7 @@ def generate_links(p, per_page, **kwargs):
     return links
 
 
-def paginate(max_per_page: int = 10):
+def paginate(max_per_page: int = 10) -> Callable:
     """
     分页装饰器
 
@@ -86,22 +89,21 @@ def paginate(max_per_page: int = 10):
     }
     """
 
-    def decorator(func):
+    def decorator(func: Callable) -> Callable:
+        # pylint: disable=W0212
         parameters = {
             "in": "query",
             "schema": PaginationParametersSchema,
         }
 
         # 注入apidoc显示注释等内容
-        func._apidoc = getattr(func, "_apidoc", {})  # pylint: disable=W0212
-        func._apidoc.setdefault(
-            "parameters", []
-        ).append(  # pylint: disable=W0212
-            parameters
-        )
+        func._apidoc = getattr(func, "_apidoc", {})
+        func._apidoc.setdefault("parameters", []).append(parameters)
 
         @functools.wraps(func)
-        def wrapped(*args, **kwargs):
+        def wrapped(
+            *args: Any, **kwargs: Any
+        ) -> Dict[str, Union[Dict[str, int], str, int, List[Model]]]:
             page = request.args.get("page", 1, type=int)
             per_page = request.args.get("per_page", max_per_page, type=int)
             query = func(*args, **kwargs)

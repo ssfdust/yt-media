@@ -20,6 +20,7 @@
 
 import secrets
 import string
+from typing import List
 from . import AMQPStore
 
 
@@ -32,7 +33,7 @@ class CaptchaStore(AMQPStore):
     :param token token值
     """
 
-    def __init__(self, token):
+    def __init__(self, token: str):
         self.token = token
         super().__init__(
             f"captcha_{token}",
@@ -47,19 +48,19 @@ class CaptchaStore(AMQPStore):
         self.reload()
         return self.code_lst
 
-    def _generate_captcha(self, length):
+    def _generate_captcha(self, length: int):
         """生成验证码"""
         passwd_str = string.digits + string.ascii_letters
         code = "".join([secrets.choice(passwd_str) for i in range(length)])
         self.value = code
 
-    def generate_captcha(self, length=4):
+    def generate_captcha(self, length: int = 4):
         """保存验证码"""
         self._generate_captcha(length)
         return self.save()
 
     @property
-    def code_lst(self):
+    def code_lst(self) -> List[str]:
         if self.value is None:
             return []
         return [self.value.upper(), self.value.lower(), self.value]

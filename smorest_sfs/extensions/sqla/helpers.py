@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+"""
+辅助函数模块
+"""
 
 from datetime import datetime
 from sqlalchemy.sql import expression
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.types import DateTime
+from . import Model
 
 
-def set_default_for_instance(instance):
+def set_default_for_instance(instance: Model) -> Model:
     for key in ["modified", "created"]:
         setattr(instance, key, datetime.utcnow())
     setattr(instance, "deleted", False)
@@ -21,6 +24,6 @@ class utcnow(expression.FunctionElement):
 
 
 @compiles(utcnow, "postgresql")
-def pg_utcnow(element, compiler, **kw):
+def pg_utcnow(element, compiler, **kw) -> str:
     # pylint: disable=W0613
     return "TIMEZONE('utc', CURRENT_TIMESTAMP)"

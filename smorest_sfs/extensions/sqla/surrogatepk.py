@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import Union, Any, List
+from marshmallow import Schema
 from .db_instance import db
 from .helpers import utcnow
+from . import Model
 
 # https://speakerdeck.com/zzzeek/building-the-app
 class SurrogatePK:
@@ -45,7 +48,7 @@ class SurrogatePK:
     )
 
     @classmethod
-    def get_by_id(cls, _id):
+    def get_by_id(cls, _id: int) -> Model:
         """
         根据ID查询数据库
         """
@@ -53,26 +56,33 @@ class SurrogatePK:
             return cls.query.get_or_404(_id)
 
     @classmethod
-    def delete_by_id(cls, _id, commit=True):
+    def delete_by_id(cls, _id: int, commit: bool = True) -> Union[bool, None]:
         """
         根据ID删除数据
         """
         item = cls.get_by_id(_id)
-        item.delete(commit)
+        return item.delete(commit)
 
     @classmethod
-    def delete_by_ids(cls, ids, commit=True):
+    def delete_by_ids(
+        cls, ids: List[int], commit: bool = True
+    ) -> Union[bool, None]:
         """
         批量删除
         """
         kw = [{"id": id, "deleted": True} for id in ids]
         db.session.bulk_update_mappings(cls, kw)
 
-        if commit:
-            db.session.commit()
+        return commit and db.session.commit()
 
     @classmethod
-    def update_by_id(cls, _id, schema, instance, commit=True):
+    def update_by_id(
+        cls,
+        _id: int,
+        schema: Union[Schema, object],
+        instance: Any,
+        commit: bool = True,
+    ) -> Model:
         """
         根据id，Schema，以及临时实例更新元素
 

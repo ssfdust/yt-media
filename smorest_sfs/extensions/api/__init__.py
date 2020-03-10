@@ -13,12 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Optional, Any, NoReturn
+from flask import Blueprint
 from flask_smorest import Api as BaseApi
 from smorest_sfs.extensions.marshal import UploadField
 
 
 class Api(BaseApi):
-    def register_blueprint(self, blp, base_prefix=None, **options):
+    def register_blueprint(
+        self, blp: Blueprint, base_prefix: Optional[str] = None, **options: Any
+    ) -> NoReturn:
         # pylint: disable=W0221
         """注册蓝图
 

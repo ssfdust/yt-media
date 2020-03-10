@@ -3,6 +3,7 @@
 """
 自定义错误类型
 """
+from typing import NoReturn
 from psycopg2.errors import UniqueViolation, StringDataRightTruncation
 from .db_instance import db
 
@@ -21,7 +22,7 @@ err_mapping = {
 }
 
 
-def pgerr_to_customerr(err):
+def pgerr_to_customerr(err: Exception) -> NoReturn:
     for err_cls, custom_err_cls in err_mapping.items():
         if isinstance(err.orig, err_cls):
             db.session.rollback()

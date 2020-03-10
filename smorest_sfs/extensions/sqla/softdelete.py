@@ -15,9 +15,11 @@
 """
 提供拓展后的基础对象
 """
+from typing import Any, Union
 from flask_sqlalchemy import BaseQuery
 from sqlalchemy.orm.base import _entity_descriptor
 from .db_instance import db
+from . import Model
 
 
 class QueryWithSoftDelete(BaseQuery):
@@ -29,7 +31,7 @@ class QueryWithSoftDelete(BaseQuery):
 
     _with_deleted = False
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, *args: Any, **kwargs: Any) -> Model:
         obj = super(QueryWithSoftDelete, cls).__new__(cls)
         obj._with_deleted = kwargs.pop("_with_deleted", False)
         if len(args) > 0:
@@ -42,18 +44,18 @@ class QueryWithSoftDelete(BaseQuery):
     def __init__(self, *args, **kwargs):  # pylint: disable=W0231
         pass
 
-    def with_deleted(self):
+    def with_deleted(self) -> BaseQuery:
         return self.__class__(
             db.class_mapper(self._mapper_zero().class_),
             session=db.session(),
             _with_deleted=True,
         )
 
-    def _get(self, ident):
+    def _get(self, ident) -> Union[Model, None]:
         """提供原本的get方法"""
         return super(QueryWithSoftDelete, self).get(ident)
 
-    def get(self, ident):
+    def get(self, ident) -> Union[Model, None]:
         obj = self.with_deleted()._get(ident)  # pylint: disable=W0212
         return (
             obj
@@ -61,7 +63,7 @@ class QueryWithSoftDelete(BaseQuery):
             else None
         )
 
-    def filter_like_by(self, **kwargs):
+    def filter_like_by(self, **kwargs) -> BaseQuery:
         """like方法"""
         clauses = [
             _entity_descriptor(self._joinpoint_zero(), key).like(
