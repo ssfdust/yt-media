@@ -10,7 +10,8 @@ from marshmallow import Schema, fields
 from smorest_sfs.extensions.sqla import SurrogatePK, Model
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.extensions import babel
-from tests.utils import drop_tables
+from smorest_sfs.plugins.sa import SAStatement, sql_decorator, SAQuery, query_decorator
+from tests.utils.tables import drop_tables
 
 
 FAKE_TIME = datetime.datetime(1994, 9, 11, 8, 20)
@@ -79,7 +80,9 @@ def TestChildTable(db: SQLAlchemy, TestParentTable: Type[Model]) -> Model:
 
 
 @pytest.fixture(scope="package")
-def tables(TestCRUDTable: Type[Model], TestChildTable: Type[Model]) -> NoReturn:
+def tables(
+    TestCRUDTable: Type[Model], TestChildTable: Type[Model]
+) -> NoReturn:
     # pylint: disable=W0613, W0621
     pass
 
@@ -97,7 +100,7 @@ def app(db: SQLAlchemy, tables: Any) -> Flask:
 
 
 @pytest.fixture(scope="package")
-def TestChildSchema():
+def TestChildSchema() -> Model:
     # pylint: disable=W0621, W0613
     class TestChildSchema(Schema):
         id = fields.Int()
@@ -111,7 +114,7 @@ def TestChildSchema():
 
 
 @pytest.fixture(scope="package")
-def TestParentSchema(TestChildSchema):
+def TestParentSchema(TestChildSchema: Type[Model]) -> Model:
     # pylint: disable=W0621, W0613
     class TestParentSchema(TestChildSchema):
         children = fields.List(fields.Nested(TestChildSchema))
@@ -123,7 +126,7 @@ def TestParentSchema(TestChildSchema):
 
 
 @pytest.fixture
-def TestTableTeardown(db):
+def TestTableTeardown(db: SQLAlchemy) -> NoReturn:
     # pylint: disable=W0621, W0613
     yield
     for table in [
@@ -133,3 +136,15 @@ def TestTableTeardown(db):
     ]:
         db.session.execute(f"TRUNCATE TABLE {table} CASCADE")
     db.session.commit()
+
+
+@pytest.fixture
+def TestSASql(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:
+    # pylint: disable=W0621, W0613
+    @sql_decorator
+    class TestSASql(SAStatement):
+        def __init__(self, name):
+            self.sa_sql = db.select([TestCRUDTable.name])\
+                .where(TestCRUDTable.name == name)
+
+    return TestSASql

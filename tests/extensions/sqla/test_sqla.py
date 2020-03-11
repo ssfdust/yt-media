@@ -2,7 +2,7 @@
 
 import pytest
 from werkzeug.exceptions import NotFound
-from tests.utils import FixturesInjectBase
+from tests.utils.tables import FixturesInjectBase
 
 
 class ItemsFixtureBase(FixturesInjectBase):

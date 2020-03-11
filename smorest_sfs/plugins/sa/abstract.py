@@ -13,7 +13,7 @@ from sqlalchemy.sql.selectable import Select
 from sqlalchemy.engine.result import RowProxy
 from loguru import logger
 import pyperclip
-from app.extensions import db
+from smorest_sfs.extensions import db
 from .render import TableRender
 
 

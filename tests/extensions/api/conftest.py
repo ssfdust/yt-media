@@ -11,7 +11,7 @@ from smorest_sfs.extensions import babel
 from smorest_sfs.extensions.api import Api
 from smorest_sfs.extensions.sqla import SurrogatePK, Model
 from smorest_sfs.extensions.marshal.bases import BasePageSchema
-from tests.utils import drop_tables
+from tests.utils.tables import drop_tables
 
 
 TABLES = ["test_pagination"]

@@ -19,6 +19,10 @@ flask-babel = "^0.12.2"
 flask-mail = "^0.9.1"
 flask-marshmallow = "^0.10.1"
 psycopg2 = "^2.8.4"
+loguru = "^0.4.1"
+pyperclip = "^1.7.0"
+tabulate = "^0.8.6"
+sqlparse = "^0.3.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

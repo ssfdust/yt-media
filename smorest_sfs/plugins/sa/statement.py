@@ -31,7 +31,7 @@ def sql_decorator(cls: SAStatement):
         def get_sa_sql(self):
             return self.sa_sql
 
-        def get_keys(self) -> Dict:
+        def get_keys(_) -> Dict:
             return {}
 
         def get_render_sql(self, size: int = 50):
