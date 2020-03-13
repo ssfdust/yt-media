@@ -22,9 +22,9 @@ from loguru import logger
 from flask.views import MethodView
 from flask_jwt_extended import current_user
 
-from app.extensions.marshal import BaseMsgSchema
-from app.modules.auth import PERMISSIONS, ROLES
-from app.modules.auth.decorators import (
+from smorest_sfs.extensions.marshal import BaseMsgSchema
+from smorest_sfs.modules.auth import PERMISSIONS, ROLES
+from smorest_sfs.modules.auth.decorators import (
     doc_login_required,
     permission_required,
     role_required,

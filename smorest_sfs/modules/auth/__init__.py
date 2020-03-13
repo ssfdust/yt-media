@@ -38,4 +38,4 @@ blp = Blueprint("Auth",
 
 preload_modules = ["resources", "models"]  # pylint: disable=unused-import
 
-from . import resources
+# from . import resources

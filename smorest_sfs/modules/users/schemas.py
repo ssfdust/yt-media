@@ -34,9 +34,8 @@ class UserSchema(ma.ModelSchema):
     userinfo = fields.Nested(UserInfoSchema)
 
     class Meta:
-        from app.modules.auth.models import User
 
-        model = User
+        model = models.User
 
 
 class UserDetailsSchema(BaseMsgSchema):

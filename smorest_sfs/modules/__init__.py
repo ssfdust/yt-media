@@ -24,17 +24,26 @@
 """
 from importlib import import_module
 from typing import NoReturn
+from types import ModuleType
 from flask import Flask
 from smorest_sfs.extensions import api
 
 
-def preload_module(module: str):
+def load_module(module_name: str) -> ModuleType:
+    """加载模块
+
+    替代 from . import xxx 的写法
+    在此处通过关键字```preload_modules```的list来加载模块
+    """
+    module = import_module(f".modules.{module_name}", "smorest_sfs")
     if hasattr(module, "preload_modules"):
         for submodule in module.preload_modules:
-            import_module(f".modules.{module}.{submodule}", "smorest_sfs")
+            import_module(f".modules.{module_name}.{submodule}", "smorest_sfs")
+
+    return module
 
 
-def init_app(app: Flask):
+def init_app(app: Flask) -> NoReturn:
     """
     初始化模块
     """
@@ -45,6 +54,5 @@ def init_app(app: Flask):
     )
 
     for module_name in module_names:
-        preload_module(module_name)
-        module = import_module(f".modules.{module_name}", "smorest_sfs")
+        module = load_module(module_name)
         api.register_blueprint(module.blp, base_prefix=base_prefix)
