@@ -27,7 +27,7 @@
             id = fields.Int()
 """
 
-from .ma import Marshmallow
 from .bases import *  # noqa
+from .ma import Marshmallow
 
 ma = Marshmallow()

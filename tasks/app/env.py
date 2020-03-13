@@ -3,7 +3,7 @@
 Shell相关的Invoke模块
 """
 import sys
-from pprint import pprint
+import pprint
 
 from invoke import task
 
@@ -18,10 +18,9 @@ def enter(_):
     from IPython.terminal.ipapp import load_default_config
     from traitlets.config.loader import Config
 
-    from app import app
-    from app.modules.users.models import UserInfo
-    from app.modules.auth.models import User
-    from app.extensions import db
+    from smorest_sfs import app
+    from smorest_sfs.modules.users.models import UserInfo, User
+    from smorest_sfs.extensions import db
 
     flask_app = app.app
 

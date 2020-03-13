@@ -29,7 +29,7 @@ def server(
     启动服务器
     """
     if gunicorn:
-        command = f"gunicorn -b {bind} -k eventlet app.app:app"
+        command = f"gunicorn -b {bind} -k eventlet smorest_sfs.app:app"
         context.run(command, pty=True)
     else:
         host, port = bind.split(":")

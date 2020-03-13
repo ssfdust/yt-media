@@ -15,7 +15,6 @@ marshmallow-sqlalchemy = "^0.21.0"
 flask-login = "^0.4.1"
 kombu = "^4.6.7"
 toml = "^0.10.0"
-flask-babel = "^0.12.2"
 flask-mail = "^0.9.1"
 flask-marshmallow = "^0.10.1"
 psycopg2 = "^2.8.4"
@@ -23,6 +22,10 @@ loguru = "^0.4.1"
 pyperclip = "^1.7.0"
 tabulate = "^0.8.6"
 sqlparse = "^0.3.1"
+Flask-Babel = "^1.0.0"
+passlib = "^1.7.2"
+flask-jwt-extended = "^3.24.1"
+captcha = "^0.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -30,6 +33,7 @@ invoke = "^1.4.0"
 pdbpp = "^0.10.2"
 freezegun = "^0.3.13"
 pytest-cov = "^2.8.1"
+ipython = "^7.13.0"
 
 [tool.coverage.run]
 include = ["smorest_sfs"]

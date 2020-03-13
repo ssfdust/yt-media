@@ -11,7 +11,6 @@ from tests.utils.injection import inject_logger
 from tests.utils.uniqueue import UniqueQueue
 from tests.extensions.sqla.test_sqla import ItemsFixtureBase
 
-inject_logger(logger)
 
 class TestSAPlugin(ItemsFixtureBase):
     fixture_names = ("TestCRUDTable", "TestSASql")
@@ -40,6 +39,7 @@ class TestSAPlugin(ItemsFixtureBase):
 
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items")
     def test_table_should_rendered(self):
+        inject_logger(logger)
         test_sql = self.TestSASql("bbc")
         test_sql.render_results()
         assert self._get_debug() == '\n' + self.table_str

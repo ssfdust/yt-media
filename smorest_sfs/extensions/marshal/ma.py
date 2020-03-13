@@ -25,10 +25,9 @@
     id, deleted, created, modified这四个属性，并不允许从前端提交，所以默认为
     EXCLUDE而不是RAISE。否则前端需要对递归属性进行除重。
 """
-from marshmallow import EXCLUDE
-
 from flask_marshmallow import Marshmallow as BaseMarshmallow
 from flask_marshmallow import sqla
+from marshmallow import EXCLUDE
 
 
 class SchemaOpts(sqla.SchemaOpts):

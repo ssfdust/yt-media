@@ -5,6 +5,8 @@
 """
 
 from functools import wraps
+from typing import Dict, List
+from sqlalchemy.engine.result import RowProxy
 from .render import TableRender
 from .abstract import RenderableStatement
 

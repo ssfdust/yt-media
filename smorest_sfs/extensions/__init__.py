@@ -21,12 +21,13 @@
     拓展组件
 """
 
-from flask_mail import Mail
 from flask_babel import Babel
+from flask_mail import Mail
 
 from .api import api, spec_kwargs
 from .marshal import ma
 from .sqla import db
+from .jwt import jwt as jwt_instance
 
 babel = Babel()
 mail = Mail()
@@ -34,6 +35,6 @@ mail = Mail()
 
 def init_app(app):
     """拓展组件的初始化"""
-    for ext in [db, ma, babel, mail]:
+    for ext in [db, ma, babel, mail, jwt_instance]:
         ext.init_app(app)
     api.init_app(app, spec_kwargs=spec_kwargs)

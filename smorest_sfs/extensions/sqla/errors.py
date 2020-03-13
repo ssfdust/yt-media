@@ -4,7 +4,9 @@
 自定义错误类型
 """
 from typing import NoReturn
-from psycopg2.errors import UniqueViolation, StringDataRightTruncation
+
+from psycopg2.errors import StringDataRightTruncation, UniqueViolation
+
 from .db_instance import db
 
 

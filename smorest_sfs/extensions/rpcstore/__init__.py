@@ -40,16 +40,12 @@ class AMQPStore:
 
     def __init__(self, key, value=None, exchange=None, **kwargs):
         self.key = key
-        self.limit = kwargs.get("limit", 999)
-        self.max_length = kwargs.get("max_length")
         self.value = value
         self.values = []
         self.msgs = []
-        #  if exchange is None and '_' in key:
-        #      exchange = key.split('_')[0]
         self.exchange = Exchange(exchange)
-        #  if not routing_key:
-        #      routing_key = key
+        self.limit = kwargs.get("limit", 999)
+        self.max_length = kwargs.get("max_length")
         self.routing_key = kwargs.get("routing_key")
         self.queue = Queue(
             self.key,

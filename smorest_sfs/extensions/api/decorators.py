@@ -19,10 +19,12 @@
 """
 
 import functools
-from typing import Dict, Callable, Union, List, Any
+from typing import Any, Callable, Dict, List, Union
+
+import marshmallow as ma
 from flask import request, url_for
 from flask_sqlalchemy import Pagination
-import marshmallow as ma
+
 from smorest_sfs.extensions.sqla import Model
 
 
