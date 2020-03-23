@@ -21,6 +21,7 @@ def flask_app() -> Flask:
 
     with app.app_context():
         db.create_all()
+        users.init_permission()
         yield app
         db.session.rollback()
         db.drop_all()
@@ -74,7 +75,7 @@ def regular_user(temp_db_instance_helper: Callable) -> User:
 def inactive_user(temp_db_instance_helper: Callable) -> User:
     # pylint: disable=W0613, W0621
     for _ in temp_db_instance_helper(
-        users.generate_user_instance(username="inactive_user")
+        users.generate_user_instance(username="inactive_user", phonenum="inactive_user")
     ):
         yield _
 
@@ -83,7 +84,7 @@ def inactive_user(temp_db_instance_helper: Callable) -> User:
 def forget_passwd_user(temp_db_instance_helper: Callable) -> User:
     # pylint: disable=W0613, W0621
     for _ in temp_db_instance_helper(
-        users.generate_user_instance(username="forget_passwd_user")
+        users.generate_user_instance(username="forget_passwd_user", phonenum="forget_passwd_user")
     ):
         yield _
 
@@ -92,6 +93,6 @@ def forget_passwd_user(temp_db_instance_helper: Callable) -> User:
 def guest_user(temp_db_instance_helper: Callable) -> User:
     # pylint: disable=W0613, W0621
     for _ in temp_db_instance_helper(
-        users.generate_user_instance(username="guest_user")
+        users.generate_user_instance(username="guest_user"n phonenum="phonenum")
     ):
         yield _

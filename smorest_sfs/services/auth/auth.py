@@ -60,7 +60,6 @@ class UserLoginChecker:
 
 
 def login_user(user: User) -> Dict[str, Dict[str, str]]:
-    """用户登录"""
     # 生成jwt
     access_token = create_access_token(identity=user.email)
     refresh_token = create_refresh_token(identity=user.email)
