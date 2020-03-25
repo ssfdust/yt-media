@@ -58,7 +58,7 @@ def app_context_task(*args, **kwargs):
             """
             app = kwargs.pop("app", None)
             if app is None:
-                from app.app import app
+                from smorest_sfs.app import app
 
             with app.app_context():
                 return func(*args, **kwargs)

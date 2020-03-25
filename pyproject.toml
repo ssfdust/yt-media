@@ -26,6 +26,7 @@ Flask-Babel = "^1.0.0"
 passlib = "^1.7.2"
 flask-jwt-extended = "^3.24.1"
 captcha = "^0.3"
+flask-redis = "^0.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

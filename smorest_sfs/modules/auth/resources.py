@@ -25,19 +25,20 @@ from typing import Dict, TypeVar, Union
 from flask import current_app as app
 from flask import jsonify, send_file, url_for
 from flask.views import MethodView
-from flask_jwt_extended import (create_access_token, decode_token,
-                                get_jwt_identity, current_user)
+from flask_jwt_extended import create_access_token, get_jwt_identity, current_user
 from flask_smorest import abort
 from loguru import logger
 
 from captcha.image import ImageCaptcha
 from smorest_sfs.extensions import jwt_instance as jwt
 from smorest_sfs.extensions.marshal import BaseMsgSchema
-from smorest_sfs.extensions.rpcstore.captcha import CaptchaStore
+from smorest_sfs.extensions.storage.captcha import CaptchaStore
 from smorest_sfs.modules.users.models import User
 from smorest_sfs.services.auth.auth import UserLoginChecker, login_user, logout_user
-from smorest_sfs.services.auth.confirm import (confirm_current_token,
-                                               generate_confirm_token)
+from smorest_sfs.services.auth.confirm import (
+    confirm_current_token,
+    generate_confirm_token,
+)
 
 from . import blp, models, params, schemas
 from .decorators import doc_login_required, doc_refresh_required
@@ -91,8 +92,9 @@ class LoginView(MethodView):
         登录方式为token方式
         """
         user = User.get_by_keyword(args["email"])
-        with UserLoginChecker(user, args["password"], args["captcha"],
-                              args["token"]).check() as user:
+        with UserLoginChecker(
+            user, args["password"], args["captcha"], args["token"]
+        ).check() as user:
             data = login_user(user)
 
         return {"code": 0, "msg": "success", "data": data}
@@ -133,9 +135,7 @@ class ForgetPasswordView(MethodView):
         logger.info(f"{user.email}发起了忘记密码申请")
 
         token = generate_confirm_token(user, "passwd")
-        url = url_for("Auth.ResetForgotPasswordView",
-                      token=token,
-                      _external=True)
+        url = url_for("Auth.ResetForgotPasswordView", token=token, _external=True)
         # TODO 真正发送邮件
         #  send_mail.delay(
         #      user.email,
@@ -153,7 +153,6 @@ class ForgetPasswordView(MethodView):
 @blp.route("/confirm")
 class UserConfirmView(MethodView):
     @doc_login_required
-    @blp.arguments(params.JwtParam, location="query")
     @blp.response(BaseMsgSchema, description="验证成功")
     def get(self) -> Dict[str, Union[str, int]]:
         """
@@ -173,8 +172,7 @@ class ResetForgotPasswordView(MethodView):
     @blp.arguments(params.PasswdParam, as_kwargs=True)
     @blp.response(code=501, description="密码不一致，修改失败")
     @blp.response(BaseMsgSchema, description="验证成功")
-    def put(self, password: str,
-            confirm_password: str) -> Dict[str, Union[int, str]]:
+    def put(self, password: str, confirm_password: str) -> Dict[str, Union[int, str]]:
         """
         忘记密码后修改
 
@@ -220,13 +218,7 @@ class RefreshJwtTokenView(MethodView):
         add_token_to_database(access_token, app.config["JWT_IDENTITY_CLAIM"])
         logger.info(f"{current_user} 刷新了token")
 
-        return {
-            "code": 0,
-            "msg": "success",
-            "data": {
-                "access_token": access_token
-            }
-        }
+        return {"code": 0, "msg": "success", "data": {"access_token": access_token}}
 
 
 @blp.route("/logout")

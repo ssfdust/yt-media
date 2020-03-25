@@ -25,8 +25,7 @@ class StatementAbstract(ABC):
     def get_raw_sql(self) -> str:
         sa_sql = self.get_sa_sql()
         compiled_sql = sa_sql.compile(
-            dialect=postgresql.dialect(),
-            compile_kwargs={"literal_binds": True},
+            dialect=postgresql.dialect(), compile_kwargs={"literal_binds": True},
         )
         return str(compiled_sql)
 

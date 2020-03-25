@@ -8,9 +8,7 @@ log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 class CrudOpts:
-    def __init__(
-        self, module_name: str, module_name_singular: str, module_title: str
-    ):
+    def __init__(self, module_name: str, module_name_singular: str, module_title: str):
         self.module_name = module_name
         self.module_name_singular = module_name_singular
         self.module_title = module_title
@@ -35,10 +33,7 @@ class CrudOpts:
             )
 
         self.model_name = "".join(
-            [
-                word.capitalize()
-                for word in self.module_name_singular.split("_")
-            ]
+            [word.capitalize() for word in self.module_name_singular.split("_")]
         )
 
     def to_config(self):

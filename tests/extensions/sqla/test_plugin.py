@@ -19,11 +19,7 @@ class TestSAPlugin(ItemsFixtureBase):
         "\nFROM sqla_test_crud_table"
         " \nWHERE sqla_test_crud_table.name = '{name}'"
     )
-    table_str = ("╒════════╕\n"
-                 "│ name   │\n"
-                 "╞════════╡\n"
-                 "│ bbc    │\n"
-                 "╘════════╛")
+    table_str = "╒════════╕\n" "│ name   │\n" "╞════════╡\n" "│ bbc    │\n" "╘════════╛"
 
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items")
     @pytest.mark.parametrize("name, count", [("bbc", 1), ("aac", 0)])
@@ -42,14 +38,15 @@ class TestSAPlugin(ItemsFixtureBase):
         inject_logger(logger)
         test_sql = self.TestSASql("bbc")
         test_sql.render_results()
-        assert self._get_debug() == '\n' + self.table_str
+        assert self._get_debug() == "\n" + self.table_str
 
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items")
     def test_debug_should_rendered(self):
         test_sql = self.TestSASql("bbc")
         test_sql.debug_sql()
-        assert self._get_debug() == '\n' + self.raw_sql.format(name="bbc")\
-            and pyperclip.paste() == self.raw_sql.format(name="bbc")
+        assert self._get_debug() == "\n" + self.raw_sql.format(
+            name="bbc"
+        ) and pyperclip.paste() == self.raw_sql.format(name="bbc")
 
     def _get_debug(self):
         queue = UniqueQueue()

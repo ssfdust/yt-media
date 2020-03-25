@@ -49,9 +49,7 @@ def confirm_current_token(token_type: str, revoked: bool = True) -> User:
 
 
 def generate_confirm_token(user: User, token_type: str) -> str:
-    token = create_access_token(
-        identity=user.email, expires_delta=timedelta(days=1)
-    )
+    token = create_access_token(identity=user.email, expires_delta=timedelta(days=1))
     add_token_to_database(token, app.config["JWT_IDENTITY_CLAIM"], token_type)
 
     return token

@@ -38,9 +38,7 @@ class PaginationParametersSchema(ma.Schema):
     class Meta:
         ordered = True
 
-    page = ma.fields.Integer(
-        missing=1, validate=ma.validate.Range(min=1), doc="页码"
-    )
+    page = ma.fields.Integer(missing=1, validate=ma.validate.Range(min=1), doc="页码")
     per_page = ma.fields.Integer(
         missing=10, validate=ma.validate.Range(min=1, max=100), doc="分页数目"
     )
@@ -56,12 +54,8 @@ def generate_links(p: Pagination, per_page: int, **kwargs: Any) -> Dict:
         links["prev"] = url_for(
             request.endpoint, page=p.prev_num, per_page=per_page, **kwargs
         )
-    links["first"] = url_for(
-        request.endpoint, page=1, per_page=per_page, **kwargs
-    )
-    links["last"] = url_for(
-        request.endpoint, page=p.pages, per_page=per_page, **kwargs
-    )
+    links["first"] = url_for(request.endpoint, page=1, per_page=per_page, **kwargs)
+    links["last"] = url_for(request.endpoint, page=p.pages, per_page=per_page, **kwargs)
 
     return links
 

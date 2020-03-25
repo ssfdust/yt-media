@@ -11,7 +11,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_smorest import abort
 from loguru import logger
 
-from smorest_sfs.extensions.rpcstore.captcha import CaptchaStore
+from smorest_sfs.extensions.storage.captcha import CaptchaStore
 from smorest_sfs.modules.auth.helpers import add_token_to_database
 from smorest_sfs.modules.users.models import User
 from smorest_sfs.modules.auth.models import TokenBlackList
@@ -26,13 +26,17 @@ class UserLoginChecker:
 
     def _check_capture_code(self):
         store = CaptchaStore(self._token)
-        code_lst = store.get_captcha()
-        if self.code not in code_lst:
-            logger.error(f"{self.user.email} 登录时验证码{self.code}错误，\n"
-                         f"正确验证码为{code_lst}")
+        try:
+            store.verify(self.code)
+            return True
+        except ValueError:
+            logger.error(
+                f"{self.user.email} 登录时验证码{self.code}错误，\n" f"正确验证码为{store._code}"
+            )
             abort(403, message="验证码错误")
-
-        return True
+        except AttributeError:
+            logger.error(f"{self.user.email} 登录时token{self._token}错误，\n")
+            abort(403, message="验证码token错误")
 
     def _check_user(self) -> NoReturn:
         if self.user is None:
@@ -54,8 +58,7 @@ class UserLoginChecker:
 
     @contextmanager
     def check(self) -> User:
-        if self._check_capture_code() and self._check_user(
-        ) and self._check_passwd():
+        if self._check_capture_code() and self._check_user() and self._check_passwd():
             yield self.user
 
 
@@ -65,24 +68,16 @@ def login_user(user: User) -> Dict[str, Dict[str, str]]:
     refresh_token = create_refresh_token(identity=user.email)
 
     # 将token加入数据库
-    add_token_to_database(access_token,
-                          current_app.config["JWT_IDENTITY_CLAIM"])
-    add_token_to_database(refresh_token,
-                          current_app.config["JWT_IDENTITY_CLAIM"])
+    add_token_to_database(access_token, current_app.config["JWT_IDENTITY_CLAIM"])
+    add_token_to_database(refresh_token, current_app.config["JWT_IDENTITY_CLAIM"])
 
     logger.info(f"{user.email} 登录成功")
 
     # 组装data
-    return {
-        "tokens": {
-            "refresh_token": refresh_token,
-            "access_token": access_token
-        }
-    }
+    return {"tokens": {"refresh_token": refresh_token, "access_token": access_token}}
 
 
 def logout_user(user: User) -> NoReturn:
     TokenBlackList.query.filter(
-        TokenBlackList.user_identity == user.email,
-        TokenBlackList.revoked.is_(False)
+        TokenBlackList.user_identity == user.email, TokenBlackList.revoked.is_(False)
     ).update({"revoked": True})

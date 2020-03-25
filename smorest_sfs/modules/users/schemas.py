@@ -78,8 +78,6 @@ class UserListByIdParam(ma.Schema):
 
     @post_load
     def load_users(self, data: Dict[str, List[int]]) -> List[models.User]:
-        users = models.User.query.filter(
-            models.User.id.in_(data["users"])
-        ).all()
+        users = models.User.query.filter(models.User.id.in_(data["users"])).all()
 
         return users

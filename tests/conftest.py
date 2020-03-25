@@ -31,6 +31,7 @@ def flask_app() -> Flask:
 def db(flask_app: Flask) -> SQLAlchemy:
     # pylint: disable=W0613, W0621
     from smorest_sfs.extensions import db as db_instance
+
     yield db_instance
 
 
@@ -84,7 +85,9 @@ def inactive_user(temp_db_instance_helper: Callable) -> User:
 def forget_passwd_user(temp_db_instance_helper: Callable) -> User:
     # pylint: disable=W0613, W0621
     for _ in temp_db_instance_helper(
-        users.generate_user_instance(username="forget_passwd_user", phonenum="forget_passwd_user")
+        users.generate_user_instance(
+            username="forget_passwd_user", phonenum="forget_passwd_user"
+        )
     ):
         yield _
 
@@ -93,6 +96,6 @@ def forget_passwd_user(temp_db_instance_helper: Callable) -> User:
 def guest_user(temp_db_instance_helper: Callable) -> User:
     # pylint: disable=W0613, W0621
     for _ in temp_db_instance_helper(
-        users.generate_user_instance(username="guest_user"n phonenum="phonenum")
+        users.generate_user_instance(username="guest_user", phonenum="guest_user")
     ):
         yield _

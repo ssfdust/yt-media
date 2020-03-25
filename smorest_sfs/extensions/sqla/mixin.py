@@ -57,10 +57,7 @@ class UByMaMixin:
         return self
 
     def update_by_ma(
-        self,
-        schema: Union[Schema, Type[Schema]],
-        instance: Any,
-        commit: bool = True,
+        self, schema: Union[Schema, Type[Schema]], instance: Any, commit: bool = True,
     ) -> db.Model:
         """根据marshmallow以及SQLa实例更新
 

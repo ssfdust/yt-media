@@ -101,8 +101,7 @@ class Role(Model, SurrogatePK):
         secondary=permission_roles,
         doc="所有权限",
         primaryjoin="foreign(permission_roles.c.role_id) == Role.id",
-        secondaryjoin=
-        "foreign(permission_roles.c.permission_id) == Permission.id",
+        secondaryjoin="foreign(permission_roles.c.permission_id) == Permission.id",
         backref=db.backref("roles", lazy="dynamic", doc="所有角色"),
     )
 
@@ -126,8 +125,9 @@ class Role(Model, SurrogatePK):
         return self.name
 
 
-user_permissions = db.join(roles_users, permission_roles,
-                           roles_users.c.role_id == permission_roles.c.role_id)
+user_permissions = db.join(
+    roles_users, permission_roles, roles_users.c.role_id == permission_roles.c.role_id
+)
 
 
 class User(Model, SurrogatePK):
@@ -145,18 +145,12 @@ class User(Model, SurrogatePK):
 
     __tablename__ = "users"
 
-    username = db.Column(db.String(255),
-                         nullable=False,
-                         unique=True,
-                         doc="用户名")
-    phonenum = db.Column(db.String(255),
-                         nullable=False,
-                         unique=True,
-                         doc="电话号码")
+    username = db.Column(db.String(255), nullable=False, unique=True, doc="用户名")
+    phonenum = db.Column(db.String(255), nullable=False, unique=True, doc="电话号码")
     email = db.Column(db.String(255), nullable=False, unique=True, doc="用户邮箱")
-    password = db.Column(PasswordType(schemes=["pbkdf2_sha512"]),
-                         nullable=False,
-                         doc="用户密码")
+    password = db.Column(
+        PasswordType(schemes=["pbkdf2_sha512"]), nullable=False, doc="用户密码"
+    )
     active = db.Column(db.Boolean(), doc="启用")
     confirmed_at = db.Column(db.DateTime(), doc="确认时间")
     roles = db.relationship(
@@ -166,10 +160,7 @@ class User(Model, SurrogatePK):
         primaryjoin="foreign(roles_users.c.user_id) == User.id",
         secondaryjoin="foreign(roles_users.c.role_id) == Role.id",
         backref=db.backref("users", lazy="dynamic", doc="所有用户"),
-        info={"marshmallow": {
-            "dump_only": True,
-            "column": ["id", "name"]
-        }},
+        info={"marshmallow": {"dump_only": True, "column": ["id", "name"]}},
     )
     permissions = db.relationship(
         "Permission",
@@ -179,10 +170,7 @@ class User(Model, SurrogatePK):
         secondaryjoin="Permission.id == permission_roles.c.permission_id",
         backref=db.backref("users", doc="用户", lazy="dynamic"),
         viewonly=True,
-        info={"marshmallow": {
-            "dump_only": True,
-            "column": ["id", "name"]
-        }},
+        info={"marshmallow": {"dump_only": True, "column": ["id", "name"]}},
     )
 
     @classmethod
@@ -193,8 +181,13 @@ class User(Model, SurrogatePK):
         return cls.query.filter(
             db.and_(
                 cls.deleted.is_(False),
-                db.or_(cls.email == keyword, cls.username == keyword,
-                       cls.phonenum == keyword))).first()
+                db.or_(
+                    cls.email == keyword,
+                    cls.username == keyword,
+                    cls.phonenum == keyword,
+                ),
+            )
+        ).first()
 
     def __str__(self) -> str:  # pragma: no cover
         return self.email
@@ -230,8 +223,7 @@ class Group(Model, SurrogatePK):
         primaryjoin="Group.id == groups_users.c.group_id",
         secondaryjoin="User.id == groups_users.c.user_id",
         doc="组下用户",
-        foreign_keys="[groups_users.c.group_id,"
-        "groups_users.c.user_id]",
+        foreign_keys="[groups_users.c.group_id," "groups_users.c.user_id]",
         backref=db.backref("groups", lazy="dynamic", doc="所有组"),
         active_history=True,
         lazy="joined",
@@ -242,27 +234,28 @@ class Group(Model, SurrogatePK):
         primaryjoin="Group.id == groups_roles.c.group_id",
         secondaryjoin="Role.id == groups_roles.c.role_id",
         doc="组下默认角色",
-        foreign_keys="[groups_roles.c.group_id,"
-        "groups_roles.c.role_id]",
+        foreign_keys="[groups_roles.c.group_id," "groups_roles.c.role_id]",
         backref=db.backref("groups", lazy="dynamic", doc="所属组"),
         cascade="all,delete",
         active_history=True,
         lazy="joined",
     )
-    parent = db.relationship("Group",
-                             primaryjoin="remote(Group.id) == Group.pid",
-                             foreign_keys=pid,
-                             doc="父节点",
-                             info={"marshmallow": {
-                                 "dump_only": True
-                             }})
+    parent = db.relationship(
+        "Group",
+        primaryjoin="remote(Group.id) == Group.pid",
+        foreign_keys=pid,
+        doc="父节点",
+        info={"marshmallow": {"dump_only": True}},
+    )
     children = db.relationship(
         "Group",
         secondary="groups_relation",
         primaryjoin="Group.id == groups_relation.c.ancestor",
         doc="子组别",
-        secondaryjoin=("and_(Group.id == groups_relation.c.descendant,"
-                       "groups_relation.c.distance > 0)"),
+        secondaryjoin=(
+            "and_(Group.id == groups_relation.c.descendant,"
+            "groups_relation.c.distance > 0)"
+        ),
         viewonly=True,
     )
 
@@ -297,20 +290,15 @@ class UserInfo(SurrogatePK, Model):
     :attr first_name: str(80) 姓
     :attr second_name: str(80) 名
     """
+
     # from app.modules.storages.models import Storages
 
     __tablename__ = "userinfo"
 
-    avator_id = db.Column(db.Integer,
-                          doc="头像ID",
-                          info={"marshmallow": {
-                              "dump_only": True
-                          }})
-    uid = db.Column(db.Integer,
-                    doc="用户ID",
-                    info={"marshmallow": {
-                        "dump_only": True
-                    }})
+    avator_id = db.Column(
+        db.Integer, doc="头像ID", info={"marshmallow": {"dump_only": True}}
+    )
+    uid = db.Column(db.Integer, doc="用户ID", info={"marshmallow": {"dump_only": True}})
     #  avator = db.relationship(
     #      "Storages",
     #      primaryjoin="Storages.id == UserInfo.avator_id",
@@ -345,18 +333,12 @@ class UserInfo(SurrogatePK, Model):
     first_name = db.Column(
         db.String(80),
         doc="姓",
-        info={"marshmallow": {
-            "allow_none": False,
-            "required": True
-        }},
+        info={"marshmallow": {"allow_none": False, "required": True}},
     )
     last_name = db.Column(
         db.String(80),
         doc="名",
-        info={"marshmallow": {
-            "allow_none": False,
-            "required": True
-        }},
+        info={"marshmallow": {"allow_none": False, "required": True}},
     )
     user = db.relationship(
         "User",
@@ -367,13 +349,9 @@ class UserInfo(SurrogatePK, Model):
             "userinfo",
             uselist=False,
             lazy="joined",
-            info={"marshmallow": {
-                "column": ["avator_id"]
-            }},
+            info={"marshmallow": {"column": ["avator_id"]}},
         ),
-        info={"marshmallow": {
-            "dump_only": True
-        }},
+        info={"marshmallow": {"dump_only": True}},
     )
 
     def __str__(self) -> str:

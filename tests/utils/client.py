@@ -23,8 +23,7 @@ class JSONResponse(Response):
 
     @cached_property
     def json(self) -> Dict:
-        return json.loads(self.get_data(as_text=True),
-                          object_pairs_hook=OrderedDict)
+        return json.loads(self.get_data(as_text=True), object_pairs_hook=OrderedDict)
 
 
 class AutoAuthFlaskClient(FlaskClient):
@@ -32,6 +31,7 @@ class AutoAuthFlaskClient(FlaskClient):
     A helper FlaskClient class with a useful for testing ``login`` context
     manager.
     """
+
     def __init__(self, *args: Any, **kwargs: Any):
         super(AutoAuthFlaskClient, self).__init__(*args, **kwargs)
         self._user = None
@@ -46,6 +46,7 @@ class AutoAuthFlaskClient(FlaskClient):
             ...     flask_app_client.get('/api/v1/users/')
         """
         from smorest_sfs.services.auth.auth import login_user, logout_user
+
         self._user = user
         self._permission_mapping = permission_mapping or {}
         if self._user is not None:
@@ -65,8 +66,9 @@ class AutoAuthFlaskClient(FlaskClient):
         return response
 
     def _combine_headers(self, **kwargs: Any) -> Any:
-        extra_headers = (("Authorization",
-                          "Bearer {token}".format(token=self._access_token)), )
+        extra_headers = (
+            ("Authorization", "Bearer {token}".format(token=self._access_token)),
+        )
         if kwargs.get("headers"):
             kwargs["headers"] += extra_headers
         else:
@@ -75,6 +77,7 @@ class AutoAuthFlaskClient(FlaskClient):
 
     def _clear_user_rbac(self):
         from smorest_sfs.extensions import db
+
         if self._user:
             stmt = "truncate table roles_users, permission_roles, roles, permissions"
             db.session.execute(stmt)

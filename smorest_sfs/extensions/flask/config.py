@@ -54,8 +54,11 @@ class Config(FlaskConfig):
         """
 
         # Prepeend the root path is we don't have an absolute path
-        filename = (os.path.join(self.root_path, filename)
-                    if filename.startswith(os.sep) else filename)
+        filename = (
+            os.path.join(self.root_path, filename)
+            if filename.startswith(os.sep)
+            else filename
+        )
 
         try:
             with open(filename) as toml_file:

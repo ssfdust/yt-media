@@ -16,12 +16,7 @@ class TestBasesMaClass:
         assert data["msg"] == "success" and data["code"] == 0
 
     @pytest.mark.parametrize(
-        "data, result",
-        [
-            ({"data": []}, []),
-            ({"lst": []}, []),
-            ({"lst": [1, 2, 3, 4]}, [1, 2, 3, 4]),
-        ],
+        "data, result", [({"lst": []}, []), ({"lst": [1, 2, 3, 4]}, [1, 2, 3, 4]),],
     )
     def test_base_int_list(self, data: Dict, result: Dict):
 

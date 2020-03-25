@@ -1,14 +1,19 @@
 from typing import Mapping, List, Optional, NoReturn
 
 from smorest_sfs.modules.users.models import User, Role, Permission, db, Model
-from smorest_sfs.modules.auth.permissions import DEFAULT_ROLES_PERMISSIONS_MAPPING, ROLES, PERMISSIONS
+from smorest_sfs.modules.auth.permissions import (
+    DEFAULT_ROLES_PERMISSIONS_MAPPING,
+    ROLES,
+    PERMISSIONS,
+)
 
 
 def create_item_from_cls(model_cls: Model, cls: object):
-    names = [getattr(cls, attr) for attr in dir(cls) if not attr.startswith('__')]
-    db.session.add_all([model_cls(name=name) for name in names])
+    names = [getattr(cls, attr) for attr in dir(cls) if not attr.startswith("__")]
+    for name in names:
+        model_cls(name=name).save()
     db.session.commit()
-        
+
 
 def init_permission():
     create_item_from_cls(Role, ROLES)

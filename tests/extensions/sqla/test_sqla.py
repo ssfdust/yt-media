@@ -23,9 +23,7 @@ class TestBaseQuery(ItemsFixtureBase):
         deleted_one = crud_items[0]
         deleted_one.delete()
 
-        direct_get_by_id = self.TestCRUDTable.query.filter_by(
-            id=deleted_one.id
-        ).first()
+        direct_get_by_id = self.TestCRUDTable.query.filter_by(id=deleted_one.id).first()
         with_deleted_get_by_id = self.TestCRUDTable.query.with_deleted().get(
             deleted_one.id
         )
@@ -84,7 +82,5 @@ class TestBaseRUDByID(ItemsFixtureBase):
     def test_base_update_by_id(self, db):
         item = self.TestParentTable.create(name="base_update_by_id")
         temp_item = self.TestParentTable(name="test_update_by_id")
-        self.TestParentTable.update_by_id(
-            item.id, self.TestParentSchema, temp_item
-        )
+        self.TestParentTable.update_by_id(item.id, self.TestParentSchema, temp_item)
         assert temp_item not in db.session and item.name == "test_update_by_id"

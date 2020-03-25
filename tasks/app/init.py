@@ -13,10 +13,7 @@ log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 @task(
-    help={
-        "su_passwd": "root密码",
-        "config_types": "配置类型（默认：development、testing）",
-    }
+    help={"su_passwd": "root密码", "config_types": "配置类型（默认：development、testing）",}
 )
 def create_pg_db_and_user(context, su_passwd=None, config_types=[]):
     """
@@ -40,23 +37,16 @@ def create_pg_db_and_user(context, su_passwd=None, config_types=[]):
 
 
 @task(
-    help={
-        "admin": "管理员账户（默认: admin）",
-        "config_types": "配置类型（默认：development、testing）",
-    }
+    help={"admin": "管理员账户（默认: admin）", "config_types": "配置类型（默认：development、testing）",}
 )
-def create_mg_db_and_user(
-    context, admin="admin", passwd=None, config_types=[]
-):
+def create_mg_db_and_user(context, admin="admin", passwd=None, config_types=[]):
     """
     根据配置新建mongodb数据库以及用户
     """
     if len(config_types) == 0:
         config_types = ["development", "testing"]
     for config_type in config_types:
-        command = (
-            f"mongo -u {admin} -p{passwd} < cmds/{config_type}_mongodb.txt"
-        )
+        command = f"mongo -u {admin} -p{passwd} < cmds/{config_type}_mongodb.txt"
         log.info(f"正在为{config_type}配置创建rdb")
         context.run(command, echo=True, pty=True)
 
@@ -66,7 +56,7 @@ def add_closure_table_procedure(context):
     """
     导入闭包表所需要的存储过程
     """
-    from app.app import app
+    from smorest_sfs.app import app
     from pathlib import Path
 
     log.info("正在导入闭包表...")
@@ -123,7 +113,7 @@ def dropdb(context):
     """
     删除数据库
     """
-    from app.extensions import db
+    from smorest_sfs.extensions import db
 
     db.drop_all()
 
@@ -133,6 +123,6 @@ def initdb(context):
     """
     初始化数据库
     """
-    from app.extensions import db
+    from smorest_sfs.extensions import db
 
     db.create_all()

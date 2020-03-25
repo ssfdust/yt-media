@@ -5,6 +5,7 @@
 import tempfile
 from smorest_sfs.extensions.flask import Flask
 
+
 class TestFlask:
     def test_flask(self):
 

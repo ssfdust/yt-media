@@ -237,6 +237,22 @@ tests = ["flask-sqlalchemy", "marshmallow-sqlalchemy (>=0.13.0)", "pytest", "moc
 
 [[package]]
 category = "main"
+description = "A nice way to use Redis in your Flask app"
+name = "flask-redis"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "0.4.0"
+
+[package.dependencies]
+Flask = ">=0.8"
+redis = ">=2.7.6"
+
+[package.extras]
+dev = ["coverage", "pytest", "pytest-mock", "pre-commit"]
+tests = ["coverage", "pytest", "pytest-mock"]
+
+[[package]]
+category = "main"
 description = "Flask/Marshmallow-based REST API framework"
 name = "flask-smorest"
 optional = false
@@ -690,6 +706,17 @@ version = "2019.3"
 
 [[package]]
 category = "main"
+description = "Python client for Redis key-value store"
+name = "redis"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "3.4.1"
+
+[package.extras]
+hiredis = ["hiredis (>=0.1.3)"]
+
+[[package]]
+category = "main"
 description = "Simple, fast, extensible JSON encoder/decoder for Python"
 name = "simplejson"
 optional = false
@@ -863,7 +890,7 @@ python-versions = "*"
 version = "0.3"
 
 [metadata]
-content-hash = "0e7b9886772a644cd74afb5a7ce3771c607c683fe32aba9652cc790faaf9e443"
+content-hash = "16749102104f68496e337bfc9b7ccd1d02a01d020b16664c09ff8743cd9c69fe"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -971,6 +998,10 @@ flask-mail = [
 flask-marshmallow = [
     {file = "flask-marshmallow-0.10.1.tar.gz", hash = "sha256:69e99e3a123393894884a032ae2d11e6bdf4519a505819b66cec7eda32057741"},
     {file = "flask_marshmallow-0.10.1-py2.py3-none-any.whl", hash = "sha256:4f507f883838b397638a3a36c7d36ee146b255a49db952f5d9de3f6f4522e8a8"},
+]
+flask-redis = [
+    {file = "flask-redis-0.4.0.tar.gz", hash = "sha256:e1fccc11e7ea35c2a4d68c0b9aa58226a098e45e834d615c7b6c4928b01ddd6c"},
+    {file = "flask_redis-0.4.0-py2.py3-none-any.whl", hash = "sha256:8d79eef4eb1217095edab603acc52f935b983ae4b7655ee7c82c0dfd87315d17"},
 ]
 flask-smorest = [
     {file = "flask-smorest-0.18.5.tar.gz", hash = "sha256:2e3f21f39d8d95a1d70222d2e214052f4d9030ec3c5d58e9b042550fce676b1b"},
@@ -1175,6 +1206,10 @@ python-dateutil = [
 pytz = [
     {file = "pytz-2019.3-py2.py3-none-any.whl", hash = "sha256:1c557d7d0e871de1f5ccd5833f60fb2550652da6be2693c1e02300743d21500d"},
     {file = "pytz-2019.3.tar.gz", hash = "sha256:b02c06db6cf09c12dd25137e563b31700d3b80fcc4ad23abb7a315f2789819be"},
+]
+redis = [
+    {file = "redis-3.4.1-py2.py3-none-any.whl", hash = "sha256:b205cffd05ebfd0a468db74f0eedbff8df1a7bfc47521516ade4692991bb0833"},
+    {file = "redis-3.4.1.tar.gz", hash = "sha256:0dcfb335921b88a850d461dc255ff4708294943322bd55de6cfd68972490ca1f"},
 ]
 simplejson = [
     {file = "simplejson-3.17.0-cp27-cp27m-macosx_10_13_x86_64.whl", hash = "sha256:87d349517b572964350cc1adc5a31b493bbcee284505e81637d0174b2758ba17"},

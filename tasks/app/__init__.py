@@ -19,14 +19,5 @@ from . import (
 )
 
 namespace = Collection(
-    dependencies,
-    celery,
-    init,
-    env,
-    run,
-    users,
-    boilerplates,
-    manager,
-    tests,
-    db,
+    dependencies, celery, init, env, run, users, boilerplates, manager, tests, db,
 )

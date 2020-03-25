@@ -50,16 +50,8 @@ class Api(BaseApi):
 spec_kwargs = {
     "components": {
         "securitySchemes": {
-            "api_key": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT",
-            },
-            "refresh_key": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT",
-            },
+            "api_key": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT",},
+            "refresh_key": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT",},
         }
     }
 }

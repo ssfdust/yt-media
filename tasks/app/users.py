@@ -39,9 +39,7 @@ class UserFactory:
     def create_user(self):
         from app.modules.auth.models import User
 
-        user = User(
-            username=self.username, email=self.email, active=self.is_active,
-        )
+        user = User(username=self.username, email=self.email, active=self.is_active,)
         user.password = self.password
         user.create_userinfo(avator_info=self.avator_info)
         user.set_roles(self.rolename)
@@ -61,7 +59,5 @@ def create_user(context, username, email, is_admin=True, is_active=True):
     """
     新建用户
     """
-    factory = UserFactory(
-        username, email, is_admin=is_admin, is_active=is_active
-    )
+    factory = UserFactory(username, email, is_admin=is_admin, is_active=is_active)
     factory.create_user()

@@ -59,7 +59,7 @@ def create_user(user, is_admin=False):
     UserInfo(user=user, avator=avator).save(False)
 
 
-class UserFactory():
+class UserFactory:
     """
     用户工厂
 

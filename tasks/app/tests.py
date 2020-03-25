@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 @task(
     default=True, help={"directory": "单元测试目录", "with-pdb": "开启pdb支持 （默认：否）",},
 )
-def tests(context, directory="tests", pdb=False):
+def tests(context, directory="tests", pdb=False, cov=False):
     """
     对项目进行单元测试
     """
@@ -22,4 +22,6 @@ def tests(context, directory="tests", pdb=False):
     command = [directory]
     if pdb:
         command.append("--pdb")
+    if cov:
+        command.extend(["--cov", "smorest_sfs", "--cov-report", "term-missing"])
     return pytest.main(command)

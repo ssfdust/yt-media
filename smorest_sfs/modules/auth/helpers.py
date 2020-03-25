@@ -40,10 +40,12 @@ def is_token_revoked(decoded_token: Dict) -> bool:
         return True
 
 
-def add_token_to_database(encoded_token: str,
-                          identity_claim: str,
-                          custom_token_type: Optional[str] = None,
-                          allow_expired: bool = False) -> NoReturn:
+def add_token_to_database(
+    encoded_token: str,
+    identity_claim: str,
+    custom_token_type: Optional[str] = None,
+    allow_expired: bool = False,
+) -> NoReturn:
     """
     将新的Token解码后加入到数据库
 
@@ -52,8 +54,7 @@ def add_token_to_database(encoded_token: str,
     """
     decoded_token = decode_token(encoded_token, allow_expired=allow_expired)
     jti = decoded_token["jti"]
-    token_type = decoded_token[
-        "type"] if not custom_token_type else custom_token_type
+    token_type = decoded_token["type"] if not custom_token_type else custom_token_type
     user_identity = decoded_token[identity_claim]
     expires = _epoch_utc_to_datetime(decoded_token["exp"])
     revoked = False
@@ -72,7 +73,8 @@ def revoke_current_token() -> NoReturn:
     """
     raw_jwt = get_raw_jwt()
     try:
-        TokenBlackList.query.filter_by(user_identity=raw_jwt["identity"],
-                                       jti=raw_jwt["jti"]).update({"revoked": True})
+        TokenBlackList.query.filter_by(
+            user_identity=raw_jwt["identity"], jti=raw_jwt["jti"]
+        ).update({"revoked": True})
     except NoResultFound:
         pass

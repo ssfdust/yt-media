@@ -7,7 +7,9 @@
 import pytest
 
 from smorest_sfs.factory import CONFIG_MAPPGING, create_app
-ENABLED_MODULES = ['users']
+
+ENABLED_MODULES = ["users"]
+
 
 def test_create_app():
     create_app(ENABLED_MODULES)

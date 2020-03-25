@@ -80,9 +80,7 @@ def TestChildTable(db: SQLAlchemy, TestParentTable: Type[Model]) -> Model:
 
 
 @pytest.fixture(scope="package")
-def tables(
-    TestCRUDTable: Type[Model], TestChildTable: Type[Model]
-) -> NoReturn:
+def tables(TestCRUDTable: Type[Model], TestChildTable: Type[Model]) -> NoReturn:
     # pylint: disable=W0613, W0621
     pass
 
@@ -144,7 +142,8 @@ def TestSASql(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:
     @sql_decorator
     class TestSASql(SAStatement):
         def __init__(self, name):
-            self.sa_sql = db.select([TestCRUDTable.name])\
-                .where(TestCRUDTable.name == name)
+            self.sa_sql = db.select([TestCRUDTable.name]).where(
+                TestCRUDTable.name == name
+            )
 
     return TestSASql

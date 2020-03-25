@@ -33,18 +33,14 @@ class SurrogatePK:
         doc="修改时间",
         server_default=utcnow(),
         onupdate=db.select([utcnow()]),
-        info={
-            "marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}
-        },
+        info={"marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}},
     )
     created = db.Column(
         db.DateTime(True),
         nullable=False,
         doc="创建时间",
         server_default=utcnow(),
-        info={
-            "marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}
-        },
+        info={"marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}},
     )
 
     @classmethod
@@ -64,9 +60,7 @@ class SurrogatePK:
         return item.delete(commit)
 
     @classmethod
-    def delete_by_ids(
-        cls, ids: List[int], commit: bool = True
-    ) -> Union[bool, None]:
+    def delete_by_ids(cls, ids: List[int], commit: bool = True) -> Union[bool, None]:
         """
         批量删除
         """

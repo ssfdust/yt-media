@@ -17,9 +17,7 @@ except ImportError as e:
 
 
 class Render:
-    def __init__(
-        self, loader_path: str, template_and_paths: List[str], config: Dict
-    ):
+    def __init__(self, loader_path: str, template_and_paths: List[str], config: Dict):
         self.loader_path = loader_path
         self.config = config
         self.env = jinja2.Environment(
@@ -43,9 +41,7 @@ def render_config_to_toml(configs: Config):
         ]
 
         render = Render(
-            "tasks/app/templates/configurations",
-            template_and_paths_list,
-            config,
+            "tasks/app/templates/configurations", template_and_paths_list, config,
         )
         render.render()
 
@@ -71,19 +67,8 @@ def render_crud_modules(module_name: str, config: Dict):
     module_path.mkdir(parents=True)
 
     template_and_paths_list = [
-        [
-            "%s.py.template" % template_file,
-            "%s/%s.py" % (module_path, template_file),
-        ]
-        for template_file in (
-            "__init__",
-            "models",
-            "params",
-            "resources",
-            "schemas",
-        )
+        ["%s.py.template" % template_file, "%s/%s.py" % (module_path, template_file),]
+        for template_file in ("__init__", "models", "params", "resources", "schemas",)
     ]
-    render = Render(
-        "tasks/app/templates/crud_module", template_and_paths_list, config
-    )
+    render = Render("tasks/app/templates/crud_module", template_and_paths_list, config)
     render.render()

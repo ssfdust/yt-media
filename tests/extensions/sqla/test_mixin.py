@@ -14,9 +14,7 @@ from tests.utils.injection import FixturesInjectBase
 
 
 class TestSqlaCRUD:
-    def test_created_must_have_id(
-        self, TestCRUDTable: Type[Model]
-    ) -> NoReturn:
+    def test_created_must_have_id(self, TestCRUDTable: Type[Model]) -> NoReturn:
         item = TestCRUDTable.create(name="created_must_have_id")
         assert item.id is not None and item.name == "created_must_have_id"
 
@@ -25,25 +23,18 @@ class TestSqlaCRUD:
         item.save()
         assert item.id is not None and item.name == "save_must_have_id"
 
-    def test_save_should_update_modified(
-        self, TestCRUDTable: Type[Model]
-    ) -> NoReturn:
+    def test_save_should_update_modified(self, TestCRUDTable: Type[Model]) -> NoReturn:
         item = TestCRUDTable.create(name="save_should_update_modified")
         pre_modified = copy(item.modified)
         item.name = "save_should_updated"
         item.save()
         assert item.modified > pre_modified
 
-    def test_update_should_success(
-        self, TestCRUDTable: Type[Model]
-    ) -> NoReturn:
+    def test_update_should_success(self, TestCRUDTable: Type[Model]) -> NoReturn:
         item = TestCRUDTable.create(name="update_never_success")
         pre_modified = copy(item.modified)
         item.update(name="update_should_success")
-        assert (
-            item.name == "update_should_success"
-            and item.modified > pre_modified
-        )
+        assert item.name == "update_should_success" and item.modified > pre_modified
 
     def test_update_should_not_update_blacked_keys(
         self, TestCRUDTable: Type[Model]
@@ -132,9 +123,7 @@ class TestUpdateBySchema(FixturesInjectBase):
 
     @pytest.mark.usefixtures("TestTableTeardown")
     @pytest.mark.parametrize("key", ["id", "deleted", "modified", "created"])
-    def test_blacked_keys_in_schema_should_update_nothing(
-        self, key: str
-    ) -> NoReturn:
+    def test_blacked_keys_in_schema_should_update_nothing(self, key: str) -> NoReturn:
         self.create_item_and_schema(
             (key,), name="the_blacked_key_should_not_be_changed"
         )
@@ -146,19 +135,13 @@ class TestUpdateBySchema(FixturesInjectBase):
 
     @pytest.mark.usefixtures("TestTableTeardown")
     def test_temp_instance_should_not_be_saved(self) -> NoReturn:
-        self.create_item_and_schema(
-            None, name="temp_instance_should_not_be_saved"
-        )
+        self.create_item_and_schema(None, name="temp_instance_should_not_be_saved")
         temp_instance = self.do_init_update_by_schema(name="the_id_is_none")
         assert temp_instance.id is None
 
     @pytest.mark.usefixtures("TestTableTeardown")
-    def test_temp_instance_should_not_in_session(
-        self, db: SQLAlchemy
-    ) -> NoReturn:
-        self.create_item_and_schema(
-            None, name="temp_instance_should_not_in_session"
-        )
+    def test_temp_instance_should_not_in_session(self, db: SQLAlchemy) -> NoReturn:
+        self.create_item_and_schema(None, name="temp_instance_should_not_in_session")
         temp_instance = self.do_init_update_by_schema(
             name="the_temp_instance_not_in_session"
         )
@@ -166,9 +149,7 @@ class TestUpdateBySchema(FixturesInjectBase):
 
     @pytest.mark.usefixtures("TestTableTeardown")
     def test_temp_instance_should_be_flushed(self, db: SQLAlchemy) -> NoReturn:
-        self.create_item_and_schema(
-            None, name="temp_instance_should_not_be_flushed"
-        )
+        self.create_item_and_schema(None, name="temp_instance_should_not_be_flushed")
         temp_instance = self.do_init_update_by_schema(
             name="the_temp_instance_not_be_flushed"
         )
@@ -176,12 +157,8 @@ class TestUpdateBySchema(FixturesInjectBase):
         assert temp_instance.id is None
 
     @pytest.mark.usefixtures("TestTableTeardown")
-    def test_temp_instance_should_be_commited(
-        self, db: SQLAlchemy
-    ) -> NoReturn:
-        self.create_item_and_schema(
-            None, name="temp_instance_should_not_be_commited"
-        )
+    def test_temp_instance_should_be_commited(self, db: SQLAlchemy) -> NoReturn:
+        self.create_item_and_schema(None, name="temp_instance_should_not_be_commited")
         temp_instance = self.do_init_update_by_schema(
             name="the_temp_instance_not_be_commited"
         )
@@ -192,9 +169,7 @@ class TestUpdateBySchema(FixturesInjectBase):
     def test_temp_instance_should_be_flushed_after_query(
         self, db: SQLAlchemy
     ) -> NoReturn:
-        self.create_item_and_schema(
-            None, name="should_not_be_flushed_after_query"
-        )
+        self.create_item_and_schema(None, name="should_not_be_flushed_after_query")
         temp_instance = self.do_init_update_by_schema(
             name="should_not_be_flushed_after_query"
         )
@@ -215,8 +190,7 @@ class TestComplexParentChildrenUpdateBySchema(FixturesInjectBase):
     @pytest.fixture
     def children_lst(self) -> NoReturn:
         return [
-            self.TestChildTable.create(name=name)
-            for name in ["1", "2", "3", "4", "5"]
+            self.TestChildTable.create(name=name) for name in ["1", "2", "3", "4", "5"]
         ]
 
     @pytest.fixture
@@ -228,22 +202,16 @@ class TestComplexParentChildrenUpdateBySchema(FixturesInjectBase):
         return children_lst[0:2]
 
     @pytest.fixture
-    def modified_a_children_lst(
-        self, children_lst: List[Model]
-    ) -> List[Model]:
+    def modified_a_children_lst(self, children_lst: List[Model]) -> List[Model]:
         return [children_lst[3]]
 
     @pytest.fixture
-    def a_children_lst_after_b_modified(
-        self, children_lst: List[Model]
-    ) -> List[Model]:
+    def a_children_lst_after_b_modified(self, children_lst: List[Model]) -> List[Model]:
         return [children_lst[2]]
 
     @pytest.fixture
     def parent_a(self, origin_a_children_lst: List[Model]) -> Model:
-        parent = self.TestParentTable.create(
-            name="A", children=origin_a_children_lst
-        )
+        parent = self.TestParentTable.create(name="A", children=origin_a_children_lst)
         return parent
 
     @pytest.mark.usefixtures("TestTableTeardown")

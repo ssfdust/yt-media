@@ -2,20 +2,17 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from smorest_sfs.extensions.rpcstore.captcha import CaptchaStore
+from smorest_sfs.extensions.storage.captcha import CaptchaStore
 
 
 @pytest.fixture
 def patch_code(monkeypatch):
     """为编码补丁"""
 
-    def fake_code(self, length):
-        self.value = "2345"
+    def fake_code(self, length: int = 4):
+        self._code = "2345"
 
-    monkeypatch.setattr(CaptchaStore, "_generate_captcha", fake_code)
-    store = CaptchaStore("1111")
-    store.generate_captcha()
-    assert store.value == "2345"
+    monkeypatch.setattr(CaptchaStore, "_decode_code", fake_code)
 
 
 @pytest.fixture

@@ -58,9 +58,7 @@ def generate_config(context):
         "description": "模块描述",
     }
 )
-def crud_module(
-    context, module_name="", module_name_singular="", module_title=""
-):
+def crud_module(context, module_name="", module_name_singular="", module_title=""):
     # pylint: disable=unused-argument
     """
     新建一个增删改查模块
@@ -119,9 +117,7 @@ def permissions_adder(context, model_name="", module_title=""):
 
     added_role = ADDED_ROLE.format(model_name=model_name)
     added_permissions = ADDED_PERMISSIONS.format(model_name=model_name)
-    added_su = ADDED_SU.format(
-        model_name=model_name, module_title=module_title
-    )
+    added_su = ADDED_SU.format(model_name=model_name, module_title=module_title)
     added_mapping = ADDED_MAPPING.format(model_name=model_name)
 
     with open("app/modules/auth/permissions.py") as f:

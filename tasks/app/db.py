@@ -18,14 +18,10 @@ try:
     from alembic.config import Config as AlembicConfig
     from alembic import command
 except ImportError:
-    log.warning(
-        "Alembic can't be imported, some app.db.* tasks won't be available!"
-    )
+    log.warning("Alembic can't be imported, some app.db.* tasks won't be available!")
 else:
 
-    alembic_version = tuple(
-        [int(v) for v in __alembic_version__.split(".")[0:3]]
-    )
+    alembic_version = tuple([int(v) for v in __alembic_version__.split(".")[0:3]])
 
     class Config(AlembicConfig):
         """
@@ -105,12 +101,7 @@ def edit(context, revision="current", directory="migrations"):
     }
 )
 def upgrade(
-    context,
-    directory="migrations",
-    revision="head",
-    sql=False,
-    tag=None,
-    x_arg=None,
+    context, directory="migrations", revision="head", sql=False, tag=None, x_arg=None,
 ):
     """更新下一个数据库版本"""
     config = _get_config(directory, x_arg=x_arg)
@@ -127,12 +118,7 @@ def upgrade(
     }
 )
 def downgrade(
-    context,
-    directory="migrations",
-    revision="-1",
-    sql=False,
-    tag=None,
-    x_arg=None,
+    context, directory="migrations", revision="-1", sql=False, tag=None, x_arg=None,
 ):
     """回退到上一个数据哭版本"""
     config = _get_config(directory, x_arg=x_arg)
