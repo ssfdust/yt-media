@@ -16,16 +16,29 @@
 # limitations under the License.
 
 from loguru import logger
-from app.modules.auth.models import Role
-from app.modules.users.models import UserInfo
-from app.modules.auth import ROLES
-from app.modules.storages.models import Storages
-from app.modules.users.models import groups_roles, groups_users
-from app.modules.auth.models import roles_users
-from app.extensions import db
+from smorest_sfs.modules.users.models import UserInfo, Role, User
+# from smorest_sfs.modules.storages.models import Storages
+from smorest_sfs.modules.users.models import groups_roles, groups_users
+from smorest_sfs.modules.auth.models import roles_users
+from smorest_sfs.extensions import db
+
+ADMIN_AVATOR = {
+    "name": "AdminAvator.jpg",
+    "storetype": "avator",
+    "saved": True,
+    "filetype": "image/jpeg",
+    "path": "default/AdminAvator.jpg"
+}
+USER_AVATOR = {
+    "name": "DefaultAvator.jpg",
+    "storetype": "avator",
+    "saved": True,
+    "filetype": "image/jpeg",
+    "path": "default/DefaultAvator.jpg"
+}
 
 
-def create_user(user, is_admin=False):
+def create_user(userinfo, is_admin=False):
     """
     创建用户
 
@@ -34,29 +47,10 @@ def create_user(user, is_admin=False):
 
     创建头像信息,创建用户基本信息
     """
-    if is_admin:
-        su_role = Role.get_by_name(ROLES.SuperUser)
-        user.roles.append(su_role)
-        avator = Storages(
-            name="AdminAvator.jpg",
-            storetype="avator",
-            saved=True,
-            filetype="image/jpeg",
-            path="default/AdminAvator.jpg",
-            uid=1,
-        )
-    else:
-        roles = Role.get_by_user_default()
-        user.roles = roles
-        avator = Storages(
-            name="DefaultAvator.jpg",
-            storetype="avator",
-            saved=True,
-            filetype="image/jpeg",
-            path="default/DefaultAvator.jpg",
-            uid=1,
-        )
-    UserInfo(user=user, avator=avator).save(False)
+    user = User(**userinfo['user'])
+    user.roles = Role.get_by_user_default(is_admin)
+    avator = Storages(**ADMIN_AVATOR) if is_admin else Storages(**USER_AVATOR)
+    UserInfo(user=user, avator=avator, **userinfo['userinfo']).save(False)
 
 
 class UserFactory:
@@ -66,7 +60,6 @@ class UserFactory:
     用于操作用户组的删改，删除用户组的同时，删除用户对应
     角色增加用户组的同时，增加用户相应角色
     """
-
     def __init__(self, user):
         self.user = user
         self.added_groups = []

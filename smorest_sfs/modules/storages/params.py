@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 # Copyright 2019 RedLotus <ssfdust@gmail.com>
 # Author: RedLotus <ssfdust@gmail.com>
 #
@@ -14,31 +12,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""
-    app.extensions
-    ~~~~~~~~~~~~~~~~~~~~
 
-    拓展组件
-"""
-
-from flask_babel import Babel
-from flask_mail import Mail
-from flask_migrate import Migrate
-
-from .api import api, spec_kwargs
-from .marshal import ma
-from .sqla import db
-from .jwt import jwt as jwt_instance
-from .storage import redis_store
-
-babel = Babel()
-mail = Mail()
-migrate = Migrate()
+from app.extensions import ma
+from marshmallow import fields
+from app.extensions.marshal.bases import UploadField
 
 
-def init_app(app):
-    """拓展组件的初始化"""
-    for ext in [db, ma, babel, mail, jwt_instance, redis_store]:
-        ext.init_app(app)
-    api.init_app(app, spec_kwargs=spec_kwargs)
-    migrate.init_app(app, db)
+class UploadParams(ma.Schema):
+    """
+    上传参数
+    """
+
+    file = UploadField(
+        description="文件", allow_none=False, required=True, location="files"
+    )
+    name = fields.String(description="文件名", location="form")
+    storetype = fields.String(
+        description="存储类型", allow_none=False, required=True, location="form"
+    )
+    extra_args = UploadField(description="额外参数", location="json")

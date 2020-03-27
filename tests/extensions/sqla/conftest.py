@@ -11,7 +11,7 @@ from smorest_sfs.extensions.sqla import SurrogatePK, Model
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.extensions import babel
 from smorest_sfs.plugins.sa import SAStatement, sql_decorator, SAQuery, query_decorator
-from tests.utils.tables import drop_tables
+from tests._utils.tables import drop_tables
 
 
 FAKE_TIME = datetime.datetime(1994, 9, 11, 8, 20)

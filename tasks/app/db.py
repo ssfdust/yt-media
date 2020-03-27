@@ -9,6 +9,8 @@ import argparse
 import logging
 import os
 
+from flask import current_app
+
 from ._utils import app_context_task
 
 log = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -56,13 +58,18 @@ def _get_config(directory, x_arg=None, opts=None):
 )
 def init(context, directory="migrations", multidb=False):
     """初始化迁移脚本"""
+    if directory is None:
+        directory = current_app.extensions['migrate'].directory
     config = Config()
-    config.set_main_option("script_location", directory)
-    config.config_file_name = os.path.join(directory, "alembic.ini")
+    config.set_main_option('script_location', directory)
+    config.config_file_name = os.path.join(directory, 'alembic.ini')
+    print(config.get_template_directory())
+    config = current_app.extensions['migrate'].\
+        migrate.call_configure_callbacks(config)
     if multidb:
-        command.init(config, directory, "flask-multidb")
+        command.init(config, directory, 'flask-multidb')
     else:
-        command.init(config, directory, "flask")
+        command.init(config, directory, 'flask')
 
 
 @app_context_task(
@@ -93,9 +100,21 @@ def edit(context, revision="current", directory="migrations"):
 
 @app_context_task(
     help={
+        'revision': "版本号",
+        'directory': "迁移脚本目录",
+    }
+)
+def show(context, directory='migrations', revision='head'):
+    """显示数据库更改详情信息"""
+    config = _get_config(directory)
+    command.show(config, revision)
+
+
+@app_context_task(
+    help={
         "tag": "Arbitrary 'tag' name - can be used by custom env.py scripts",
         "sql": "显示待执行的Sql语句",
-        "revision": "revision标志",
+        "revision": "版本号",
         "directory": "迁移脚本目录",
         "x_arg": "经由自定义env.py脚本处理的额外参数",
     }

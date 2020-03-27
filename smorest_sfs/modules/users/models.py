@@ -23,6 +23,7 @@ from typing import Set, NoReturn
 from marshmallow.validate import OneOf, Range
 from sqlalchemy_utils.types import PasswordType
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
+from smorest_sfs.modules.auth.permissions import ROLES
 
 groups_users = db.Table(
     "groups_users",
@@ -110,7 +111,9 @@ class Role(Model, SurrogatePK):
         return cls.query.filter_by(name=name).first()
 
     @classmethod
-    def get_by_user_default(cls) -> Model:  # pragma: no cover
+    def get_by_user_default(cls, is_admin=False) -> Model:  # pragma: no cover
+        if is_admin:
+            return cls.query.filter_by(ROLES.SuperUser).all()
         return cls.query.filter_by(user_default=True).all()  # pragam: no cover
 
     def get_permissions(self) -> Set[Permission]:  # pragma: no cover
@@ -146,12 +149,12 @@ class User(Model, SurrogatePK):
     __tablename__ = "users"
 
     username = db.Column(db.String(255), nullable=False, unique=True, doc="用户名")
-    phonenum = db.Column(db.String(255), nullable=False, unique=True, doc="电话号码")
-    email = db.Column(db.String(255), nullable=False, unique=True, doc="用户邮箱")
+    phonenum = db.Column(db.String(255), nullable=True, unique=True, doc="电话号码")
+    email = db.Column(db.String(255), nullable=True, unique=True, doc="用户邮箱")
     password = db.Column(
         PasswordType(schemes=["pbkdf2_sha512"]), nullable=False, doc="用户密码"
     )
-    active = db.Column(db.Boolean(), doc="启用")
+    active = db.Column(db.Boolean(), doc="启用", default=False)
     confirmed_at = db.Column(db.DateTime(), doc="确认时间")
     roles = db.relationship(
         "Role",

@@ -15,30 +15,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-    app.extensions
-    ~~~~~~~~~~~~~~~~~~~~
+    app.modules.storages
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    拓展组件
+    文件系统模块
+
+    用以管理系统的文件系统，负责文件的跟踪、
+    上传与下载。
 """
 
-from flask_babel import Babel
-from flask_mail import Mail
-from flask_migrate import Migrate
+from flask_smorest import Blueprint
+from app.extensions import api
 
-from .api import api, spec_kwargs
-from .marshal import ma
-from .sqla import db
-from .jwt import jwt as jwt_instance
-from .storage import redis_store
-
-babel = Babel()
-mail = Mail()
-migrate = Migrate()
+blp = Blueprint("Storages", __name__, url_prefix="/storages", description="文件管理模块")
 
 
 def init_app(app):
-    """拓展组件的初始化"""
-    for ext in [db, ma, babel, mail, jwt_instance, redis_store]:
-        ext.init_app(app)
-    api.init_app(app, spec_kwargs=spec_kwargs)
-    migrate.init_app(app, db)
+    """初始化模块
+
+    :param              app: Flask                  Flask实例
+    """
+    from . import resources, models  # pylint: disable=unused-import
+
+    base_prefix = (
+        app.config["MODULE_BASE_PREFIX"] if "MODULE_BASE_PREFIX" in app.config else ""
+    )
+
+    api.register_blueprint(blp, base_prefix=base_prefix)

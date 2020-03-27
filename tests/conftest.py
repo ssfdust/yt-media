@@ -9,7 +9,8 @@ from flask import Flask
 from smorest_sfs.app import app
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.modules.users.models import User
-from .utils import users, client
+from migrations.initial_development_data import init_permission
+from ._utils import users, client
 
 
 @pytest.fixture(scope="session")
@@ -21,7 +22,7 @@ def flask_app() -> Flask:
 
     with app.app_context():
         db.create_all()
-        users.init_permission()
+        init_permission()
         yield app
         db.session.rollback()
         db.drop_all()

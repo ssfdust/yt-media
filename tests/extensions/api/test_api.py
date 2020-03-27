@@ -4,7 +4,7 @@ from flask.views import MethodView
 import pytest
 from flask_smorest import Blueprint
 from smorest_sfs.extensions.api.decorators import paginate
-from tests.utils.injection import FixturesInjectBase
+from tests._utils.injection import FixturesInjectBase
 
 
 class TestApi(FixturesInjectBase):

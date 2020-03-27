@@ -7,8 +7,8 @@
 import pytest
 import pyperclip
 from loguru import logger
-from tests.utils.injection import inject_logger
-from tests.utils.uniqueue import UniqueQueue
+from tests._utils.injection import inject_logger
+from tests._utils.uniqueue import UniqueQueue
 from tests.extensions.sqla.test_sqla import ItemsFixtureBase
 
 

@@ -10,7 +10,7 @@ from smorest_sfs.extensions.sqla import CharsTooLong, DuplicateEntry
 from smorest_sfs.extensions.sqla.helpers import set_default_for_instance
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.extensions.sqla import Model
-from tests.utils.injection import FixturesInjectBase
+from tests._utils.injection import FixturesInjectBase
 
 
 class TestSqlaCRUD:

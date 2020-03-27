@@ -6,7 +6,7 @@ from queue import Queue
 
 import pytest
 
-from tests.utils.injection import FixturesInjectBase
+from tests._utils.injection import FixturesInjectBase
 from smorest_sfs.services.auth.confirm import generate_confirm_token
 from smorest_sfs.services.auth.auth import login_user
 
