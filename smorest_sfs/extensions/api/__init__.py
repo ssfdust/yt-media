@@ -15,8 +15,7 @@
 
 from typing import Any, NoReturn, Optional
 
-from flask import Blueprint
-from flask_smorest import Api as BaseApi
+from flask_smorest import Blueprint, Api as BaseApi
 
 from smorest_sfs.extensions.marshal import UploadField
 

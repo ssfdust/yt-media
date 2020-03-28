@@ -1,22 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+import shutil
+import uuid
 from typing import Callable
 
 import pytest
-
+from _pytest.monkeypatch import MonkeyPatch
 from flask import Flask
+
+from migrations.initial_development_data import init_permission
 from smorest_sfs.app import app
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.modules.users.models import User
-from migrations.initial_development_data import init_permission
-import shutil
-from pathlib import Path
-
-from ._utils import users, client
-from _pytest.monkeypatch import MonkeyPatch
 from smorest_sfs.utils.paths import UploadPath
-import uuid
+
+from ._utils import client, users
 
 
 class fakeuuid:
