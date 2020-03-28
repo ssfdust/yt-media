@@ -1,0 +1,9 @@
+flask_smorest/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
+marshmallow/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
+marshmallow/fields /Development/smorest_sfs/.pytype/imports/default.pyi
+smorest_sfs/extensions/marshal/bases /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/bases.pyi
+flask_marshmallow/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
+flask_marshmallow/sqla /Development/smorest_sfs/.pytype/imports/default.pyi
+smorest_sfs/extensions/marshal/ma /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/ma.pyi
+smorest_sfs/extensions/marshal/__init__ /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/__init__.pyi
+smorest_sfs/extensions/api/__init__ /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/api/__init__.pyi

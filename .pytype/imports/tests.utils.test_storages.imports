@@ -1,0 +1,6 @@
+pytest/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
+freezegun/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
+smorest_sfs/__init__ /Development/smorest_sfs/.pytype/pyi/smorest_sfs/__init__.pyi
+smorest_sfs/utils/datetime /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/datetime.pyi
+smorest_sfs/utils/paths /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/paths.pyi
+smorest_sfs/utils/storages /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/storages.pyi

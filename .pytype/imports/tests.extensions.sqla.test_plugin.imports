@@ -1,0 +1,6 @@
+pytest/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
+pyperclip/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
+loguru/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
+tests/_utils/uniqueue /Development/smorest_sfs/.pytype/pyi/tests/_utils/uniqueue.pyi
+tests/_utils/injection /Development/smorest_sfs/.pytype/pyi/tests/_utils/injection.pyi
+tests/extensions/sqla/test_sqla /Development/smorest_sfs/.pytype/pyi/tests/extensions/sqla/test_sqla.pyi

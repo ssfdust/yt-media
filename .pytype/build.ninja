@@ -1,0 +1,210 @@
+rule infer
+  command = /Development/.cache/virtualenv/smorest_sfs/bin/python -m pytype.single --imports_info $imports --module-name $module -V 3.8 -o $out --no-report-errors --nofail --quick $in
+  description = infer $module
+rule check
+  command = /Development/.cache/virtualenv/smorest_sfs/bin/python -m pytype.single --imports_info $imports --module-name $module -V 3.8 -o $out --analyze-annotated --nofail --quick $in
+  description = check $module
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/fields.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/marshal/fields.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.marshal.fields.imports
+  module = smorest_sfs.extensions.marshal.fields
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/db_instance.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/sqla/db_instance.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.sqla.db_instance.imports
+  module = smorest_sfs.extensions.sqla.db_instance
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/softdelete.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/sqla/softdelete.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/db_instance.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.sqla.softdelete.imports
+  module = smorest_sfs.extensions.sqla.softdelete
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/errors.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/sqla/errors.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/db_instance.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.sqla.errors.imports
+  module = smorest_sfs.extensions.sqla.errors
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/mixin.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/sqla/mixin.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/db_instance.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/errors.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.sqla.mixin.imports
+  module = smorest_sfs.extensions.sqla.mixin
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/model.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/sqla/model.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/softdelete.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/db_instance.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/mixin.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.sqla.model.imports
+  module = smorest_sfs.extensions.sqla.model
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/helpers.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/sqla/helpers.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/model.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.sqla.helpers.imports
+  module = smorest_sfs.extensions.sqla.helpers
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/surrogatepk.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/sqla/surrogatepk.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/db_instance.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/helpers.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/model.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.sqla.surrogatepk.imports
+  module = smorest_sfs.extensions.sqla.surrogatepk
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/sqla/__init__.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/surrogatepk.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/errors.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/model.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/db_instance.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.sqla.__init__.imports
+  module = smorest_sfs.extensions.sqla.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/permissions.pyi: check /Development/smorest_sfs/smorest_sfs/modules/auth/permissions.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.auth.permissions.imports
+  module = smorest_sfs.modules.auth.permissions
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/models.pyi: check /Development/smorest_sfs/smorest_sfs/modules/users/models.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/permissions.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.users.models.imports
+  module = smorest_sfs.modules.users.models
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/bases.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/marshal/bases.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.marshal.bases.imports
+  module = smorest_sfs.extensions.marshal.bases
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/ma.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/marshal/ma.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.marshal.ma.imports
+  module = smorest_sfs.extensions.marshal.ma
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/marshal/__init__.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/bases.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/ma.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.marshal.__init__.imports
+  module = smorest_sfs.extensions.marshal.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/api/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/api/__init__.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/__init__.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.api.__init__.imports
+  module = smorest_sfs.extensions.api.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/jwt/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/jwt/__init__.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.jwt.__init__.imports
+  module = smorest_sfs.extensions.jwt.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/storage/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/storage/__init__.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.storage.__init__.imports
+  module = smorest_sfs.extensions.storage.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/__init__.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/api/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/ma.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/jwt/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/storage/__init__.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.__init__.imports
+  module = smorest_sfs.extensions.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/users/users.pyi: check /Development/smorest_sfs/smorest_sfs/services/users/users.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/models.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/__init__.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.users.users.imports
+  module = smorest_sfs.services.users.users
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/users/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/services/users/__init__.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/users/users.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.users.__init__.imports
+  module = smorest_sfs.services.users.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/flask/config.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/flask/config.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.flask.config.imports
+  module = smorest_sfs.extensions.flask.config
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/flask/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/flask/__init__.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/flask/config.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.flask.__init__.imports
+  module = smorest_sfs.extensions.flask.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/modules/__init__.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/api/__init__.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.__init__.imports
+  module = smorest_sfs.modules.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/factory.pyi: check /Development/smorest_sfs/smorest_sfs/factory.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/flask/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/__init__.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.factory.imports
+  module = smorest_sfs.factory
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/app.pyi: check /Development/smorest_sfs/smorest_sfs/app.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/factory.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.app.imports
+  module = smorest_sfs.app
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/users/sqls/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/services/users/sqls/__init__.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.users.sqls.__init__.imports
+  module = smorest_sfs.services.users.sqls.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/utils/__init__.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.utils.__init__.imports
+  module = smorest_sfs.utils.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/storages/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/services/storages/__init__.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.storages.__init__.imports
+  module = smorest_sfs.services.storages.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/auth/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/services/auth/__init__.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.auth.__init__.imports
+  module = smorest_sfs.services.auth.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/modules/auth/__init__.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/api/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/permissions.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.auth.__init__.imports
+  module = smorest_sfs.modules.auth.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/decorators.pyi: check /Development/smorest_sfs/smorest_sfs/modules/auth/decorators.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.auth.decorators.imports
+  module = smorest_sfs.modules.auth.decorators
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/modules/users/__init__.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.users.__init__.imports
+  module = smorest_sfs.modules.users.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/schemas.pyi: check /Development/smorest_sfs/smorest_sfs/modules/users/schemas.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/bases.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/models.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.users.schemas.imports
+  module = smorest_sfs.modules.users.schemas
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/resources.pyi: check /Development/smorest_sfs/smorest_sfs/modules/users/resources.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/decorators.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/models.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/schemas.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.users.resources.imports
+  module = smorest_sfs.modules.users.resources
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/storage/captcha.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/storage/captcha.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/storage/__init__.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.storage.captcha.imports
+  module = smorest_sfs.extensions.storage.captcha
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/models.pyi: check /Development/smorest_sfs/smorest_sfs/modules/auth/models.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/__init__.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.auth.models.imports
+  module = smorest_sfs.modules.auth.models
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/helpers.pyi: check /Development/smorest_sfs/smorest_sfs/modules/auth/helpers.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/models.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.auth.helpers.imports
+  module = smorest_sfs.modules.auth.helpers
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/auth/auth.pyi: check /Development/smorest_sfs/smorest_sfs/services/auth/auth.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/storage/captcha.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/helpers.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/models.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/models.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.auth.auth.imports
+  module = smorest_sfs.services.auth.auth
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/auth/confirm.pyi: check /Development/smorest_sfs/smorest_sfs/services/auth/confirm.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/helpers.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/models.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/models.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.auth.confirm.imports
+  module = smorest_sfs.services.auth.confirm
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/params.pyi: check /Development/smorest_sfs/smorest_sfs/modules/auth/params.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/__init__.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.auth.params.imports
+  module = smorest_sfs.modules.auth.params
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/schemas.pyi: check /Development/smorest_sfs/smorest_sfs/modules/auth/schemas.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/ma.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.auth.schemas.imports
+  module = smorest_sfs.modules.auth.schemas
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/resources.pyi: check /Development/smorest_sfs/smorest_sfs/modules/auth/resources.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/marshal/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/storage/captcha.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/users/models.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/auth/auth.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/auth/confirm.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/models.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/params.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/schemas.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/decorators.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/auth/helpers.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.auth.resources.imports
+  module = smorest_sfs.modules.auth.resources
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/users/groups.pyi: check /Development/smorest_sfs/smorest_sfs/services/users/groups.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.users.groups.imports
+  module = smorest_sfs.services.users.groups
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/storages/clean.pyi: check /Development/smorest_sfs/smorest_sfs/services/storages/clean.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.storages.clean.imports
+  module = smorest_sfs.services.storages.clean
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/users/sqls/usersqls.pyi: check /Development/smorest_sfs/smorest_sfs/services/users/sqls/usersqls.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.users.sqls.usersqls.imports
+  module = smorest_sfs.services.users.sqls.usersqls
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/plugins/__init__.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.plugins.__init__.imports
+  module = smorest_sfs.plugins.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/storages/clear.pyi: check /Development/smorest_sfs/smorest_sfs/services/storages/clear.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.storages.clear.imports
+  module = smorest_sfs.services.storages.clear
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/sa/render.pyi: check /Development/smorest_sfs/smorest_sfs/plugins/sa/render.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.plugins.sa.render.imports
+  module = smorest_sfs.plugins.sa.render
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/sa/abstract.pyi: check /Development/smorest_sfs/smorest_sfs/plugins/sa/abstract.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/sa/render.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.plugins.sa.abstract.imports
+  module = smorest_sfs.plugins.sa.abstract
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/sa/statement.pyi: check /Development/smorest_sfs/smorest_sfs/plugins/sa/statement.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/sa/abstract.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.plugins.sa.statement.imports
+  module = smorest_sfs.plugins.sa.statement
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/sa/query.pyi: check /Development/smorest_sfs/smorest_sfs/plugins/sa/query.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/sa/render.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/sa/abstract.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.plugins.sa.query.imports
+  module = smorest_sfs.plugins.sa.query
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/sa/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/plugins/sa/__init__.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/sa/statement.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/plugins/sa/query.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.plugins.sa.__init__.imports
+  module = smorest_sfs.plugins.sa.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/api/decorators.pyi: check /Development/smorest_sfs/smorest_sfs/extensions/api/decorators.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/__init__.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.extensions.api.decorators.imports
+  module = smorest_sfs.extensions.api.decorators
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/services/__init__.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.__init__.imports
+  module = smorest_sfs.services.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/users/userinfo.pyi: check /Development/smorest_sfs/smorest_sfs/services/users/userinfo.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.users.userinfo.imports
+  module = smorest_sfs.services.users.userinfo
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/__init__.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.__init__.imports
+  module = smorest_sfs.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/datetime.pyi: check /Development/smorest_sfs/smorest_sfs/utils/datetime.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.utils.datetime.imports
+  module = smorest_sfs.utils.datetime
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/paths.pyi: check /Development/smorest_sfs/smorest_sfs/utils/paths.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/datetime.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.utils.paths.imports
+  module = smorest_sfs.utils.paths
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/storages.pyi: check /Development/smorest_sfs/smorest_sfs/utils/storages.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/paths.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.utils.storages.imports
+  module = smorest_sfs.utils.storages
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/mixin.pyi: check /Development/smorest_sfs/smorest_sfs/modules/storages/mixin.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/storages.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.storages.mixin.imports
+  module = smorest_sfs.modules.storages.mixin
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/models.pyi: check /Development/smorest_sfs/smorest_sfs/modules/storages/models.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/storages.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/mixin.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.storages.models.imports
+  module = smorest_sfs.modules.storages.models
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/storages/handlers.pyi: check /Development/smorest_sfs/smorest_sfs/services/storages/handlers.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/services/users/userinfo.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/models.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/utils/storages.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.services.storages.handlers.imports
+  module = smorest_sfs.services.storages.handlers
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/params.pyi: check /Development/smorest_sfs/smorest_sfs/modules/storages/params.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.storages.params.imports
+  module = smorest_sfs.modules.storages.params
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/decorators.pyi: check /Development/smorest_sfs/smorest_sfs/modules/storages/decorators.py
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.storages.decorators.imports
+  module = smorest_sfs.modules.storages.decorators
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/__init__.pyi-1: infer /Development/smorest_sfs/smorest_sfs/modules/storages/__init__.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/api/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/models.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/params.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/decorators.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.storages.__init__.imports-1
+  module = smorest_sfs.modules.storages.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/resources.pyi-1: infer /Development/smorest_sfs/smorest_sfs/modules/storages/resources.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/api/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/models.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/params.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/decorators.pyi
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.storages.resources.imports-1
+  module = smorest_sfs.modules.storages.resources
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/__init__.pyi: check /Development/smorest_sfs/smorest_sfs/modules/storages/__init__.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/api/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/models.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/params.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/decorators.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/__init__.pyi-1 /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/resources.pyi-1
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.storages.__init__.imports
+  module = smorest_sfs.modules.storages.__init__
+build /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/resources.pyi: check /Development/smorest_sfs/smorest_sfs/modules/storages/resources.py | /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/api/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/models.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/params.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/decorators.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/__init__.pyi /Development/smorest_sfs/.pytype/pyi/smorest_sfs/modules/storages/resources.pyi-1
+  imports = /Development/smorest_sfs/.pytype/imports/smorest_sfs.modules.storages.resources.imports
+  module = smorest_sfs.modules.storages.resources

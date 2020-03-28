@@ -1,0 +1,3 @@
+pytest/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
+flask_sqlalchemy/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
+smorest_sfs/extensions/sqla/db_instance /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/sqla/db_instance.pyi
