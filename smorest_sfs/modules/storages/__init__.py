@@ -25,7 +25,7 @@
 """
 
 from flask_smorest import Blueprint
-from app.extensions import api
+from smorest_sfs.extensions import api
 
 blp = Blueprint("Storages", __name__, url_prefix="/storages", description="文件管理模块")
 

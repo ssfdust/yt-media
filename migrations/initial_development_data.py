@@ -19,7 +19,12 @@ from datetime import datetime
 from typing import NoReturn
 from sqlalchemy.orm.exc import NoResultFound
 from smorest_sfs.modules.users.models import User, Role, Permission, UserInfo, db, Model
-from smorest_sfs.modules.auth.permissions import PERMISSIONS, ROLES, DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping
+from smorest_sfs.modules.auth.permissions import (
+    PERMISSIONS,
+    ROLES,
+    DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping,
+)
+
 # from .modules.storages.models import Storages
 
 

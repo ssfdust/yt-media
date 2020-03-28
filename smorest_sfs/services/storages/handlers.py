@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from app.services.users.userinfo import handle_avator
+from smorest_sfs.services.users.userinfo import handle_avator
+from smorest_sfs.modules.storages.models import GarbageStorages, StoragesMixin
+
+from smorest_sfs.utils.storages import delete_from_rel_path, save_storage_to_path
 
 
 class ExtraArgsHandler(object):
@@ -26,3 +29,26 @@ class ExtraArgsHandler(object):
         func(self.args)
 
     __mapping__ = {"avator": handle_avator}
+
+
+class StorageFactory:
+    def __init__(self, storage: StoragesMixin):
+        self.storage = storage
+
+    def save(self, commit=True):
+        self.storage.save_store()
+        return self.storage.save(commit)
+
+    def update(self, commit=True, **kwargs):
+        GarbageStorages.create(
+            path=self.storage.path,
+            storetype=self.storage.storetype,
+            storage_id=self.storage.id,
+        )
+        self.storage.store = kwargs.get("store", self.storage.store)
+        self.storage.save_store()
+        return self.storage.update(commit=commit, **kwargs)
+
+    def hard_delete(self, commit=True):
+        delete_from_rel_path(self.storage.path)
+        self.storage.hard_delete()

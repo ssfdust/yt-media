@@ -1,17 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from datetime import date
+from typing import Union
 from pathlib import Path
-from uuid import uuid4
+import uuid
 
 import smorest_sfs
 
 from .datetime import utctoday
 
 UPLOADS = "uploads"
+WHITE_LIST = [
+    Path("uploads", "avators", "default", "AdminAvator.jpg"),
+    Path("uploads", "avators", "default", "DefaultAvator.jpg"),
+]
+
 
 def datetopath(datestr: str) -> Path:
-    return Path(*datestr.split('-'))
+    return Path(*datestr.split("-"))
+
 
 def todaytopath() -> Path:
     today = utctoday()
@@ -28,6 +34,11 @@ class ProjectPath:
         sfs_path = Path(cls.__get_sfs_path())
         return sfs_path.parent
 
+    @classmethod
+    def get_subpath_from_project(cls, path: Union[str, Path]) -> Path:
+        project_path = cls.get_project_path()
+        return Path(project_path, path)
+
 
 class UploadPath(ProjectPath):
     @classmethod
@@ -40,14 +51,23 @@ class UploadPath(ProjectPath):
         return project_path.joinpath(UPLOADS)
 
     @classmethod
-    def get_uploads_subdir(cls, subname: str) -> Path:
+    def get_uploads_subdir(cls, subname: str, withdate: bool = True) -> Path:
         uploads_path = cls.get_uploads_path()
-        return cls._get_uploads_subdir(uploads_path, subname)
+        return cls._get_uploads_subdir(uploads_path, subname, withdate)
 
     @classmethod
-    def _get_uploads_subdir(cls, uploads_path: Path, subname: str) -> Path:
-        todaypath = todaytopath()
-        return uploads_path.joinpath(subname, todaypath)
+    def _get_uploads_subdir(
+        cls, uploads_path: Path, subname: str, withdate: bool = True
+    ) -> Path:
+        if withdate:
+            todaypath = todaytopath()
+            return uploads_path.joinpath(subname, todaypath)
+        return uploads_path.joinpath(subname)
+
+    @classmethod
+    def if_in_whitelst(cls, path: Union[str, Path]) -> bool:
+        whitelst = [cls.get_subpath_from_project(p) for p in WHITE_LIST]
+        return path in whitelst
 
 
 def _make_uploaded_path(path: Path) -> Path:
@@ -57,11 +77,16 @@ def _make_uploaded_path(path: Path) -> Path:
 
 
 def _make_secure_filepath(path: Path) -> Path:
-    secure_name = uuid4().hex
+    secure_name = uuid.uuid4().hex
     return path.joinpath(secure_name)
 
 
-def get_uploaded_path(subname: str) -> Path:
+def make_uploaded_path(subname: str) -> Path:
     uploads_path = UploadPath.get_uploads_subdir(subname)
     path = _make_uploaded_path(uploads_path)
     return _make_secure_filepath(path)
+
+
+def get_relative_pathstr(path: Path) -> str:
+    project_path = ProjectPath.get_project_path()
+    return str(path.relative_to(project_path))

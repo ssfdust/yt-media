@@ -10,7 +10,31 @@ from smorest_sfs.app import app
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.modules.users.models import User
 from migrations.initial_development_data import init_permission
+import shutil
+from pathlib import Path
+
 from ._utils import users, client
+from _pytest.monkeypatch import MonkeyPatch
+from smorest_sfs.utils.paths import UploadPath
+import uuid
+
+
+class fakeuuid:
+    hex = "123456789"
+
+
+@pytest.fixture
+def patch_uuid(monkeypatch: MonkeyPatch):
+    monkeypatch.setattr(uuid, "uuid4", fakeuuid)
+
+
+@pytest.fixture
+def clean_dirs():
+    yield
+    for key in ["foo", "new", "bar"]:
+        path = UploadPath.get_uploads_subdir(key, withdate=False)
+        if path.exists():
+            shutil.rmtree(path)
 
 
 @pytest.fixture(scope="session")

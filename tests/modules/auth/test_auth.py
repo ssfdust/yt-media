@@ -72,7 +72,7 @@ class TestAuthModule(FixturesInjectBase):
         )
 
     def test_login_jwt_cannot_use_at_confirm(self):
-        token = login_user(self.regular_user)['tokens']['access_token']
+        token = login_user(self.regular_user)["tokens"]["access_token"]
         resp = self.flask_app_client.get("/api/v1/auth/confirm?token={}".format(token))
         assert resp.status_code == 403
 

@@ -21,7 +21,7 @@ def tests(context, directory="tests", pdb=False, cov=True):
 
     command = [directory]
     if pdb:
-        command.append("--pdb")
+        command.extend(["--pdb", "-s", "-vvv"])
     if cov:
         command.extend(["--cov", "smorest_sfs", "--cov-report", "term-missing"])
     return pytest.main(command)

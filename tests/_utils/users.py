@@ -1,17 +1,20 @@
 from typing import List, Mapping, NoReturn, Optional
 
 from smorest_sfs.modules.auth.permissions import (
-    DEFAULT_ROLES_PERMISSIONS_MAPPING, PERMISSIONS, ROLES)
+    DEFAULT_ROLES_PERMISSIONS_MAPPING,
+    PERMISSIONS,
+    ROLES,
+)
 from smorest_sfs.modules.users.models import Model, Permission, Role, User, db
 
 
 def generate_user_instance(
-        user_id: Optional[int] = None,
-        username: Optional[str] = "username",
-        phonenum: Optional[str] = None,
-        password: Optional[str] = None,
-        email: Optional[str] = None,
-        is_active: bool = True,
+    user_id: Optional[int] = None,
+    username: Optional[str] = "username",
+    phonenum: Optional[str] = None,
+    password: Optional[str] = None,
+    email: Optional[str] = None,
+    is_active: bool = True,
 ) -> User:
     """
     Returns:

@@ -3,11 +3,14 @@
 
 from datetime import datetime, date
 
+
 def utcnow() -> datetime:
     return datetime.utcnow()
 
+
 def _utctoday(now: datetime) -> date:
     return now.date()
+
 
 def utctoday() -> date:
     now = utcnow()

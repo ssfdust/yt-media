@@ -17,9 +17,9 @@
 
 from loguru import logger
 from smorest_sfs.modules.users.models import UserInfo, Role, User
+
 # from smorest_sfs.modules.storages.models import Storages
-from smorest_sfs.modules.users.models import groups_roles, groups_users
-from smorest_sfs.modules.auth.models import roles_users
+from smorest_sfs.modules.users.models import groups_roles, groups_users, roles_users
 from smorest_sfs.extensions import db
 
 ADMIN_AVATOR = {
@@ -27,14 +27,14 @@ ADMIN_AVATOR = {
     "storetype": "avator",
     "saved": True,
     "filetype": "image/jpeg",
-    "path": "default/AdminAvator.jpg"
+    "path": "default/AdminAvator.jpg",
 }
 USER_AVATOR = {
     "name": "DefaultAvator.jpg",
     "storetype": "avator",
     "saved": True,
     "filetype": "image/jpeg",
-    "path": "default/DefaultAvator.jpg"
+    "path": "default/DefaultAvator.jpg",
 }
 
 
@@ -47,10 +47,10 @@ def create_user(userinfo, is_admin=False):
 
     创建头像信息,创建用户基本信息
     """
-    user = User(**userinfo['user'])
+    user = User(**userinfo["user"])
     user.roles = Role.get_by_user_default(is_admin)
     avator = Storages(**ADMIN_AVATOR) if is_admin else Storages(**USER_AVATOR)
-    UserInfo(user=user, avator=avator, **userinfo['userinfo']).save(False)
+    UserInfo(user=user, avator=avator, **userinfo["userinfo"]).save(False)
 
 
 class UserFactory:
@@ -60,6 +60,7 @@ class UserFactory:
     用于操作用户组的删改，删除用户组的同时，删除用户对应
     角色增加用户组的同时，增加用户相应角色
     """
+
     def __init__(self, user):
         self.user = user
         self.added_groups = []
