@@ -25,6 +25,7 @@ class JSONResponse(Response):
     def json(self) -> Dict:
         return json.loads(self.get_data(as_text=True), object_pairs_hook=OrderedDict)
 
+from typing import Union
 
 class AutoAuthFlaskClient(FlaskClient):
     """
@@ -34,25 +35,30 @@ class AutoAuthFlaskClient(FlaskClient):
 
     def __init__(self, *args: Any, **kwargs: Any):
         super(AutoAuthFlaskClient, self).__init__(*args, **kwargs)
-        self._user = None
-        self._access_token = None
-        self._permission_mapping = None
+        self._user: Union[User, None] = None
+        self._access_token: Union[str, None] = None
+        self._roles: Union[List, None] = None
 
     @contextmanager
-    def login(self, user: User, permission_mapping: Mapping[str, List[str]] = None):
+    def login(self, user: User, roles: List[str] = None):
         """
         示例：
             >>> with flask_app_client.login(user, permissions=['SuperUserPrivilege']):
             ...     flask_app_client.get('/api/v1/users/')
         """
         from smorest_sfs.services.auth.auth import login_user, logout_user
+        from smorest_sfs.modules.users.models import Role
 
         self._user = user
-        self._permission_mapping = permission_mapping or {}
+        self._roles = roles or []
+        self._user.roles = Role.query.filter(Role.name.in_(roles)).all()
+        self._user.save()
         if self._user is not None:
-            self._access_token = login_user(self._user)["token"]["access_token"]
+            self._access_token = login_user(self._user)["tokens"]["access_token"]
         yield self
         logout_user(self._user)
+        self._user.roles = []
+        self._user.save()
         self._user = None
 
     def open(self, *args, **kwargs):
@@ -60,8 +66,6 @@ class AutoAuthFlaskClient(FlaskClient):
             kwargs = self._combine_headers(**kwargs)
 
         response = super(AutoAuthFlaskClient, self).open(*args, **kwargs)
-
-        self._clear_user_rbac()
 
         return response
 
@@ -74,11 +78,3 @@ class AutoAuthFlaskClient(FlaskClient):
         else:
             kwargs["headers"] = extra_headers
         return kwargs
-
-    def _clear_user_rbac(self):
-        from smorest_sfs.extensions import db
-
-        if self._user:
-            stmt = "truncate table roles_users, permission_roles, roles, permissions"
-            db.session.execute(stmt)
-            db.session.commit()

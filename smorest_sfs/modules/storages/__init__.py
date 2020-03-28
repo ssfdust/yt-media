@@ -28,17 +28,4 @@ from flask_smorest import Blueprint
 from smorest_sfs.extensions import api
 
 blp = Blueprint("Storages", __name__, url_prefix="/storages", description="文件管理模块")
-
-
-def init_app(app):
-    """初始化模块
-
-    :param              app: Flask                  Flask实例
-    """
-    from . import resources, models  # pylint: disable=unused-import
-
-    base_prefix = (
-        app.config["MODULE_BASE_PREFIX"] if "MODULE_BASE_PREFIX" in app.config else ""
-    )
-
-    api.register_blueprint(blp, base_prefix=base_prefix)
+preload_modules = ["models", "resources"]

@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Union, TypeVar
-from pathlib import Path
-from werkzeug.datastructures import FileStorage
 import mimetypes
-from .paths import ProjectPath, make_uploaded_path, get_relative_pathstr, UploadPath
 import os
+from pathlib import Path
+from typing import TypeVar, Union
+
+from flask import send_file
+from werkzeug.datastructures import FileStorage
+
+from .paths import (ProjectPath, UploadPath, get_relative_pathstr,
+                    make_uploaded_path)
 
 Response = TypeVar("Response")
 
@@ -31,9 +35,6 @@ def delete_from_rel_path(path: Union[Path, str]):
         os.remove(filepath)
 
 
-from flask import send_file
-
-
 def make_response_from_store(store: FileStorage) -> Response:
     return send_file(
         store.stream,
@@ -41,8 +42,3 @@ def make_response_from_store(store: FileStorage) -> Response:
         mimetype=store.content_type,
         as_attachment=False,
     )
-
-
-def make_response_from_path(filename: str, path: Union[Path, str]) -> Response:
-    store = load_storage_from_path(filename, path)
-    return make_response_from_store(store)

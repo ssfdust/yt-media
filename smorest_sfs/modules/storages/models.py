@@ -44,33 +44,3 @@ class Storages(StoragesMixin, Model, SurrogatePK):
     def __init__(self, **kwargs):
         self.store = kwargs.pop("store", None)
         db.Model.__init__(self, **kwargs)
-
-
-class GarbageStorages(SurrogatePK, Model):
-    """
-    回收站
-
-    :param          path: str(2000)                 文件路径
-    :param          storetype: str(256)             存储类型
-    :param          storage_id: int                 存储ID
-    :param          storage: Storages               关联Storages项
-    """
-
-    __tablename__ = "garbage_storages"
-
-    path = db.Column(db.String(2000), nullable=True, doc="文件路径")
-    storetype = db.Column(db.String(256), nullable=True, doc="存储类型")
-    storage_id = db.Column(db.Integer, doc="文件ID")
-    storage = db.relationship(
-        "Storages",
-        primaryjoin="GarbageStorages.storage_id == Storages.id",
-        foreign_keys=storage_id,
-    )
-
-    def hard_delete(self, commit=True):
-        """
-        永久删除
-        """
-        delete_from_rel_path(self.path)
-        self.storage.hard_delete()
-        super().hard_delete()

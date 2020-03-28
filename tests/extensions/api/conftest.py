@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from typing import Any, Type
+from typing import Type
 from flask import Flask
 import pytest
 import marshmallow as ma
@@ -40,7 +40,7 @@ def db() -> SQLAlchemy:
 
 
 @pytest.fixture(scope="package")
-def TestPagination(db: SQLAlchemy) -> Model:
+def TestPagination(db: SQLAlchemy) -> Type[Model]:
     # pylint: disable=W0621
     class TestPagination(SurrogatePK, Model):
 

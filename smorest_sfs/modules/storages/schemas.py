@@ -13,11 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from marshmallow import fields
 
-class StorageCleaner(object):
-    def __init__(self, storages):
-        self.storages = storages
+from smorest_sfs.extensions import ma
+from smorest_sfs.extensions.marshal.bases import UploadField, BaseMsgSchema
 
-    def clean(self):
-        for storage in self.storages:
-            storage.hard_delete()
+
+class UploadParams(ma.Schema):
+    """
+    上传参数
+    """
+
+    file = UploadField(
+        description="文件", allow_none=False, required=True
+    )
+
+
+class StoragesSchema(ma.Schema):
+
+    file_id = fields.Int()
+
+
+class UploadSchema(BaseMsgSchema):
+    data = fields.Nested(StoragesSchema)

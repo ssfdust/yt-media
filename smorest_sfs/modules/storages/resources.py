@@ -13,20 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask import send_file
 from flask.views import MethodView
 from loguru import logger
 
-from app.extensions.marshal.bases import BaseMsgSchema
-from app.modules.auth.decorators import doc_login_required
+from smorest_sfs.extensions.marshal.bases import BaseMsgSchema
+from smorest_sfs.modules.auth.decorators import doc_login_required, role_required
+from smorest_sfs.modules.auth import ROLES
+from smorest_sfs.services.storages.handlers import StorageFactory
+from smorest_sfs.utils.storages import make_response_from_store
 
-from . import blp, models, params
-from .decorators import upload_handler
+from . import blp, models, schemas
 
 
-@blp.route("/token_based/<int:file_id>")
-class StoragesTokenBasedView(MethodView):
+@blp.route("/<int:file_id>")
+class StoragesView(MethodView):
     @doc_login_required
+    @role_required(ROLES.User)
     @blp.response(code=200, description="获取文件")
     def get(self, file_id):
         """
@@ -34,32 +36,27 @@ class StoragesTokenBasedView(MethodView):
         """
         storage = models.Storages.get_by_id(file_id)
 
-        return send_file(
-            storage.store.stream,
-            attachment_filename=storage.name,
-            mimetype=storage.store.content_type,
-            as_attachment=False,
-        )
+        return make_response_from_store(storage.store)
 
-    @upload_handler
     @doc_login_required
-    @blp.arguments(params.UploadParams(), location="files")
+    @blp.arguments(schemas.UploadParams(), location="files")
+    @role_required(ROLES.User)
     @blp.response(BaseMsgSchema)
     def put(self, args, file_id):
         """
         修改文件
         """
-        args["_store"] = args.pop("file")
-        extra_args = args.pop("extra_args")
-        logger.info(extra_args)
+        args["store"] = args.pop("file")
         storage = models.Storages.get_by_id(file_id)
+        factory = StorageFactory(storage)
         logger.info(f"修改了文件{storage.name} id: {storage.id}")
-        storage.update(**args)
+        factory.update(**args)
 
         return {"code": 0, "msg": "success"}
 
     @doc_login_required
     @blp.response(BaseMsgSchema)
+    @role_required(ROLES.User)
     def delete(self, file_id):
         """
         删除文件
@@ -71,20 +68,19 @@ class StoragesTokenBasedView(MethodView):
         return {"code": 0, "msg": "success"}
 
 
-@blp.route("/token_based/upload")
-class UploadTokenBasedView(MethodView):
-    @upload_handler
+@blp.route("/upload/<storetype>")
+class UploadView(MethodView):
     @doc_login_required
-    @blp.arguments(params.UploadParams(), location="files")
-    @blp.response(BaseMsgSchema)
-    def post(self, args):
+    @role_required(ROLES.User)
+    @blp.arguments(schemas.UploadParams(), location="files")
+    @blp.response(schemas.UploadSchema)
+    def post(self, args, storetype: str):
         """
         上传文件
         """
-        logger.info(f"上传了文件{args['name']}")
+        logger.info(f"上传了文件{args['file'].filename}")
         args["_store"] = args.pop("file")
-        extra_args = args.pop("extra_args")
-        logger.info(extra_args)
-        storage = models.Storages.create(**args)
+        factory = StorageFactory(models.Storages(storetype=storetype, **args))
+        factory.save()
 
-        return {"code": 0, "msg": "success", "file_id": storage.id}
+        return {"code": 0, "msg": "success", "data":{"file_id": factory.storage.id}}

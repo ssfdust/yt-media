@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from smorest_sfs.extensions import db
 from smorest_sfs.utils.storages import (
-    delete_from_rel_path,
     save_storage_to_path,
     load_storage_from_path,
 )
@@ -38,6 +37,7 @@ class StoragesMixin:
         每一次存储文件都会生成一个新的地址
         """
         if self.store is not None:
+            self.name = self.store.filename if self.store.filename else self.filename
             self.filetype = self.store.content_type
             self.path = save_storage_to_path(self.store, self.storetype)
             self.saved = True

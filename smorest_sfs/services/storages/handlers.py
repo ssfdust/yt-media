@@ -13,42 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from smorest_sfs.services.users.userinfo import handle_avator
-from smorest_sfs.modules.storages.models import GarbageStorages, StoragesMixin
+from typing import Any
 
-from smorest_sfs.utils.storages import delete_from_rel_path, save_storage_to_path
-
-
-class ExtraArgsHandler(object):
-    def __init__(self, storage, args):
-        self.storage = storage
-        self.args = args
-
-    def handle(self):
-        func = self.__mapping__.get(self.storage.storetype, None)
-        func(self.args)
-
-    __mapping__ = {"avator": handle_avator}
+from smorest_sfs.modules.storages.models import Storages
+from smorest_sfs.utils.storages import delete_from_rel_path
 
 
 class StorageFactory:
-    def __init__(self, storage: StoragesMixin):
+    def __init__(self, storage: Storages):
         self.storage = storage
 
-    def save(self, commit=True):
+    def save(self, commit: bool = True):
         self.storage.save_store()
         return self.storage.save(commit)
 
-    def update(self, commit=True, **kwargs):
-        GarbageStorages.create(
-            path=self.storage.path,
-            storetype=self.storage.storetype,
-            storage_id=self.storage.id,
-        )
+    def update(self, commit: bool = True, **kwargs: Any):
         self.storage.store = kwargs.get("store", self.storage.store)
         self.storage.save_store()
         return self.storage.update(commit=commit, **kwargs)
 
-    def hard_delete(self, commit=True):
+    def hard_delete(self, commit: bool = True):
         delete_from_rel_path(self.storage.path)
-        self.storage.hard_delete()
+        self.storage.hard_delete(commit)
