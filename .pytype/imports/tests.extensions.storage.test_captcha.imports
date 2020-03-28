@@ -1,4 +1,0 @@
-pytest/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
-flask_redis/__init__ /Development/smorest_sfs/.pytype/imports/default.pyi
-smorest_sfs/extensions/storage/__init__ /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/storage/__init__.pyi
-smorest_sfs/extensions/storage/captcha /Development/smorest_sfs/.pytype/pyi/smorest_sfs/extensions/storage/captcha.pyi
