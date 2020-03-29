@@ -9,12 +9,14 @@ notifications:
   email: false
 services:
     - rabbitmq
+    - redis
     - postgresql
 addons:
   postgresql: "11.2"
   apt:
       packages:
           - rabbitmq-server
+          - redis-server
 before_install:
     - sudo apt-get update
     - sudo apt-get --yes remove postgresql\*
