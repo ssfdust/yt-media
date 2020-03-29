@@ -129,7 +129,7 @@ class ForgetPasswordView(MethodView):
 
         发送忘记密码邮件到请求的email
         """
-        user = models.User.get_by_keyword(email)
+        user = User.get_by_keyword(email)
         if not user:
             abort(404, message="用户不存在")
         logger.info(f"{user.email}发起了忘记密码申请")

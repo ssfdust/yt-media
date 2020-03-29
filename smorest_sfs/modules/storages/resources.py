@@ -17,8 +17,12 @@ from flask.views import MethodView
 from loguru import logger
 
 from smorest_sfs.extensions.marshal.bases import BaseMsgSchema
-from smorest_sfs.modules.auth.decorators import doc_login_required, role_required
-from smorest_sfs.modules.auth import ROLES
+from smorest_sfs.modules.auth.decorators import (
+    doc_login_required,
+    role_required,
+    permission_required,
+)
+from smorest_sfs.modules.auth import ROLES, PERMISSIONS
 from smorest_sfs.services.storages.handlers import StorageFactory
 from smorest_sfs.utils.storages import make_response_from_store
 
@@ -68,6 +72,19 @@ class StoragesView(MethodView):
         return {"code": 0, "msg": "success"}
 
 
+@blp.route("/force/delete/<int:file_id>")
+class ForceDeleteView(MethodView):
+    @doc_login_required
+    @permission_required(PERMISSIONS.FileForceDelete)
+    @blp.response(BaseMsgSchema)
+    def delete(self, file_id):
+        storage = models.Storages.get_by_id(file_id)
+        factory = StorageFactory(storage)
+        factory.hard_delete()
+
+        return {"code": 0, "msg": "success"}
+
+
 @blp.route("/upload/<storetype>")
 class UploadView(MethodView):
     @doc_login_required
@@ -83,4 +100,4 @@ class UploadView(MethodView):
         factory = StorageFactory(models.Storages(storetype=storetype, **args))
         factory.save()
 
-        return {"code": 0, "msg": "success", "data":{"file_id": factory.storage.id}}
+        return {"code": 0, "msg": "success", "data": {"file_id": factory.storage.id}}

@@ -19,6 +19,7 @@ from datetime import datetime
 from typing import NoReturn
 from sqlalchemy.orm.exc import NoResultFound
 from smorest_sfs.modules.users.models import User, Role, Permission, UserInfo, db, Model
+from smorest_sfs.modules.storages.models import Storages
 from smorest_sfs.modules.auth.permissions import (
     PERMISSIONS,
     ROLES,
@@ -57,7 +58,7 @@ def init():
     # create super user
     root = User.create(
         username="wisdom",
-        password=encrypt_password("zerotoany"),
+        password="zerotoany",
         email="wisdom@zero.any.else",
         phonenum="1234567",
         active=True,
@@ -76,23 +77,32 @@ def init():
     root.save()
 
 
+def get_or_create(model_cls, name):
+    item = model_cls.query.filter_by(name=name).first()
+    if item:
+        return item
+    return model_cls(name=name).save(False)
+
+
+def get_or_create_from_lst(model_cls, *names):
+    lst = []
+    for name in names:
+        lst.append(get_or_create(model_cls, name))
+
+    return lst
+
+
 def update_permissions():
     """
     更新权限角色数据
     """
     for role_name, permissions in mapping.items():
-        try:
-            role = Role.query.filter_by(name=role_name).one()
-        except NoResultFound:
-            role = Role(name=role_name, description=role_name).save(False)
+        role = get_or_create(Role, role_name)
+        permissions = get_or_create_from_lst(Permission, *permissions)
 
         for permission in permissions:
-            try:
-                permit = Permission.query.filter_by(name=permission).one()
-            except NoResultFound:
-                permit = Permission(name=permission, description=permission).save(False)
-            if permit not in role.permissions:
-                role.permissions.append(permit)
+            if permission not in role.permissions:
+                role.permissions.append(permission)
 
     db.session.commit()
 

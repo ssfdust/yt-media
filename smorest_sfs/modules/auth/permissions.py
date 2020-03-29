@@ -48,6 +48,8 @@ class PERMISSIONS:
     EmailTemplateEdit = "EmailTemplateEditPrivilege"
     EmailTemplateDelete = "EmailTemplateDeletePrivilege"
     EmailTemplateQuery = "EmailTemplateQueryPrivilege"
+    # FileManager
+    FileForceDelete = "FileForceDeletePrivilege"
     # End Of PERMISSIONS
 
 
@@ -68,6 +70,7 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.EmailTemplateDelete,
         PERMISSIONS.EmailTemplateEdit,
         PERMISSIONS.EmailTemplateQuery,
+        PERMISSIONS.FileForceDelete
         # End Of SuperUser
     ],
     ROLES.UserManager: [

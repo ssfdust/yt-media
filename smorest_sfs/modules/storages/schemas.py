@@ -24,9 +24,7 @@ class UploadParams(ma.Schema):
     上传参数
     """
 
-    file = UploadField(
-        description="文件", allow_none=False, required=True
-    )
+    file = UploadField(description="文件", allow_none=False, required=True)
 
 
 class StoragesSchema(ma.Schema):

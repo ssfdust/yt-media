@@ -5,10 +5,14 @@ import io
 import pytest
 
 from smorest_sfs.modules.auth.permissions import ROLES
+from smorest_sfs.utils.storages import load_storage_from_path
+from smorest_sfs.services.storages.handlers import StorageFactory
 from tests._utils.injection import FixturesInjectBase
 
 
 from flask import url_for
+
+
 class TestStoragesView(FixturesInjectBase):
 
     fixture_names = ("flask_app_client", "flask_app")
@@ -35,6 +39,20 @@ class TestStoragesView(FixturesInjectBase):
             resp = client.delete(f"/api/v1/storages/{add_storage.id}")
             after_resp = client.get(f"/api/v1/storages/{add_storage.id}")
             assert resp.json["code"] == 0 and after_resp.status_code == 404
+
+
+class TestForceDeleteView(FixturesInjectBase):
+
+    fixture_names = ("flask_app_client", "flask_app")
+
+    def test_force_delete(self, regular_user, add_storage):
+        file_id = add_storage.id
+        path = add_storage.path[:]
+        with self.flask_app_client.login(regular_user, [ROLES.SuperUser]) as client:
+            with self.flask_app.test_request_context():
+                client.delete(url_for("Storages.ForceDeleteView", file_id=file_id))
+                with pytest.raises(FileNotFoundError):
+                    load_storage_from_path("test.txt", path)
 
 
 class TestUploadView(FixturesInjectBase):

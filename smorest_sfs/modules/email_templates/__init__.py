@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2019 RedLotus <ssfdust@gmail.com>
-# Author: RedLotus <ssfdust@gmail.com>
+# Copyright 2019 ssfdust RedLotus
+# Author: ssfdust RedLotus
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,21 +14,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """
-    app.app
-    ~~~~~~~~~~~~~~~~~~~~~~
+    app.modules.email_templates
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    实例模块
+    电子邮件模板模块
 
-    包含flask和celery实例
+    电子邮件模板
 """
 
-from .factory import create_app
+from flask_smorest import Blueprint
 
-# from .extensions.celery import celery_ext
+from smorest_sfs.extensions import api
 
-ENABLED_MODULES = ["auth", "users", "storages", "email_templates"]
+blp = Blueprint(
+    "EmailTemplate", __name__, url_prefix="/email_templates", description="电子邮件模板"
+)
 
-app = create_app(ENABLED_MODULES)
-
-#  celery = celery_ext.get_celery_app()
+preload_modules = ["models", "resources"]

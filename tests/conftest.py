@@ -10,7 +10,7 @@ from _pytest.monkeypatch import MonkeyPatch
 from flask import Flask
 
 from migrations.initial_development_data import init_permission
-from smorest_sfs.app import app
+from smorest_sfs.app import create_app, ENABLED_MODULES
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.modules.users.models import User
 from smorest_sfs.utils.paths import UploadPath
@@ -42,6 +42,7 @@ def flask_app() -> Flask:
     from smorest_sfs.extensions import db
 
     os.environ["FLASK_ENV"] = "testing"
+    app = create_app(ENABLED_MODULES)
 
     with app.app_context():
         db.create_all()

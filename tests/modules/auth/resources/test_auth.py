@@ -10,13 +10,15 @@ from tests._utils.injection import FixturesInjectBase
 from smorest_sfs.services.auth.confirm import generate_confirm_token
 from smorest_sfs.services.auth.auth import login_user
 
-MAIL_QUEUE = Queue()
+MAIL_QUEUE: Queue = Queue()
 
 
-class TestAuthModule(FixturesInjectBase):
+class TestAuthHelper(FixturesInjectBase):
 
     fixture_names = ("flask_app_client", "inactive_user", "regular_user")
 
+
+class TestLogin(TestAuthHelper):
     @pytest.mark.parametrize(
         "captcha, code, token",
         [("2345", 200, "1212"), ("1111", 403, "1212"), ("1111", 403, "1211"),],
@@ -57,6 +59,8 @@ class TestAuthModule(FixturesInjectBase):
         resp = self.flask_app_client.post("/api/v1/auth/login", json=login_data)
         assert resp.status_code == code
 
+
+class TestConfirm(TestAuthHelper):
     def test_user_confirm(self):
         self.regular_user.update(confirmed_at=None)
         token = generate_confirm_token(self.regular_user, "confirm")
@@ -76,32 +80,40 @@ class TestAuthModule(FixturesInjectBase):
         resp = self.flask_app_client.get("/api/v1/auth/confirm?token={}".format(token))
         assert resp.status_code == 403
 
-    #  @pytest.mark.parametrize(
-    #      "email, code", [("test", 404), ("forget_passwd_user@email.com", 200), ]
-    #  )
-    #  def test_user_forget_password(
-    #      self, flask_app_client, patched_mail, email, code, forget_passwd_user
-    #  ):
-    #      resp = flask_app_client.post(
-    #          "/api/v1/auth/forget-password", json={"email": email}
-    #      )
-    #      forget_passwd_user.update(active=True)
-    #      assert resp.status_code == code
-    #      if resp.status_code == 200:
-    #          url = MAIL_QUEUE.get(timeout=3)
-    #          resp = flask_app_client.get(url)
-    #          assert resp.status_code == 200
-    #          resp = flask_app_client.put(
-    #              url, json={"password": "1234567", "confirm_password": "123456"}
-    #          )
-    #          assert resp.status_code == 501
-    #          resp = flask_app_client.put(
-    #              url, json={"password": "123456", "confirm_password": "123456"}
-    #          )
-    #          assert resp.status_code == 200
-    #          assert forget_passwd_user.verify_and_update_password("123456")
-    #          resp = flask_app_client.get(url)
-    #          assert resp.status_code == 401
+
+class TestForgetPasswd(TestAuthHelper):
+    url = None
+    fixture_names = TestAuthHelper.fixture_names + (
+        "forget_passwd_user",
+        "patched_mail",
+    )
+
+    @pytest.mark.parametrize(
+        "email, code", [("test", 404), ("forget_passwd_user@email.com", 200),]
+    )
+    def test_user_forget_password_access(self, email, code):
+        resp = self.flask_app_client.post(
+            "/api/v1/auth/forget-password", json={"email": email}
+        )
+        forget_passwd_user.update(active=True)
+        assert resp.status_code == code
+
+    def test_reset_passwd(self):
+        url = MAIL_QUEUE.get(timeout=3)
+        resp = self.flask_app_client.get(url)
+        assert resp.status_code == 200
+        resp = self.flask_app_client.put(
+            url, json={"password": "1234567", "confirm_password": "123456"}
+        )
+        assert resp.status_code == 501
+        resp = self.flask_app_client.put(
+            url, json={"password": "123456", "confirm_password": "123456"}
+        )
+        assert resp.status_code == 200
+        assert self.forget_passwd_user.verify_and_update_password("123456")
+        resp = self.flask_app_client.get(url)
+        assert resp.status_code == 401
+
     #
     #  def test_user_refresh_token(
     #      self, flask_app_client, regular_user, patch_code, flask_app

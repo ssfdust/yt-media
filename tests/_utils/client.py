@@ -25,7 +25,9 @@ class JSONResponse(Response):
     def json(self) -> Dict:
         return json.loads(self.get_data(as_text=True), object_pairs_hook=OrderedDict)
 
+
 from typing import Union
+
 
 class AutoAuthFlaskClient(FlaskClient):
     """
