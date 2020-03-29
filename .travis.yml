@@ -16,19 +16,12 @@ services:
     - redis
     - postgresql
 addons:
-  postgresql: "12.1"
   apt:
       packages:
           - rabbitmq-server
           - redis-server
 before_install:
     - sudo apt-get update
-    - sudo apt-get --yes remove postgresql\*
-    - sudo apt-get install -y --allow-unauthenticated --no-install-recommends --no-install-suggests postgresql-$POSTGRESQL_VERSION postgresql-client-$POSTGRESQL_VERSION postgresql-server-dev-$POSTGRESQL_VERSION postgresql-common
-    - sudo apt-get install -y --allow-unauthenticated postgresql-$POSTGRESQL_VERSION-postgis-$POSTGIS_VERSION postgresql-$POSTGRESQL_VERSION-postgis-$POSTGIS_VERSION-scripts postgis
-    - sudo pg_dropcluster --stop $POSTGRESQL_VERSION main
-    - sudo rm -rf /etc/postgresql/$POSTGRESQL_VERSION /var/lib/postgresql/$POSTGRESQL_VERSION /var/ramfs/postgresql/$POSTGRESQL_VERSION
-    - sudo pg_createcluster -u postgres $POSTGRESQL_VERSION main --start -- --auth-local trust --auth-host password
     - psql -U postgres <<< $(echo 'create database "my-smorest-testing"')
     - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
     - chmod +x ./cc-test-reporter
