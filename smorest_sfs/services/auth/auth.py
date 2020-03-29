@@ -3,18 +3,19 @@
 """
 验证用户登录
 """
-from typing import NoReturn, Dict
 from contextlib import contextmanager
+from typing import Any, Dict, NoReturn
 
 from flask import current_app
 from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_mail import Message
 from flask_smorest import abort
 from loguru import logger
 
 from smorest_sfs.extensions.storage.captcha import CaptchaStore
 from smorest_sfs.modules.auth.helpers import add_token_to_database
-from smorest_sfs.modules.users.models import User
 from smorest_sfs.modules.auth.models import TokenBlackList
+from smorest_sfs.modules.users.models import User
 
 
 class UserLoginChecker:

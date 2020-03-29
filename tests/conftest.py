@@ -9,7 +9,7 @@ import pytest
 from _pytest.monkeypatch import MonkeyPatch
 from flask import Flask
 
-from migrations.initial_development_data import init_permission
+from migrations.initial_development_data import init_permission, init_email_templates
 from smorest_sfs.app import create_app, ENABLED_MODULES
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.modules.users.models import User
@@ -47,6 +47,7 @@ def flask_app() -> Flask:
     with app.app_context():
         db.create_all()
         init_permission()
+        init_email_templates()
         yield app
         db.session.rollback()
         db.drop_all()

@@ -109,7 +109,7 @@ def update_permissions():
 
 def init_email_templates():
     """初始化邮件模板"""
-    from app.modules.email_templates.models import EmailTemplate
+    from smorest_sfs.modules.email_templates.models import EmailTemplate
 
     template = '<p>{{ message | safe }}</p><a href="{{ url }}" target="_blank">点击访问</a>'
     for name in ["default", "confirm", "reset-password"]:

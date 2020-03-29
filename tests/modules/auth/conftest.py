@@ -7,8 +7,9 @@ import pytest
 
 from smorest_sfs.extensions.storage.captcha import CaptchaStore
 
-SENDED: queue.Queue = queue.Queue()
+from tests._utils.uniqueue import UniqueQueue
 
+SENDED = UniqueQueue()
 
 @pytest.fixture
 def patch_code(monkeypatch):
@@ -27,12 +28,12 @@ def permissions():
     return [PERMISSIONS.UserEdit, PERMISSIONS.GroupQuery, PERMISSIONS.GroupAdd]
 
 
-def fake_send(msg):
-    SENDED.put(msg)
+def fake_send(self):
+    SENDED.put(self.content['url'])
 
 
 @pytest.fixture
 def patched_mail(monkeypatch):
-    from smorest_sfs.extensions import mail
+    from smorest_sfs.services.mail import PasswdMailSender
 
-    monkeypatch.setattr(mail, "send", fake_send)
+    monkeypatch.setattr(PasswdMailSender, "send", fake_send)

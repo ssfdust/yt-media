@@ -35,6 +35,7 @@ from smorest_sfs.extensions.marshal import BaseMsgSchema
 from smorest_sfs.extensions.storage.captcha import CaptchaStore
 from smorest_sfs.modules.users.models import User
 from smorest_sfs.services.auth.auth import UserLoginChecker, login_user, logout_user
+from smorest_sfs.services.mail import PasswdMailSender
 from smorest_sfs.services.auth.confirm import (
     confirm_current_token,
     generate_confirm_token,
@@ -136,16 +137,8 @@ class ForgetPasswordView(MethodView):
 
         token = generate_confirm_token(user, "passwd")
         url = url_for("Auth.ResetForgotPasswordView", token=token, _external=True)
-        # TODO 真正发送邮件
-        #  send_mail.delay(
-        #      user.email,
-        #      "找回密码",
-        #      {
-        #          "url": url,
-        #          "message": "这是一封找回密码邮件"
-        #      },
-        #      "reset-password",
-        #  )
+        sender = PasswdMailSender(to=user.email, content={"url": url, "message": "找回密码"})
+        sender.send()
 
         return {"code": 0, "msg": "success"}
 
@@ -178,12 +171,11 @@ class ResetForgotPasswordView(MethodView):
 
         根据token设置密码
         """
-        user = confirm_current_token("passwd")
 
         if password != confirm_password:
-            logger.error(f"{user.email} 密码提交错误")
             abort(501, message="密码不一致，修改失败")
 
+        user = confirm_current_token("passwd")
         logger.info(f"{user.email} 修改了密码")
         user.update(password=confirm_password)
 

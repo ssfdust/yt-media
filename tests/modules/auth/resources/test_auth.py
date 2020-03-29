@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 """测试auth"""
 
-from queue import Queue
 
 import pytest
 
-from tests._utils.injection import FixturesInjectBase
-from smorest_sfs.services.auth.confirm import generate_confirm_token
 from smorest_sfs.services.auth.auth import login_user
+from smorest_sfs.services.auth.confirm import generate_confirm_token
+from tests._utils.injection import FixturesInjectBase
+from tests._utils.uniqueue import UniqueQueue
 
-MAIL_QUEUE: Queue = Queue()
+MAIL_QUEUE: UniqueQueue = UniqueQueue()
 
 
 class TestAuthHelper(FixturesInjectBase):
@@ -81,6 +81,10 @@ class TestConfirm(TestAuthHelper):
         assert resp.status_code == 403
 
 
+class TempStore:
+    value = ""
+
+
 class TestForgetPasswd(TestAuthHelper):
     url = None
     fixture_names = TestAuthHelper.fixture_names + (
@@ -98,49 +102,50 @@ class TestForgetPasswd(TestAuthHelper):
         self.forget_passwd_user.update(active=True)
         assert resp.status_code == code
 
-    #  def test_reset_passwd(self):
-    #      url = MAIL_QUEUE.get(timeout=3)
-    #      resp = self.flask_app_client.get(url)
-    #      assert resp.status_code == 200
-    #      resp = self.flask_app_client.put(
-    #          url, json={"password": "1234567", "confirm_password": "123456"}
-    #      )
-    #      assert resp.status_code == 501
-    #      resp = self.flask_app_client.put(
-    #          url, json={"password": "123456", "confirm_password": "123456"}
-    #      )
-    #      assert resp.status_code == 200
-    #      assert self.forget_passwd_user.verify_and_update_password("123456")
-    #      resp = self.flask_app_client.get(url)
-    #      assert resp.status_code == 401
+    @pytest.mark.usefixtures("patched_mail")
+    def test_reset_passwd_pre_get(self):
+        TempStore.value = MAIL_QUEUE.get(timeout=3)
+        resp = self.flask_app_client.get(TempStore.value)
+        assert resp.status_code == 200
 
-    #
-    #  def test_user_refresh_token(
-    #      self, flask_app_client, regular_user, patch_code, flask_app
-    #  ):
-    #      flask_app_client.get("/api/v1/auth/captcha?token=refresh_token")
-    #      login_data = {
-    #          "email": regular_user.email,
-    #          "password": "regular_user_password",
-    #          "token": "refresh_token",
-    #          "captcha": "2345",
-    #      }
-    #      resp = flask_app_client.post("/api/v1/auth/login", json=login_data)
-    #      refresh_token = resp.json["data"]["tokens"]["refresh_token"]
-    #      headers = {"Authorization": "Bearer {}".format(refresh_token)}
-    #      resp = flask_app_client.post("/api/v1/auth/refresh", headers=headers)
-    #      assert resp.status_code == 200
-    #      access_token = resp.json["data"]["access_token"]
-    #      headers = {"Authorization": "Bearer {}".format(access_token)}
-    #      resp = flask_app_client.post(
-    #          "/api/v1/auth/logout",
-    #          headers=headers,
-    #          json={"refresh_token": refresh_token},
-    #      )
-    #      assert resp.status_code == 200
-    #      resp = flask_app_client.post(
-    #          "/api/v1/auth/logout",
-    #          headers=headers,
-    #          json={"refresh_token": refresh_token},
-    #      )
-    #      assert resp.status_code == 401
+    def test_passwd_must_be_the_same(self):
+        resp = self.flask_app_client.put(
+            TempStore.value, json={"password": "1234567", "confirm_password": "123456"}
+        )
+        self.flask_app_client.put(
+            TempStore.value, json={"password": "123456", "confirm_password": "123456"}
+        )
+        assert resp.status_code == 501
+        assert self.forget_passwd_user.password == "123456"
+
+    def test_passwdurl_only_disabled(self):
+        resp = self.flask_app_client.get(TempStore.value)
+        assert resp.status_code == 401
+
+    def test_user_refresh_token(
+        self, flask_app_client, regular_user, patch_code, flask_app
+    ):
+        flask_app_client.get("/api/v1/auth/captcha?token=refresh_token")
+        login_data = {
+            "email": regular_user.email,
+            "password": "regular_user_password",
+            "token": "refresh_token",
+            "captcha": "2345",
+        }
+        resp = flask_app_client.post("/api/v1/auth/login", json=login_data)
+        refresh_token = resp.json["data"]["tokens"]["refresh_token"]
+        headers = {"Authorization": "Bearer {}".format(refresh_token)}
+        resp = flask_app_client.post("/api/v1/auth/refresh", headers=headers)
+        assert resp.status_code == 200
+        access_token = resp.json["data"]["access_token"]
+        headers = {"Authorization": "Bearer {}".format(access_token)}
+        resp = flask_app_client.post(
+            "/api/v1/auth/logout",
+            headers=headers,
+        )
+        assert resp.status_code == 200
+        resp = flask_app_client.post(
+            "/api/v1/auth/logout",
+            headers=headers,
+        )
+        assert resp.status_code == 401
