@@ -22,7 +22,9 @@ addons:
           - redis-server
 before_install:
     - sudo apt-get update
-    - psql -U postgres <<< $(echo 'create database "my-smorest-testing"')
+    - psql -U postgres <<< $(echo 'create user "smorest-admin" with login password "******"')
+    - psql -U postgres <<< $(echo 'create database "my-smorest-testing" owner "smorest-admin"')
+    - psql -U postgres <<< $(echo 'grant all privileges on database "my-smorest-testing" to "smorest-admin"')
     - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
     - chmod +x ./cc-test-reporter
     - ./cc-test-reporter before-build --debug
