@@ -7,12 +7,16 @@ env:
         - CC_TEST_REPORTER_ID=1dbbc0a693f184d81a4cf1430116855dd646950d1cd54981f5ae8e1f0a32c41f
 notifications:
   email: false
+jobs:
+    include:
+        - env: POSTGRESQL_VERSION="12" POSTGIS_VERSION="3"
+          dist: bionic
 services:
     - rabbitmq
     - redis
     - postgresql
 addons:
-  postgresql: "11.2"
+  postgresql: "12.1"
   apt:
       packages:
           - rabbitmq-server
@@ -20,13 +24,15 @@ addons:
 before_install:
     - sudo apt-get update
     - sudo apt-get --yes remove postgresql\*
-    - sudo apt-get install -y postgresql-11 postgresql-client-11
-    - sudo cp /etc/postgresql/{9.6,11}/main/pg_hba.conf
-    - sudo service postgresql restart 11 
+    - sudo apt-get install -y --allow-unauthenticated --no-install-recommends --no-install-suggests postgresql-$POSTGRESQL_VERSION postgresql-client-$POSTGRESQL_VERSION postgresql-server-dev-$POSTGRESQL_VERSION postgresql-common
+    - sudo apt-get install -y --allow-unauthenticated postgresql-$POSTGRESQL_VERSION-postgis-$POSTGIS_VERSION postgresql-$POSTGRESQL_VERSION-postgis-$POSTGIS_VERSION-scripts postgis
+    - sudo pg_dropcluster --stop $POSTGRESQL_VERSION main
+    - sudo rm -rf /etc/postgresql/$POSTGRESQL_VERSION /var/lib/postgresql/$POSTGRESQL_VERSION /var/ramfs/postgresql/$POSTGRESQL_VERSION
+    - sudo pg_createcluster -u postgres $POSTGRESQL_VERSION main --start -- --auth-local trust --auth-host password
+    - psql -U postgres <<< $(echo 'create database "my-smorest-testing"')
     - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
     - chmod +x ./cc-test-reporter
     - ./cc-test-reporter before-build --debug
-    - psql -U postgres <<< $(echo 'create database "my-smorest-testing"')
 install:
     - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
     - PATH="${PATH}:$HOME/.poetry/bin"
