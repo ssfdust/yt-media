@@ -52,9 +52,3 @@ class RenderableStatement(StatementAbstract, TableRender):
     @abstractstaticmethod
     def parse_records(records: List[RowProxy]):
         raise NotImplementedError
-
-    def render_results(self, size: int = 50):
-        cursor = db.session.execute(self.get_render_sql(size))
-        records = cursor.fetchall()
-        table_data = self._render_data_table(records)
-        logger.debug("\n" + table_data)

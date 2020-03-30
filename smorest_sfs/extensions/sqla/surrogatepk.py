@@ -28,7 +28,7 @@ class SurrogatePK:
         info={"marshmallow": {"dump_only": True}},
     )
     modified = db.Column(
-        db.DateTime(True),
+        db.DateTime(),
         nullable=False,
         doc="修改时间",
         server_default=utcnow(),
@@ -36,7 +36,7 @@ class SurrogatePK:
         info={"marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}},
     )
     created = db.Column(
-        db.DateTime(True),
+        db.DateTime(),
         nullable=False,
         doc="创建时间",
         server_default=utcnow(),

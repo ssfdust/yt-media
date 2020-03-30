@@ -2,6 +2,7 @@
 
 import pytest
 from werkzeug.exceptions import NotFound
+
 from tests._utils.injection import FixturesInjectBase
 
 
@@ -9,8 +10,25 @@ class ItemsFixtureBase(FixturesInjectBase):
     @pytest.fixture
     def crud_items(self):
         return [
-            self.TestCRUDTable.create(name=name)
-            for name in ["aaabbb", "bbbbcccc", "bbcccc", "bbc"]
+            self.TestCRUDTable.create(
+                id=idx,
+                name=name,
+                created="1994-09-11 08:20:00",
+                modified="1994-09-11 08:20:00",
+            )
+            for idx, name in enumerate(["aaabbb", "bbbbcccc", "bbcccc", "bbc"], 1)
+        ]
+
+    @pytest.fixture
+    def child_items(self):
+        return [
+            self.TestChildTable.create(
+                id=idx,
+                name=name,
+                created="1994-09-11 08:20:00",
+                modified="1994-09-11 08:20:00",
+            )
+            for idx, name in enumerate(["aaabbb", "bbbbcccc", "bbcccc", "bbc"], 1)
         ]
 
 

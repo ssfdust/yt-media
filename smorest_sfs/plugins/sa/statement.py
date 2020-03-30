@@ -5,9 +5,12 @@
 """
 
 from functools import wraps
-from typing import Dict, List
+from typing import Dict, List, Type
+
+from loguru import logger
 from sqlalchemy.engine.result import RowProxy
-from .abstract import RenderableStatement
+
+from .abstract import RenderableStatement, db
 
 
 class SAStatement(RenderableStatement):
@@ -24,8 +27,14 @@ class SAStatement(RenderableStatement):
     def parse_records(records: List[RowProxy]):
         pass
 
+    def render_results(self, size: int = 50):
+        cursor = db.session.execute(self.get_render_sql(size))
+        records = cursor.fetchall()
+        table_data = self._render_data_table(records)
+        logger.debug("\n" + table_data)
 
-def sql_decorator(cls: SAStatement):
+
+def sql_decorator(cls: Type[SAStatement]):
     @wraps(cls)
     def wraper(*args, **kwargs):
         def get_sa_sql(self):

@@ -83,7 +83,9 @@ def init_development_data(context, skip_on_failure=False):
     from migrations import initial_development_data
 
     try:
+        initial_development_data.init_permission()
         initial_development_data.init()
+        initial_development_data.init_email_templates()
         initial_development_data.update_permissions()
     except AssertionError as exception:
         if not skip_on_failure:
