@@ -1,18 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
 from pathlib import Path
 
-from freezegun import freeze_time
 import pytest
-import os
+from freezegun import freeze_time
 
-from smorest_sfs.utils.paths import (
-    ProjectPath,
-    UploadPath,
-    make_uploaded_path,
-    get_relative_pathstr,
-    WHITE_LIST,
-)
+from smorest_sfs.utils.paths import (WHITE_LIST, ProjectPath, UploadPath,
+                                     get_relative_pathstr, make_uploaded_path)
 
 
 class TestProjectPath:
@@ -33,9 +28,6 @@ class TestUploadPath:
         project_path = ProjectPath.get_project_path()
         dir_path = Path(project_path, "uploads", storetype, *args)
         assert UploadPath.get_uploads_subdir(storetype, withdate) == dir_path
-
-
-import pytest
 
 
 @freeze_time("1994-09-11 08:20:00")

@@ -17,13 +17,14 @@ class TestApi(FixturesInjectBase):
         TestPagination = self.TestPagination
         TestPageSchema = self.TestPageSchema
 
-        @blp.route("/")
         class Pets(MethodView):  # pylint: disable=W0612
             @blp.response(TestPageSchema)
             @paginate()
             def get(self):
                 """List pets"""
                 return TestPagination.query.order_by(TestPagination.id)
+
+        blp.add_url_rule("", "pets", Pets.as_view("pets"))
 
         self.api.register_blueprint(blp, base_prefix="/pets", url_prefix="/")
 
