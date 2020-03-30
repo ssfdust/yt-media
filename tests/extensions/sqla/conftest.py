@@ -12,8 +12,7 @@ from marshmallow import Schema, fields
 from smorest_sfs.extensions import babel
 from smorest_sfs.extensions.sqla import Model, SurrogatePK
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
-from smorest_sfs.plugins.sa import (SAQuery, SAStatement, query_decorator,
-                                    sql_decorator)
+from smorest_sfs.plugins.sa import SAQuery, SAStatement, query_decorator, sql_decorator
 from tests._utils.tables import drop_tables
 
 FAKE_TIME = datetime.datetime(1994, 9, 11, 8, 20)

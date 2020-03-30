@@ -26,18 +26,18 @@ from captcha.image import ImageCaptcha
 from flask import current_app as app
 from flask import jsonify, send_file, url_for
 from flask.views import MethodView
-from flask_jwt_extended import (create_access_token, current_user,
-                                get_jwt_identity)
+from flask_jwt_extended import create_access_token, current_user, get_jwt_identity
 from flask_smorest import abort
 from loguru import logger
 
 from smorest_sfs.extensions.marshal import BaseMsgSchema
 from smorest_sfs.extensions.storage.captcha import CaptchaStore
 from smorest_sfs.modules.users.models import User
-from smorest_sfs.services.auth.auth import (UserLoginChecker, login_user,
-                                            logout_user)
-from smorest_sfs.services.auth.confirm import (confirm_current_token,
-                                               generate_confirm_token)
+from smorest_sfs.services.auth.auth import UserLoginChecker, login_user, logout_user
+from smorest_sfs.services.auth.confirm import (
+    confirm_current_token,
+    generate_confirm_token,
+)
 from smorest_sfs.services.mail import PasswdMailSender
 
 from . import blp, models, params, schemas

@@ -25,8 +25,9 @@ def test_utctoday():
 
     assert str(today) == "1994-09-11"
 
+
 @freeze_time(FREEZETIME)
 def test_convert_timezone_for_pendulum():
-    pendulum_dt = pendulum.now('utc')
-    sh_dt = convert_timezone(pendulum_dt, 'Asia/Shanghai')
+    pendulum_dt = pendulum.now("utc")
+    sh_dt = convert_timezone(pendulum_dt, "Asia/Shanghai")
     assert sh_dt.to_datetime_string() == "1994-09-11 16:20:00"

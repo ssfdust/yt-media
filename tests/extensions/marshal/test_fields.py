@@ -25,7 +25,8 @@ def test_fileds_none_load_handle(app: Flask, pendulum_field_schema: Schema):
     with app.app_context():
         data = {"time": None}
         res = pendulum_field_schema.load(data)
-        assert res['time'] is None
+        assert res["time"] is None
+
 
 def test_fields_empty_load_handle(app: Flask, pendulum_field_schema: Schema):
     with app.app_context():
@@ -33,8 +34,9 @@ def test_fields_empty_load_handle(app: Flask, pendulum_field_schema: Schema):
         with pytest.raises(ValidationError):
             pendulum_field_schema.load(data)
 
+
 def test_fileds_none_dump_handle(app: Flask, pendulum_field_schema: Schema):
     with app.app_context():
         data = {"time": None}
         res = pendulum_field_schema.dump(data)
-        assert res['time'] is None
+        assert res["time"] is None

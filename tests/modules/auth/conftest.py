@@ -12,6 +12,7 @@ from freezegun import freeze_time
 
 SENDED = UniqueQueue()
 
+
 @pytest.fixture
 def patch_code(monkeypatch):
     """为编码补丁"""
@@ -30,7 +31,7 @@ def permissions():
 
 
 def fake_send(self):
-    SENDED.put(self.content['url'])
+    SENDED.put(self.content["url"])
 
 
 @pytest.fixture
@@ -44,8 +45,7 @@ def patched_mail(monkeypatch):
 @freeze_time("1990-01-01 00:00:00")
 def expired_token_headers(regular_user):
     from smorest_sfs.services.auth.auth import login_user
+
     access_token = login_user(regular_user)["tokens"]["access_token"]
-    expired_headers = (
-        ("Authorization", "Bearer {token}".format(token=access_token)),
-    )
+    expired_headers = (("Authorization", "Bearer {token}".format(token=access_token)),)
     return expired_headers

@@ -146,13 +146,7 @@ class TestForgetPasswd(TestAuthHelper):
         assert resp.status_code == 200
         access_token = resp.json["data"]["access_token"]
         headers = {"Authorization": "Bearer {}".format(access_token)}
-        resp = flask_app_client.post(
-            "/api/v1/auth/logout",
-            headers=headers,
-        )
+        resp = flask_app_client.post("/api/v1/auth/logout", headers=headers,)
         assert resp.status_code == 200
-        resp = flask_app_client.post(
-            "/api/v1/auth/logout",
-            headers=headers,
-        )
+        resp = flask_app_client.post("/api/v1/auth/logout", headers=headers,)
         assert resp.status_code == 401

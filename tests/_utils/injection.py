@@ -13,9 +13,9 @@ def log_to_queue(record):
 def inject_logger(logger):
     logger.add(log_to_queue, serialize=False)
 
+
 def uninject_logger(logger):
     logger.remove()
-
 
 
 class FixturesInjectBase:

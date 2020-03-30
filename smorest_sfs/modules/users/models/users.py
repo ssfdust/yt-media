@@ -79,7 +79,9 @@ class Role(Model, SurrogatePK):
             return cls.query.filter_by(ROLES.SuperUser).all()
         return cls.query.filter_by(user_default=True).all()  # pragam: no cover
 
-    def add_permissions(self, permissions:List[Permission]) -> List[Permission]:  # pragma: no cover
+    def add_permissions(
+        self, permissions: List[Permission]
+    ) -> List[Permission]:  # pragma: no cover
         """
         获取权限
 

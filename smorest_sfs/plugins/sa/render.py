@@ -18,6 +18,7 @@ class TableRender(ABC):
     通过tabulate生成表格
     get_keys获取键名, parse_records获取表格内容
     """
+
     @abstractmethod
     def get_keys(self):
         raise NotImplementedError
