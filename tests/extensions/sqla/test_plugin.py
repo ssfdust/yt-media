@@ -78,7 +78,7 @@ class TestTableQuery(ItemsFixtureBase):
         query = self.TestOneColQuery()
         query.render_results()
         assert self._get_debug() == (
-            '\n╒════════╕\n│ name   │\n╞════════╡\n│ bbc    │\n╘════════╛'
+            "\n╒════════╕\n│ name   │\n╞════════╡\n│ bbc    │\n╘════════╛"
         )
 
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
@@ -121,7 +121,7 @@ class TestTableQuery(ItemsFixtureBase):
             "sqla_test_crud_table.name, test_crud_child_table.id, "
             "test_crud_child_table.deleted, test_crud_child_table.modified, "
             "test_crud_child_table.created, test_crud_child_table.name, "
-            "test_crud_child_table.pid \n"
+            "test_crud_child_table.pid, sqla_test_crud_table.id AS crud_id \n"
             "FROM sqla_test_crud_table, test_crud_child_table \n"
             "WHERE sqla_test_crud_table.name = 'bbc'"
         )
@@ -134,17 +134,28 @@ class TestTableQuery(ItemsFixtureBase):
         query.render_results()
         assert self._get_debug() == (
             "\n"
-            "╒═══════════════════╤════════════════════╕\n"
-            "│ TestCRUDTable     │ TestChildTable     │\n"
-            "╞═══════════════════╪════════════════════╡\n"
-            "│ <TestCRUDTable 4> │ <TestChildTable 1> │\n"
-            "├───────────────────┼────────────────────┤\n"
-            "│ <TestCRUDTable 4> │ <TestChildTable 2> │\n"
-            "├───────────────────┼────────────────────┤\n"
-            "│ <TestCRUDTable 4> │ <TestChildTable 3> │\n"
-            "├───────────────────┼────────────────────┤\n"
-            "│ <TestCRUDTable 4> │ <TestChildTable 4> │\n"
-            "╘═══════════════════╧════════════════════╛"
+            "╒═══════════════════╤═══════════════════"
+            "═╤══════════╤════════╤═══════════╕\n"
+            "│ TestCRUDTable     │ TestChildTable    "
+            " │ name     │ name   │   crud_id │\n"
+            "╞═══════════════════╪═══════════════════"
+            "═╪══════════╪════════╪═══════════╡\n"
+            "│ <TestCRUDTable 4> │ <TestChildTable 1>"
+            " │ aaabbb   │ bbc    │         4 │\n"
+            "├───────────────────┼───────────────────"
+            "─┼──────────┼────────┼───────────┤\n"
+            "│ <TestCRUDTable 4> │ <TestChildTable 2>"
+            " │ bbbbcccc │ bbc    │         4 │\n"
+            "├───────────────────┼───────────────────"
+            "─┼──────────┼────────┼───────────┤\n"
+            "│ <TestCRUDTable 4> │ <TestChildTable 3>"
+            " │ bbcccc   │ bbc    │         4 │\n"
+            "├───────────────────┼───────────────────"
+            "─┼──────────┼────────┼───────────┤\n"
+            "│ <TestCRUDTable 4> │ <TestChildTable 4>"
+            " │ bbc      │ bbc    │         4 │\n"
+            "╘═══════════════════╧═══════════════════"
+            "═╧══════════╧════════╧═══════════╛"
         )
 
     def _get_debug(self):

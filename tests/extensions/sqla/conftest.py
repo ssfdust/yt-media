@@ -173,9 +173,13 @@ def TestTwoTablesQuery(
     @query_decorator
     class TestTwoTablesQuery(SAQuery):
         def __init__(self):
-            self.query = db.session.query(TestCRUDTable, TestChildTable).filter(
-                TestCRUDTable.name == "bbc"
-            )
+            self.query = db.session.query(
+                TestCRUDTable,
+                TestChildTable,
+                TestChildTable.name,
+                TestCRUDTable.name,
+                TestCRUDTable.id.label("crud_id"),
+            ).filter(TestCRUDTable.name == "bbc")
 
         def get_record(self):
             return self.query.all()
