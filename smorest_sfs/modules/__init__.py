@@ -44,6 +44,7 @@ def load_module(module_name: str) -> ModuleType:
     """
     module = import_module(f".modules.{module_name}", "smorest_sfs")
     preloadable_modules = _get_preloadable_modules(module)
+    print(preloadable_modules)
     for submodule in preloadable_modules:
         try:
             import_module(f".modules.{module_name}.{submodule}", "smorest_sfs")

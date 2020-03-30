@@ -7,7 +7,6 @@
 import pytest
 import pyperclip
 from loguru import logger
-from tests._utils.injection import inject_logger, uninject_logger
 from tests._utils.uniqueue import UniqueQueue
 from tests.extensions.sqla.test_sqla import ItemsFixtureBase
 
@@ -33,18 +32,16 @@ class TestSAPlugin(ItemsFixtureBase):
         test_sql = self.TestSASql(name)
         assert test_sql.get_raw_sql() == self.raw_sql.format(name=name)
 
-    @pytest.mark.usefixtures("TestTableTeardown", "crud_items")
+    @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
     def test_table_should_rendered(self):
-        inject_logger(logger)
         test_sql = self.TestSASql("bbc")
         test_sql.render_results()
         assert self._get_debug() == "\n" + self.table_str
 
-    @pytest.mark.usefixtures("TestTableTeardown", "crud_items")
+    @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
     def test_debug_should_rendered(self):
         test_sql = self.TestSASql("bbc")
         test_sql.debug_sql()
-        uninject_logger(logger)
         assert self._get_debug() == "\n" + self.raw_sql.format(
             name="bbc"
         ) and pyperclip.paste() == self.raw_sql.format(name="bbc")

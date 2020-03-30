@@ -4,7 +4,6 @@
 测试辅助工具集
 """
 from typing import List
-import pytest
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 
 

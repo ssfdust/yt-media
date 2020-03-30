@@ -4,6 +4,7 @@ import os
 import shutil
 import uuid
 from typing import Callable
+from loguru import logger
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
@@ -15,7 +16,7 @@ from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.modules.users.models import User
 from smorest_sfs.utils.paths import UploadPath
 
-from ._utils import client, users
+from ._utils import client, users, injection
 
 
 class fakeuuid:
@@ -125,3 +126,10 @@ def guest_user(temp_db_instance_helper: Callable) -> User:
         users.generate_user_instance(username="guest_user", phonenum="guest_user")
     ):
         yield _
+
+
+@pytest.fixture
+def inject_logger():
+    injection.inject_logger(logger)
+    yield
+    injection.uninject_logger(logger)

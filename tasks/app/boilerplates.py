@@ -4,7 +4,6 @@
 """
 import logging
 import os
-import datetime
 import shutil
 
 from invoke import task

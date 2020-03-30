@@ -1,11 +1,6 @@
-from typing import List, Mapping, NoReturn, Optional
+from typing import Optional
 
-from smorest_sfs.modules.auth.permissions import (
-    DEFAULT_ROLES_PERMISSIONS_MAPPING,
-    PERMISSIONS,
-    ROLES,
-)
-from smorest_sfs.modules.users.models import Model, Permission, Role, User, db
+from smorest_sfs.modules.users.models import User
 
 
 def generate_user_instance(
