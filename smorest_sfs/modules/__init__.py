@@ -22,11 +22,18 @@
     基本的方法以及序列化类，而核心业务则放在services
     模块。
 """
+from loguru import logger
 from importlib import import_module
-from typing import NoReturn
+from typing import NoReturn, List
 from types import ModuleType
 from flask import Flask
 from smorest_sfs.extensions import api
+
+
+def _get_preloadable_modules(module: ModuleType) -> List[str]:
+    if hasattr(module, "preload_modules"):
+        return getattr(module, "preload_modules")
+    return ["resources", "models"]
 
 
 def load_module(module_name: str) -> ModuleType:
@@ -36,14 +43,17 @@ def load_module(module_name: str) -> ModuleType:
     在此处通过关键字```preload_modules```的list来加载模块
     """
     module = import_module(f".modules.{module_name}", "smorest_sfs")
-    if hasattr(module, "preload_modules"):
-        for submodule in module.preload_modules:
+    preloadable_modules = _get_preloadable_modules(module)
+    for submodule in preloadable_modules:
+        try:
             import_module(f".modules.{module_name}.{submodule}", "smorest_sfs")
+        except ModuleNotFoundError:
+            logger.error(f"无法加载{module_name}下的{submodule}")
 
     return module
 
 
-def init_app(app: Flask) -> NoReturn:
+def init_app(app: Flask):
     """
     初始化模块
     """

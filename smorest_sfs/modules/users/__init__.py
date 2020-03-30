@@ -26,4 +26,3 @@
 from flask_smorest import Blueprint
 
 blp = Blueprint("Users", __name__, url_prefix="/users", description="获取用户的基本信息")
-preload_modules = ["resources", "models"]

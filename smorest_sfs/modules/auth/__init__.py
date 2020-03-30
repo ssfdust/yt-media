@@ -33,6 +33,4 @@ PERMISSIONS = permissions.PERMISSIONS  # alias
 
 blp = Blueprint("Auth", __name__, url_prefix="/auth", description="用户登录退出密码管理模块")
 
-preload_modules = ["resources", "models"]  # pylint: disable=unused-import
-
 # from . import resources
