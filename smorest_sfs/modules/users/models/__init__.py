@@ -15,24 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-    app.modules.auth
-    ~~~~~~~~~~~~~~~~~~~~~~~~
-
-    用户、权限、组相关模块
+    app.modules.auth.models
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    权限登录模块ORM
 """
-
-from flask_smorest import Blueprint
-
-from smorest_sfs.extensions import api
-
-from . import permissions
-
-ROLES = permissions.ROLES  # alias
-
-PERMISSIONS = permissions.PERMISSIONS  # alias
-
-blp = Blueprint("Auth", __name__, url_prefix="/auth", description="用户登录退出密码管理模块")
-
-preload_modules = ["resources", "models", "jwt_ext"]
-
-# from . import resources
+from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
+from .group import Group, groups_users, groups_roles, groups_relation
+from .users import permission_roles, roles_users, User, Permission, Role, UserInfo

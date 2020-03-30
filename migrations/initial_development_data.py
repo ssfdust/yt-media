@@ -99,10 +99,7 @@ def update_permissions():
     for role_name, permissions in mapping.items():
         role = get_or_create(Role, role_name)
         permissions = get_or_create_from_lst(Permission, *permissions)
-
-        for permission in permissions:
-            if permission not in role.permissions:
-                role.permissions.append(permission)
+        role.add_permissions(permissions)
 
     db.session.commit()
 

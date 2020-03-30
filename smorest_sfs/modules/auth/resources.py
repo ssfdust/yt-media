@@ -22,56 +22,29 @@
 from datetime import datetime
 from typing import Dict, TypeVar, Union
 
+from captcha.image import ImageCaptcha
 from flask import current_app as app
 from flask import jsonify, send_file, url_for
 from flask.views import MethodView
-from flask_jwt_extended import create_access_token, get_jwt_identity, current_user
+from flask_jwt_extended import (create_access_token, current_user,
+                                get_jwt_identity)
 from flask_smorest import abort
 from loguru import logger
 
-from captcha.image import ImageCaptcha
-from smorest_sfs.extensions import jwt_instance as jwt
 from smorest_sfs.extensions.marshal import BaseMsgSchema
 from smorest_sfs.extensions.storage.captcha import CaptchaStore
 from smorest_sfs.modules.users.models import User
-from smorest_sfs.services.auth.auth import UserLoginChecker, login_user, logout_user
+from smorest_sfs.services.auth.auth import (UserLoginChecker, login_user,
+                                            logout_user)
+from smorest_sfs.services.auth.confirm import (confirm_current_token,
+                                               generate_confirm_token)
 from smorest_sfs.services.mail import PasswdMailSender
-from smorest_sfs.services.auth.confirm import (
-    confirm_current_token,
-    generate_confirm_token,
-)
 
 from . import blp, models, params, schemas
 from .decorators import doc_login_required, doc_refresh_required
-from .helpers import add_token_to_database, is_token_revoked
+from .helpers import add_token_to_database
 
 Response = TypeVar("Response")
-
-
-@jwt.unauthorized_loader
-def unauthorized_callback(_) -> Response:
-    logger.error("未受权的访问")
-    response = jsonify({"code": 401, "msg": "未授权的访问"})
-    response.status_code = 401
-    return response
-
-
-@jwt.expired_token_loader
-def token_expired() -> Response:
-    response = jsonify({"code": 402, "msg": "登录已过期"})
-    logger.warning("登录过期")
-    response.status_code = 402
-    return response
-
-
-@jwt.token_in_blacklist_loader
-def check_if_token_in_blacklist(decrypted_token: Dict) -> bool:
-    return is_token_revoked(decrypted_token)
-
-
-@jwt.user_loader_callback_loader
-def get_user(identity: str) -> User:
-    return User.get_by_keyword(identity)
 
 
 @blp.route("/login")
@@ -137,7 +110,9 @@ class ForgetPasswordView(MethodView):
 
         token = generate_confirm_token(user, "passwd")
         url = url_for("Auth.ResetForgotPasswordView", token=token, _external=True)
-        sender = PasswdMailSender(to=user.email, content={"url": url, "message": "找回密码"})
+        sender = PasswdMailSender(
+            to=user.email, content={"url": url, "message": "找回密码"}
+        )
         sender.send()
 
         return {"code": 0, "msg": "success"}

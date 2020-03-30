@@ -1,48 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2019 RedLotus <ssfdust@gmail.com>
-# Author: RedLotus <ssfdust@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-"""
-    app.modules.auth.models
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
-    权限登录模块ORM
-"""
-from typing import Set, NoReturn
+from typing import List
 from marshmallow.validate import OneOf, Range
 from sqlalchemy_utils.types import PasswordType
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.modules.auth.permissions import ROLES
 
-groups_users = db.Table(
-    "groups_users",
-    db.Column("group_id", db.Integer(), nullable=False),
-    db.Column("user_id", db.Integer(), nullable=False),
-)
-
-groups_roles = db.Table(
-    "groups_roles",
-    db.Column("group_id", db.Integer(), nullable=False),
-    db.Column("role_id", db.Integer(), nullable=False),
-)
-
-groups_relation = db.Table(
-    "groups_relation",
-    db.Column("ancestor", db.Integer(), nullable=False),
-    db.Column("descendant", db.Integer(), nullable=False),
-    db.Column("distance", db.Integer(), nullable=False),
-)
 
 permission_roles = db.Table(
     "permission_roles",
@@ -116,12 +79,15 @@ class Role(Model, SurrogatePK):
             return cls.query.filter_by(ROLES.SuperUser).all()
         return cls.query.filter_by(user_default=True).all()  # pragam: no cover
 
-    def get_permissions(self) -> Set[Permission]:  # pragma: no cover
+    def add_permissions(self, permissions:List[Permission]) -> List[Permission]:  # pragma: no cover
         """
         获取权限
 
         兼容flask-security
         """
+        for permission in permissions:
+            if permission not in self.permissions:
+                self.permissions.append(permission)
         return set(permission.name for permission in self.permissions)
 
     def __str__(self) -> str:  # pragma: no cover
@@ -202,84 +168,6 @@ class User(Model, SurrogatePK):
         return self.username
 
 
-class Group(Model, SurrogatePK):
-    """
-    组别表
-
-    :attr name: str(80) 组名称
-    :attr description: str(255) 组描述
-    :attr pid: int 父组ID
-    :attr roles: Role 组默认角色
-    :attr users: User 组成员
-    :attr parent: Group 父组
-    :attr children: Group 子组
-    """
-
-    __tablename__ = "groups"
-
-    name = db.Column(db.String(80), unique=True, doc="组名称", nullable=True)
-    description = db.Column(db.String(255), doc="组描述")
-    pid = db.Column(db.Integer(), doc="父组ID")
-    users = db.relationship(
-        "User",
-        secondary="groups_users",
-        primaryjoin="Group.id == groups_users.c.group_id",
-        secondaryjoin="User.id == groups_users.c.user_id",
-        doc="组下用户",
-        foreign_keys="[groups_users.c.group_id," "groups_users.c.user_id]",
-        backref=db.backref("groups", lazy="dynamic", doc="所有组"),
-        active_history=True,
-        lazy="joined",
-    )
-    roles = db.relationship(
-        "Role",
-        secondary="groups_roles",
-        primaryjoin="Group.id == groups_roles.c.group_id",
-        secondaryjoin="Role.id == groups_roles.c.role_id",
-        doc="组下默认角色",
-        foreign_keys="[groups_roles.c.group_id," "groups_roles.c.role_id]",
-        backref=db.backref("groups", lazy="dynamic", doc="所属组"),
-        cascade="all,delete",
-        active_history=True,
-        lazy="joined",
-    )
-    parent = db.relationship(
-        "Group",
-        primaryjoin="remote(Group.id) == Group.pid",
-        foreign_keys=pid,
-        doc="父节点",
-        info={"marshmallow": {"dump_only": True}},
-    )
-    children = db.relationship(
-        "Group",
-        secondary="groups_relation",
-        primaryjoin="Group.id == groups_relation.c.ancestor",
-        doc="子组别",
-        secondaryjoin=(
-            "and_(Group.id == groups_relation.c.descendant,"
-            "groups_relation.c.distance > 0)"
-        ),
-        viewonly=True,
-    )
-
-    @classmethod
-    def get_by_name(cls, name: str) -> Model:
-        return cls.query.filter_by(name=name).first()
-
-    def setup_roles(self) -> NoReturn:
-        """
-        设置默认组角色
-        """
-        if self.roles:
-            return
-
-        roles = Role.query.filter_by(group_default=True).all()
-        self.roles = roles
-
-    def __str__(self) -> str:
-        return self.name
-
-
 class UserInfo(SurrogatePK, Model):
     """
     用户信息表
@@ -302,14 +190,14 @@ class UserInfo(SurrogatePK, Model):
         db.Integer, doc="头像ID", info={"marshmallow": {"dump_only": True}}
     )
     uid = db.Column(db.Integer, doc="用户ID", info={"marshmallow": {"dump_only": True}})
-    #  avator = db.relationship(
-    #      "Storages",
-    #      primaryjoin="Storages.id == UserInfo.avator_id",
-    #      foreign_keys=avator_id,
-    #      doc="头像",
-    #      lazy="joined",
-    #      info={"marshmallow": {"dump_only": True}},
-    #  )
+    avator = db.relationship(
+        "Storages",
+        primaryjoin="Storages.id == UserInfo.avator_id",
+        foreign_keys=avator_id,
+        doc="头像",
+        lazy="joined",
+        info={"marshmallow": {"dump_only": True}},
+    )
     sex = db.Column(
         db.Integer,
         doc="性别",
