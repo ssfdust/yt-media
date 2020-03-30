@@ -29,6 +29,7 @@ captcha = "^0.3"
 flask-redis = "^0.4.0"
 alembic = "^1.4.2"
 flask-migrate = "^2.5.3"
+pendulum = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

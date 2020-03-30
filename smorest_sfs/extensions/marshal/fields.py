@@ -21,15 +21,15 @@
     自定义的Marshmallow Filed模块
 """
 
+import pendulum
+from flask_babel import get_timezone
 from marshmallow import fields
+from smorest_sfs.utils.datetime import convert_timezone
 
 
-class ArrowField(fields.DateTime):
+class PendulumField(fields.DateTime):
     """
-    ArrowType的ArrowField
-
-    并没有对时区进行处理，因为时区的处理交由
-    给了ArrowType进行处理，会自行转换时区。
+    处理时区
     """
 
     def _deserialize(self, value, attr, data, **kwargs):
@@ -37,6 +37,13 @@ class ArrowField(fields.DateTime):
         if not value:
             raise self.make_error("invalid", input=value, obj_type=self.OBJ_TYPE)
 
-        target = arrow.get(value)
+        timezone = get_timezone()
+        dt = pendulum.parse(value, tz=timezone)
+        return convert_timezone(dt, "utc")
 
-        return target
+    def _serialize(self, value, attr, obj, **kwargs):
+        if value is None:
+            return value
+        timezone = str(get_timezone())
+        value = convert_timezone(pendulum.instance(value), timezone)
+        return super()._serialize(value, attr, obj, **kwargs)

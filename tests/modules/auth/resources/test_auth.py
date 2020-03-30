@@ -5,6 +5,7 @@
 
 import pytest
 
+from flask import url_for
 from smorest_sfs.services.auth.auth import login_user
 from smorest_sfs.services.auth.confirm import generate_confirm_token
 from tests._utils.injection import FixturesInjectBase
@@ -15,7 +16,7 @@ MAIL_QUEUE: UniqueQueue = UniqueQueue()
 
 class TestAuthHelper(FixturesInjectBase):
 
-    fixture_names = ("flask_app_client", "inactive_user", "regular_user")
+    fixture_names = ("flask_app_client", "inactive_user", "regular_user", "flask_app")
 
 
 class TestLogin(TestAuthHelper):
@@ -58,6 +59,12 @@ class TestLogin(TestAuthHelper):
         }
         resp = self.flask_app_client.post("/api/v1/auth/login", json=login_data)
         assert resp.status_code == code
+
+    def test_user_expired_login(self, expired_token_headers: str):
+        with self.flask_app.test_request_context():
+            url = url_for("Auth.LogoutView")
+            resp = self.flask_app_client.post(url, headers=expired_token_headers)
+            assert resp.status_code == 402
 
 
 class TestConfirm(TestAuthHelper):

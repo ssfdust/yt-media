@@ -8,6 +8,7 @@ import pytest
 from smorest_sfs.extensions.storage.captcha import CaptchaStore
 
 from tests._utils.uniqueue import UniqueQueue
+from freezegun import freeze_time
 
 SENDED = UniqueQueue()
 
@@ -37,3 +38,14 @@ def patched_mail(monkeypatch):
     from smorest_sfs.services.mail import PasswdMailSender
 
     monkeypatch.setattr(PasswdMailSender, "send", fake_send)
+
+
+@pytest.fixture
+@freeze_time("1990-01-01 00:00:00")
+def expired_token_headers(regular_user):
+    from smorest_sfs.services.auth.auth import login_user
+    access_token = login_user(regular_user)["tokens"]["access_token"]
+    expired_headers = (
+        ("Authorization", "Bearer {token}".format(token=access_token)),
+    )
+    return expired_headers

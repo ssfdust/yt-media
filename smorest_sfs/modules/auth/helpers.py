@@ -65,16 +65,3 @@ def add_token_to_database(
         expires=expires,
         revoked=revoked,
     )
-
-
-def revoke_current_token() -> NoReturn:
-    """
-    将指定的jwt撤销
-    """
-    raw_jwt = get_raw_jwt()
-    try:
-        TokenBlackList.query.filter_by(
-            user_identity=raw_jwt["identity"], jti=raw_jwt["jti"]
-        ).update({"revoked": True})
-    except NoResultFound:
-        pass

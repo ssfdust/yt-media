@@ -1,11 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from typing import Type
+
 import pytest
 from flask import Flask
+from flask_babel import Babel
+from marshmallow import Schema
+
+from smorest_sfs.extensions.marshal.fields import PendulumField
 
 
 @pytest.fixture(scope="package")
 def app() -> Flask:
+    flask_app = Flask("TestMa")
+    flask_app.config["BABEL_DEFAULT_TIMEZONE"] = "Asia/Shanghai"
+    flask_app.config["BABEL_DEFAULT_LOCALE"] = "zh_cn"
+    Babel(flask_app)
+    return flask_app
 
-    return Flask("TestMa")
+
+@pytest.fixture(scope="package")
+def pendulum_field_schema() -> Type[Schema]:
+    class TestPendulumSchema(Schema):
+        time = PendulumField(format="%Y-%m-%d %H:%M:%S", allow_none=True)
+
+    return TestPendulumSchema()

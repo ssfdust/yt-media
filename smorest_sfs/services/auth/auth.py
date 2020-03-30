@@ -4,11 +4,10 @@
 验证用户登录
 """
 from contextlib import contextmanager
-from typing import Any, Dict, NoReturn
+from typing import Dict
 
 from flask import current_app
 from flask_jwt_extended import create_access_token, create_refresh_token
-from flask_mail import Message
 from flask_smorest import abort
 from loguru import logger
 
@@ -39,7 +38,7 @@ class UserLoginChecker:
             logger.error(f"{self.user.email} 登录时token{self._token}错误，\n")
             abort(403, message="验证码token错误")
 
-    def _check_user(self) -> NoReturn:
+    def _check_user(self) -> bool:
         if self.user is None:
             logger.warning("登录用户不存在")
             abort(404, message="用户不存在")
@@ -50,7 +49,7 @@ class UserLoginChecker:
 
         return True
 
-    def _check_passwd(self):
+    def _check_passwd(self) -> bool:
         if self.user.password != self.password:
             logger.error(f"{self.user.email} 登录密码错误")
             abort(403, message="密码错误")
@@ -78,7 +77,7 @@ def login_user(user: User) -> Dict[str, Dict[str, str]]:
     return {"tokens": {"refresh_token": refresh_token, "access_token": access_token}}
 
 
-def logout_user(user: User) -> NoReturn:
+def logout_user(user: User):
     TokenBlackList.query.filter(
         TokenBlackList.user_identity == user.email, TokenBlackList.revoked.is_(False)
-    ).update({"revoked": True})
+    ).delete()
