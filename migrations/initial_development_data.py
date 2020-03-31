@@ -38,7 +38,6 @@ def create_item_from_cls(model_cls: Model, cls: object) -> NoReturn:
 
 
 def _handle_default_role(role: Role):
-    print(role.name)
     if role.name == ROLES.User:
         role.user_default = True
 

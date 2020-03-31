@@ -5,7 +5,7 @@ import queue
 
 import pytest
 
-from smorest_sfs.extensions.storage.captcha import CaptchaStore
+from smorest_sfs.extensions.storage.captcha import redis_store
 
 from tests._utils.uniqueue import UniqueQueue
 from freezegun import freeze_time
@@ -17,10 +17,12 @@ SENDED = UniqueQueue()
 def patch_code(monkeypatch):
     """为编码补丁"""
 
-    def fake_code(self, length: int = 4):
-        self._code = "2345"
+    def fake_code(key):
+        if key == "capture_wsfq":
+            return None
+        return b"2345"
 
-    monkeypatch.setattr(CaptchaStore, "_decode_code", fake_code)
+    monkeypatch.setattr(redis_store, "get", fake_code)
 
 
 @pytest.fixture

@@ -40,6 +40,16 @@ class TestListView(FixturesInjectBase):
                     and resp.json["data"][0]["id"] == self.regular_user.id
                 )
 
+    def test_get_userinfo(self):
+        with self.flask_app_client.login(self.regular_user, [ROLES.User]) as client:
+            with self.flask_app.test_request_context():
+                url = url_for("User.UserSelfView")
+                resp = client.get(url)
+                assert (
+                    resp.status_code == 200
+                    and resp.json["data"]["username"] == self.regular_user.username
+                )
+
 
 class TestItemView(FixturesInjectBase):
 

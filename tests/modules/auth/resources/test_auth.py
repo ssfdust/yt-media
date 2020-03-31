@@ -22,7 +22,7 @@ class TestAuthHelper(FixturesInjectBase):
 class TestLogin(TestAuthHelper):
     @pytest.mark.parametrize(
         "captcha, code, token",
-        [("2345", 200, "1212"), ("1111", 403, "1212"), ("1111", 403, "1211"),],
+        [("2345", 200, "1212"), ("1111", 403, "1212"), ("1111", 403, "wsfq"),],
     )
     @pytest.mark.usefixtures("flask_app", "regular_user", "patch_code")
     def test_user_login_captcha(self, captcha: str, code: int, token: str):

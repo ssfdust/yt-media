@@ -18,9 +18,11 @@ from smorest_sfs.extensions.api.decorators import paginate
 from smorest_sfs.extensions.marshal.bases import (BaseIntListSchema,
                                                   BaseMsgSchema,
                                                   GeneralLikeArgs)
-from smorest_sfs.modules.auth import PERMISSIONS
+from smorest_sfs.modules.auth import PERMISSIONS, ROLES
 from smorest_sfs.modules.auth.decorators import (doc_login_required,
-                                                 permission_required)
+                                                 permission_required,
+                                                 role_required)
+from smorest_sfs.services.users import create_user
 
 from . import blp, models, schemas
 
@@ -62,7 +64,9 @@ class UserView(MethodView):
                     models.UserInfo.last_name.like(like_key),
                     models.UserInfo.first_name.like(like_key),
                     models.User.username.like(like_key),
-                    (models.UserInfo.first_name + models.UserInfo.last_name).like(like_key)
+                    (models.UserInfo.first_name + models.UserInfo.last_name).like(
+                        like_key
+                    ),
                 )
             )
 
@@ -123,3 +127,40 @@ class UserItemView(MethodView):
         user = models.User.get_by_id(user_id)
 
         return {"data": user}
+
+
+@blp.route("/register")
+class UserRegisterView(MethodView):
+    @blp.arguments(schemas.UserSchema)
+    @blp.response(schemas.UserItemSchema)
+    def put(self, user: models.User) -> Dict[str, models.User]:
+        user = create_user(user)
+        return {"data": user}
+
+
+@blp.route("/userinfo")
+class UserSelfView(MethodView):
+    @doc_login_required
+    @role_required(ROLES.User)
+    @blp.response(schemas.UserItemSchema, description="用户信息")
+    def get(self):
+        """
+        获取用户自己的信息
+        """
+
+        return {"data": current_user}
+
+    @doc_login_required
+    @role_required(ROLES.User)
+    @blp.arguments(schemas.UserSchema)
+    @blp.response(schemas.UserItemSchema, code=200, description="用户信息")
+    def patch(self, user: models.User):
+        """
+        更新用户信息
+        """
+        models.User.update_by_id(
+            current_user.id, schemas.UserSchema, user
+        )
+        logger.info(f"{current_user.username}更新了个人信息")
+
+        return {"data": current_user}

@@ -15,12 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from loguru import logger
-from smorest_sfs.modules.users.models import UserInfo, Role, User
-
-# from smorest_sfs.modules.storages.models import Storages
-from smorest_sfs.modules.users.models import groups_roles, groups_users, roles_users
-from smorest_sfs.extensions import db
+from smorest_sfs.modules.storages.models import Storages
+from smorest_sfs.modules.users.models import User
+from smorest_sfs.modules.roles.models import Role
 
 ADMIN_AVATOR = {
     "name": "AdminAvator.jpg",
@@ -38,7 +35,7 @@ USER_AVATOR = {
 }
 
 
-def create_user(userinfo, is_admin=False):
+def create_user(user: User, is_admin: bool = False) -> User:
     """
     创建用户
 
@@ -47,7 +44,7 @@ def create_user(userinfo, is_admin=False):
 
     创建头像信息,创建用户基本信息
     """
-    user = User(**userinfo["user"])
     user.roles = Role.get_by_user_default(is_admin)
     avator = Storages(**ADMIN_AVATOR) if is_admin else Storages(**USER_AVATOR)
-    UserInfo(user=user, avator=avator, **userinfo["userinfo"]).save(False)
+    user.userinfo.avator = avator
+    return user.save()

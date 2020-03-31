@@ -29,8 +29,8 @@ class CaptchaStore:
     def _get_values(self) -> str:
         if self._code is None:
             code = redis_store.get(self.key)
-            redis_store.delete(self.key)
             self._decode_code(code)
+            redis_store.delete(self.key)
         return self._code
 
     def _decode_code(self, code):

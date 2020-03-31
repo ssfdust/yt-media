@@ -33,7 +33,5 @@ def server(
         context.run(command, pty=True)
     else:
         host, port = bind.split(":")
-        command = f"python run.py -b {host} -p {port}"
-        if debug:
-            command += " --debug --use-reloader"
-        context.run(command, pty=True)
+        from smorest_sfs.app import app
+        app.run(host=host, port=port, debug=debug, use_reloader=debug)
