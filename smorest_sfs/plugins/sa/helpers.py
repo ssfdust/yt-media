@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 class QueryAnalysis:
     def __init__(self, query):
         self.query = query

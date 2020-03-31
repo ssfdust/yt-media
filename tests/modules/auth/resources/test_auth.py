@@ -4,8 +4,8 @@
 
 
 import pytest
-
 from flask import url_for
+
 from smorest_sfs.services.auth.auth import login_user
 from smorest_sfs.services.auth.confirm import generate_confirm_token
 from tests._utils.injection import FixturesInjectBase
@@ -129,24 +129,12 @@ class TestForgetPasswd(TestAuthHelper):
         resp = self.flask_app_client.get(TempStore.value)
         assert resp.status_code == 401
 
-    def test_user_refresh_token(
-        self, flask_app_client, regular_user, patch_code, flask_app
-    ):
-        flask_app_client.get("/api/v1/auth/captcha?token=refresh_token")
-        login_data = {
-            "email": regular_user.email,
-            "password": "regular_user_password",
-            "token": "refresh_token",
-            "captcha": "2345",
-        }
-        resp = flask_app_client.post("/api/v1/auth/login", json=login_data)
-        refresh_token = resp.json["data"]["tokens"]["refresh_token"]
+    def test_user_refresh_token(self):
+        refresh_token = login_user(self.regular_user)["tokens"]["refresh_token"]
         headers = {"Authorization": "Bearer {}".format(refresh_token)}
-        resp = flask_app_client.post("/api/v1/auth/refresh", headers=headers)
-        assert resp.status_code == 200
+        resp = self.flask_app_client.post("/api/v1/auth/refresh", headers=headers)
         access_token = resp.json["data"]["access_token"]
+
         headers = {"Authorization": "Bearer {}".format(access_token)}
-        resp = flask_app_client.post("/api/v1/auth/logout", headers=headers,)
+        resp = self.flask_app_client.post("/api/v1/auth/logout", headers=headers)
         assert resp.status_code == 200
-        resp = flask_app_client.post("/api/v1/auth/logout", headers=headers,)
-        assert resp.status_code == 401

@@ -16,10 +16,10 @@
 # limitations under the License.
 
 """
-    app.modules.users.schemas
+    app.modules.roles.schemas
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    用户模块的Schemas
+    角色权限模块的Schemas
 """
 
 from smorest_sfs.extensions import ma
@@ -29,36 +29,36 @@ from marshmallow import fields
 from . import models
 
 
-class UserSchema(ma.ModelSchema):
+class RoleSchema(ma.ModelSchema):
     """
-    用户的序列化类
+    角色权限的序列化类
     """
-    nickname = fields.Str(dump_only=True)
 
     class Meta:
-        model = models.User
+        model = models.Role
+        exclude = ['users']
 
 
-class UserPageSchema(BasePageSchema):
-    """用户的分页"""
+class RolePageSchema(BasePageSchema):
+    """角色权限的分页"""
 
-    data = fields.List(fields.Nested(UserSchema))
-
-
-class UserItemSchema(BaseMsgSchema):
-    """用户的单项"""
-
-    data = fields.Nested(UserSchema)
+    data = fields.List(fields.Nested(RoleSchema))
 
 
-class UserOptsSchema(ma.Schema):
-    """用户的选项"""
+class RoleItemSchema(BaseMsgSchema):
+    """角色权限的单项"""
+
+    data = fields.Nested(RoleSchema)
+
+
+class RoleOptsSchema(ma.Schema):
+    """角色权限的选项"""
 
     class Meta:
-        fields = ('id', 'nickname')
+        fields = ('id', 'name')
 
 
-class UserListSchema(ma.Schema):
-    """用户的选项列表"""
+class RoleListSchema(ma.Schema):
+    """角色权限的选项列表"""
 
-    data = fields.List(fields.Nested(UserOptsSchema))
+    data = fields.List(fields.Nested(RoleOptsSchema))

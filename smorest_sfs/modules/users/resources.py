@@ -1,180 +1,125 @@
-# Copyright 2019 RedLotus <ssfdust@gmail.com>
-# Author: RedLotus <ssfdust@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-    app.modules.users.resources
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    用户权限角色管理
-"""
+    app.modules.users.resource
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-from loguru import logger
+    用户的资源模块
+"""
+from typing import Dict, List
+
 from flask.views import MethodView
-from flask_jwt_extended import current_user
+from flask_sqlalchemy import BaseQuery
+from loguru import logger
 
-from smorest_sfs.extensions.marshal import BaseMsgSchema
-from smorest_sfs.modules.auth import PERMISSIONS, ROLES
-from smorest_sfs.modules.auth.decorators import (
-    doc_login_required,
-    permission_required,
-    role_required,
-)
+from flask_jwt_extended import current_user
+from smorest_sfs.extensions import db
+from smorest_sfs.extensions.api.decorators import paginate
+from smorest_sfs.extensions.marshal.bases import (BaseIntListSchema,
+                                                  BaseMsgSchema,
+                                                  GeneralLikeArgs)
+from smorest_sfs.modules.auth import PERMISSIONS
+from smorest_sfs.modules.auth.decorators import (doc_login_required,
+                                                 permission_required)
 
 from . import blp, models, schemas
 
 
-@blp.route("/groups")
-class GroupView(MethodView):
+@blp.route("/options")
+class UserListView(MethodView):
     @doc_login_required
-    @permission_required(PERMISSIONS.GroupQuery)
-    @blp.response(schemas.GroupResSchema, description="分组信息")
-    def get(self):
+    @permission_required(PERMISSIONS.UserQuery)
+    @blp.response(schemas.UserListSchema)
+    def get(self) -> Dict[str, List[models.User]]:
+        # pylint: disable=unused-argument
         """
-        获取分组
+        获取所有用户选项信息
         """
-        from app.utils.db import hierarchy_to_json
+        query = models.User.query
 
-        groups = models.Group.query.all()
-        schema = schemas.GroupSchema(
-            many=True, exclude=["created", "deleted", "modified"]
-        )
-        data = schema.dump(groups)
+        items = query.all()
 
-        tree_groups = hierarchy_to_json(data)
+        return {"data": items}
 
-        return {"data": tree_groups}
 
+@blp.route("")
+class UserView(MethodView):
     @doc_login_required
-    @permission_required(PERMISSIONS.GroupAdd)
-    @blp.arguments(schemas.GroupSchema)
-    @blp.response(schemas.GroupItemSchema, description="分组成功")
-    def post(self, group):
+    @permission_required(PERMISSIONS.UserQuery)
+    @blp.arguments(GeneralLikeArgs, location="query", as_kwargs=True)
+    @blp.response(schemas.UserPageSchema)
+    @paginate()
+    def get(self, name) -> BaseQuery:
+        # pylint: disable=unused-argument
         """
-        新增分组
+        获取所有用户信息——分页
         """
-        from app.services.users.groups import GroupFactory
+        query = models.User.query.join(models.User.userinfo)
+        if name:
+            like_key = "%{}%".format(name)
+            query = query.filter(
+                db.or_(
+                    models.UserInfo.last_name.like(like_key),
+                    models.UserInfo.first_name.like(like_key),
+                    models.User.username.like(like_key),
+                    (models.UserInfo.first_name + models.UserInfo.last_name).like(like_key)
+                )
+            )
 
-        group_factory = GroupFactory(group)
-        group_factory.add_group()
-
-        models.db.session.commit()
-
-        logger.info(f"{current_user.email}新建了{group.name}组")
-
-        return {"data": group}
-
-
-@blp.route("/group/<int:gid>")
-class GroupItemView(MethodView):
-    @doc_login_required
-    @permission_required(PERMISSIONS.GroupQuery)
-    @blp.response(schemas.GroupItemSchema, description="分组信息")
-    def get(self, gid):
-        """
-        获取单个组信息
-        """
-
-        return {"data": models.Group.get_by_id(gid)}
+        return query
 
     @doc_login_required
-    @permission_required(PERMISSIONS.GroupEdit)
-    @blp.arguments(schemas.GroupSchema)
-    @blp.response(schemas.GroupItemSchema, description="分组成功")
-    def patch(self, group, gid):
+    @permission_required(PERMISSIONS.UserDelete)
+    @blp.arguments(BaseIntListSchema, as_kwargs=True)
+    @blp.response(BaseMsgSchema)
+    def delete(self, lst: List[int]):
+        # pylint: disable=unused-argument
         """
-        修改分组
+        批量删除用户
+        -------------------------------
+        :param lst: list 包含id列表的字典
         """
-        from app.services.users.groups import GroupFactory
 
-        group = models.Group.update_by_id(gid, schemas.GroupSchema, group, commit=False)
-
-        group_factory = GroupFactory(group)
-        group_factory.modify_group()
-
-        models.db.session.commit()
-
-        logger.info(f"{current_user.email}修改了{group.name}组")
-
-        return {"data": group}
-
-    @doc_login_required
-    @permission_required(PERMISSIONS.GroupDelete)
-    @blp.response(BaseMsgSchema, description="分组成功")
-    def delete(self, gid):
-        """
-        删除分组
-        """
-        from app.services.users.groups import GroupFactory
-
-        group = models.Group.get_by_id(gid)
-        group_factory = GroupFactory(group)
-        group_factory.delete_group()
-
-        models.db.session.commit()
-
-        logger.info(f"{current_user.email}删除了{group.name}组")
+        models.User.delete_by_ids(lst)
+        logger.info(f"{current_user.username}删除了用户{lst}")
 
 
 @blp.route(
-    "/groups/<int:id>/members",
-    parameters=[{"in": "path", "name": "id", "description": "组ID"}],
+    "/<int:user_id>",
+    parameters=[{"in": "path", "name": "user_id", "description": "用户id"}],
 )
-class GroupMemberView(MethodView):
+class UserItemView(MethodView):
     @doc_login_required
-    @permission_required(PERMISSIONS.GroupEdit)
-    @blp.arguments(schemas.UserListByIdParam)
-    @blp.response(BaseMsgSchema, description="修改成功")
-    def put(self, users, id):
+    @permission_required(PERMISSIONS.UserEdit)
+    @blp.arguments(schemas.UserSchema)
+    @blp.response(schemas.UserItemSchema)
+    def put(self, user: models.User, user_id: int) -> Dict[str, models.User]:
         """
-        修改组成员
-        """
-        from app.services.users.groups import GroupFactory
-
-        group = models.Group.get_by_id(id)
-        group.users = users
-
-        group_factory = GroupFactory(group)
-        group_factory.handle_user_roles()
-        logger.info(f"{current_user.email}修改了{group.name}组成员")
-
-        models.db.session.commit()
-
-        return {"code": 0, "msg": "success"}
-
-
-@blp.route("/userinfo")
-class UserView(MethodView):
-    @doc_login_required
-    @role_required(ROLES.User)
-    @blp.response(schemas.UserDetailsSchema, description="用户信息")
-    def get(self):
-        """
-        获取用户自己的信息
+        更新用户
         """
 
-        return {"data": current_user}
+        user = models.User.update_by_id(user_id, schemas.UserSchema, user)
+        logger.info(f"{current_user.username}更新了用户{user.id}")
+
+        return {"data": user}
 
     @doc_login_required
-    @role_required(ROLES.User)
-    @blp.arguments(schemas.UserInfoSchema)
-    @blp.response(schemas.UserDetailsSchema, code=200, description="用户信息")
-    def patch(self, userinfo):
+    @permission_required(PERMISSIONS.UserDelete)
+    @blp.response(BaseMsgSchema)
+    def delete(self, user_id: int):
         """
-        更新用户信息
+        删除用户
         """
-        models.UserInfo.update_by_id(
-            current_user.userinfo.id, schemas.UserInfoSchema, userinfo
-        )
-        logger.info(f"{current_user.username}更新了个人信息")
+        models.User.delete_by_id(user_id)
+        logger.info(f"{current_user.username}删除了用户{user_id}")
 
-        return {"data": current_user}
+    @doc_login_required
+    @permission_required(PERMISSIONS.UserQuery)
+    @blp.response(schemas.UserItemSchema)
+    def get(self, user_id: int) -> Dict[str, models.User]:
+        """
+        获取单条用户
+        """
+        user = models.User.get_by_id(user_id)
+
+        return {"data": user}

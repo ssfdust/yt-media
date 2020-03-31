@@ -1,99 +1,24 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+    smorest_sfs.modules.users.models
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    用户的ORM模块
+"""
 from typing import List
+
 from marshmallow.validate import OneOf, Range
-from sqlalchemy_utils.types import PasswordType
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.modules.auth.permissions import ROLES
-
-
-permission_roles = db.Table(
-    "permission_roles",
-    db.Column("permission_id", db.Integer(), nullable=False),
-    db.Column("role_id", db.Integer(), nullable=False),
-)
+from smorest_sfs.modules.roles.models import permission_roles
+from sqlalchemy_utils.types import PasswordType
 
 roles_users = db.Table(
     "roles_users",
     db.Column("user_id", db.Integer(), nullable=False),
     db.Column("role_id", db.Integer(), nullable=False),
 )
-
-
-class Permission(Model, SurrogatePK):
-    """
-    角色表
-
-    :attr name: str(80) 权限名称
-    :attr description: str(255) 权限描述
-    :attr roles: Role 所有角色
-    :attr users: User 所有用户
-    """
-
-    __tablename__ = "permissions"
-
-    name = db.Column(db.String(80), unique=True, doc="权限名称", nullable=True)
-    description = db.Column(db.String(255), doc="权限描述")
-
-    @classmethod
-    def get_by_name(cls, name: str) -> Model:  # pragma: no cover
-        return cls.query.filter_by(name=name).first()
-
-    def __str__(self) -> str:  # pragma: no cover
-        return self.name
-
-
-class Role(Model, SurrogatePK):
-    """
-    角色表
-
-    :attr name: str(80) 角色名称
-    :attr description: str(255) 角色描述
-    :attr permissions: Permission 所有权限
-    :attr user_default: bool 用户默认角色
-    :attr group_default: bool 组默认角色
-    """
-
-    __tablename__ = "roles"
-
-    name = db.Column(db.String(80), unique=True, doc="角色名称", nullable=True)
-    description = db.Column(db.String(255), doc="角色描述")
-    user_default = db.Column(db.Boolean, doc="用户默认角色", default=False)
-    group_default = db.Column(db.Boolean, doc="组默认角色", default=False)
-    permissions = db.relationship(
-        "Permission",
-        secondary=permission_roles,
-        doc="所有权限",
-        primaryjoin="foreign(permission_roles.c.role_id) == Role.id",
-        secondaryjoin="foreign(permission_roles.c.permission_id) == Permission.id",
-        backref=db.backref("roles", lazy="dynamic", doc="所有角色"),
-    )
-
-    @classmethod
-    def get_by_name(cls, name: str) -> Model:  # pragma: no cover
-        return cls.query.filter_by(name=name).first()
-
-    @classmethod
-    def get_by_user_default(cls, is_admin=False) -> Model:  # pragma: no cover
-        if is_admin:
-            return cls.query.filter_by(ROLES.SuperUser).all()
-        return cls.query.filter_by(user_default=True).all()  # pragam: no cover
-
-    def add_permissions(
-        self, permissions: List[Permission]
-    ) -> List[Permission]:  # pragma: no cover
-        """
-        获取权限
-
-        兼容flask-security
-        """
-        for permission in permissions:
-            if permission not in self.permissions:
-                self.permissions.append(permission)
-        return set(permission.name for permission in self.permissions)
-
-    def __str__(self) -> str:  # pragma: no cover
-        return self.name
 
 
 user_permissions = db.join(
@@ -131,7 +56,7 @@ class User(Model, SurrogatePK):
         primaryjoin="foreign(roles_users.c.user_id) == User.id",
         secondaryjoin="foreign(roles_users.c.role_id) == Role.id",
         backref=db.backref("users", lazy="dynamic", doc="所有用户"),
-        info={"marshmallow": {"dump_only": True, "column": ["id", "name"]}},
+        info={"marshmallow": {"column": ["id", "name"]}},
     )
     permissions = db.relationship(
         "Permission",
@@ -166,7 +91,7 @@ class User(Model, SurrogatePK):
     @property
     def nickname(self) -> str:
         if self.userinfo.first_name and self.userinfo.last_name:
-            return self.userinfo.first_name + self.userinfo.last_name
+            return self.userinfo.first_name + " " + self.userinfo.last_name
         return self.username
 
 
@@ -242,7 +167,11 @@ class UserInfo(SurrogatePK, Model):
             "userinfo",
             uselist=False,
             lazy="joined",
-            info={"marshmallow": {"column": ["avator_id"]}},
+            info={
+                "marshmallow": {
+                    "column": ["avator_id", "first_name", "last_name", "sex", "age"]
+                }
+            },
         ),
         info={"marshmallow": {"dump_only": True}},
     )

@@ -58,7 +58,7 @@ def render_config_to_dockercompose(configs: Config):
 
 
 def render_crud_modules(module_name: str, config: Dict):
-    module_path = Path("app/modules/%s" % module_name)
+    module_path = Path("smorest_sfs/modules/%s" % module_name)
 
     if module_path.exists():
         log.critical("模块 `%s` 已存在.", module_name)
@@ -68,7 +68,7 @@ def render_crud_modules(module_name: str, config: Dict):
 
     template_and_paths_list = [
         ["%s.py.template" % template_file, "%s/%s.py" % (module_path, template_file),]
-        for template_file in ("__init__", "models", "params", "resources", "schemas",)
+        for template_file in ("__init__", "models", "resources", "schemas",)
     ]
     render = Render("tasks/app/templates/crud_module", template_and_paths_list, config)
     render.render()

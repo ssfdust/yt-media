@@ -1,6 +1,6 @@
 from typing import Optional
 
-from smorest_sfs.modules.users.models import User
+from smorest_sfs.modules.users.models import User, UserInfo
 
 
 def generate_user_instance(
@@ -25,5 +25,6 @@ def generate_user_instance(
         username=username,
         email=email or "%s@email.com" % username,
         password=password,
+        userinfo=UserInfo(sex=1, age=1)
     )
     return user_instance

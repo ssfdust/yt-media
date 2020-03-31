@@ -24,7 +24,6 @@ class SAQuery(SAStatement):
         analysis = QueryAnalysis(query)
         self.parse_records = lambda x: [analysis.getter(r) for r in x]
         records = query.all()
-        self._render_data_table(records)
         table_data = self._render_data_table(records)
         logger.debug("\n" + table_data)
 
@@ -43,7 +42,7 @@ def query_decorator(cls: Type[SAQuery]):
             return self.query.limit(size)
 
         @staticmethod
-        def parse_records(records: List) -> List[Dict]:
+        def parse_records(_: List) -> List[Dict]:
             pass
 
         cls.get_sa_sql = get_sa_sql

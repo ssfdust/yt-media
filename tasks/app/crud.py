@@ -13,6 +13,8 @@ class CrudOpts:
         self.module_name_singular = module_name_singular
         self.module_title = module_title
         self.model_name = None
+        self._check_module_name()
+        self._prepare_render_opts()
 
     def _check_module_name(self):
         if not self.module_name:
@@ -35,6 +37,7 @@ class CrudOpts:
         self.model_name = "".join(
             [word.capitalize() for word in self.module_name_singular.split("_")]
         )
+        print(self.model_name)
 
     def to_config(self):
         return dict(

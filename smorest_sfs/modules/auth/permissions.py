@@ -29,6 +29,8 @@ class ROLES:
     User = "User"
     UserManager = "UserManager"
     EmailTemplateManager = "EmailTemplateManager"
+    RoleManager = "RoleManager"
+    GroupManager = "GroupManager"
     # End Of ROLES
 
 
@@ -37,12 +39,21 @@ class PERMISSIONS:
 
     SuperUser = "SuperPrivilege"
     User = "UserPrivilege"
+    # RoleManager
+    RoleAdd = "RoleAddPrivilege"
+    RoleDelete = "RoleDeletePrivilege"
+    RoleEdit = "RoleEditPrivilege"
+    RoleQuery = "RoleQueryPrivilege"
     # UserManager
+    UserAdd = "UserAddPrivilege"
+    UserDelete = "UserDeletePrivilege"
+    UserEdit = "UserEditPrivilege"
+    UserQuery = "UserQueryPrivilege"
+    # GroupManager
     GroupAdd = "GroupAddPrivilege"
     GroupDelete = "GroupDeletePrivilege"
     GroupEdit = "GroupEditPrivilege"
     GroupQuery = "GroupQueryPrivilege"
-    UserEdit = "UserEditPrivilege"
     # EmailTemplateManager
     EmailTemplateAdd = "EmailTemplateAddPrivilege"
     EmailTemplateEdit = "EmailTemplateEditPrivilege"
@@ -56,15 +67,26 @@ class PERMISSIONS:
 # 默认的角色权限映射
 
 DEFAULT_ROLES_PERMISSIONS_MAPPING = {
+    ROLES.User: [PERMISSIONS.User],
     ROLES.SuperUser: [
         PERMISSIONS.SuperUser,
         PERMISSIONS.User,
         # 用户管理
+        PERMISSIONS.UserAdd,
+        PERMISSIONS.UserDelete,
+        PERMISSIONS.UserEdit,
+        PERMISSIONS.UserQuery,
+        # 用户组管理
         PERMISSIONS.GroupAdd,
         PERMISSIONS.GroupDelete,
         PERMISSIONS.GroupEdit,
         PERMISSIONS.GroupQuery,
         PERMISSIONS.UserEdit,
+        # 用户角色管理
+        PERMISSIONS.RoleAdd,
+        PERMISSIONS.RoleDelete,
+        PERMISSIONS.RoleEdit,
+        PERMISSIONS.RoleQuery,
         # 电子邮件模板管理
         PERMISSIONS.EmailTemplateAdd,
         PERMISSIONS.EmailTemplateDelete,
@@ -73,12 +95,23 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.FileForceDelete
         # End Of SuperUser
     ],
-    ROLES.UserManager: [
+    ROLES.GroupManager: [
         PERMISSIONS.GroupAdd,
         PERMISSIONS.GroupDelete,
         PERMISSIONS.GroupEdit,
         PERMISSIONS.GroupQuery,
+    ],
+    ROLES.UserManager: [
+        PERMISSIONS.UserAdd,
+        PERMISSIONS.UserDelete,
         PERMISSIONS.UserEdit,
+        PERMISSIONS.UserQuery,
+    ],
+    ROLES.RoleManager: [
+        PERMISSIONS.RoleAdd,
+        PERMISSIONS.RoleDelete,
+        PERMISSIONS.RoleEdit,
+        PERMISSIONS.RoleQuery,
     ],
     ROLES.EmailTemplateManager: [
         PERMISSIONS.EmailTemplateAdd,

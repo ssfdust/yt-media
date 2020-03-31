@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-    app.modules.users
+    app.modules.roles
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    用户模块
+    角色权限模块
 """
 from flask_smorest import Blueprint
 
-blp = Blueprint("User", __name__, url_prefix="/users", description="")
+blp = Blueprint('Role', __name__, url_prefix='/roles', description='')

@@ -23,7 +23,7 @@ class JSONResponse(Response):
 
     @cached_property
     def json(self) -> Dict:
-        return json.loads(self.get_data(as_text=True), object_pairs_hook=OrderedDict)
+        return json.loads(self.get_data(as_text=True), object_pairs_hook=dict)
 
 
 from typing import Union
@@ -49,7 +49,7 @@ class AutoAuthFlaskClient(FlaskClient):
             ...     flask_app_client.get('/api/v1/users/')
         """
         from smorest_sfs.services.auth.auth import login_user, logout_user
-        from smorest_sfs.modules.users.models import Role
+        from smorest_sfs.modules.roles.models import Role
 
         self._user = user
         self._roles = roles or []

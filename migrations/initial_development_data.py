@@ -18,7 +18,8 @@
 from datetime import datetime
 from typing import NoReturn
 from sqlalchemy.orm.exc import NoResultFound
-from smorest_sfs.modules.users.models import User, Role, Permission, UserInfo, db, Model
+from smorest_sfs.modules.users.models import User, UserInfo, db, Model
+from smorest_sfs.modules.roles.models import Permission, Role
 from smorest_sfs.modules.storages.models import Storages
 from smorest_sfs.modules.auth.permissions import (
     PERMISSIONS,
@@ -36,6 +37,12 @@ def create_item_from_cls(model_cls: Model, cls: object) -> NoReturn:
     db.session.commit()
 
 
+def _handle_default_role(role: Role):
+    print(role.name)
+    if role.name == ROLES.User:
+        role.user_default = True
+
+
 def init_permission() -> NoReturn:
     create_item_from_cls(Role, ROLES)
     create_item_from_cls(Permission, PERMISSIONS)
@@ -44,6 +51,7 @@ def init_permission() -> NoReturn:
             Permission.name.in_(permissions)
         ).all()
         role_instance = Role.query.filter_by(name=role).first()
+        _handle_default_role(role_instance)
         role_instance.permissions = permission_instances
         db.session.add(role_instance)
     db.session.commit()
