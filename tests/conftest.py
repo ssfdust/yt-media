@@ -16,7 +16,7 @@ from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.modules.users.models import User
 from smorest_sfs.utils.paths import UploadPath
 
-from ._utils import client, users, injection
+from ._utils import client, users, injection, tables
 
 
 class fakeuuid:
@@ -73,19 +73,16 @@ def flask_app_client(flask_app: Flask):
 @pytest.fixture(scope="session")
 def temp_db_instance_helper(db) -> Callable:
     # pylint: disable=W0613, W0621
-    def temp_db_instance_manager(instance: db.Model) -> db.Model:
-        instance.save()
+    def temp_db_instance_manager(*instances: db.Model) -> db.Model:
+        for instance in instances:
+            instance.save()
 
-        yield instance
+        if len(instances) == 1:
+            yield instances[0]
+        else:
+            yield instances
 
-        mapper = instance.__class__.__mapper__
-        if instance not in db.session:
-            db.session.add(instance)
-
-        d = instance.__class__.query.filter(
-            mapper.primary_key[0] == mapper.primary_key_from_instance(instance)[0]
-        ).delete()
-        db.session.commit()
+        tables.clear_instances(db, instances)
 
     return temp_db_instance_manager
 

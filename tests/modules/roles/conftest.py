@@ -46,3 +46,10 @@ def update_permissions():
             PERMISSIONS.RoleAdd, PERMISSIONS.RoleQuery, PERMISSIONS.RoleDelete
         )
     ]
+
+
+@pytest.fixture
+@pytest.mark.usefixtures("flask_app")
+def role_items(temp_db_instance_helper):
+    for _ in temp_db_instance_helper(Role(name="1"), Role(name="2"), Role(name="3")):
+        yield _
