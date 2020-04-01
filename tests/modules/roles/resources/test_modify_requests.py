@@ -1,16 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Dict, List
+from typing import Dict
 
 import pytest
-from flask import url_for
 
 from smorest_sfs.modules.roles.models import ROLES, Role
-from smorest_sfs.modules.roles.schemas import RoleSchema as schema
-from tests._utils.injection import FixturesInjectBase
+from smorest_sfs.modules.roles.schemas import RoleSchema
+from tests._utils.injection import GeneralModify
 
 
-class TestGeneralModify(FixturesInjectBase):
+class TestRoleModify(GeneralModify):
+    items = "role_items"
+    view = "Role.RoleView"
+    item_view = "Role.RoleItemView"
+    login_roles = [ROLES.RoleManager]
+    model = Role
+    schema = RoleSchema
+    delete_param_key = "role_id"
 
     fixture_names = (
         "flask_app_client",
@@ -23,67 +29,42 @@ class TestGeneralModify(FixturesInjectBase):
     @pytest.mark.parametrize(
         "data",
         [
-            {"name": "t1", "description": "qqq"},
-            {"name": "t2", "description": "www"},
-            {"name": "t3", "description": "aaa"},
+            {"name": "t1", "description": "t1"},
+            {"name": "t2", "description": "t2"},
+            {"name": "t3", "description": "t3"},
         ],
     )
     def test_add(self, data, permissions):
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.RoleManager]
-        ) as client:
-            with self.flask_app.test_request_context():
-                url = url_for("Role.RoleView")
-                data["permissions"] = permissions
-                resp = client.post(url, json=data)
-                assert (
-                    resp.status_code == 200
-                    and isinstance(resp.json["data"], dict)
-                    and resp.json["data"].keys() >= {"id", "name", "permissions"}
-                    and resp.json["data"]["permissions"][0].keys() >= {"id", "name"}
-                )
-                Role.query.filter_by(id=resp.json["data"]["id"]).delete()
-                self.db.session.commit()
+        data["permissions"] = permissions
+        resp = self._add_request(data)
+        assert (
+            resp.status_code == 200
+            and isinstance(resp.json["data"], dict)
+            and resp.json["data"].keys() >= {"id", "name", "permissions"}
+            and resp.json["data"]["permissions"][0].keys() == {"id", "name"}
+        )
 
     def test_delete(self):
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.RoleManager]
-        ) as client:
-            with self.flask_app.test_request_context():
-                url = url_for("Role.RoleView")
-                ids = [r.id for r in self.role_items]
-                resp = client.delete(url, json={"lst": ids})
-                assert resp.status_code == 200
+        resp, items = self._delete_request()
+        assert resp.status_code == 200 and all([i.deleted for i in items])
 
     def test_item_modify(self, update_permissions):
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.RoleManager]
-        ) as client:
-            with self.flask_app.test_request_context():
-                item = self.role_items[-1]
-                url = url_for("Role.RoleItemView", role_id=item.id)
-                json = schema().dump(item)
-                json.update(
-                    {
-                        "name": "tt",
-                        "description": "qaqa",
-                        "permissions": update_permissions,
-                    }
-                )
-                resp = client.put(url, json=json)
-                assert (
-                    resp.status_code == 200
-                    and resp.json["data"]["name"] == "tt"
-                    and resp.json["data"]["description"] == "qaqa"
-                    and resp.json["data"]["permissions"] == update_permissions
-                )
+        json = self._get_dumped_modified_item()
+        json.update(
+            {
+                "name": "tt",
+                "description": "qaqa",
+                "permissions": update_permissions,
+            }
+        )
+        resp = self._item_modify_request(json)
+        assert (
+            resp.status_code == 200
+            and resp.json["data"]["name"] == "tt"
+            and resp.json["data"]["description"] == "qaqa"
+            and resp.json["data"]["permissions"] == update_permissions
+        )
 
     def test_item_delete(self):
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.RoleManager]
-        ) as client:
-            with self.flask_app.test_request_context():
-                url = url_for("Role.RoleItemView", role_id=1)
-                resp = client.delete(url)
-                after_resp = client.get(url)
-                assert resp.status_code == 200 and after_resp.status_code == 404
+        resp, item = self._item_delete_request() 
+        assert resp.status_code == 200 and item.deleted

@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import List, Tuple, Type, Union
+
+from flask import url_for
+from marshmallow import Schema
+
 import pytest
+from smorest_sfs.extensions.sqla import Model
+
 from .uniqueue import UniqueQueue
 
 
@@ -20,10 +27,70 @@ def uninject_logger(logger):
 
 class FixturesInjectBase:
 
-    fixture_names = ()
+    fixture_names: Union[Tuple[str], Tuple] = ()
 
     @pytest.fixture(autouse=True)
     def auto_injector_fixture(self, request):
         names = self.fixture_names
         for name in names:
             setattr(self, name, request.getfixturevalue(name))
+
+
+class GeneralModify(FixturesInjectBase):
+
+    view: str
+    login_roles: List[str]
+    item_view: str
+    model: Type[Model]
+    schema: Type[Schema]
+    delete_param_key: str
+
+    def _add_request(self, data):
+        with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
+            with self.flask_app.test_request_context():
+                url = url_for(self.view)
+                resp = client.post(url, json=data)
+                self.model.query.filter_by(id=resp.json["data"]["id"]).delete()
+                self.db.session.commit()
+                return resp
+
+    def _get_deleting_items(self):
+        items = getattr(self, self.items)
+        return items[:1]
+
+    def _get_modified_item(self):
+        items = getattr(self, self.items)
+        return items[-1]
+
+    @staticmethod
+    def __get_schema_dumped(schema, item):
+        return schema.dump(item)
+
+    def _get_dumped_modified_item(self):
+        item = self._get_modified_item()
+        schema = self.schema()
+        return self.__get_schema_dumped(schema, item)
+
+    def _delete_request(self):
+        with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
+            with self.flask_app.test_request_context():
+                url = url_for(self.view)
+                items = self._get_deleting_items()
+                ids = [i.id for i in items]
+                resp = client.delete(url, json={"lst": ids})
+                return resp, items
+
+    def _item_modify_request(self, json):
+        with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
+            with self.flask_app.test_request_context():
+                item = self._get_modified_item()
+                url = url_for(self.item_view, **{self.delete_param_key: item.id})
+                return client.put(url, json=json)
+
+    def _item_delete_request(self):
+        with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
+            with self.flask_app.test_request_context():
+                item = self._get_modified_item()
+                url = url_for(self.item_view, **{self.delete_param_key: item.id})
+                resp = client.delete(url)
+                return resp, item
