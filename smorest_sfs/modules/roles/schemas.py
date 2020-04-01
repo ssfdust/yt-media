@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright  
-# Author: 
+# Copyright
+# Author:
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ class RoleSchema(ma.ModelSchema):
 
     class Meta:
         model = models.Role
-        exclude = ['users']
+        exclude = ["users"]
 
 
 class RolePageSchema(BasePageSchema):
@@ -55,7 +55,7 @@ class RoleOptsSchema(ma.Schema):
     """角色权限的选项"""
 
     class Meta:
-        fields = ('id', 'name')
+        fields = ("id", "name")
 
 
 class RoleListSchema(ma.Schema):

@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import pytest
-from smorest_sfs.modules.auth.permissions import \
-    DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping
+from smorest_sfs.modules.auth.permissions import (
+    DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping,
+)
 from smorest_sfs.modules.roles.models import ROLES, Permission, Role
 
 

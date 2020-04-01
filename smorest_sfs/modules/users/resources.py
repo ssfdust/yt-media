@@ -15,13 +15,17 @@ from loguru import logger
 from flask_jwt_extended import current_user
 from smorest_sfs.extensions import db
 from smorest_sfs.extensions.api.decorators import paginate
-from smorest_sfs.extensions.marshal.bases import (BaseIntListSchema,
-                                                  BaseMsgSchema,
-                                                  GeneralLikeArgs)
+from smorest_sfs.extensions.marshal.bases import (
+    BaseIntListSchema,
+    BaseMsgSchema,
+    GeneralLikeArgs,
+)
 from smorest_sfs.modules.auth import PERMISSIONS, ROLES
-from smorest_sfs.modules.auth.decorators import (doc_login_required,
-                                                 permission_required,
-                                                 role_required)
+from smorest_sfs.modules.auth.decorators import (
+    doc_login_required,
+    permission_required,
+    role_required,
+)
 from smorest_sfs.services.users import create_user
 
 from . import blp, models, schemas
@@ -157,9 +161,7 @@ class UserSelfView(MethodView):
         """
         更新用户信息
         """
-        models.User.update_by_id(
-            current_user.id, schemas.UserSelfSchema, user
-        )
+        models.User.update_by_id(current_user.id, schemas.UserSelfSchema, user)
         logger.info(f"{current_user.username}更新了个人信息")
 
         return {"data": current_user}

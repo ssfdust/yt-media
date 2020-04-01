@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright  
-# Author: 
+# Copyright
+# Author:
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ class ProjectOptsSchema(ma.Schema):
     """项目的选项"""
 
     class Meta:
-        fields = ('id', 'name')
+        fields = ("id", "name")
 
 
 class ProjectListSchema(ma.Schema):

@@ -51,11 +51,7 @@ class TestRoleModify(GeneralModify):
     def test_item_modify(self, update_permissions):
         json = self._get_dumped_modified_item()
         json.update(
-            {
-                "name": "tt",
-                "description": "qaqa",
-                "permissions": update_permissions,
-            }
+            {"name": "tt", "description": "qaqa", "permissions": update_permissions,}
         )
         resp = self._item_modify_request(json)
         assert (
@@ -66,5 +62,5 @@ class TestRoleModify(GeneralModify):
         )
 
     def test_item_delete(self):
-        resp, item = self._item_delete_request() 
+        resp, item = self._item_delete_request()
         assert resp.status_code == 200 and item.deleted

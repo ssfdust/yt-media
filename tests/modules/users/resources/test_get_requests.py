@@ -42,4 +42,4 @@ class TestListView(GeneralGet):
 
     def test_get_item(self):
         data = self._get_item(user_id=self.regular_user.id)
-        assert  data.keys() >= {"id", "nickname"}
+        assert data.keys() >= {"id", "nickname"}

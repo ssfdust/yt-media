@@ -29,12 +29,13 @@ from loguru import logger
 
 from flask_jwt_extended import current_user
 from smorest_sfs.extensions.api.decorators import paginate
-from smorest_sfs.extensions.marshal.bases import (BaseIntListSchema,
-                                                  BaseMsgSchema,
-                                                  GeneralLikeArgs)
+from smorest_sfs.extensions.marshal.bases import (
+    BaseIntListSchema,
+    BaseMsgSchema,
+    GeneralLikeArgs,
+)
 from smorest_sfs.modules.auth import PERMISSIONS
-from smorest_sfs.modules.auth.decorators import (doc_login_required,
-                                                 permission_required)
+from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
 
 from . import blp, models, schemas
 

@@ -25,6 +25,6 @@ def generate_user_instance(
         username=username,
         email=email or "%s@email.com" % username,
         password=password,
-        userinfo=UserInfo(sex=1, age=1)
+        userinfo=UserInfo(sex=1, age=1),
     )
     return user_instance

@@ -18,12 +18,7 @@ class TestProjectModify(GeneralModify):
     delete_param_key = "project_id"
 
     @pytest.mark.parametrize(
-        "data",
-        [
-            {"name": "t1"},
-            {"name": "t2"},
-            {"name": "t3"},
-        ],
+        "data", [{"name": "t1"}, {"name": "t2"}, {"name": "t3"},],
     )
     def test_add(self, data):
         resp = self._add_request(data)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright  
-# Author: 
+# Copyright
+# Author:
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ class UserSchema(ma.ModelSchema):
     """
     用户的序列化类
     """
+
     nickname = fields.Str(dump_only=True)
 
     class Meta:
@@ -43,6 +44,7 @@ class UserSelfSchema(ma.ModelSchema):
     """
     用户的序列化类
     """
+
     nickname = fields.Str(dump_only=True)
 
     class Meta:
@@ -66,7 +68,7 @@ class UserOptsSchema(ma.Schema):
     """用户的选项"""
 
     class Meta:
-        fields = ('id', 'nickname')
+        fields = ("id", "nickname")
 
 
 class UserListSchema(ma.Schema):

@@ -34,4 +34,5 @@ def server(
     else:
         host, port = bind.split(":")
         from smorest_sfs.app import app
+
         app.run(host=host, port=port, debug=debug, use_reloader=debug)

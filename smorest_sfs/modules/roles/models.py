@@ -70,7 +70,7 @@ class Role(Model, SurrogatePK):
         primaryjoin="foreign(permission_roles.c.role_id) == Role.id",
         secondaryjoin="foreign(permission_roles.c.permission_id) == Permission.id",
         backref=db.backref("roles", lazy="dynamic", doc="所有角色"),
-        info={"marshmallow": {"column": ["id", "name"]}}
+        info={"marshmallow": {"column": ["id", "name"]}},
     )
 
     @classmethod
@@ -83,9 +83,7 @@ class Role(Model, SurrogatePK):
             return cls.query.filter_by(name=ROLES.SuperUser).all()
         return cls.query.filter_by(user_default=True).all()
 
-    def add_permissions(
-        self, permissions: List[Permission]
-    ) -> List[Permission]:
+    def add_permissions(self, permissions: List[Permission]) -> List[Permission]:
         """
         获取权限
 

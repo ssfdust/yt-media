@@ -33,9 +33,13 @@ class TestGeneralModify(FixturesInjectBase):
 
     @pytest.fixture(autouse=True)
     def inject_roles(self):
-        setattr(self, "roles", Role.query.filter(
-            Role.name.in_([ROLES.GroupManager, ROLES.EmailTemplateManager])
-        ).all())
+        setattr(
+            self,
+            "roles",
+            Role.query.filter(
+                Role.name.in_([ROLES.GroupManager, ROLES.EmailTemplateManager])
+            ).all(),
+        )
         setattr(self, "role_dict", [{"id": r.id, "name": r.name} for r in self.roles])
 
     def _get_data(self, **kwargs) -> Dict:
@@ -77,7 +81,7 @@ class TestGeneralModify(FixturesInjectBase):
                     username="asasarqwrasdasd",
                     email=self.regular_user.email,
                     phonenum="2345",
-                    roles=self.role_dict
+                    roles=self.role_dict,
                 )
                 client.patch(url, json=data)
                 assert (
