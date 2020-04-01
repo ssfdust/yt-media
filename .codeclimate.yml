@@ -12,4 +12,4 @@ engines:
                     mass_threshold: 65
 exclude_patterns:
     - "tasks/app/db.py"
-    - "test_general_access"
+    - "test_general_access.py"
