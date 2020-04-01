@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import url_for
-
 from smorest_sfs.modules.auth import ROLES
 from tests._utils.injection import GeneralGet
 
@@ -15,25 +13,12 @@ class TestListView(GeneralGet):
     login_roles = [ROLES.ProjectManager]
 
     def test_get_options(self):
-        resp = self._get_option()
-        assert (
-            resp.status_code == 200
-            and isinstance(resp.json["data"], list)
-            and resp.json["data"][0].keys() == {"id", "name"}
-        )
+        self._get_option()
 
     def test_get_list(self):
-        resp = self._get_list(name="t")
-        assert (
-            resp.status_code == 200
-            and isinstance(resp.json["data"], list)
-            and resp.json["data"][0].keys() > {"id", "name"}
-        )
+        data = self._get_list(name="t")
+        assert data[0].keys() > {"id", "name"}
 
     def test_get_item(self):
-        resp = self._get_item(project_id=self.project_items[0].id)
-        assert (
-            resp.status_code == 200
-            and isinstance(resp.json["data"], dict)
-            and resp.json["data"].keys() >= {"id", "name"}
-        )
+        data = self._get_item(project_id=self.project_items[0].id)
+        assert data.keys() >= {"id", "name"}

@@ -104,10 +104,19 @@ class GeneralGet(FixturesInjectBase):
                 return client.get(url)
 
     def _get_option(self):
-        return self._get_view(self.listview)
+        resp = self._get_view(self.listview)
+        assert (
+            resp.status_code == 200
+            and isinstance(resp.json["data"], list)
+            and resp.json["data"][0].keys() == {"id", "name"}
+        )
 
     def _get_list(self, **kwargs):
-        return self._get_view(self.view, **kwargs)
+        resp = self._get_view(self.view, **kwargs)
+        assert resp.status_code == 200 and isinstance(resp.json["data"], list)
+        return resp.json["data"]
 
     def _get_item(self, **kwargs):
-        return self._get_view(self.item_view, **kwargs)
+        resp = self._get_view(self.item_view, **kwargs)
+        assert resp.status_code == 200 and isinstance(resp.json["data"], dict)
+        return resp.json["data"]

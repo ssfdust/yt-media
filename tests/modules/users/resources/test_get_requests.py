@@ -15,7 +15,7 @@ class TestListView(GeneralGet):
     fixture_names = ("flask_app_client", "flask_app", "regular_user")
 
     def test_get_options(self):
-        resp = self._get_option()
+        resp = self._get_view(self.listview)
         assert (
             resp.status_code == 200
             and isinstance(resp.json["data"], list)
@@ -25,14 +25,12 @@ class TestListView(GeneralGet):
     @pytest.mark.parametrize("name", ["qqq", "aaa", "regular"])
     def test_get_list(self, name):
         self.regular_user.userinfo.update(first_name="nqqqn", last_name="baaab")
-        resp = self._get_list(name=name)
+        data = self._get_list(name=name)
         assert (
-            resp.status_code == 200
-            and isinstance(resp.json["data"], list)
-            and resp.json["data"][0].keys() > {"id", "nickname"}
-            and resp.json["data"][0]["id"] == self.regular_user.id
-            and resp.json["data"][0]["userinfo"]["first_name"] == "nqqqn"
-            and resp.json["data"][0]["userinfo"]["last_name"] == "baaab"
+            data[0].keys() > {"id", "nickname"}
+            and data[0]["id"] == self.regular_user.id
+            and data[0]["userinfo"]["first_name"] == "nqqqn"
+            and data[0]["userinfo"]["last_name"] == "baaab"
         )
 
     def test_get_userinfo(self):
@@ -43,9 +41,5 @@ class TestListView(GeneralGet):
         )
 
     def test_get_item(self):
-        resp = self._get_item(user_id=self.regular_user.id)
-        assert (
-            resp.status_code == 200
-            and isinstance(resp.json["data"], dict)
-            and resp.json["data"].keys() >= {"id", "nickname"}
-        )
+        data = self._get_item(user_id=self.regular_user.id)
+        assert  data.keys() >= {"id", "nickname"}
