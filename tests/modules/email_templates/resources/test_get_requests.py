@@ -1,57 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import url_for
-
 from smorest_sfs.modules.auth import ROLES
-from tests._utils.injection import FixturesInjectBase
+from tests._utils.injection import GeneralGet
 
 
-class TestListView(FixturesInjectBase):
+class TestListView(GeneralGet):
 
+    login_roles = [ROLES.EmailTemplateManager]
     fixture_names = ("flask_app_client", "flask_app", "regular_user")
+    listview = "EmailTemplate.EmailTemplateListView"
+    view = "EmailTemplate.EmailTemplateView"
+    item_view = "EmailTemplate.EmailTemplateItemView"
 
     def test_get_options(self):
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.SuperUser]
-        ) as client:
-            with self.flask_app.test_request_context():
-                url = url_for("EmailTemplate.EmailTemplateListView")
-                resp = client.get(url)
-                assert (
-                    resp.status_code == 200
-                    and isinstance(resp.json["data"], list)
-                    and resp.json["data"][0].keys() == {"id", "name"}
-                )
+        resp = self._get_option()
+        assert (
+            resp.status_code == 200
+            and isinstance(resp.json["data"], list)
+            and resp.json["data"][0].keys() == {"id", "name"}
+        )
 
     def test_get_list(self):
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.SuperUser]
-        ) as client:
-            with self.flask_app.test_request_context():
-                url = url_for("EmailTemplate.EmailTemplateView", name="t")
-                resp = client.get(url)
-                assert (
-                    resp.status_code == 200
-                    and isinstance(resp.json["data"], list)
-                    and resp.json["data"][0].keys() > {"id", "name"}
-                )
-
-
-class TestItemView(FixturesInjectBase):
-
-    fixture_names = ("flask_app_client", "flask_app", "regular_user")
+        resp = self._get_list(name="t")
+        assert (
+            resp.status_code == 200
+            and isinstance(resp.json["data"], list)
+            and resp.json["data"][0].keys() > {"id", "name", "template"}
+        )
 
     def test_get_item(self):
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.SuperUser]
-        ) as client:
-            with self.flask_app.test_request_context():
-                url = url_for(
-                    "EmailTemplate.EmailTemplateItemView", email_template_id=1
-                )
-                resp = client.get(url)
-                assert (
-                    resp.status_code == 200
-                    and isinstance(resp.json["data"], dict)
-                    and resp.json["data"].keys() > {"id", "name"}
-                )
+        resp = self._get_item(email_template_id=1)
+        assert (
+            resp.status_code == 200
+            and isinstance(resp.json["data"], dict)
+            and resp.json["data"].keys() > {"id", "name", "deleted", "template"}
+        )

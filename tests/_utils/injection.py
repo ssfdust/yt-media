@@ -27,6 +27,14 @@ def uninject_logger(logger):
 
 class FixturesInjectBase:
 
+    items: str
+    listview: str
+    view: str
+    item_view: str
+    login_roles: List[str]
+    model: Type[Model]
+    schema: Type[Schema]
+    delete_param_key: str
     fixture_names: Union[Tuple[str], Tuple] = ()
 
     @pytest.fixture(autouse=True)
@@ -37,14 +45,6 @@ class FixturesInjectBase:
 
 
 class GeneralModify(FixturesInjectBase):
-
-    view: str
-    login_roles: List[str]
-    item_view: str
-    model: Type[Model]
-    schema: Type[Schema]
-    delete_param_key: str
-
     def _add_request(self, data):
         with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
             with self.flask_app.test_request_context():
@@ -94,3 +94,20 @@ class GeneralModify(FixturesInjectBase):
                 url = url_for(self.item_view, **{self.delete_param_key: item.id})
                 resp = client.delete(url)
                 return resp, item
+
+
+class GeneralGet(FixturesInjectBase):
+    def _get_view(self, endpoint: str, **kwargs):
+        with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
+            with self.flask_app.test_request_context():
+                url = url_for(endpoint, **kwargs)
+                return client.get(url)
+
+    def _get_option(self):
+        return self._get_view(self.listview)
+
+    def _get_list(self, **kwargs):
+        return self._get_view(self.view, **kwargs)
+
+    def _get_item(self, **kwargs):
+        return self._get_view(self.item_view, **kwargs)

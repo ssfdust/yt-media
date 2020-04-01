@@ -3,55 +3,37 @@
 from flask import url_for
 
 from smorest_sfs.modules.auth import ROLES
-from tests._utils.injection import FixturesInjectBase
+from tests._utils.injection import GeneralGet
 
 
-class TestListView(FixturesInjectBase):
+class TestListView(GeneralGet):
 
-    fixture_names = ("flask_app_client", "flask_app", "regular_user")
+    fixture_names = ("flask_app_client", "flask_app", "regular_user", "project_items")
+    item_view = "Project.ProjectItemView"
+    listview = "Project.ProjectListView"
+    view = "Project.ProjectView"
+    login_roles = [ROLES.ProjectManager]
 
     def test_get_options(self):
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.SuperUser]
-        ) as client:
-            with self.flask_app.test_request_context():
-                url = url_for("Project.ProjectListView")
-                resp = client.get(url)
-                assert (
-                    resp.status_code == 200
-                    and isinstance(resp.json["data"], list)
-                    and resp.json["data"][0].keys() == {"id", "name"}
-                )
+        resp = self._get_option()
+        assert (
+            resp.status_code == 200
+            and isinstance(resp.json["data"], list)
+            and resp.json["data"][0].keys() == {"id", "name"}
+        )
 
     def test_get_list(self):
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.SuperUser]
-        ) as client:
-            with self.flask_app.test_request_context():
-                url = url_for("Project.ProjectView", name="t")
-                resp = client.get(url)
-                assert (
-                    resp.status_code == 200
-                    and isinstance(resp.json["data"], list)
-                    and resp.json["data"][0].keys() > {"id", "name"}
-                )
-
-
-class TestItemView(FixturesInjectBase):
-
-    fixture_names = ("flask_app_client", "flask_app", "regular_user")
+        resp = self._get_list(name="t")
+        assert (
+            resp.status_code == 200
+            and isinstance(resp.json["data"], list)
+            and resp.json["data"][0].keys() > {"id", "name"}
+        )
 
     def test_get_item(self):
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.SuperUser]
-        ) as client:
-            with self.flask_app.test_request_context():
-                url = url_for(
-                    "Project.ProjectItemView", project_id=1
-                )
-                resp = client.get(url)
-                assert (
-                    resp.status_code == 200
-                    and isinstance(resp.json["data"], dict)
-                    and resp.json["data"].keys() > {"id", "name"}
-                )
+        resp = self._get_item(project_id=self.project_items[0].id)
+        assert (
+            resp.status_code == 200
+            and isinstance(resp.json["data"], dict)
+            and resp.json["data"].keys() >= {"id", "name"}
+        )
