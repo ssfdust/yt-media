@@ -53,7 +53,7 @@ def create_app(modules: List[str], config_name: str = "development") -> Flask:
     通过环境变量export FLASK_ENV可以覆盖掉默认的配置信息，在Docker中
     比较好用。
     """
-    app = Flask(__name__)
+    app = Flask("Smart-Smorest")
 
     config_type = os.environ.get("FLASK_ENV", config_name)
 
