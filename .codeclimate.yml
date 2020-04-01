@@ -5,5 +5,5 @@ engines:
             assert_used:
                 enabled: false
 exclude_patterns:
-    - tasks/app/db.py
+    - "tasks/app/db.py"
 
