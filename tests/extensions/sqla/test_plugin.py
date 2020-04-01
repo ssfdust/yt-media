@@ -8,6 +8,7 @@ import pyperclip
 import pytest
 
 from smorest_sfs.plugins.sa.helpers import QueryAnalysis
+from smorest_sfs.plugins.sa import execute, debug_sql, render_limit_results
 from tests._utils.uniqueue import UniqueQueue
 from tests.extensions.sqla.test_sqla import ItemsFixtureBase
 
@@ -23,10 +24,9 @@ class TestSAPlugin(ItemsFixtureBase):
 
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items")
     @pytest.mark.parametrize("name, count", [("bbc", 1), ("aac", 0)])
-    def test_sql_could_run(self, db, name, count):
-        sa_sql = self.TestSASql(name).get_sa_sql()
-        cursor = db.session.execute(sa_sql)
-        assert len(cursor.fetchall()) == count
+    def test_sql_could_run(self, name, count):
+        data = execute(self.TestSASql, name=name)
+        assert len(data) == count
 
     @pytest.mark.parametrize("name", ["bbc", "aac"])
     def test_raw_sql_should_rendered(self, name):
@@ -35,14 +35,12 @@ class TestSAPlugin(ItemsFixtureBase):
 
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
     def test_table_should_rendered(self):
-        test_sql = self.TestSASql("bbc")
-        test_sql.render_results()
+        render_limit_results(self.TestSASql, "bbc")
         assert self._get_debug() == "\n" + self.table_str
 
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
     def test_debug_should_rendered(self):
-        test_sql = self.TestSASql("bbc")
-        test_sql.debug_sql()
+        debug_sql(self.TestSASql, "bbc")
         assert self._get_debug() == "\n" + self.raw_sql.format(
             name="bbc"
         ) and pyperclip.paste() == self.raw_sql.format(name="bbc")
@@ -62,10 +60,14 @@ class TestTableQuery(ItemsFixtureBase):
         "TestTwoTablesQuery",
     )
 
+    @pytest.mark.usefixtures("TestTableTeardown", "crud_items")
+    def test_query_could_run(self):
+        data = execute(self.TestOneColQuery)
+        assert len(data) > 0
+
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
     def test_one_col_query_debug_sql(self):
-        query = self.TestOneColQuery()
-        query.debug_sql()
+        debug_sql(self.TestOneColQuery)
         assert self._get_debug() == (
             "\n"
             "SELECT sqla_test_crud_table.name \n"
@@ -75,16 +77,14 @@ class TestTableQuery(ItemsFixtureBase):
 
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
     def test_one_col_query_render(self):
-        query = self.TestOneColQuery()
-        query.render_results()
+        render_limit_results(self.TestOneColQuery)
         assert self._get_debug() == (
             "\n╒════════╕\n│ name   │\n╞════════╡\n│ bbc    │\n╘════════╛"
         )
 
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
     def test_one_table_query_debug_sql(self):
-        query = self.TestOneTableQuery()
-        query.debug_sql()
+        debug_sql(self.TestOneTableQuery)
         assert self._get_debug() == (
             "\n"
             "SELECT sqla_test_crud_table.id, sqla_test_crud_table.deleted, "
@@ -97,8 +97,7 @@ class TestTableQuery(ItemsFixtureBase):
 
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
     def test_one_table_query_render(self):
-        query = self.TestOneTableQuery()
-        query.render_results()
+        render_limit_results(self.TestOneTableQuery)
         assert self._get_debug() == (
             "\n"
             "╒══════╤═══════════╤═════════════════════╤═════════════════════╤════════╕\n"
@@ -112,8 +111,7 @@ class TestTableQuery(ItemsFixtureBase):
         "TestTableTeardown", "crud_items", "inject_logger", "child_items"
     )
     def test_two_tables_query_debug_sql(self):
-        query = self.TestTwoTablesQuery()
-        query.debug_sql()
+        debug_sql(self.TestTwoTablesQuery)
         assert self._get_debug() == (
             "\n"
             "SELECT sqla_test_crud_table.id, sqla_test_crud_table.deleted, "
@@ -130,8 +128,7 @@ class TestTableQuery(ItemsFixtureBase):
         "TestTableTeardown", "crud_items", "inject_logger", "child_items"
     )
     def test_two_tables_query_render(self):
-        query = self.TestTwoTablesQuery()
-        query.render_results()
+        render_limit_results(self.TestTwoTablesQuery)
         assert self._get_debug() == (
             "\n"
             "╒═══════════════════╤═══════════════════"

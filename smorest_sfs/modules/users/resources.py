@@ -101,7 +101,6 @@ class UserItemView(MethodView):
         """
         更新用户
         """
-
         user = models.User.update_by_id(user_id, schemas.UserSchema, user)
         logger.info(f"{current_user.username}更新了用户{user.id}")
 
@@ -152,14 +151,14 @@ class UserSelfView(MethodView):
 
     @doc_login_required
     @role_required(ROLES.User)
-    @blp.arguments(schemas.UserSchema)
+    @blp.arguments(schemas.UserSelfSchema)
     @blp.response(schemas.UserItemSchema, code=200, description="用户信息")
     def patch(self, user: models.User):
         """
         更新用户信息
         """
         models.User.update_by_id(
-            current_user.id, schemas.UserSchema, user
+            current_user.id, schemas.UserSelfSchema, user
         )
         logger.info(f"{current_user.username}更新了个人信息")
 

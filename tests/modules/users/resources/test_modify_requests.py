@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 from typing import Dict, List
 
+import pytest
 from flask import url_for
 
-import pytest
 from smorest_sfs.modules.auth import ROLES
+from smorest_sfs.modules.roles.models import Role
+from smorest_sfs.modules.users.models import User
 from tests._utils.injection import FixturesInjectBase
 
 
@@ -28,6 +30,13 @@ class TestGeneralModify(FixturesInjectBase):
         "active": False,
         "userinfo": {"first_name": "tt", "last_name": "qaqa", "sex": 2, "age": 13,},
     }
+
+    @pytest.fixture(autouse=True)
+    def inject_roles(self):
+        setattr(self, "roles", Role.query.filter(
+            Role.name.in_([ROLES.GroupManager, ROLES.EmailTemplateManager])
+        ).all())
+        setattr(self, "role_dict", [{"id": r.id, "name": r.name} for r in self.roles])
 
     def _get_data(self, **kwargs) -> Dict:
         data = self.data.copy()
@@ -55,19 +64,26 @@ class TestGeneralModify(FixturesInjectBase):
             )
             url = url_for("User.UserRegisterView")
             resp = self.flask_app_client.put(url, json=data)
-            assert resp.status_code == 200
+            fake_user = User.get_by_keyword("fake_user")
+            assert resp.status_code == 200 and {r.name for r in fake_user.roles} == {
+                ROLES.User
+            }
 
     def test_modify_userinfo(self):
         with self.flask_app_client.login(self.regular_user, [ROLES.User]) as client:
             with self.flask_app.test_request_context():
                 url = url_for("User.UserSelfView")
                 data = self._get_data(
-                    username=self.regular_user.username,
+                    username="asasarqwrasdasd",
                     email=self.regular_user.email,
-                    phonenum="2345"
+                    phonenum="2345",
+                    roles=self.role_dict
                 )
                 client.patch(url, json=data)
-                assert self.regular_user.phonenum == "2345"
+                assert (
+                    self.regular_user.phonenum == "2345"
+                    and self.regular_user.username != "asasarqwrasdasd"
+                )
 
     def test_item_modify(self):
         with self.flask_app_client.login(
@@ -78,7 +94,8 @@ class TestGeneralModify(FixturesInjectBase):
                 data = self._get_data(
                     username=self.guest_user.username,
                     email=self.guest_user.email,
-                    phonenum="9527"
+                    phonenum="9527",
+                    roles=[{"id": r.id, "name": r.name} for r in self.roles],
                 )
                 resp = client.put(url, json=data)
                 assert (
@@ -88,6 +105,7 @@ class TestGeneralModify(FixturesInjectBase):
                     and self.guest_user.nickname == "tt qaqa"
                     and self.guest_user.userinfo.sex_label == "女"
                     and self.guest_user.userinfo.age == 13
+                    and set(self.guest_user.roles) >= set(r for r in self.roles)
                 )
 
     def test_item_delete(self):

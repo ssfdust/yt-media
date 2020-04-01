@@ -39,6 +39,17 @@ class UserSchema(ma.ModelSchema):
         model = models.User
 
 
+class UserSelfSchema(ma.ModelSchema):
+    """
+    用户的序列化类
+    """
+    nickname = fields.Str(dump_only=True)
+
+    class Meta:
+        model = models.User
+        dump_only = ["roles", "active", "confirmed_at", "username"]
+
+
 class UserPageSchema(BasePageSchema):
     """用户的分页"""
 
