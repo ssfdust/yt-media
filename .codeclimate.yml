@@ -6,4 +6,5 @@ engines:
                 enabled: false
 exclude_patterns:
     - "tasks/app/db.py"
+    - "tests/"
 
