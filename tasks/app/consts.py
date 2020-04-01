@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 
-BACKUP_PERMISSIONS_FILE = "app/modules/auth/permissions.bak.py"
-NEW_PERMISSIONS_FILE = "app/modules/auth/permissions.new.py"
-PERMISSIONS_FILE = "app/modules/auth/permissions.py"
+BACKUP_PERMISSIONS_FILE = "smorest_sfs/modules/auth/permissions.bak.py"
+NEW_PERMISSIONS_FILE = "smorest_sfs/modules/auth/permissions.new.py"
+PERMISSIONS_FILE = "smorest_sfs/modules/auth/permissions.py"
 
 CONFIG_PATH = "config/{config}.toml"
 NGINX_PATH = "deploy/nginx/flask.conf"

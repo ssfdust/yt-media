@@ -7,7 +7,7 @@
     {{ module_title }}的ORM模块
 """
 
-from app.extensions.sqla import Model, SurrogatePK, db
+from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 
 
 class {{ model_name }}(Model, SurrogatePK):

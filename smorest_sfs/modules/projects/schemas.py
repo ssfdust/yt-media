@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright {{ year }} {{ author }}
-# Author: {{ author }}
+# Copyright  
+# Author: 
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 # limitations under the License.
 
 """
-    smorest_sfs.modules.{{ module_name }}.schemas
+    smorest_sfs.modules.projects.schemas
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    {{ module_title }}模块的Schemas
+    项目模块的Schemas
 """
 
 from smorest_sfs.extensions import ma
@@ -29,35 +29,35 @@ from marshmallow import fields
 from . import models
 
 
-class {{ model_name }}Schema(ma.ModelSchema):
+class ProjectSchema(ma.ModelSchema):
     """
-    {{ module_title }}的序列化类
+    项目的序列化类
     """
 
     class Meta:
-        model = models.{{ model_name }}
+        model = models.Project
 
 
-class {{ model_name }}PageSchema(BasePageSchema):
-    """{{ module_title }}的分页"""
+class ProjectPageSchema(BasePageSchema):
+    """项目的分页"""
 
-    data = fields.List(fields.Nested({{ model_name }}Schema))
-
-
-class {{ model_name }}ItemSchema(BaseMsgSchema):
-    """{{ module_title }}的单项"""
-
-    data = fields.Nested({{ model_name }}Schema)
+    data = fields.List(fields.Nested(ProjectSchema))
 
 
-class {{ model_name }}OptsSchema(ma.Schema):
-    """{{ module_title }}的选项"""
+class ProjectItemSchema(BaseMsgSchema):
+    """项目的单项"""
+
+    data = fields.Nested(ProjectSchema)
+
+
+class ProjectOptsSchema(ma.Schema):
+    """项目的选项"""
 
     class Meta:
         fields = ('id', 'name')
 
 
-class {{ model_name }}ListSchema(ma.Schema):
-    """{{ module_title }}的选项列表"""
+class ProjectListSchema(ma.Schema):
+    """项目的选项列表"""
 
-    data = fields.List(fields.Nested({{ model_name }}OptsSchema))
+    data = fields.List(fields.Nested(ProjectOptsSchema))

@@ -119,7 +119,7 @@ def permissions_adder(context, model_name="", module_title=""):
     added_su = ADDED_SU.format(model_name=model_name, module_title=module_title)
     added_mapping = ADDED_MAPPING.format(model_name=model_name)
 
-    with open("app/modules/auth/permissions.py") as f:
+    with open("smorest_sfs/modules/auth/permissions.py") as f:
         text = f.read()
 
     for orig, subs in [
@@ -130,7 +130,7 @@ def permissions_adder(context, model_name="", module_title=""):
     ]:
         text = text.replace(orig, subs)
 
-    with open("app/modules/auth/permissions.new.py", "w") as f:
+    with open("smorest_sfs/modules/auth/permissions.new.py", "w") as f:
         f.write(text)
 
     log.info("新权限文件 `%s` 生成成功.\n", "app/modules/auth/permissions.new.py")

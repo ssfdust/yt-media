@@ -7,4 +7,4 @@
 """
 from flask_smorest import Blueprint
 
-blp = Blueprint('{{ model_name }}', __name__, url_prefix='/{{ module_name }}', description='')
+blp = Blueprint('{{ model_name }}', __name__, url_prefix='/{{ module_name }}', description='{{ module_title }}模块')

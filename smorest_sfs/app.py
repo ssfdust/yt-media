@@ -27,7 +27,7 @@ from .factory import create_app
 
 # from .extensions.celery import celery_ext
 
-ENABLED_MODULES = ["auth", "storages", "roles", "users", "email_templates"]
+ENABLED_MODULES = ["auth", "storages", "roles", "users", "email_templates", "projects"]
 
 app = create_app(ENABLED_MODULES)
 

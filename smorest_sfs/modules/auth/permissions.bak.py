@@ -31,7 +31,6 @@ class ROLES:
     EmailTemplateManager = "EmailTemplateManager"
     RoleManager = "RoleManager"
     GroupManager = "GroupManager"
-    ProjectManager = 'ProjectManager'
     # End Of ROLES
 
 
@@ -62,11 +61,6 @@ class PERMISSIONS:
     EmailTemplateQuery = "EmailTemplateQueryPrivilege"
     # FileManager
     FileForceDelete = "FileForceDeletePrivilege"
-    # ProjectManager
-    ProjectAdd = 'ProjectAddPrivilege'
-    ProjectEdit = 'ProjectEditPrivilege'
-    ProjectDelete = 'ProjectDeletePrivilege'
-    ProjectQuery = 'ProjectQueryPrivilege'
     # End Of PERMISSIONS
 
 
@@ -99,9 +93,6 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.EmailTemplateEdit,
         PERMISSIONS.EmailTemplateQuery,
         PERMISSIONS.FileForceDelete,
-        # 项目管理
-        PERMISSIONS.ProjectAdd, PERMISSIONS.ProjectDelete,
-        PERMISSIONS.ProjectEdit, PERMISSIONS.ProjectQuery,
         # End Of SuperUser
     ],
     ROLES.GroupManager: [
@@ -127,10 +118,6 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.EmailTemplateDelete,
         PERMISSIONS.EmailTemplateEdit,
         PERMISSIONS.EmailTemplateQuery,
-    ],
-    ROLES.ProjectManager: [
-        PERMISSIONS.ProjectAdd, PERMISSIONS.ProjectDelete,
-        PERMISSIONS.ProjectEdit, PERMISSIONS.ProjectQuery
     ],
     # End Of Permissions Mapping
 }
