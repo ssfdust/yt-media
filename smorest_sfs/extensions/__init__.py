@@ -24,6 +24,7 @@
 from flask_babel import Babel
 from flask_mail import Mail
 from flask_migrate import Migrate
+from flask import Flask
 
 from .api import api, spec_kwargs
 from .marshal import ma
@@ -36,7 +37,7 @@ mail = Mail()
 migrate = Migrate()
 
 
-def init_app(app):
+def init_app(app: Flask) -> None:
     """拓展组件的初始化"""
     for ext in [db, ma, babel, mail, jwt_instance, redis_store]:
         ext.init_app(app)

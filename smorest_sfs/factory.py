@@ -1,34 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2019 RedLotus <ssfdust@gmail.com>
-# Author: RedLotus <ssfdust@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 """
-    app.factory
+    smorest_sfs.factory
     ~~~~~~~~~~~~~~~~~~~~~
-
     工厂模块
 
     用以提供库的初始化函数以及注册模块
 """
 import os
-from typing import List, NoReturn
+from typing import List
 
 from loguru import logger
 
 from .extensions import init_app
 from .extensions.flask import Flask
+from . import modules
 
 CONFIG_MAPPGING = {
     "development": "config/development.toml",
@@ -37,12 +23,12 @@ CONFIG_MAPPGING = {
 }
 
 
-def create_app(modules: List[str], config_name: str = "development") -> Flask:
+def create_app(module_names: List[str], config_name: str = "development") -> Flask:
     """
     创建app工厂
 
-    :param              modules: list               启用模块列表
-    :param              config_name: str            配置名称
+    :param modules 启用模块列表
+    :param config_name 配置名称
 
     ```modules``` 启用的模块列表，模块名必须在app.modules下存在，
     将会按照顺序导入模块。
@@ -61,7 +47,7 @@ def create_app(modules: List[str], config_name: str = "development") -> Flask:
 
     logger.info(f"Server Started. Server name: {app.config['SERVER_NAME']}")
 
-    app.config["ENABLED_MODULES"] = modules
+    app.config["ENABLED_MODULES"] = module_names
 
     init_app(app)
 
@@ -70,13 +56,11 @@ def create_app(modules: List[str], config_name: str = "development") -> Flask:
     return app
 
 
-def register_modules(app: Flask) -> NoReturn:
+def register_modules(app: Flask) -> None:
     """
     注册模块
 
     为Flask实例注册项目的主要模块
     """
-    from . import modules
 
-    # socketio.init_module()
     modules.init_app(app)

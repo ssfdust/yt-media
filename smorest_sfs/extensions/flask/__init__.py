@@ -24,5 +24,9 @@ from .config import Config
 
 
 class Flask(BaseFlask):
+    """
+    支持from_toml的Flask类
+    """
 
+    config: Config
     config_class = Config

@@ -13,13 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from loguru import logger
+from typing import Any
 
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.utils.storages import (
     save_storage_to_path,
     load_storage_from_path,
-    delete_from_rel_path,
 )
 from .mixin import StoragesMixin
 
@@ -41,6 +40,6 @@ class Storages(StoragesMixin, Model, SurrogatePK):
 
     __trunk_size = 1000
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         self.store = kwargs.pop("store", None)
         db.Model.__init__(self, **kwargs)

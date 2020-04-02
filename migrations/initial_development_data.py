@@ -15,35 +15,34 @@
 """
 数据初始化模板
 """
-from getpass import getpass
 from datetime import datetime
-from typing import NoReturn
-from sqlalchemy.orm.exc import NoResultFound
-from smorest_sfs.modules.users.models import User, UserInfo, db, Model
+from getpass import getpass
+from typing import Type
+
+from smorest_sfs.modules.auth.permissions import \
+    DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping
+from smorest_sfs.modules.auth.permissions import PERMISSIONS, ROLES
 from smorest_sfs.modules.roles.models import Permission, Role
 from smorest_sfs.modules.storages.models import Storages
-from smorest_sfs.modules.auth.permissions import (
-    PERMISSIONS,
-    ROLES,
-    DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping,
-)
-
-# from .modules.storages.models import Storages
+from smorest_sfs.modules.users.models import Model, User, UserInfo, db
 
 
-def create_item_from_cls(model_cls: Model, cls: object) -> NoReturn:
+def create_item_from_cls(model_cls: Type[Model], cls: object) -> None:
+    """根据类属性创建ORM"""
     names = [getattr(cls, attr) for attr in dir(cls) if not attr.startswith("__")]
     for name in names:
         model_cls(name=name).save()
     db.session.commit()
 
 
-def _handle_default_role(role: Role):
+def _handle_default_role(role: Role) -> None:
+    """hard code默认用户"""
     if role.name == ROLES.User:
         role.user_default = True
 
 
-def init_permission() -> NoReturn:
+def init_permission() -> None:
+    """根卷ROLES以及PERMISSION初始化权限"""
     create_item_from_cls(Role, ROLES)
     create_item_from_cls(Permission, PERMISSIONS)
     for role, permissions in mapping.items():
@@ -57,7 +56,7 @@ def init_permission() -> NoReturn:
     db.session.commit()
 
 
-def init():
+def init() -> None:
     """
     初始化数据
     """
