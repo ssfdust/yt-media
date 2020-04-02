@@ -6,6 +6,7 @@ import pytest
 from smorest_sfs.modules.roles.models import ROLES, Role
 from smorest_sfs.modules.roles.schemas import RoleSchema
 from tests._utils.injection import GeneralModify
+from tests._utils.helpers import param_helper
 
 
 class TestRoleModify(GeneralModify):
@@ -27,11 +28,7 @@ class TestRoleModify(GeneralModify):
 
     @pytest.mark.parametrize(
         "json",
-        [
-            {"name": "t1", "description": "t1"},
-            {"name": "t2", "description": "t2"},
-            {"name": "t3", "description": "t3"},
-        ],
+        param_helper(name="role", description="desc")
     )
     def test_add(self, json, permissions):
         json["permissions"] = permissions

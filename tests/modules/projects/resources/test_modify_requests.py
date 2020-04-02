@@ -6,6 +6,7 @@ import pytest
 from smorest_sfs.modules.auth import ROLES
 from smorest_sfs.modules.projects.models import Project
 from tests._utils.injection import GeneralModify
+from tests._utils.helpers import param_helper
 
 
 class TestProjectModify(GeneralModify):
@@ -18,7 +19,7 @@ class TestProjectModify(GeneralModify):
     delete_param_key = "project_id"
 
     @pytest.mark.parametrize(
-        "data", [{"name": "project_1"}, {"name": "project_2"}, {"name": "project_3"},],
+        "data", param_helper(name="project")
     )
     def test_add(self, data):
         data = self._add_request(data)

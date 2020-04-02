@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Dict, List
-
-from flask import url_for
+from typing import Dict
 
 import pytest
 from smorest_sfs.modules.auth import ROLES
 from smorest_sfs.modules.email_templates.models import EmailTemplate
 from tests._utils.injection import GeneralModify
+from tests._utils.helpers import param_helper
 
 
 class TestEmailTemplateModify(GeneralModify):
@@ -28,11 +27,7 @@ class TestEmailTemplateModify(GeneralModify):
 
     @pytest.mark.parametrize(
         "data",
-        [
-            {"name": "email_template_1", "template": "test_1"},
-            {"name": "email_template_2", "template": "test_2"},
-            {"name": "email_template_3", "template": "test_3"},
-        ],
+        param_helper(name="email_template", template="test123")
     )
     def test_add(self, data):
         data = self._add_request(data)
