@@ -1,0 +1,4 @@
+engines:
+ duplication:
+   exclude_paths:
+     - "tests/modules/*/test_general_access.py"
