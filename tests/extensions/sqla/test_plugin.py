@@ -5,15 +5,15 @@
 测试插件中的sa辅助函数
 """
 import pyperclip
-import pytest
 
+import pytest
+from smorest_sfs.plugins.sa import debug_sql, execute, render_limit_results
 from smorest_sfs.plugins.sa.helpers import QueryAnalysis
-from smorest_sfs.plugins.sa import execute, debug_sql, render_limit_results
 from tests._utils.uniqueue import UniqueQueue
 from tests.extensions.sqla.test_sqla import ItemsFixtureBase
 
 
-class TestSAPlugin(ItemsFixtureBase):
+class TestSASql(ItemsFixtureBase):
     fixture_names = ("TestCRUDTable", "TestSASql")
     raw_sql = (
         "SELECT sqla_test_crud_table.name "
@@ -50,7 +50,7 @@ class TestSAPlugin(ItemsFixtureBase):
         return queue.get(timeout=1)
 
 
-class TestTableQuery(ItemsFixtureBase):
+class TestSAPlugin(ItemsFixtureBase):
     fixture_names = (
         "TestCRUDTable",
         "TestSASql",
@@ -60,101 +60,199 @@ class TestTableQuery(ItemsFixtureBase):
         "TestTwoTablesQuery",
     )
 
+    @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "child_items", "inject_logger")
+    @pytest.mark.parametrize(
+        "func, sql, result",
+        [
+            (
+                debug_sql,
+                "TestOneColQuery",
+                (
+                    "\n"
+                    "SELECT sqla_test_crud_table.name \n"
+                    "FROM sqla_test_crud_table \n"
+                    "WHERE sqla_test_crud_table.name = 'bbc'"
+                ),
+            ),
+            (
+                render_limit_results,
+                "TestOneColQuery",
+                ("\n╒════════╕\n│ name   │\n╞════════╡\n│ bbc    │\n╘════════╛"),
+            ),
+            (
+                debug_sql,
+                "TestOneTableQuery",
+                (
+                    "\n"
+                    "SELECT sqla_test_crud_table.id, sqla_test_crud_table.deleted, "
+                    "sqla_test_crud_table.modified, sqla_test_crud_table.created, "
+                    "sqla_test_crud_table.name \n"
+                    "FROM sqla_test_crud_table \n"
+                    "WHERE sqla_test_crud_table.deleted = false AND sqla_test_crud_table.name = "
+                    "'bbc'"
+                ),
+            ),
+            (
+                render_limit_results,
+                "TestOneTableQuery",
+                (
+                    "\n"
+                    "╒══════╤═══════════╤═════════════════════╤═════════════════════╤════════╕\n"
+                    "│   id │ deleted   │ modified            │ created             │ name   │\n"
+                    "╞══════╪═══════════╪═════════════════════╪═════════════════════╪════════╡\n"
+                    "│    4 │ False     │ 1994-09-11 08:20:00 │ 1994-09-11 08:20:00 │ bbc    │\n"
+                    "╘══════╧═══════════╧═════════════════════╧═════════════════════╧════════╛"
+                ),
+            ),
+            (
+                debug_sql,
+                "TestTwoTablesQuery",
+                (
+                    "\n"
+                    "SELECT sqla_test_crud_table.id, sqla_test_crud_table.deleted, "
+                    "sqla_test_crud_table.modified, sqla_test_crud_table.created, "
+                    "sqla_test_crud_table.name, test_crud_child_table.id, "
+                    "test_crud_child_table.deleted, test_crud_child_table.modified, "
+                    "test_crud_child_table.created, test_crud_child_table.name, "
+                    "test_crud_child_table.pid, sqla_test_crud_table.id AS crud_id \n"
+                    "FROM sqla_test_crud_table, test_crud_child_table \n"
+                    "WHERE sqla_test_crud_table.name = 'bbc'"
+                ),
+            ),
+            (
+                render_limit_results,
+                "TestTwoTablesQuery",
+                (
+                    "\n"
+                    "╒═══════════════════╤═══════════════════"
+                    "═╤══════════╤════════╤═══════════╕\n"
+                    "│ TestCRUDTable     │ TestChildTable    "
+                    " │ name     │ name   │   crud_id │\n"
+                    "╞═══════════════════╪═══════════════════"
+                    "═╪══════════╪════════╪═══════════╡\n"
+                    "│ <TestCRUDTable 4> │ <TestChildTable 1>"
+                    " │ aaabbb   │ bbc    │         4 │\n"
+                    "├───────────────────┼───────────────────"
+                    "─┼──────────┼────────┼───────────┤\n"
+                    "│ <TestCRUDTable 4> │ <TestChildTable 2>"
+                    " │ bbbbcccc │ bbc    │         4 │\n"
+                    "├───────────────────┼───────────────────"
+                    "─┼──────────┼────────┼───────────┤\n"
+                    "│ <TestCRUDTable 4> │ <TestChildTable 3>"
+                    " │ bbcccc   │ bbc    │         4 │\n"
+                    "├───────────────────┼───────────────────"
+                    "─┼──────────┼────────┼───────────┤\n"
+                    "│ <TestCRUDTable 4> │ <TestChildTable 4>"
+                    " │ bbc      │ bbc    │         4 │\n"
+                    "╘═══════════════════╧═══════════════════"
+                    "═╧══════════╧════════╧═══════════╛"
+                ),
+            ),
+        ],
+    )
+    def test_general_function(self, func, sql, result):
+        sql_cls = getattr(self, sql)
+        func(sql_cls)
+        assert self._get_debug() == result
+
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items")
     def test_query_could_run(self):
         data = execute(self.TestOneColQuery)
         assert len(data) > 0
 
-    @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
-    def test_one_col_query_debug_sql(self):
-        debug_sql(self.TestOneColQuery)
-        assert self._get_debug() == (
-            "\n"
-            "SELECT sqla_test_crud_table.name \n"
-            "FROM sqla_test_crud_table \n"
-            "WHERE sqla_test_crud_table.name = 'bbc'"
-        )
+    #
+    #  @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
+    #  def test_one_col_query_debug_sql(self):
+    #      debug_sql(self.TestOneColQuery)
+    #      assert self._get_debug() == (
+    #          "\n"
+    #          "SELECT sqla_test_crud_table.name \n"
+    #          "FROM sqla_test_crud_table \n"
+    #          "WHERE sqla_test_crud_table.name = 'bbc'"
+    #      )
 
-    @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
-    def test_one_col_query_render(self):
-        render_limit_results(self.TestOneColQuery)
-        assert self._get_debug() == (
-            "\n╒════════╕\n│ name   │\n╞════════╡\n│ bbc    │\n╘════════╛"
-        )
+    #  @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
+    #  def test_one_col_query_render(self):
+    #      render_limit_results(self.TestOneColQuery)
+    #      assert self._get_debug() == (
+    #          "\n╒════════╕\n│ name   │\n╞════════╡\n│ bbc    │\n╘════════╛"
+    #      )
 
-    @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
-    def test_one_table_query_debug_sql(self):
-        debug_sql(self.TestOneTableQuery)
-        assert self._get_debug() == (
-            "\n"
-            "SELECT sqla_test_crud_table.id, sqla_test_crud_table.deleted, "
-            "sqla_test_crud_table.modified, sqla_test_crud_table.created, "
-            "sqla_test_crud_table.name \n"
-            "FROM sqla_test_crud_table \n"
-            "WHERE sqla_test_crud_table.deleted = false AND sqla_test_crud_table.name = "
-            "'bbc'"
-        )
+    #  @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
+    #  def test_one_table_query_debug_sql(self):
+    #      debug_sql(self.TestOneTableQuery)
+    #      assert self._get_debug() == (
+    #          "\n"
+    #          "SELECT sqla_test_crud_table.id, sqla_test_crud_table.deleted, "
+    #          "sqla_test_crud_table.modified, sqla_test_crud_table.created, "
+    #          "sqla_test_crud_table.name \n"
+    #          "FROM sqla_test_crud_table \n"
+    #          "WHERE sqla_test_crud_table.deleted = false AND sqla_test_crud_table.name = "
+    #          "'bbc'"
+    #      )
 
-    @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
-    def test_one_table_query_render(self):
-        render_limit_results(self.TestOneTableQuery)
-        assert self._get_debug() == (
-            "\n"
-            "╒══════╤═══════════╤═════════════════════╤═════════════════════╤════════╕\n"
-            "│   id │ deleted   │ modified            │ created             │ name   │\n"
-            "╞══════╪═══════════╪═════════════════════╪═════════════════════╪════════╡\n"
-            "│    4 │ False     │ 1994-09-11 08:20:00 │ 1994-09-11 08:20:00 │ bbc    │\n"
-            "╘══════╧═══════════╧═════════════════════╧═════════════════════╧════════╛"
-        )
+    #  @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
+    #  def test_one_table_query_render(self):
+    #      render_limit_results(self.TestOneTableQuery)
+    #      assert self._get_debug() == (
+    #          "\n"
+    #          "╒══════╤═══════════╤═════════════════════╤═════════════════════╤════════╕\n"
+    #          "│   id │ deleted   │ modified            │ created             │ name   │\n"
+    #          "╞══════╪═══════════╪═════════════════════╪═════════════════════╪════════╡\n"
+    #          "│    4 │ False     │ 1994-09-11 08:20:00 │ 1994-09-11 08:20:00 │ bbc    │\n"
+    #          "╘══════╧═══════════╧═════════════════════╧═════════════════════╧════════╛"
+    #      )
 
-    @pytest.mark.usefixtures(
-        "TestTableTeardown", "crud_items", "inject_logger", "child_items"
-    )
-    def test_two_tables_query_debug_sql(self):
-        debug_sql(self.TestTwoTablesQuery)
-        assert self._get_debug() == (
-            "\n"
-            "SELECT sqla_test_crud_table.id, sqla_test_crud_table.deleted, "
-            "sqla_test_crud_table.modified, sqla_test_crud_table.created, "
-            "sqla_test_crud_table.name, test_crud_child_table.id, "
-            "test_crud_child_table.deleted, test_crud_child_table.modified, "
-            "test_crud_child_table.created, test_crud_child_table.name, "
-            "test_crud_child_table.pid, sqla_test_crud_table.id AS crud_id \n"
-            "FROM sqla_test_crud_table, test_crud_child_table \n"
-            "WHERE sqla_test_crud_table.name = 'bbc'"
-        )
+    #  @pytest.mark.usefixtures(
+    #      "TestTableTeardown", "crud_items", "inject_logger", "child_items"
+    #  )
+    #  def test_two_tables_query_debug_sql(self):
+    #      debug_sql(self.TestTwoTablesQuery)
+    #      assert self._get_debug() == (
+    #          "\n"
+    #          "SELECT sqla_test_crud_table.id, sqla_test_crud_table.deleted, "
+    #          "sqla_test_crud_table.modified, sqla_test_crud_table.created, "
+    #          "sqla_test_crud_table.name, test_crud_child_table.id, "
+    #          "test_crud_child_table.deleted, test_crud_child_table.modified, "
+    #          "test_crud_child_table.created, test_crud_child_table.name, "
+    #          "test_crud_child_table.pid, sqla_test_crud_table.id AS crud_id \n"
+    #          "FROM sqla_test_crud_table, test_crud_child_table \n"
+    #          "WHERE sqla_test_crud_table.name = 'bbc'"
+    #      )
 
-    @pytest.mark.usefixtures(
-        "TestTableTeardown", "crud_items", "inject_logger", "child_items"
-    )
-    def test_two_tables_query_render(self):
-        render_limit_results(self.TestTwoTablesQuery)
-        assert self._get_debug() == (
-            "\n"
-            "╒═══════════════════╤═══════════════════"
-            "═╤══════════╤════════╤═══════════╕\n"
-            "│ TestCRUDTable     │ TestChildTable    "
-            " │ name     │ name   │   crud_id │\n"
-            "╞═══════════════════╪═══════════════════"
-            "═╪══════════╪════════╪═══════════╡\n"
-            "│ <TestCRUDTable 4> │ <TestChildTable 1>"
-            " │ aaabbb   │ bbc    │         4 │\n"
-            "├───────────────────┼───────────────────"
-            "─┼──────────┼────────┼───────────┤\n"
-            "│ <TestCRUDTable 4> │ <TestChildTable 2>"
-            " │ bbbbcccc │ bbc    │         4 │\n"
-            "├───────────────────┼───────────────────"
-            "─┼──────────┼────────┼───────────┤\n"
-            "│ <TestCRUDTable 4> │ <TestChildTable 3>"
-            " │ bbcccc   │ bbc    │         4 │\n"
-            "├───────────────────┼───────────────────"
-            "─┼──────────┼────────┼───────────┤\n"
-            "│ <TestCRUDTable 4> │ <TestChildTable 4>"
-            " │ bbc      │ bbc    │         4 │\n"
-            "╘═══════════════════╧═══════════════════"
-            "═╧══════════╧════════╧═══════════╛"
-        )
+    #  @pytest.mark.usefixtures(
+    #      "TestTableTeardown", "crud_items", "inject_logger", "child_items"
+    #  )
+    #  def test_two_tables_query_render(self):
+    #      render_limit_results(self.TestTwoTablesQuery)
+    #      assert self._get_debug() == (
+    #          "\n"
+    #          "╒═══════════════════╤═══════════════════"
+    #          "═╤══════════╤════════╤═══════════╕\n"
+    #          "│ TestCRUDTable     │ TestChildTable    "
+    #          " │ name     │ name   │   crud_id │\n"
+    #          "╞═══════════════════╪═══════════════════"
+    #          "═╪══════════╪════════╪═══════════╡\n"
+    #          "│ <TestCRUDTable 4> │ <TestChildTable 1>"
+    #          " │ aaabbb   │ bbc    │         4 │\n"
+    #          "├───────────────────┼───────────────────"
+    #          "─┼──────────┼────────┼───────────┤\n"
+    #          "│ <TestCRUDTable 4> │ <TestChildTable 2>"
+    #          " │ bbbbcccc │ bbc    │         4 │\n"
+    #          "├───────────────────┼───────────────────"
+    #          "─┼──────────┼────────┼───────────┤\n"
+    #          "│ <TestCRUDTable 4> │ <TestChildTable 3>"
+    #          " │ bbcccc   │ bbc    │         4 │\n"
+    #          "├───────────────────┼───────────────────"
+    #          "─┼──────────┼────────┼───────────┤\n"
+    #          "│ <TestCRUDTable 4> │ <TestChildTable 4>"
+    #          " │ bbc      │ bbc    │         4 │\n"
+    #          "╘═══════════════════╧═══════════════════"
+    #          "═╧══════════╧════════╧═══════════╛"
+    #      )
 
     def _get_debug(self):
         queue = UniqueQueue()
-        return queue.get(timeout=1)
+        item = queue.get(timeout=1)
+        queue.empty()
+        return item
