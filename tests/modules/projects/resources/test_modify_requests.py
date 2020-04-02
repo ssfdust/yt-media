@@ -21,21 +21,15 @@ class TestProjectModify(GeneralModify):
         "data", [{"name": "project_1"}, {"name": "project_2"}, {"name": "project_3"},],
     )
     def test_add(self, data):
-        resp = self._add_request(data)
-        assert (
-            resp.status_code == 200
-            and isinstance(resp.json["data"], dict)
-            and resp.json["data"].keys() > {"id", "name"}
-        )
+        data = self._add_request(data)
+        assert data.keys() > {"id", "name"}
 
     def test_delete(self):
-        resp, items = self._delete_request()
-        assert resp.status_code == 200 and all([i.deleted for i in items])
+        self._delete_request()
 
     def test_item_modify(self):
-        resp = self._item_modify_request(json={"name": "tt"})
-        assert resp.status_code == 200 and resp.json["data"]["name"] == "tt"
+        data = self._item_modify_request(json={"name": "tt"})
+        assert data["name"] == "tt"
 
     def test_item_delete(self):
-        resp, item = self._item_delete_request()
-        assert resp.status_code == 200 and item.deleted
+        self._item_delete_request()

@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 from typing import Dict, List
 
-import pytest
 from flask import url_for
 
+import pytest
 from smorest_sfs.modules.auth import ROLES
 from smorest_sfs.modules.email_templates.models import EmailTemplate
 from tests._utils.injection import GeneralModify
@@ -35,26 +35,16 @@ class TestEmailTemplateModify(GeneralModify):
         ],
     )
     def test_add(self, data):
-        resp = self._add_request(data)
-        assert (
-            resp.status_code == 200
-            and isinstance(resp.json["data"], dict)
-            and resp.json["data"].keys() > {"id", "name"}
-        )
+        data = self._add_request(data)
+        assert data.keys() >= {"id", "name", "template"}
 
     def test_delete(self):
-        resp, items = self._delete_request()
-        assert resp.status_code == 200 and all([i.deleted for i in items])
+        self._delete_request()
 
     def test_item_modify(self):
         json = {"name": "tt", "template": "qaqa"}
-        resp = self._item_modify_request(json)
-        assert (
-            resp.status_code == 200
-            and resp.json["data"]["name"] == "tt"
-            and resp.json["data"]["template"] == "qaqa"
-        )
+        data = self._item_modify_request(json)
+        assert data["name"] == "tt" and data["template"] == "qaqa"
 
     def test_item_delete(self):
-        resp, item = self._item_delete_request()
-        assert resp.status_code == 200 and item.deleted
+        self._item_delete_request()

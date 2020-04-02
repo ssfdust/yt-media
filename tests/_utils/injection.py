@@ -52,7 +52,11 @@ class GeneralModify(FixturesInjectBase):
                 resp = client.post(url, json=data)
                 self.model.query.filter_by(id=resp.json["data"]["id"]).delete()
                 self.db.session.commit()
-                return resp
+                assert (
+                    resp.status_code == 200
+                    and isinstance(resp.json["data"], dict)
+                )
+                return resp.json["data"]
 
     def _get_deleting_items(self):
         items = getattr(self, self.items)
@@ -78,6 +82,7 @@ class GeneralModify(FixturesInjectBase):
                 items = self._get_deleting_items()
                 ids = [i.id for i in items]
                 resp = client.delete(url, json={"lst": ids})
+                assert resp.status_code == 200 and all([i.deleted for i in items])
                 return resp, items
 
     def _item_modify_request(self, json):
@@ -85,7 +90,9 @@ class GeneralModify(FixturesInjectBase):
             with self.flask_app.test_request_context():
                 item = self._get_modified_item()
                 url = url_for(self.item_view, **{self.delete_param_key: item.id})
-                return client.put(url, json=json)
+                resp = client.put(url, json=json)
+                assert resp.status_code == 200
+                return resp.json["data"]
 
     def _item_delete_request(self):
         with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
@@ -93,6 +100,7 @@ class GeneralModify(FixturesInjectBase):
                 item = self._get_modified_item()
                 url = url_for(self.item_view, **{self.delete_param_key: item.id})
                 resp = client.delete(url)
+                assert resp.status_code == 200 and item.deleted
                 return resp, item
 
 
