@@ -29,9 +29,9 @@ class TestEmailTemplateModify(GeneralModify):
     @pytest.mark.parametrize(
         "data",
         [
-            {"name": "t1", "template": "qqq"},
-            {"name": "t2", "template": "www"},
-            {"name": "t3", "template": "aaa"},
+            {"name": "email_template_1", "template": "test_1"},
+            {"name": "email_template_2", "template": "test_2"},
+            {"name": "email_template_3", "template": "test_3"},
         ],
     )
     def test_add(self, data):
