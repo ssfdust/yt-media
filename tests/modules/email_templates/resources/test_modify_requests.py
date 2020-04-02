@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Dict
-
 import pytest
 from smorest_sfs.modules.auth import ROLES
 from smorest_sfs.modules.email_templates.models import EmailTemplate
+from smorest_sfs.modules.email_templates.schemas import EmailTemplateSchema
 from tests._utils.injection import GeneralModify
 from tests._utils.helpers import param_helper
 
@@ -24,6 +23,7 @@ class TestEmailTemplateModify(GeneralModify):
     view = "EmailTemplate.EmailTemplateView"
     delete_param_key = "email_template_id"
     model = EmailTemplate
+    schema = EmailTemplateSchema
 
     @pytest.mark.parametrize(
         "data",
