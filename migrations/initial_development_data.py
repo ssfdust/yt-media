@@ -15,6 +15,7 @@
 """
 数据初始化模板
 """
+from getpass import getpass
 from datetime import datetime
 from typing import NoReturn
 from sqlalchemy.orm.exc import NoResultFound
@@ -61,11 +62,12 @@ def init():
     初始化数据
     """
     su_role = Role.get_by_name(name="SuperUser")
+    password = getpass("Password:")
 
     # create super user
     root = User.create(
         username="wisdom",
-        password="zerotoany",
+        password=password,
         email="wisdom@zero.any.else",
         phonenum="1234567",
         active=True,
