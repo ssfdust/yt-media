@@ -88,25 +88,27 @@ class GeneralModify(FixturesInjectBase):
                 assert resp.status_code == 200 and all([i.deleted for i in items])
                 return resp, items
 
-    def _item_modify_request(self, json):
+    def __item_modify_request(self, method, **kwargs):
         with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
             with self.flask_app.test_request_context():
                 item = self._get_modified_item()
                 url = url_for(self.item_view, **{self.delete_param_key: item.id})
-                resp = client.put(url, json=json)
-                schema = self.schema()
-                dumped_data = self.__get_schema_dumped(schema, item)
-                assert resp.status_code == 200
-                return dumped_data
+                resp = client.open(url, method=method, **kwargs)
+                return resp
+
+    def _item_modify_request(self, json):
+        resp = self.__item_modify_request("PUT", json=json)
+        schema = self.schema()
+        item = self._get_modified_item()
+        dumped_data = self.__get_schema_dumped(schema, item)
+        assert resp.status_code == 200
+        return dumped_data
 
     def _item_delete_request(self):
-        with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
-            with self.flask_app.test_request_context():
-                item = self._get_modified_item()
-                url = url_for(self.item_view, **{self.delete_param_key: item.id})
-                resp = client.delete(url)
-                assert resp.status_code == 200 and item.deleted
-                return resp, item
+        resp = self.__item_modify_request("DELETE")
+        item = self._get_modified_item()
+        assert resp.status_code == 200 and item.deleted
+        return resp, item
 
 
 class GeneralGet(FixturesInjectBase):
