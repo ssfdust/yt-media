@@ -4,6 +4,8 @@ engines:
         checks:
             assert_used:
                 enabled: false
+            blacklist:
+                enabled: false
     duplication:
         enabled: true
         config:
