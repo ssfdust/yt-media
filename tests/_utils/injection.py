@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import List, Tuple, Type, Union
+from typing import List, Tuple, Type, Union, Set
 
 from flask import url_for
 from marshmallow import Schema
@@ -29,6 +29,7 @@ class FixturesInjectBase:
 
     items: str
     listview: str
+    listkeys: Set[str] = {"id", "name"}
     view: str
     item_view: str
     login_roles: List[str]
@@ -123,7 +124,7 @@ class GeneralGet(FixturesInjectBase):
         assert (
             resp.status_code == 200
             and isinstance(resp.json["data"], list)
-            and resp.json["data"][0].keys() == {"id", "name"}
+            and resp.json["data"][0].keys() == self.listkeys
         )
 
     def _get_list(self, **kwargs):

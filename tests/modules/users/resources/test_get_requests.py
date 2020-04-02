@@ -11,6 +11,7 @@ class TestListView(GeneralGet):
     listview = "User.UserListView"
     view = "User.UserView"
     item_view = "User.UserItemView"
+    listkeys = {"id", "nickname"}
 
     fixture_names = ("flask_app_client", "flask_app", "regular_user")
 
