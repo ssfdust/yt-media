@@ -13,3 +13,4 @@ engines:
 exclude_patterns:
     - "tasks/app/db.py"
     - "tests/modules/*/resources/test_general_access.py"
+    - "migrations/"
