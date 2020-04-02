@@ -13,7 +13,7 @@ class TestListView(GeneralGet):
     item_view = "EmailTemplate.EmailTemplateItemView"
 
     def test_get_options(self):
-        self._get_option()
+        self._get_options()
 
     def test_get_list(self):
         data = self._get_list(name="t")

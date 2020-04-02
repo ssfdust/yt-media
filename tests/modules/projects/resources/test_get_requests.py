@@ -13,7 +13,7 @@ class TestListView(GeneralGet):
     login_roles = [ROLES.ProjectManager]
 
     def test_get_options(self):
-        self._get_option()
+        self._get_options()
 
     def test_get_list(self):
         data = self._get_list(name="t")

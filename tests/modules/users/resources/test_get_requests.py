@@ -15,12 +15,7 @@ class TestListView(GeneralGet):
     fixture_names = ("flask_app_client", "flask_app", "regular_user")
 
     def test_get_options(self):
-        resp = self._get_view(self.listview)
-        assert (
-            resp.status_code == 200
-            and isinstance(resp.json["data"], list)
-            and resp.json["data"][0].keys() == {"id", "nickname"}
-        )
+        self._get_options()
 
     @pytest.mark.parametrize("name", ["qqq", "aaa", "regular"])
     def test_get_list(self, name):

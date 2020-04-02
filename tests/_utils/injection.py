@@ -116,7 +116,7 @@ class GeneralGet(FixturesInjectBase):
                 url = url_for(endpoint, **kwargs)
                 return client.get(url)
 
-    def _get_option(self):
+    def _get_options(self):
         resp = self._get_view(self.listview)
         assert (
             resp.status_code == 200
