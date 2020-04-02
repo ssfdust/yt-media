@@ -1,35 +1,34 @@
 """测试sqla"""
 
-import pytest
 from werkzeug.exceptions import NotFound
 
+import pytest
 from tests._utils.injection import FixturesInjectBase
 
 
 class ItemsFixtureBase(FixturesInjectBase):
     @pytest.fixture
-    def crud_items(self):
-        return [
-            self.TestCRUDTable.create(
-                id=idx,
-                name=name,
-                created="1994-09-11 08:20:00",
-                modified="1994-09-11 08:20:00",
-            )
-            for idx, name in enumerate(["aaabbb", "bbbbcccc", "bbcccc", "bbc"], 1)
-        ]
+    def temp_item_generator(self):
+        def temp_item_generator_func(cls):
+            return [
+                cls.create(
+                    id=idx,
+                    name=name,
+                    created="1994-09-11 08:20:00",
+                    modified="1994-09-11 08:20:00",
+                )
+                for idx, name in enumerate(["aaabbb", "bbbbcccc", "bbcccc", "bbc"], 1)
+            ]
+
+        return temp_item_generator_func
 
     @pytest.fixture
-    def child_items(self):
-        return [
-            self.TestChildTable.create(
-                id=idx,
-                name=name,
-                created="1994-09-11 08:20:00",
-                modified="1994-09-11 08:20:00",
-            )
-            for idx, name in enumerate(["aaabbb", "bbbbcccc", "bbcccc", "bbc"], 1)
-        ]
+    def crud_items(self, temp_item_generator):
+        return temp_item_generator(self.TestCRUDTable)
+
+    @pytest.fixture
+    def child_items(self, temp_item_generator):
+        return temp_item_generator(self.TestChildTable)
 
 
 class TestBaseQuery(ItemsFixtureBase):
