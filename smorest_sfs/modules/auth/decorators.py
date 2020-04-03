@@ -1,35 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2019 RedLotus <ssfdust@gmail.com>
-# Author: RedLotus <ssfdust@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 """
     系统的权限装饰器模块
 
     为请求添加权限装饰器，参数为权限
 """
-from typing import Callable, Tuple, Any
 from functools import wraps
-from loguru import logger
+from typing import Any, Callable
+
+from flask_jwt_extended import current_user, jwt_refresh_token_required, jwt_required
 from flask_smorest import abort
-from flask_jwt_extended import jwt_required, jwt_refresh_token_required, current_user
+from loguru import logger
 
 # 源码来自
 # https://github.com/Nobatek/flask-rest-api/issues/36#issuecomment-460826257
 
 
-def doc_login_required(func: Callable) -> Callable:
+def __set_apidoc(
+    wrapper: Callable[..., Any], func: Callable[..., Any]
+) -> Callable[..., Any]:
+    _apidoc = getattr(func, "_apidoc", {})
+    _apidoc.setdefault("security", [{"api_key": []}])
+    setattr(wrapper, "_apidoc", _apidoc)
+    return wrapper
+
+
+def doc_login_required(func: Callable[..., Callable[..., Any]]) -> Callable[..., Any]:
     """
     登录限制装饰器
 
@@ -52,13 +48,12 @@ def doc_login_required(func: Callable) -> Callable:
         return auth_required_func(*args, **kwargs)
 
     # 增加验证
-    wrapper._apidoc = getattr(func, "_apidoc", {})
-    wrapper._apidoc.setdefault("security", [{"api_key": []}])
+    wrapper = __set_apidoc(wrapper, func)
 
     return wrapper
 
 
-def doc_refresh_required(func: Callable) -> Callable:
+def doc_refresh_required(func: Callable[..., Any]) -> Callable[..., Any]:
     """
     刷新Token限制装饰器
 
@@ -80,18 +75,16 @@ def doc_refresh_required(func: Callable) -> Callable:
 
     # 封装刷新函数
     @wraps(func)
-    def wrapper(*args: Any, **kwargs: Any):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         return refresh_required_func(*args, **kwargs)
 
     # 增加swagger信息
-    wrapper._apidoc = getattr(func, "_apidoc", {})
-    # 设置刷新key
-    wrapper._apidoc.setdefault("security", [{"refresh_key": []}])
+    wrapper = __set_apidoc(wrapper, func)
 
     return wrapper
 
 
-def permission_required(*permissions: Tuple[str]) -> Callable:
+def permission_required(*permissions: str) -> Callable[..., Any]:
     """
     权限验证
 
@@ -108,9 +101,7 @@ def permission_required(*permissions: Tuple[str]) -> Callable:
                 return {'code': 0}
     """
 
-    permissions = list(permissions)
-
-    def wrapper(func: Callable):
+    def wrapper(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
         def inner(*args: Any, **kwargs: Any) -> Any:
             if not all(
@@ -126,7 +117,7 @@ def permission_required(*permissions: Tuple[str]) -> Callable:
     return wrapper
 
 
-def role_required(*roles: Tuple[str]) -> Callable:
+def role_required(*roles: str) -> Callable[..., Any]:
     """
     角色验证
 
@@ -143,7 +134,7 @@ def role_required(*roles: Tuple[str]) -> Callable:
                 return {'code': 0}
     """
 
-    def wrapper(func):
+    def wrapper(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
         def inner(*args: Any, **kwargs: Any) -> Any:
             if not all(role in [p.name for p in current_user.roles] for role in roles):

@@ -18,9 +18,7 @@ class TestProjectModify(GeneralModify):
     delete_param_key = "project_id"
     schema = ProjectSchema
 
-    @pytest.mark.parametrize(
-        "data", param_helper(name="project")
-    )
+    @pytest.mark.parametrize("data", param_helper(name="project"))
     def test_add(self, data):
         data = self._add_request(data)
         assert data.keys() > {"id", "name"}

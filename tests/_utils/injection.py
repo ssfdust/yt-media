@@ -56,10 +56,7 @@ class GeneralModify(FixturesInjectBase):
                 dumped_data = self.__get_schema_dumped(schema, item)
                 self.model.query.filter_by(id=resp.json["data"]["id"]).delete()
                 self.db.session.commit()
-                assert (
-                    resp.status_code == 200
-                    and isinstance(resp.json["data"], dict)
-                )
+                assert resp.status_code == 200 and isinstance(resp.json["data"], dict)
                 return dumped_data
 
     def _get_deleting_items(self):

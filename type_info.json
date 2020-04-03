@@ -1,0 +1,3789 @@
+[
+    {
+        "path": "smorest_sfs/extensions/__init__.py",
+        "line": 40,
+        "func_name": "init_app",
+        "type_comments": [
+            "(smorest_sfs.extensions.flask.Flask) -> None"
+        ],
+        "samples": 5
+    },
+    {
+        "path": "smorest_sfs/extensions/api/__init__.py",
+        "line": 17,
+        "func_name": "Api.register_blueprint",
+        "type_comments": [
+            "(flask_smorest.blueprint.Blueprint, str) -> None"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "smorest_sfs/extensions/api/decorators.py",
+        "line": 34,
+        "func_name": "generate_links",
+        "type_comments": [
+            "(flask_sqlalchemy.Pagination, int) -> Dict[str, str]"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "smorest_sfs/extensions/api/decorators.py",
+        "line": 57,
+        "func_name": "paginate",
+        "type_comments": [
+            "(int) -> function"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/extensions/api/decorators.py",
+        "line": 82,
+        "func_name": "decorator",
+        "type_comments": [
+            "(function) -> function"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/extensions/api/decorators.py",
+        "line": 94,
+        "func_name": "wrapped",
+        "type_comments": [
+            "(*smorest_sfs.modules.email_templates.resources.EmailTemplateView) -> Dict[str, Union[Dict[str, Union[Dict[str, str], int]], List[smorest_sfs.modules.email_templates.models.EmailTemplate], int]]",
+            "(*smorest_sfs.modules.roles.resources.RoleView) -> Dict[str, Union[Dict[str, Union[Dict[str, str], int]], List[smorest_sfs.modules.roles.models.Role], int]]",
+            "(*smorest_sfs.modules.users.resources.UserView) -> Dict[str, Union[Dict[str, Union[Dict[str, str], int]], List[smorest_sfs.modules.users.models.User], int]]",
+            "(*smorest_sfs.modules.projects.resources.ProjectView) -> Dict[str, Union[Dict[str, Union[Dict[str, str], int]], List[smorest_sfs.modules.projects.models.Project], int]]",
+            "(*tests.extensions.api.test_api:TestApi.setup_blp.<locals>.Pets) -> Dict[str, Union[Dict[str, Union[Dict[str, str], int]], List[tests.extensions.api.conftest:TestPagination.<locals>.TestPagination], int]]"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "smorest_sfs/extensions/flask/config.py",
+        "line": 29,
+        "func_name": "Config.__init__",
+        "type_comments": [
+            "(str, Dict[str, Optional[Union[bool, str]]]) -> None"
+        ],
+        "samples": 8
+    },
+    {
+        "path": "smorest_sfs/extensions/flask/config.py",
+        "line": 36,
+        "func_name": "Config.from_toml",
+        "type_comments": [
+            "(str) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(str) -> bool"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "smorest_sfs/extensions/marshal/fields.py",
+        "line": 24,
+        "func_name": "PendulumField._deserialize",
+        "type_comments": [
+            "(str, str, Dict[str, str]) -> pendulum.datetime.DateTime",
+            "(str, str, Dict[str, str]) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/extensions/marshal/fields.py",
+        "line": 35,
+        "func_name": "PendulumField._serialize",
+        "type_comments": [
+            "(None, str, Dict[str, None]) -> None",
+            "(datetime.datetime, str, Dict[str, datetime.datetime]) -> str"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/errors.py",
+        "line": 26,
+        "func_name": "pgerr_to_customerr",
+        "type_comments": [
+            "(sqlalchemy.exc.DataError) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(sqlalchemy.exc.IntegrityError) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/helpers.py",
+        "line": 19,
+        "func_name": "set_default_for_instance",
+        "type_comments": [
+            "(tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable) -> tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable"
+        ],
+        "samples": 11
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/helpers.py",
+        "line": 32,
+        "func_name": "pg_utcnow",
+        "type_comments": [
+            "(smorest_sfs.extensions.sqla.helpers.utcnow, sqlalchemy.dialects.postgresql.psycopg2.PGCompiler_psycopg2) -> str"
+        ],
+        "samples": 27
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/mixin.py",
+        "line": 30,
+        "func_name": "UByMaMixin.save",
+        "type_comments": [
+            "(bool) -> tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable",
+            "(bool) -> smorest_sfs.modules.users.models.User",
+            "(bool) -> smorest_sfs.modules.email_templates.models.EmailTemplate",
+            "(bool) -> tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable",
+            "(bool) -> smorest_sfs.modules.auth.models.TokenBlackList",
+            "(bool) -> smorest_sfs.modules.projects.models.Project",
+            "(bool) -> tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable",
+            "(bool) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 476
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/mixin.py",
+        "line": 43,
+        "func_name": "UByMaMixin.update_by_ma",
+        "type_comments": [
+            "(marshmallow_sqlalchemy.schema.ModelSchemaMeta, smorest_sfs.modules.users.models.User, bool) -> smorest_sfs.modules.users.models.User",
+            "(marshmallow_sqlalchemy.schema.ModelSchemaMeta, smorest_sfs.modules.email_templates.models.EmailTemplate, bool) -> smorest_sfs.modules.email_templates.models.EmailTemplate",
+            "(marshmallow_sqlalchemy.schema.ModelSchemaMeta, smorest_sfs.modules.roles.models.Role, bool) -> smorest_sfs.modules.roles.models.Role",
+            "(tests.extensions.sqla.conftest:TestParentSchema.<locals>.TestParentSchema, tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable, bool) -> tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable",
+            "(marshmallow.schema.SchemaMeta, tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable, bool) -> tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable",
+            "(marshmallow_sqlalchemy.schema.ModelSchemaMeta, smorest_sfs.modules.projects.models.Project, bool) -> smorest_sfs.modules.projects.models.Project"
+        ],
+        "samples": 19
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/mixin.py",
+        "line": 81,
+        "func_name": "_get_loadable_fileds",
+        "type_comments": [
+            "(smorest_sfs.modules.roles.schemas.RoleSchema) -> List[str]",
+            "(tests.extensions.sqla.conftest:TestParentSchema.<locals>.TestParentSchema) -> List[str]",
+            "(tests.extensions.sqla.conftest:TestParentSchema.<locals>.TestParentSchema) -> List",
+            "(smorest_sfs.modules.email_templates.schemas.EmailTemplateSchema) -> List[str]",
+            "(smorest_sfs.modules.users.schemas.UserSelfSchema) -> List[str]",
+            "(smorest_sfs.modules.users.schemas.UserSchema) -> List[str]",
+            "(smorest_sfs.modules.projects.schemas.ProjectSchema) -> List[str]"
+        ],
+        "samples": 19
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/mixin.py",
+        "line": 89,
+        "func_name": "UByMaMixin._setattr_from_instance",
+        "type_comments": [
+            "(List[str], smorest_sfs.modules.email_templates.models.EmailTemplate) -> None",
+            "(List[str], tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable) -> None",
+            "(List[str], smorest_sfs.modules.projects.models.Project) -> None",
+            "(List[str], smorest_sfs.modules.roles.models.Role) -> None",
+            "(List, tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable) -> None",
+            "(List[str], smorest_sfs.modules.users.models.User) -> None"
+        ],
+        "samples": 19
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/mixin.py",
+        "line": 99,
+        "func_name": "create",
+        "type_comments": [
+            "() -> tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable",
+            "() -> smorest_sfs.modules.email_templates.models.EmailTemplate",
+            "() -> tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable",
+            "() -> smorest_sfs.modules.auth.models.TokenBlackList",
+            "() -> smorest_sfs.modules.projects.models.Project",
+            "() -> tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable",
+            "() -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 250
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/mixin.py",
+        "line": 106,
+        "func_name": "CRUDMixin.update",
+        "type_comments": [
+            "(bool) -> smorest_sfs.modules.users.models.UserInfo",
+            "(bool) -> tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable",
+            "(bool) -> smorest_sfs.modules.users.models.User",
+            "(bool) -> smorest_sfs.modules.email_templates.models.EmailTemplate",
+            "(bool) -> smorest_sfs.modules.roles.models.Role",
+            "(bool) -> smorest_sfs.modules.auth.models.TokenBlackList",
+            "(bool) -> smorest_sfs.modules.projects.models.Project",
+            "(bool) -> smorest_sfs.modules.storages.models.Storages"
+        ],
+        "samples": 34
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/mixin.py",
+        "line": 121,
+        "func_name": "CRUDMixin.delete",
+        "type_comments": [
+            "(bool) -> tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable",
+            "(bool) -> smorest_sfs.modules.users.models.User",
+            "(bool) -> smorest_sfs.modules.email_templates.models.EmailTemplate",
+            "(bool) -> smorest_sfs.modules.roles.models.Role",
+            "(bool) -> smorest_sfs.modules.projects.models.Project",
+            "(bool) -> smorest_sfs.modules.storages.models.Storages"
+        ],
+        "samples": 8
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/mixin.py",
+        "line": 129,
+        "func_name": "CRUDMixin.hard_delete",
+        "type_comments": [
+            "(bool) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/softdelete.py",
+        "line": 21,
+        "func_name": "__new__",
+        "type_comments": [
+            "(*sqlalchemy.orm.mapper.Mapper) -> pyannotate_runtime.collect_types.UnknownType",
+            "() -> smorest_sfs.extensions.sqla.softdelete.QueryWithSoftDelete",
+            "(*sqlalchemy.orm.mapper.Mapper) -> smorest_sfs.extensions.sqla.softdelete.QueryWithSoftDelete"
+        ],
+        "samples": 570
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/softdelete.py",
+        "line": 29,
+        "func_name": "QueryWithSoftDelete.__init__",
+        "type_comments": [
+            "(*sqlalchemy.orm.mapper.Mapper) -> None"
+        ],
+        "samples": 419
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/softdelete.py",
+        "line": 32,
+        "func_name": "QueryWithSoftDelete.with_deleted",
+        "type_comments": [
+            "() -> smorest_sfs.extensions.sqla.softdelete.QueryWithSoftDelete"
+        ],
+        "samples": 41
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/softdelete.py",
+        "line": 40,
+        "func_name": "QueryWithSoftDelete._get",
+        "type_comments": [
+            "(int) -> tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable",
+            "(int) -> smorest_sfs.modules.users.models.User",
+            "(int) -> smorest_sfs.modules.email_templates.models.EmailTemplate",
+            "(int) -> smorest_sfs.modules.roles.models.Role",
+            "(int) -> tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable",
+            "(int) -> smorest_sfs.modules.projects.models.Project",
+            "(int) -> smorest_sfs.modules.storages.models.Storages"
+        ],
+        "samples": 40
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/softdelete.py",
+        "line": 44,
+        "func_name": "QueryWithSoftDelete.get",
+        "type_comments": [
+            "(int) -> tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable",
+            "(int) -> smorest_sfs.modules.users.models.User",
+            "(int) -> smorest_sfs.modules.email_templates.models.EmailTemplate",
+            "(int) -> tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable",
+            "(int) -> smorest_sfs.modules.roles.models.Role",
+            "(int) -> None",
+            "(int) -> smorest_sfs.modules.projects.models.Project",
+            "(int) -> smorest_sfs.modules.storages.models.Storages"
+        ],
+        "samples": 40
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/softdelete.py",
+        "line": 48,
+        "func_name": "QueryWithSoftDelete.filter_like_by",
+        "type_comments": [
+            "() -> smorest_sfs.extensions.sqla.softdelete.QueryWithSoftDelete"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/surrogatepk.py",
+        "line": 55,
+        "func_name": "get_by_id",
+        "type_comments": [
+            "(int) -> tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable",
+            "(int) -> smorest_sfs.modules.users.models.User",
+            "(int) -> smorest_sfs.modules.email_templates.models.EmailTemplate",
+            "(int) -> tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable",
+            "(int) -> smorest_sfs.modules.roles.models.Role",
+            "(int) -> smorest_sfs.modules.projects.models.Project",
+            "(int) -> smorest_sfs.modules.storages.models.Storages",
+            "(int) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 39
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/surrogatepk.py",
+        "line": 63,
+        "func_name": "delete_by_id",
+        "type_comments": [
+            "(int, bool) -> tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable",
+            "(int, bool) -> smorest_sfs.modules.users.models.User",
+            "(int, bool) -> smorest_sfs.modules.email_templates.models.EmailTemplate",
+            "(int, bool) -> smorest_sfs.modules.roles.models.Role",
+            "(int, bool) -> smorest_sfs.modules.projects.models.Project"
+        ],
+        "samples": 5
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/surrogatepk.py",
+        "line": 71,
+        "func_name": "delete_by_ids",
+        "type_comments": [
+            "(List[int], bool) -> None"
+        ],
+        "samples": 5
+    },
+    {
+        "path": "smorest_sfs/extensions/sqla/surrogatepk.py",
+        "line": 81,
+        "func_name": "update_by_id",
+        "type_comments": [
+            "(int, marshmallow_sqlalchemy.schema.ModelSchemaMeta, smorest_sfs.modules.users.models.User, bool) -> smorest_sfs.modules.users.models.User",
+            "(int, marshmallow_sqlalchemy.schema.ModelSchemaMeta, smorest_sfs.modules.email_templates.models.EmailTemplate, bool) -> smorest_sfs.modules.email_templates.models.EmailTemplate",
+            "(int, marshmallow_sqlalchemy.schema.ModelSchemaMeta, smorest_sfs.modules.roles.models.Role, bool) -> smorest_sfs.modules.roles.models.Role",
+            "(int, marshmallow.schema.SchemaMeta, tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable, bool) -> tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable",
+            "(int, marshmallow_sqlalchemy.schema.ModelSchemaMeta, smorest_sfs.modules.projects.models.Project, bool) -> smorest_sfs.modules.projects.models.Project"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "smorest_sfs/extensions/storage/captcha.py",
+        "line": 10,
+        "func_name": "CaptchaStore.__init__",
+        "type_comments": [
+            "(str) -> None"
+        ],
+        "samples": 21
+    },
+    {
+        "path": "smorest_sfs/extensions/storage/captcha.py",
+        "line": 15,
+        "func_name": "CaptchaStore.generate_captcha",
+        "type_comments": [
+            "(int) -> str"
+        ],
+        "samples": 10
+    },
+    {
+        "path": "smorest_sfs/extensions/storage/captcha.py",
+        "line": 20,
+        "func_name": "CaptchaStore._set_code",
+        "type_comments": [
+            "(str) -> str"
+        ],
+        "samples": 10
+    },
+    {
+        "path": "smorest_sfs/extensions/storage/captcha.py",
+        "line": 24,
+        "func_name": "CaptchaStore.verify",
+        "type_comments": [
+            "(str) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(str) -> bool"
+        ],
+        "samples": 11
+    },
+    {
+        "path": "smorest_sfs/extensions/storage/captcha.py",
+        "line": 29,
+        "func_name": "CaptchaStore._get_values",
+        "type_comments": [
+            "() -> str",
+            "() -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 11
+    },
+    {
+        "path": "smorest_sfs/extensions/storage/captcha.py",
+        "line": 36,
+        "func_name": "CaptchaStore._decode_code",
+        "type_comments": [
+            "(bytes) -> None",
+            "(None) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 11
+    },
+    {
+        "path": "smorest_sfs/factory.py",
+        "line": 24,
+        "func_name": "create_app",
+        "type_comments": [
+            "(List[str], str) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(List[str], str) -> smorest_sfs.extensions.flask.Flask"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "smorest_sfs/factory.py",
+        "line": 57,
+        "func_name": "register_modules",
+        "type_comments": [
+            "(smorest_sfs.extensions.flask.Flask) -> None"
+        ],
+        "samples": 5
+    },
+    {
+        "path": "smorest_sfs/modules/__init__.py",
+        "line": 35,
+        "func_name": "_get_preloadable_modules",
+        "type_comments": [
+            "(module) -> List[str]"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "smorest_sfs/modules/__init__.py",
+        "line": 41,
+        "func_name": "load_module",
+        "type_comments": [
+            "(str) -> module"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "smorest_sfs/modules/__init__.py",
+        "line": 58,
+        "func_name": "init_app",
+        "type_comments": [
+            "(smorest_sfs.extensions.flask.Flask) -> None"
+        ],
+        "samples": 5
+    },
+    {
+        "path": "smorest_sfs/modules/auth/decorators.py",
+        "line": 46,
+        "func_name": "wrapper",
+        "type_comments": [
+            "(*smorest_sfs.modules.auth.resources.ResetForgotPasswordView) -> tests._utils.client.JSONResponse",
+            "(*smorest_sfs.modules.auth.resources.UserConfirmView) -> tests._utils.client.JSONResponse",
+            "(*smorest_sfs.modules.auth.resources.LogoutView) -> Dict[str, Union[int, str]]",
+            "(*smorest_sfs.modules.auth.resources.LogoutView) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(*smorest_sfs.modules.auth.resources.ResetForgotPasswordView) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(*smorest_sfs.modules.auth.resources.UserConfirmView) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(*smorest_sfs.modules.email_templates.resources.EmailTemplateListView) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(*smorest_sfs.modules.email_templates.resources.EmailTemplateView) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 115
+    },
+    {
+        "path": "smorest_sfs/modules/auth/decorators.py",
+        "line": 77,
+        "func_name": "wrapper",
+        "type_comments": [
+            "(*smorest_sfs.modules.auth.resources.RefreshJwtTokenView) -> Dict[str, Union[Dict[str, str], int, str]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/auth/decorators.py",
+        "line": 105,
+        "func_name": "inner",
+        "type_comments": [
+            "(*smorest_sfs.modules.email_templates.resources.EmailTemplateView) -> tests._utils.client.JSONResponse",
+            "(*smorest_sfs.modules.email_templates.resources.EmailTemplateListView) -> tests._utils.client.JSONResponse",
+            "(*smorest_sfs.modules.email_templates.resources.EmailTemplateItemView) -> tests._utils.client.JSONResponse",
+            "(*smorest_sfs.modules.email_templates.resources.EmailTemplateListView) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(*smorest_sfs.modules.email_templates.resources.EmailTemplateItemView) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(*smorest_sfs.modules.email_templates.resources.EmailTemplateView) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(*smorest_sfs.modules.projects.resources.ProjectListView) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(*smorest_sfs.modules.projects.resources.ProjectView) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 65
+    },
+    {
+        "path": "smorest_sfs/modules/auth/decorators.py",
+        "line": 138,
+        "func_name": "inner",
+        "type_comments": [
+            "(*Union[Dict[str, werkzeug.datastructures.FileStorage], smorest_sfs.modules.storages.resources.StoragesView]) -> tests._utils.client.JSONResponse",
+            "(*smorest_sfs.modules.storages.resources.StoragesView) -> tests._utils.client.JSONResponse",
+            "(*smorest_sfs.modules.storages.resources.UploadView) -> tests._utils.client.JSONResponse",
+            "(*smorest_sfs.modules.users.resources.UserSelfView) -> tests._utils.client.JSONResponse",
+            "(*smorest_sfs.modules.storages.resources.StoragesView) -> pyannotate_runtime.collect_types.NoReturnType",
+            "(*smorest_sfs.modules.storages.resources.StoragesView) -> None"
+        ],
+        "samples": 11
+    },
+    {
+        "path": "smorest_sfs/modules/auth/helpers.py",
+        "line": 24,
+        "func_name": "_epoch_utc_to_datetime",
+        "type_comments": [
+            "(int) -> datetime.datetime"
+        ],
+        "samples": 157
+    },
+    {
+        "path": "smorest_sfs/modules/auth/helpers.py",
+        "line": 31,
+        "func_name": "is_token_revoked",
+        "type_comments": [
+            "(Dict[str, Union[int, str]]) -> bool"
+        ],
+        "samples": 108
+    },
+    {
+        "path": "smorest_sfs/modules/auth/helpers.py",
+        "line": 43,
+        "func_name": "add_token_to_database",
+        "type_comments": [
+            "(str, str, None, bool) -> None",
+            "(str, str, str, bool) -> None"
+        ],
+        "samples": 157
+    },
+    {
+        "path": "smorest_sfs/modules/auth/jwt_ext.py",
+        "line": 17,
+        "func_name": "unauthorized_callback",
+        "type_comments": [
+            "(str) -> tests._utils.client.JSONResponse"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "smorest_sfs/modules/auth/jwt_ext.py",
+        "line": 25,
+        "func_name": "token_expired",
+        "type_comments": [
+            "() -> tests._utils.client.JSONResponse"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/auth/jwt_ext.py",
+        "line": 33,
+        "func_name": "check_if_token_in_blacklist",
+        "type_comments": [
+            "(Dict[str, Union[int, str]]) -> bool"
+        ],
+        "samples": 108
+    },
+    {
+        "path": "smorest_sfs/modules/auth/jwt_ext.py",
+        "line": 38,
+        "func_name": "get_user",
+        "type_comments": [
+            "(str) -> smorest_sfs.modules.users.models.User"
+        ],
+        "samples": 83
+    },
+    {
+        "path": "smorest_sfs/modules/auth/resources.py",
+        "line": 52,
+        "func_name": "post",
+        "type_comments": [
+            "(Dict[str, str]) -> Dict[str, Union[Dict[str, Dict[str, str]], int, str]]",
+            "(Dict[str, str]) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "smorest_sfs/modules/auth/resources.py",
+        "line": 79,
+        "func_name": "get",
+        "type_comments": [
+            "(str) -> tests._utils.client.JSONResponse"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "smorest_sfs/modules/auth/resources.py",
+        "line": 97,
+        "func_name": "post",
+        "type_comments": [
+            "(str) -> Dict[str, Union[int, str]]",
+            "(str) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/modules/auth/resources.py",
+        "line": 123,
+        "func_name": "get",
+        "type_comments": [
+            "() -> Dict[str, Union[int, str]]",
+            "() -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/modules/auth/resources.py",
+        "line": 139,
+        "func_name": "put",
+        "type_comments": [
+            "(str, str) -> Dict[str, Union[int, str]]",
+            "(str, str) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/modules/auth/resources.py",
+        "line": 159,
+        "func_name": "get",
+        "type_comments": [
+            "() -> Dict[str, Union[int, str]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/auth/resources.py",
+        "line": 175,
+        "func_name": "post",
+        "type_comments": [
+            "() -> Dict[str, Union[Dict[str, str], int, str]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/auth/resources.py",
+        "line": 193,
+        "func_name": "post",
+        "type_comments": [
+            "() -> Dict[str, Union[int, str]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/email_templates/models.py",
+        "line": 43,
+        "func_name": "get_by_name",
+        "type_comments": [
+            "(str) -> smorest_sfs.modules.email_templates.models.EmailTemplate"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/modules/email_templates/models.py",
+        "line": 47,
+        "func_name": "get_template",
+        "type_comments": [
+            "(str) -> str"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/modules/email_templates/models.py",
+        "line": 53,
+        "func_name": "EmailTemplate.__repr__",
+        "type_comments": [
+            "() -> str"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "smorest_sfs/modules/email_templates/resources.py",
+        "line": 43,
+        "func_name": "get",
+        "type_comments": [
+            "() -> Dict[str, List[smorest_sfs.modules.email_templates.models.EmailTemplate]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/email_templates/resources.py",
+        "line": 60,
+        "func_name": "get",
+        "type_comments": [
+            "() -> smorest_sfs.extensions.sqla.softdelete.QueryWithSoftDelete"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/email_templates/resources.py",
+        "line": 76,
+        "func_name": "post",
+        "type_comments": [
+            "(smorest_sfs.modules.email_templates.models.EmailTemplate) -> Dict[str, smorest_sfs.modules.email_templates.models.EmailTemplate]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/modules/email_templates/resources.py",
+        "line": 90,
+        "func_name": "delete",
+        "type_comments": [
+            "(Dict[str, List[int]]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/email_templates/resources.py",
+        "line": 111,
+        "func_name": "put",
+        "type_comments": [
+            "(smorest_sfs.modules.email_templates.models.EmailTemplate, int) -> Dict[str, smorest_sfs.modules.email_templates.models.EmailTemplate]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/email_templates/resources.py",
+        "line": 128,
+        "func_name": "delete",
+        "type_comments": [
+            "(int) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/email_templates/resources.py",
+        "line": 139,
+        "func_name": "get",
+        "type_comments": [
+            "(int) -> Dict[str, smorest_sfs.modules.email_templates.models.EmailTemplate]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/projects/models.py",
+        "line": 24,
+        "func_name": "Project.__repr__",
+        "type_comments": [
+            "() -> str"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "smorest_sfs/modules/projects/resources.py",
+        "line": 30,
+        "func_name": "get",
+        "type_comments": [
+            "() -> Dict[str, List[smorest_sfs.modules.projects.models.Project]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/projects/resources.py",
+        "line": 49,
+        "func_name": "get",
+        "type_comments": [
+            "(str) -> smorest_sfs.extensions.sqla.softdelete.QueryWithSoftDelete"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/projects/resources.py",
+        "line": 65,
+        "func_name": "post",
+        "type_comments": [
+            "(smorest_sfs.modules.projects.models.Project) -> Dict[str, smorest_sfs.modules.projects.models.Project]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/modules/projects/resources.py",
+        "line": 79,
+        "func_name": "delete",
+        "type_comments": [
+            "(List[int]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/projects/resources.py",
+        "line": 102,
+        "func_name": "put",
+        "type_comments": [
+            "(smorest_sfs.modules.projects.models.Project, int) -> Dict[str, smorest_sfs.modules.projects.models.Project]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/projects/resources.py",
+        "line": 120,
+        "func_name": "delete",
+        "type_comments": [
+            "(int) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/projects/resources.py",
+        "line": 130,
+        "func_name": "get",
+        "type_comments": [
+            "(int) -> Dict[str, smorest_sfs.modules.projects.models.Project]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/roles/models.py",
+        "line": 41,
+        "func_name": "get_by_names",
+        "type_comments": [
+            "(*str) -> List[smorest_sfs.modules.roles.models.Permission]"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "smorest_sfs/modules/roles/models.py",
+        "line": 80,
+        "func_name": "get_by_user_default",
+        "type_comments": [
+            "(bool) -> List[smorest_sfs.modules.roles.models.Role]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/modules/roles/models.py",
+        "line": 86,
+        "func_name": "Role.add_permissions",
+        "type_comments": [
+            "(List[smorest_sfs.modules.roles.models.Permission]) -> List[str]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/roles/models.py",
+        "line": 97,
+        "func_name": "Role.__str__",
+        "type_comments": [
+            "() -> str"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/modules/roles/resources.py",
+        "line": 45,
+        "func_name": "get",
+        "type_comments": [
+            "() -> Dict[str, List[smorest_sfs.modules.roles.models.Role]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/roles/resources.py",
+        "line": 61,
+        "func_name": "get",
+        "type_comments": [
+            "(str) -> smorest_sfs.extensions.sqla.softdelete.QueryWithSoftDelete"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/roles/resources.py",
+        "line": 77,
+        "func_name": "post",
+        "type_comments": [
+            "(smorest_sfs.modules.roles.models.Role) -> Dict[str, smorest_sfs.modules.roles.models.Role]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/modules/roles/resources.py",
+        "line": 91,
+        "func_name": "delete",
+        "type_comments": [
+            "(List[int]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/roles/resources.py",
+        "line": 112,
+        "func_name": "put",
+        "type_comments": [
+            "(smorest_sfs.modules.roles.models.Role, int) -> Dict[str, smorest_sfs.modules.roles.models.Role]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/roles/resources.py",
+        "line": 126,
+        "func_name": "delete",
+        "type_comments": [
+            "(int) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/roles/resources.py",
+        "line": 136,
+        "func_name": "get",
+        "type_comments": [
+            "(int) -> Dict[str, smorest_sfs.modules.roles.models.Role]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/storages/mixin.py",
+        "line": 29,
+        "func_name": "store",
+        "type_comments": [
+            "() -> werkzeug.datastructures.FileStorage"
+        ],
+        "samples": 45
+    },
+    {
+        "path": "smorest_sfs/modules/storages/mixin.py",
+        "line": 36,
+        "func_name": "store",
+        "type_comments": [
+            "(werkzeug.datastructures.FileStorage) -> None",
+            "(None) -> None"
+        ],
+        "samples": 16
+    },
+    {
+        "path": "smorest_sfs/modules/storages/mixin.py",
+        "line": 40,
+        "func_name": "StoragesMixin.as_stream",
+        "type_comments": [
+            "() -> _io.BytesIO"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/modules/storages/mixin.py",
+        "line": 47,
+        "func_name": "StoragesMixin.save_store",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 11
+    },
+    {
+        "path": "smorest_sfs/modules/storages/models.py",
+        "line": 29,
+        "func_name": "__init__",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 10
+    },
+    {
+        "path": "smorest_sfs/modules/storages/resources.py",
+        "line": 29,
+        "func_name": "get",
+        "type_comments": [
+            "(int) -> tests._utils.client.JSONResponse",
+            "(int) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "smorest_sfs/modules/storages/resources.py",
+        "line": 40,
+        "func_name": "put",
+        "type_comments": [
+            "(Dict[str, werkzeug.datastructures.FileStorage], int) -> Dict[str, Union[int, str]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/storages/resources.py",
+        "line": 58,
+        "func_name": "delete",
+        "type_comments": [
+            "(int) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/storages/resources.py",
+        "line": 74,
+        "func_name": "delete",
+        "type_comments": [
+            "(int) -> Dict[str, Union[int, str]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/storages/resources.py",
+        "line": 90,
+        "func_name": "post",
+        "type_comments": [
+            "(Dict[str, werkzeug.datastructures.FileStorage], str) -> Dict[str, Union[Dict[str, int], int, str]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/users/models.py",
+        "line": 72,
+        "func_name": "get_by_keyword",
+        "type_comments": [
+            "(str) -> None",
+            "(str) -> smorest_sfs.modules.users.models.User"
+        ],
+        "samples": 99
+    },
+    {
+        "path": "smorest_sfs/modules/users/models.py",
+        "line": 88,
+        "func_name": "User.__str__",
+        "type_comments": [
+            "() -> str"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/users/models.py",
+        "line": 91,
+        "func_name": "nickname",
+        "type_comments": [
+            "() -> str"
+        ],
+        "samples": 15
+    },
+    {
+        "path": "smorest_sfs/modules/users/models.py",
+        "line": 182,
+        "func_name": "sex_label",
+        "type_comments": [
+            "() -> str"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "smorest_sfs/modules/users/resources.py",
+        "line": 36,
+        "func_name": "get",
+        "type_comments": [
+            "() -> Dict[str, List[smorest_sfs.modules.users.models.User]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/users/resources.py",
+        "line": 53,
+        "func_name": "get",
+        "type_comments": [
+            "(str) -> smorest_sfs.extensions.sqla.softdelete.QueryWithSoftDelete"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/modules/users/resources.py",
+        "line": 79,
+        "func_name": "delete",
+        "type_comments": [
+            "(List[int]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/users/resources.py",
+        "line": 100,
+        "func_name": "put",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User, int) -> Dict[str, smorest_sfs.modules.users.models.User]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/users/resources.py",
+        "line": 113,
+        "func_name": "delete",
+        "type_comments": [
+            "(int) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/users/resources.py",
+        "line": 123,
+        "func_name": "get",
+        "type_comments": [
+            "(int) -> Dict[str, smorest_sfs.modules.users.models.User]",
+            "(int) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/modules/users/resources.py",
+        "line": 137,
+        "func_name": "put",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User) -> Dict[str, smorest_sfs.modules.users.models.User]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/users/resources.py",
+        "line": 146,
+        "func_name": "get",
+        "type_comments": [
+            "() -> Dict[str, werkzeug.local.LocalProxy]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/modules/users/resources.py",
+        "line": 156,
+        "func_name": "patch",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User) -> Dict[str, werkzeug.local.LocalProxy]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/__init__.py",
+        "line": 13,
+        "func_name": "_execute_sql",
+        "type_comments": [
+            "(sqlalchemy.sql.selectable.Select) -> List[sqlalchemy.engine.result.RowProxy]",
+            "(sqlalchemy.sql.selectable.Select) -> List"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/__init__.py",
+        "line": 18,
+        "func_name": "_execute_sa",
+        "type_comments": [
+            "(tests.extensions.sqla.conftest:TestSASql.<locals>.TestSASql) -> List[sqlalchemy.engine.result.RowProxy]",
+            "(tests.extensions.sqla.conftest:TestSASql.<locals>.TestSASql) -> List"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/__init__.py",
+        "line": 23,
+        "func_name": "_execute_query",
+        "type_comments": [
+            "(tests.extensions.sqla.conftest:TestOneColQuery.<locals>.TestOneColQuery) -> List[sqlalchemy.util._collections.result]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/__init__.py",
+        "line": 27,
+        "func_name": "execute",
+        "type_comments": [
+            "(abc.ABCMeta) -> List[sqlalchemy.engine.result.RowProxy]",
+            "(abc.ABCMeta) -> List",
+            "(abc.ABCMeta) -> List[sqlalchemy.util._collections.result]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/__init__.py",
+        "line": 37,
+        "func_name": "debug_sql",
+        "type_comments": [
+            "(abc.ABCMeta) -> None",
+            "(abc.ABCMeta, *str) -> None"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/__init__.py",
+        "line": 42,
+        "func_name": "render_limit_results",
+        "type_comments": [
+            "(abc.ABCMeta) -> None",
+            "(abc.ABCMeta, *str) -> None"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/abstract.py",
+        "line": 30,
+        "func_name": "StatementAbstract.get_raw_sql",
+        "type_comments": [
+            "() -> str"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/abstract.py",
+        "line": 38,
+        "func_name": "StatementAbstract.debug_sql",
+        "type_comments": [
+            "(bool) -> None"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/helpers.py",
+        "line": 14,
+        "func_name": "QueryAnalysis.__init__",
+        "type_comments": [
+            "(flask_sqlalchemy.BaseQuery) -> None",
+            "(smorest_sfs.extensions.sqla.softdelete.QueryWithSoftDelete) -> None"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/helpers.py",
+        "line": 22,
+        "func_name": "__is_direct",
+        "type_comments": [
+            "(List[Dict[str, Union[bool, flask_sqlalchemy.model.DefaultMeta, sqlalchemy.orm.mapper.Mapper, str]]]) -> bool",
+            "(List[Dict[str, Union[bool, flask_sqlalchemy.model.DefaultMeta, sqlalchemy.orm.attributes.InstrumentedAttribute, sqlalchemy.sql.sqltypes.String, str]]]) -> bool"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/helpers.py",
+        "line": 30,
+        "func_name": "QueryAnalysis._parse",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/helpers.py",
+        "line": 38,
+        "func_name": "__extract_entity",
+        "type_comments": [
+            "() -> flask_sqlalchemy.model.DefaultMeta"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/helpers.py",
+        "line": 41,
+        "func_name": "__get_entity_col_keys",
+        "type_comments": [
+            "(flask_sqlalchemy.model.DefaultMeta) -> List[str]"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/query.py",
+        "line": 25,
+        "func_name": "SAQuery.get_sa_sql",
+        "type_comments": [
+            "() -> sqlalchemy.sql.selectable.Select"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/query.py",
+        "line": 28,
+        "func_name": "SAQuery.get_keys",
+        "type_comments": [
+            "() -> List[str]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/query.py",
+        "line": 32,
+        "func_name": "SAQuery.get_render_sql",
+        "type_comments": [
+            "(int) -> smorest_sfs.extensions.sqla.softdelete.QueryWithSoftDelete",
+            "(int) -> flask_sqlalchemy.BaseQuery"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/query.py",
+        "line": 39,
+        "func_name": "SAQuery.render_results",
+        "type_comments": [
+            "(int) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/render.py",
+        "line": 32,
+        "func_name": "TableRender._render_data_table",
+        "type_comments": [
+            "(List[tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable]) -> str",
+            "(List[sqlalchemy.util._collections.result]) -> str",
+            "(List[sqlalchemy.engine.result.RowProxy]) -> str",
+            "(List[sqlalchemy.util._collections.result]) -> str"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/statement.py",
+        "line": 19,
+        "func_name": "SAStatement.get_sa_sql",
+        "type_comments": [
+            "() -> sqlalchemy.sql.selectable.Select"
+        ],
+        "samples": 5
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/statement.py",
+        "line": 22,
+        "func_name": "SAStatement.get_keys",
+        "type_comments": [
+            "() -> Dict"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/statement.py",
+        "line": 25,
+        "func_name": "SAStatement.get_render_sql",
+        "type_comments": [
+            "(int) -> sqlalchemy.sql.selectable.Select"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/statement.py",
+        "line": 28,
+        "func_name": "parse_records",
+        "type_comments": [
+            "(List[sqlalchemy.engine.result.RowProxy]) -> List[Dict[str, str]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/plugins/sa/statement.py",
+        "line": 32,
+        "func_name": "SAStatement.render_results",
+        "type_comments": [
+            "(int) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/services/auth/auth.py",
+        "line": 21,
+        "func_name": "UserLoginChecker.__init__",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User, str, str, str) -> None",
+            "(None, str, str, str) -> None"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "smorest_sfs/services/auth/auth.py",
+        "line": 27,
+        "func_name": "UserLoginChecker._check_capture_code",
+        "type_comments": [
+            "() -> pyannotate_runtime.collect_types.NoReturnType",
+            "() -> bool"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "smorest_sfs/services/auth/auth.py",
+        "line": 41,
+        "func_name": "UserLoginChecker._check_user",
+        "type_comments": [
+            "() -> pyannotate_runtime.collect_types.NoReturnType",
+            "() -> bool"
+        ],
+        "samples": 5
+    },
+    {
+        "path": "smorest_sfs/services/auth/auth.py",
+        "line": 52,
+        "func_name": "UserLoginChecker._check_passwd",
+        "type_comments": [
+            "() -> pyannotate_runtime.collect_types.NoReturnType",
+            "() -> bool"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/services/auth/auth.py",
+        "line": 59,
+        "func_name": "check",
+        "type_comments": [
+            "() -> Iterator[smorest_sfs.modules.users.models.User]",
+            "() -> pyannotate_runtime.collect_types.NoReturnType",
+            "() -> Iterator"
+        ],
+        "samples": 9
+    },
+    {
+        "path": "smorest_sfs/services/auth/auth.py",
+        "line": 65,
+        "func_name": "login_user",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User) -> Dict[str, Dict[str, str]]"
+        ],
+        "samples": 77
+    },
+    {
+        "path": "smorest_sfs/services/auth/auth.py",
+        "line": 80,
+        "func_name": "logout_user",
+        "type_comments": [
+            "(werkzeug.local.LocalProxy) -> None",
+            "(smorest_sfs.modules.users.models.User) -> None"
+        ],
+        "samples": 73
+    },
+    {
+        "path": "smorest_sfs/services/auth/confirm.py",
+        "line": 32,
+        "func_name": "confirm_current_token",
+        "type_comments": [
+            "(str, bool) -> smorest_sfs.modules.users.models.User",
+            "(str, bool) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "smorest_sfs/services/auth/confirm.py",
+        "line": 51,
+        "func_name": "generate_confirm_token",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User, str) -> str"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/services/mail/__init__.py",
+        "line": 15,
+        "func_name": "MailSender.__init__",
+        "type_comments": [
+            "(str, str) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/services/mail/__init__.py",
+        "line": 28,
+        "func_name": "PasswdMailSender.__init__",
+        "type_comments": [
+            "(Dict[str, str], str) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/services/storages/handlers.py",
+        "line": 18,
+        "func_name": "StorageFactory.__init__",
+        "type_comments": [
+            "(smorest_sfs.modules.storages.models.Storages) -> None"
+        ],
+        "samples": 11
+    },
+    {
+        "path": "smorest_sfs/services/storages/handlers.py",
+        "line": 21,
+        "func_name": "StorageFactory.save",
+        "type_comments": [
+            "(bool) -> smorest_sfs.modules.storages.models.Storages"
+        ],
+        "samples": 9
+    },
+    {
+        "path": "smorest_sfs/services/storages/handlers.py",
+        "line": 26,
+        "func_name": "StorageFactory.update",
+        "type_comments": [
+            "(bool) -> smorest_sfs.modules.storages.models.Storages"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/services/storages/handlers.py",
+        "line": 32,
+        "func_name": "StorageFactory.hard_delete",
+        "type_comments": [
+            "(bool) -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "smorest_sfs/services/users/users.py",
+        "line": 38,
+        "func_name": "create_user",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User, bool) -> smorest_sfs.modules.users.models.User"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/utils/datetime.py",
+        "line": 10,
+        "func_name": "utcnow",
+        "type_comments": [
+            "() -> freezegun.api.FakeDatetime"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "smorest_sfs/utils/datetime.py",
+        "line": 14,
+        "func_name": "_utctoday",
+        "type_comments": [
+            "(freezegun.api.FakeDatetime) -> freezegun.api.FakeDate",
+            "(datetime.datetime) -> datetime.date"
+        ],
+        "samples": 19
+    },
+    {
+        "path": "smorest_sfs/utils/datetime.py",
+        "line": 18,
+        "func_name": "utctoday",
+        "type_comments": [
+            "() -> freezegun.api.FakeDate",
+            "() -> datetime.date"
+        ],
+        "samples": 19
+    },
+    {
+        "path": "smorest_sfs/utils/datetime.py",
+        "line": 23,
+        "func_name": "convert_timezone",
+        "type_comments": [
+            "(pendulum.datetime.DateTime, str) -> pendulum.datetime.DateTime"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 18,
+        "func_name": "datetopath",
+        "type_comments": [
+            "(str) -> pathlib.PosixPath"
+        ],
+        "samples": 18
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 22,
+        "func_name": "todaytopath",
+        "type_comments": [
+            "() -> pathlib.PosixPath"
+        ],
+        "samples": 18
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 28,
+        "func_name": "__get_sfs_path",
+        "type_comments": [
+            "() -> str"
+        ],
+        "samples": 77
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 32,
+        "func_name": "get_project_path",
+        "type_comments": [
+            "() -> pathlib.PosixPath"
+        ],
+        "samples": 77
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 37,
+        "func_name": "get_subpath_from_project",
+        "type_comments": [
+            "(str) -> pathlib.PosixPath",
+            "(pathlib.PosixPath) -> pathlib.PosixPath"
+        ],
+        "samples": 22
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 44,
+        "func_name": "get_uploads_path",
+        "type_comments": [
+            "() -> pathlib.PosixPath"
+        ],
+        "samples": 52
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 49,
+        "func_name": "_get_uploads_path",
+        "type_comments": [
+            "(pathlib.PosixPath) -> pathlib.PosixPath"
+        ],
+        "samples": 52
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 53,
+        "func_name": "get_uploads_subdir",
+        "type_comments": [
+            "(str, bool) -> pathlib.PosixPath"
+        ],
+        "samples": 52
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 58,
+        "func_name": "_get_uploads_subdir",
+        "type_comments": [
+            "(pathlib.PosixPath, str, bool) -> pathlib.PosixPath"
+        ],
+        "samples": 52
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 67,
+        "func_name": "if_in_whitelst",
+        "type_comments": [
+            "(pathlib.PosixPath) -> bool"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 73,
+        "func_name": "_make_uploaded_path",
+        "type_comments": [
+            "(pathlib.PosixPath) -> pathlib.PosixPath"
+        ],
+        "samples": 17
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 79,
+        "func_name": "_make_secure_filepath",
+        "type_comments": [
+            "(pathlib.PosixPath) -> pathlib.PosixPath"
+        ],
+        "samples": 17
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 84,
+        "func_name": "make_uploaded_path",
+        "type_comments": [
+            "(str) -> pathlib.PosixPath"
+        ],
+        "samples": 17
+    },
+    {
+        "path": "smorest_sfs/utils/paths.py",
+        "line": 90,
+        "func_name": "get_relative_pathstr",
+        "type_comments": [
+            "(pathlib.PosixPath) -> str"
+        ],
+        "samples": 17
+    },
+    {
+        "path": "smorest_sfs/utils/storages.py",
+        "line": 17,
+        "func_name": "load_storage_from_path",
+        "type_comments": [
+            "(str, str) -> werkzeug.datastructures.FileStorage",
+            "(str, str) -> pyannotate_runtime.collect_types.NoReturnType"
+        ],
+        "samples": 8
+    },
+    {
+        "path": "smorest_sfs/utils/storages.py",
+        "line": 23,
+        "func_name": "save_storage_to_path",
+        "type_comments": [
+            "(werkzeug.datastructures.FileStorage, str) -> str"
+        ],
+        "samples": 14
+    },
+    {
+        "path": "smorest_sfs/utils/storages.py",
+        "line": 31,
+        "func_name": "delete_from_rel_path",
+        "type_comments": [
+            "(str) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "smorest_sfs/utils/storages.py",
+        "line": 37,
+        "func_name": "make_response_from_store",
+        "type_comments": [
+            "(werkzeug.datastructures.FileStorage) -> tests._utils.client.JSONResponse"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/_utils/client.py",
+        "line": 24,
+        "func_name": "json",
+        "type_comments": [
+            "() -> Dict[str, Union[Dict[str, Union[Dict[str, str], int]], List[Dict[str, Optional[Union[bool, int, str]]]], int, str]]",
+            "() -> Dict[str, Union[Dict[str, str], int, str]]",
+            "() -> Dict[str, List[Dict[str, Union[int, str]]]]",
+            "() -> Dict[str, Union[Dict[str, Union[Dict[str, str], int]], List[Dict[str, Union[bool, int, str]]], int, str]]",
+            "() -> Dict[str, Union[Dict[str, Optional[Union[bool, int, str]]], int, str]]",
+            "() -> Dict[str, Union[int, str]]",
+            "() -> Dict[str, Union[Dict[str, int], int, str]]",
+            "() -> Dict[str, Union[Dict[str, Union[bool, int, str]], int, str]]"
+        ],
+        "samples": 27
+    },
+    {
+        "path": "tests/_utils/client.py",
+        "line": 38,
+        "func_name": "AutoAuthFlaskClient.__init__",
+        "type_comments": [
+            "(*Union[smorest_sfs.extensions.flask.Flask, type]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/_utils/client.py",
+        "line": 44,
+        "func_name": "login",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User, List[str]) -> Iterator",
+            "(smorest_sfs.modules.users.models.User, List) -> Iterator[tests._utils.client.AutoAuthFlaskClient]",
+            "(smorest_sfs.modules.users.models.User, List) -> Iterator",
+            "(smorest_sfs.modules.users.models.User, List[str]) -> Iterator[tests._utils.client.AutoAuthFlaskClient]"
+        ],
+        "samples": 144
+    },
+    {
+        "path": "tests/_utils/client.py",
+        "line": 66,
+        "func_name": "AutoAuthFlaskClient.open",
+        "type_comments": [
+            "(*str) -> tests._utils.client.JSONResponse",
+            "() -> tests._utils.client.JSONResponse"
+        ],
+        "samples": 133
+    },
+    {
+        "path": "tests/_utils/client.py",
+        "line": 74,
+        "func_name": "AutoAuthFlaskClient._combine_headers",
+        "type_comments": [
+            "() -> Dict[str, Union[Dict[str, Union[List[Dict[str, Union[int, str]]], bool, str]], Tuple[Tuple[str, str]], str]]",
+            "() -> Dict[str, Union[Tuple[Tuple[str, str]], str]]",
+            "() -> Dict[str, Union[Dict[str, str], Tuple[Tuple[str, str]], str]]",
+            "() -> Dict[str, Union[Dict[str, List[int]], Tuple[Tuple[str, str]], str]]",
+            "() -> Dict[str, Union[Dict[str, Tuple[_io.BytesIO, str]], Tuple[Tuple[str, str]], str]]",
+            "() -> Dict[str, Union[Dict[str, Optional[str]], Tuple[Tuple[str, str]], str]]",
+            "() -> Dict[str, Union[Dict[str, Union[List[Dict[str, Union[int, str]]], str]], Tuple[Tuple[str, str]], str]]"
+        ],
+        "samples": 100
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 14,
+        "func_name": "log_to_queue",
+        "type_comments": [
+            "(loguru._handler.Message) -> loguru._handler.Message"
+        ],
+        "samples": 9
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 20,
+        "func_name": "inject_logger",
+        "type_comments": [
+            "(loguru._logger.Logger) -> None"
+        ],
+        "samples": 9
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 24,
+        "func_name": "uninject_logger",
+        "type_comments": [
+            "(loguru._logger.Logger) -> None"
+        ],
+        "samples": 9
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 41,
+        "func_name": "auto_injector_fixture",
+        "type_comments": [
+            "(_pytest.fixtures.SubRequest) -> None"
+        ],
+        "samples": 164
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 49,
+        "func_name": "GeneralModify._add_request",
+        "type_comments": [
+            "(Dict[str, str]) -> Dict[str, Union[bool, int, str]]",
+            "(Dict[str, Union[List[Dict[str, Union[int, str]]], str]]) -> Dict[str, Union[List[Dict[str, Union[int, str]]], bool, str]]"
+        ],
+        "samples": 9
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 62,
+        "func_name": "GeneralModify._get_deleting_items",
+        "type_comments": [
+            "() -> Tuple[smorest_sfs.modules.roles.models.Role]",
+            "() -> Tuple[smorest_sfs.modules.projects.models.Project]",
+            "() -> Tuple[smorest_sfs.modules.email_templates.models.EmailTemplate]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 66,
+        "func_name": "GeneralModify._get_modified_item",
+        "type_comments": [
+            "() -> smorest_sfs.modules.roles.models.Role",
+            "() -> smorest_sfs.modules.projects.models.Project",
+            "() -> smorest_sfs.modules.email_templates.models.EmailTemplate"
+        ],
+        "samples": 13
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 70,
+        "func_name": "__get_schema_dumped",
+        "type_comments": [
+            "(smorest_sfs.modules.roles.schemas.RoleSchema, smorest_sfs.modules.roles.models.Role) -> Dict[str, Optional[Union[List, bool, str]]]",
+            "(smorest_sfs.modules.email_templates.schemas.EmailTemplateSchema, smorest_sfs.modules.email_templates.models.EmailTemplate) -> Dict[str, Union[bool, int, str]]",
+            "(smorest_sfs.modules.projects.schemas.ProjectSchema, smorest_sfs.modules.projects.models.Project) -> Dict[str, Union[bool, int, str]]",
+            "(smorest_sfs.modules.roles.schemas.RoleSchema, smorest_sfs.modules.roles.models.Role) -> Dict[str, Union[List[Dict[str, Union[int, str]]], bool, str]]"
+        ],
+        "samples": 13
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 74,
+        "func_name": "GeneralModify._get_dumped_modified_item",
+        "type_comments": [
+            "() -> Dict[str, Optional[Union[List, bool, str]]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 79,
+        "func_name": "GeneralModify._delete_request",
+        "type_comments": [
+            "() -> Tuple[tests._utils.client.JSONResponse, Tuple[smorest_sfs.modules.email_templates.models.EmailTemplate]]",
+            "() -> Tuple[tests._utils.client.JSONResponse, Tuple[smorest_sfs.modules.roles.models.Role]]",
+            "() -> Tuple[tests._utils.client.JSONResponse, Tuple[smorest_sfs.modules.projects.models.Project]]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 89,
+        "func_name": "__item_modify_request",
+        "type_comments": [
+            "(str) -> tests._utils.client.JSONResponse"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 97,
+        "func_name": "GeneralModify._item_modify_request",
+        "type_comments": [
+            "(Dict[str, str]) -> Dict[str, Union[bool, int, str]]",
+            "(Dict[str, Union[List[Dict[str, Union[int, str]]], bool, str]]) -> Dict[str, Union[List[Dict[str, Union[int, str]]], bool, str]]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 105,
+        "func_name": "GeneralModify._item_delete_request",
+        "type_comments": [
+            "() -> Tuple[tests._utils.client.JSONResponse, smorest_sfs.modules.email_templates.models.EmailTemplate]",
+            "() -> Tuple[tests._utils.client.JSONResponse, smorest_sfs.modules.roles.models.Role]",
+            "() -> Tuple[tests._utils.client.JSONResponse, smorest_sfs.modules.projects.models.Project]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 113,
+        "func_name": "GeneralGet._get_view",
+        "type_comments": [
+            "(str) -> tests._utils.client.JSONResponse"
+        ],
+        "samples": 15
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 119,
+        "func_name": "GeneralGet._get_options",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 127,
+        "func_name": "GeneralGet._get_list",
+        "type_comments": [
+            "() -> List[Dict[str, Union[bool, int, str]]]",
+            "() -> List[Dict[str, Optional[Union[bool, int, str]]]]",
+            "() -> List[Dict[str, Union[bool, str]]]"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "tests/_utils/injection.py",
+        "line": 132,
+        "func_name": "GeneralGet._get_item",
+        "type_comments": [
+            "() -> Dict[str, Union[bool, int, str]]",
+            "() -> Dict[str, Optional[Union[bool, int, str]]]",
+            "() -> Dict[str, Union[bool, str]]"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "tests/_utils/tables.py",
+        "line": 18,
+        "func_name": "clear_instances",
+        "type_comments": [
+            "(flask_sqlalchemy.SQLAlchemy, Tuple[smorest_sfs.modules.roles.models.Permission]) -> None",
+            "(flask_sqlalchemy.SQLAlchemy, Tuple[smorest_sfs.modules.email_templates.models.EmailTemplate, smorest_sfs.modules.email_templates.models.EmailTemplate, smorest_sfs.modules.email_templates.models.EmailTemplate]) -> None",
+            "(flask_sqlalchemy.SQLAlchemy, Tuple[smorest_sfs.modules.roles.models.Role]) -> None",
+            "(flask_sqlalchemy.SQLAlchemy, Tuple[smorest_sfs.modules.roles.models.Role, smorest_sfs.modules.roles.models.Role, smorest_sfs.modules.roles.models.Role]) -> None",
+            "(flask_sqlalchemy.SQLAlchemy, Tuple[smorest_sfs.modules.projects.models.Project, smorest_sfs.modules.projects.models.Project, smorest_sfs.modules.projects.models.Project]) -> None"
+        ],
+        "samples": 23
+    },
+    {
+        "path": "tests/_utils/uniqueue.py",
+        "line": 8,
+        "func_name": "__new__",
+        "type_comments": [
+            "() -> tests._utils.uniqueue.UniqueQueue"
+        ],
+        "samples": 17
+    },
+    {
+        "path": "tests/_utils/users.py",
+        "line": 6,
+        "func_name": "generate_user_instance",
+        "type_comments": [
+            "(str, str, bool) -> smorest_sfs.modules.users.models.User"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/conftest.py",
+        "line": 26,
+        "func_name": "patch_uuid",
+        "type_comments": [
+            "(_pytest.monkeypatch.MonkeyPatch) -> None"
+        ],
+        "samples": 10
+    },
+    {
+        "path": "tests/conftest.py",
+        "line": 31,
+        "func_name": "clean_dirs",
+        "type_comments": [
+            "() -> Iterator",
+            "() -> Iterator"
+        ],
+        "samples": 22
+    },
+    {
+        "path": "tests/conftest.py",
+        "line": 65,
+        "func_name": "flask_app_client",
+        "type_comments": [
+            "(smorest_sfs.extensions.flask.Flask) -> tests._utils.client.AutoAuthFlaskClient"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/conftest.py",
+        "line": 76,
+        "func_name": "temp_db_instance_manager",
+        "type_comments": [
+            "(*smorest_sfs.modules.email_templates.models.EmailTemplate) -> Iterator[Tuple[smorest_sfs.modules.email_templates.models.EmailTemplate, smorest_sfs.modules.email_templates.models.EmailTemplate, smorest_sfs.modules.email_templates.models.EmailTemplate]]",
+            "(*smorest_sfs.modules.projects.models.Project) -> Iterator[Tuple[smorest_sfs.modules.projects.models.Project, smorest_sfs.modules.projects.models.Project, smorest_sfs.modules.projects.models.Project]]",
+            "(*smorest_sfs.modules.projects.models.Project) -> Iterator",
+            "(*smorest_sfs.modules.email_templates.models.EmailTemplate) -> Iterator",
+            "(*smorest_sfs.modules.users.models.User) -> Iterator[smorest_sfs.modules.users.models.User]",
+            "(*smorest_sfs.modules.roles.models.Role) -> Iterator[smorest_sfs.modules.roles.models.Role]",
+            "(*smorest_sfs.modules.roles.models.Permission) -> Iterator[smorest_sfs.modules.roles.models.Permission]",
+            "(*smorest_sfs.modules.roles.models.Permission) -> Iterator"
+        ],
+        "samples": 49
+    },
+    {
+        "path": "tests/conftest.py",
+        "line": 99,
+        "func_name": "inactive_user",
+        "type_comments": [
+            "(function) -> Iterator[smorest_sfs.modules.users.models.User]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/conftest.py",
+        "line": 108,
+        "func_name": "forget_passwd_user",
+        "type_comments": [
+            "(function) -> Iterator[smorest_sfs.modules.users.models.User]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/conftest.py",
+        "line": 119,
+        "func_name": "guest_user",
+        "type_comments": [
+            "(function) -> Iterator[smorest_sfs.modules.users.models.User]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/conftest.py",
+        "line": 128,
+        "func_name": "inject_logger",
+        "type_comments": [
+            "() -> Iterator",
+            "() -> Iterator"
+        ],
+        "samples": 18
+    },
+    {
+        "path": "tests/conftest.py",
+        "line": 144,
+        "func_name": "collect_types_fixture",
+        "type_comments": [
+            "() -> Iterator"
+        ],
+        "samples": 217
+    },
+    {
+        "path": "tests/extensions/api/conftest.py",
+        "line": 66,
+        "func_name": "api",
+        "type_comments": [
+            "(flask.app.Flask) -> smorest_sfs.extensions.api.Api"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/api/conftest.py",
+        "line": 72,
+        "func_name": "TestSchema",
+        "type_comments": [
+            "() -> marshmallow.schema.SchemaMeta"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/api/conftest.py",
+        "line": 75,
+        "func_name": "TestSchema",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/api/conftest.py",
+        "line": 82,
+        "func_name": "TestPageSchema",
+        "type_comments": [
+            "(marshmallow.schema.SchemaMeta) -> marshmallow.schema.SchemaMeta"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/api/conftest.py",
+        "line": 85,
+        "func_name": "TestPageSchema",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/api/test_api.py",
+        "line": 14,
+        "func_name": "TestApi.setup_blp",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/api/test_api.py",
+        "line": 20,
+        "func_name": "Pets",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/api/test_api.py",
+        "line": 21,
+        "func_name": "get",
+        "type_comments": [
+            "() -> smorest_sfs.extensions.sqla.softdelete.QueryWithSoftDelete"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/api/test_api.py",
+        "line": 31,
+        "func_name": "TestApi.test_api",
+        "type_comments": [
+            "(Dict[str, Union[Dict[str, str], int]]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/api/test_api.py",
+        "line": 57,
+        "func_name": "TestApi.get_test_json",
+        "type_comments": [
+            "(str) -> Dict[str, Union[Dict[str, Union[Dict[str, str], int]], List[Dict[str, Union[int, str]]], int, str]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/flask/test_flask.py",
+        "line": 10,
+        "func_name": "TestFlask.test_flask",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/marshal/test_bases.py",
+        "line": 12,
+        "func_name": "TestBasesMaClass.test_base_msg",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/marshal/test_bases.py",
+        "line": 18,
+        "func_name": "TestBasesMaClass.test_base_int_list",
+        "type_comments": [
+            "(Dict[str, List], List) -> None",
+            "(Dict[str, List[int]], List[int]) -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/extensions/marshal/test_bases.py",
+        "line": 27,
+        "func_name": "TestBasesMaClass.test_base_page",
+        "type_comments": [
+            "(Dict[str, Dict[str, Union[Dict[str, str], int]]], Dict[str, Union[Dict[str, Union[Dict[str, str], int]], int, str]]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/marshal/test_fields.py",
+        "line": 10,
+        "func_name": "test_fields_dump",
+        "type_comments": [
+            "(flask.app.Flask, tests.extensions.marshal.conftest:pendulum_field_schema.<locals>.TestPendulumSchema) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/marshal/test_fields.py",
+        "line": 17,
+        "func_name": "test_fields_load",
+        "type_comments": [
+            "(flask.app.Flask, tests.extensions.marshal.conftest:pendulum_field_schema.<locals>.TestPendulumSchema) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/marshal/test_fields.py",
+        "line": 24,
+        "func_name": "test_fileds_none_load_handle",
+        "type_comments": [
+            "(flask.app.Flask, tests.extensions.marshal.conftest:pendulum_field_schema.<locals>.TestPendulumSchema) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/marshal/test_fields.py",
+        "line": 31,
+        "func_name": "test_fields_empty_load_handle",
+        "type_comments": [
+            "(flask.app.Flask, tests.extensions.marshal.conftest:pendulum_field_schema.<locals>.TestPendulumSchema) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/marshal/test_fields.py",
+        "line": 38,
+        "func_name": "test_fileds_none_dump_handle",
+        "type_comments": [
+            "(flask.app.Flask, tests.extensions.marshal.conftest:pendulum_field_schema.<locals>.TestPendulumSchema) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/marshal/test_init.py",
+        "line": 10,
+        "func_name": "TestMaCreataion.test_ma_meta",
+        "type_comments": [
+            "(flask.app.Flask) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 102,
+        "func_name": "TestChildSchema",
+        "type_comments": [
+            "() -> marshmallow.schema.SchemaMeta"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 105,
+        "func_name": "TestChildSchema",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 116,
+        "func_name": "TestParentSchema",
+        "type_comments": [
+            "(marshmallow.schema.SchemaMeta) -> marshmallow.schema.SchemaMeta"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 119,
+        "func_name": "TestParentSchema",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 122,
+        "func_name": "Meta",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 128,
+        "func_name": "TestTableTeardown",
+        "type_comments": [
+            "(flask_sqlalchemy.SQLAlchemy) -> Iterator",
+            "(flask_sqlalchemy.SQLAlchemy) -> Iterator"
+        ],
+        "samples": 60
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 141,
+        "func_name": "TestSASql",
+        "type_comments": [
+            "(flask_sqlalchemy.SQLAlchemy, flask_sqlalchemy.model.DefaultMeta) -> abc.ABCMeta"
+        ],
+        "samples": 13
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 144,
+        "func_name": "TestSASql",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 13
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 145,
+        "func_name": "TestSASql.__init__",
+        "type_comments": [
+            "(str) -> None"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 153,
+        "func_name": "TestOneTableQuery",
+        "type_comments": [
+            "(flask_sqlalchemy.SQLAlchemy, flask_sqlalchemy.model.DefaultMeta) -> abc.ABCMeta"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 156,
+        "func_name": "TestOneTableQuery",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 157,
+        "func_name": "TestOneTableQuery.__init__",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 166,
+        "func_name": "TestTwoTablesQuery",
+        "type_comments": [
+            "(flask_sqlalchemy.SQLAlchemy, flask_sqlalchemy.model.DefaultMeta, flask_sqlalchemy.model.DefaultMeta) -> abc.ABCMeta"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 171,
+        "func_name": "TestTwoTablesQuery",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 172,
+        "func_name": "TestTwoTablesQuery.__init__",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 187,
+        "func_name": "TestOneColQuery",
+        "type_comments": [
+            "(flask_sqlalchemy.SQLAlchemy, flask_sqlalchemy.model.DefaultMeta) -> abc.ABCMeta"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 190,
+        "func_name": "TestOneColQuery",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 191,
+        "func_name": "TestOneColQuery.__init__",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/extensions/sqla/conftest.py",
+        "line": 196,
+        "func_name": "TestOneColQuery.get_record",
+        "type_comments": [
+            "() -> List[sqlalchemy.util._collections.result]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 17,
+        "func_name": "TestSqlaCRUD.test_created_must_have_id",
+        "type_comments": [
+            "(flask_sqlalchemy.model.DefaultMeta) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 21,
+        "func_name": "TestSqlaCRUD.test_save_must_have_id",
+        "type_comments": [
+            "(flask_sqlalchemy.model.DefaultMeta) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 26,
+        "func_name": "TestSqlaCRUD.test_save_should_update_modified",
+        "type_comments": [
+            "(flask_sqlalchemy.model.DefaultMeta) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 33,
+        "func_name": "TestSqlaCRUD.test_update_should_success",
+        "type_comments": [
+            "(flask_sqlalchemy.model.DefaultMeta) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 39,
+        "func_name": "TestSqlaCRUD.test_update_should_not_update_blacked_keys",
+        "type_comments": [
+            "(flask_sqlalchemy.model.DefaultMeta) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 58,
+        "func_name": "TestSqlaCRUD.test_soft_delete_id_should_exists",
+        "type_comments": [
+            "(flask_sqlalchemy.model.DefaultMeta, flask_sqlalchemy.SQLAlchemy) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 69,
+        "func_name": "TestSqlaCRUD.test_hard_delete_id_never_exists",
+        "type_comments": [
+            "(flask_sqlalchemy.model.DefaultMeta, flask_sqlalchemy.SQLAlchemy) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 80,
+        "func_name": "TestSqlaCRUD.test_errors",
+        "type_comments": [
+            "(flask_sqlalchemy.model.DefaultMeta) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 96,
+        "func_name": "TestUpdateBySchema.do_init_update_by_schema",
+        "type_comments": [
+            "() -> tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable"
+        ],
+        "samples": 11
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 102,
+        "func_name": "TestUpdateBySchema.create_item_and_schema",
+        "type_comments": [
+            "(Tuple[str]) -> None",
+            "(None) -> None",
+            "(Tuple[]) -> None"
+        ],
+        "samples": 11
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 108,
+        "func_name": "TestUpdateBySchema.teardown_method",
+        "type_comments": [
+            "(method) -> None"
+        ],
+        "samples": 11
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 112,
+        "func_name": "TestUpdateBySchema.test_normal_schema_should_update_successfully",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 118,
+        "func_name": "TestUpdateBySchema.test_no_keys_in_schema_should_update_nothing",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 124,
+        "func_name": "TestUpdateBySchema.test_blacked_keys_in_schema_should_update_nothing",
+        "type_comments": [
+            "(str) -> None"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 136,
+        "func_name": "TestUpdateBySchema.test_temp_instance_should_not_be_saved",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 142,
+        "func_name": "TestUpdateBySchema.test_temp_instance_should_not_in_session",
+        "type_comments": [
+            "(flask_sqlalchemy.SQLAlchemy) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 150,
+        "func_name": "TestUpdateBySchema.test_temp_instance_should_be_flushed",
+        "type_comments": [
+            "(flask_sqlalchemy.SQLAlchemy) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 159,
+        "func_name": "TestUpdateBySchema.test_temp_instance_should_be_commited",
+        "type_comments": [
+            "(flask_sqlalchemy.SQLAlchemy) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 168,
+        "func_name": "TestUpdateBySchema.test_temp_instance_should_be_flushed_after_query",
+        "type_comments": [
+            "(flask_sqlalchemy.SQLAlchemy) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 190,
+        "func_name": "children_lst",
+        "type_comments": [
+            "() -> List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 196,
+        "func_name": "origin_a_children_lst",
+        "type_comments": [
+            "(List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]) -> List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 200,
+        "func_name": "origin_b_children_lst",
+        "type_comments": [
+            "(List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]) -> List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 204,
+        "func_name": "modified_a_children_lst",
+        "type_comments": [
+            "(List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]) -> List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 208,
+        "func_name": "a_children_lst_after_b_modified",
+        "type_comments": [
+            "(List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]) -> List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 212,
+        "func_name": "parent_a",
+        "type_comments": [
+            "(List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]) -> tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 217,
+        "func_name": "TestComplexParentChildrenUpdateBySchema.test_complex_update_by_ma",
+        "type_comments": [
+            "(tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable, List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_mixin.py",
+        "line": 234,
+        "func_name": "TestComplexParentChildrenUpdateBySchema.test_created_new_instance_after_update_by_ma",
+        "type_comments": [
+            "(tests.extensions.sqla.conftest:TestParentTable.<locals>.TestParentTable, List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable], List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_plugin.py",
+        "line": 24,
+        "func_name": "TestSASql.test_sql_could_run",
+        "type_comments": [
+            "(str, int) -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/extensions/sqla/test_plugin.py",
+        "line": 30,
+        "func_name": "TestSASql.test_raw_sql_should_rendered",
+        "type_comments": [
+            "(str) -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/extensions/sqla/test_plugin.py",
+        "line": 35,
+        "func_name": "TestSASql.test_table_should_rendered",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_plugin.py",
+        "line": 40,
+        "func_name": "TestSASql.test_debug_should_rendered",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_plugin.py",
+        "line": 47,
+        "func_name": "TestSASql._get_debug",
+        "type_comments": [
+            "() -> str"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/extensions/sqla/test_plugin.py",
+        "line": 62,
+        "func_name": "TestSAPlugin.test_general_function",
+        "type_comments": [
+            "(function, str, str) -> None"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "tests/extensions/sqla/test_plugin.py",
+        "line": 159,
+        "func_name": "TestSAPlugin.test_query_could_run",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_plugin.py",
+        "line": 255,
+        "func_name": "TestSAPlugin._get_debug",
+        "type_comments": [
+            "() -> str"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 10,
+        "func_name": "temp_item_generator",
+        "type_comments": [
+            "() -> function"
+        ],
+        "samples": 16
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 12,
+        "func_name": "temp_item_generator_func",
+        "type_comments": [
+            "() -> List[tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable]",
+            "() -> List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]"
+        ],
+        "samples": 22
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 25,
+        "func_name": "crud_items",
+        "type_comments": [
+            "(function) -> List[tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable]"
+        ],
+        "samples": 16
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 29,
+        "func_name": "child_items",
+        "type_comments": [
+            "(function) -> List[tests.extensions.sqla.conftest:TestChildTable.<locals>.TestChildTable]"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 37,
+        "func_name": "TestBaseQuery.test_soft_delete",
+        "type_comments": [
+            "(List[tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 55,
+        "func_name": "TestBaseQuery.test_filter_like_by",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 60,
+        "func_name": "TestBaseQuery.test_surrogatepk_keys",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 64,
+        "func_name": "TestBaseQuery.test_surrogatepk_defaults",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 78,
+        "func_name": "TestBaseRUDByID.test_base_read_by_id",
+        "type_comments": [
+            "(List[tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 83,
+        "func_name": "TestBaseRUDByID.test_base_delete_by_id",
+        "type_comments": [
+            "(List[tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 90,
+        "func_name": "TestBaseRUDByID.test_base_delete_by_idlst",
+        "type_comments": [
+            "(List[tests.extensions.sqla.conftest:TestCRUDTable.<locals>.TestCRUDTable]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/sqla/test_sqla.py",
+        "line": 99,
+        "func_name": "TestBaseRUDByID.test_base_update_by_id",
+        "type_comments": [
+            "(flask_sqlalchemy.SQLAlchemy) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/extensions/storage/test_captcha.py",
+        "line": 7,
+        "func_name": "TestCapture.test_save_restore_capture",
+        "type_comments": [
+            "(str) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/extensions/storage/test_captcha.py",
+        "line": 14,
+        "func_name": "TestCapture.test_empty",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/auth/conftest.py",
+        "line": 16,
+        "func_name": "patch_code",
+        "type_comments": [
+            "(_pytest.monkeypatch.MonkeyPatch) -> None"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/modules/auth/conftest.py",
+        "line": 20,
+        "func_name": "fake_code",
+        "type_comments": [
+            "(str) -> None",
+            "(str) -> bytes"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/modules/auth/conftest.py",
+        "line": 35,
+        "func_name": "fake_send",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/auth/conftest.py",
+        "line": 39,
+        "func_name": "patched_mail",
+        "type_comments": [
+            "(_pytest.monkeypatch.MonkeyPatch) -> None"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "tests/modules/auth/conftest.py",
+        "line": 46,
+        "func_name": "expired_token_headers",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User) -> Tuple[Tuple[str, str]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/auth/resources/test_auth.py",
+        "line": 23,
+        "func_name": "TestLogin.test_user_login_captcha",
+        "type_comments": [
+            "(str, int, str) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/modules/auth/resources/test_auth.py",
+        "line": 39,
+        "func_name": "TestLogin.test_user_login_status",
+        "type_comments": [
+            "(str, str, bool, int) -> None"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "tests/modules/auth/resources/test_auth.py",
+        "line": 63,
+        "func_name": "TestLogin.test_user_expired_login",
+        "type_comments": [
+            "(Tuple[Tuple[str, str]]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/auth/resources/test_auth.py",
+        "line": 71,
+        "func_name": "TestConfirm.test_user_confirm",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/auth/resources/test_auth.py",
+        "line": 85,
+        "func_name": "TestConfirm.test_login_jwt_cannot_use_at_confirm",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/auth/resources/test_auth.py",
+        "line": 102,
+        "func_name": "TestForgetPasswd.test_user_forget_password_access",
+        "type_comments": [
+            "(str, int) -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/modules/auth/resources/test_auth.py",
+        "line": 112,
+        "func_name": "TestForgetPasswd.test_reset_passwd_pre_get",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/auth/resources/test_auth.py",
+        "line": 118,
+        "func_name": "TestForgetPasswd.test_passwd_must_be_the_same",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/auth/resources/test_auth.py",
+        "line": 128,
+        "func_name": "TestForgetPasswd.test_passwdurl_only_disabled",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/auth/resources/test_auth.py",
+        "line": 132,
+        "func_name": "TestForgetPasswd.test_user_refresh_token",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/email_templates/conftest.py",
+        "line": 8,
+        "func_name": "email_template_items",
+        "type_comments": [
+            "(function) -> Iterator[Tuple[smorest_sfs.modules.email_templates.models.EmailTemplate, smorest_sfs.modules.email_templates.models.EmailTemplate, smorest_sfs.modules.email_templates.models.EmailTemplate]]",
+            "(function) -> Iterator"
+        ],
+        "samples": 12
+    },
+    {
+        "path": "tests/modules/email_templates/resources/test_general_access.py",
+        "line": 12,
+        "func_name": "TestGeneralAccess.test_unauthorized_access",
+        "type_comments": [
+            "(str, str, Dict) -> None",
+            "(str, str, Dict[str, int]) -> None"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/modules/email_templates/resources/test_general_access.py",
+        "line": 30,
+        "func_name": "TestGeneralAccess.test_forbbden_access",
+        "type_comments": [
+            "(str, str, Dict) -> None",
+            "(str, str, Dict[str, int]) -> None"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/modules/email_templates/resources/test_get_requests.py",
+        "line": 15,
+        "func_name": "TestListView.test_get_options",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/email_templates/resources/test_get_requests.py",
+        "line": 18,
+        "func_name": "TestListView.test_get_list",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/email_templates/resources/test_get_requests.py",
+        "line": 22,
+        "func_name": "TestListView.test_get_item",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/email_templates/resources/test_modify_requests.py",
+        "line": 28,
+        "func_name": "TestEmailTemplateModify.test_add",
+        "type_comments": [
+            "(Dict[str, str]) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/modules/email_templates/resources/test_modify_requests.py",
+        "line": 35,
+        "func_name": "TestEmailTemplateModify.test_delete",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/email_templates/resources/test_modify_requests.py",
+        "line": 38,
+        "func_name": "TestEmailTemplateModify.test_item_modify",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/email_templates/resources/test_modify_requests.py",
+        "line": 43,
+        "func_name": "TestEmailTemplateModify.test_item_delete",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/email_templates/test_models.py",
+        "line": 6,
+        "func_name": "test_get_template",
+        "type_comments": [
+            "(smorest_sfs.extensions.flask.Flask) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/projects/conftest.py",
+        "line": 8,
+        "func_name": "project_items",
+        "type_comments": [
+            "(function) -> Iterator[Tuple[smorest_sfs.modules.projects.models.Project, smorest_sfs.modules.projects.models.Project, smorest_sfs.modules.projects.models.Project]]",
+            "(function) -> Iterator"
+        ],
+        "samples": 18
+    },
+    {
+        "path": "tests/modules/projects/resources/test_general_access.py",
+        "line": 12,
+        "func_name": "TestGeneralAccess.test_unauthorized_access",
+        "type_comments": [
+            "(str, str, Dict) -> None",
+            "(str, str, Dict[str, int]) -> None"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/modules/projects/resources/test_general_access.py",
+        "line": 30,
+        "func_name": "TestGeneralAccess.test_forbbden_access",
+        "type_comments": [
+            "(str, str, Dict) -> None",
+            "(str, str, Dict[str, int]) -> None"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/modules/projects/resources/test_get_requests.py",
+        "line": 15,
+        "func_name": "TestListView.test_get_options",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/projects/resources/test_get_requests.py",
+        "line": 18,
+        "func_name": "TestListView.test_get_list",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/projects/resources/test_get_requests.py",
+        "line": 22,
+        "func_name": "TestListView.test_get_item",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/projects/resources/test_modify_requests.py",
+        "line": 21,
+        "func_name": "TestProjectModify.test_add",
+        "type_comments": [
+            "(Dict[str, str]) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/modules/projects/resources/test_modify_requests.py",
+        "line": 26,
+        "func_name": "TestProjectModify.test_delete",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/projects/resources/test_modify_requests.py",
+        "line": 29,
+        "func_name": "TestProjectModify.test_item_modify",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/projects/resources/test_modify_requests.py",
+        "line": 33,
+        "func_name": "TestProjectModify.test_item_delete",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/projects/test_models.py",
+        "line": 7,
+        "func_name": "test_project",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/roles/conftest.py",
+        "line": 12,
+        "func_name": "test_role",
+        "type_comments": [
+            "(function) -> Iterator[smorest_sfs.modules.roles.models.Role]",
+            "(function) -> Iterator"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/modules/roles/conftest.py",
+        "line": 19,
+        "func_name": "test_permission",
+        "type_comments": [
+            "(function) -> Iterator[smorest_sfs.modules.roles.models.Permission]",
+            "(function) -> Iterator"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/modules/roles/conftest.py",
+        "line": 26,
+        "func_name": "test_role_with_permission",
+        "type_comments": [
+            "(smorest_sfs.modules.roles.models.Role, smorest_sfs.modules.roles.models.Permission) -> smorest_sfs.modules.roles.models.Role"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/roles/conftest.py",
+        "line": 31,
+        "func_name": "permissions",
+        "type_comments": [
+            "() -> List[Dict[str, Union[int, str]]]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/modules/roles/conftest.py",
+        "line": 40,
+        "func_name": "update_permissions",
+        "type_comments": [
+            "() -> List[Dict[str, Union[int, str]]]"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/roles/conftest.py",
+        "line": 51,
+        "func_name": "role_items",
+        "type_comments": [
+            "(function) -> Iterator[Tuple[smorest_sfs.modules.roles.models.Role, smorest_sfs.modules.roles.models.Role, smorest_sfs.modules.roles.models.Role]]",
+            "(function) -> Iterator"
+        ],
+        "samples": 12
+    },
+    {
+        "path": "tests/modules/roles/resources/test_general_access.py",
+        "line": 12,
+        "func_name": "TestGeneralAccess.test_unauthorized_access",
+        "type_comments": [
+            "(str, str, Dict) -> None",
+            "(str, str, Dict[str, int]) -> None"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/modules/roles/resources/test_general_access.py",
+        "line": 30,
+        "func_name": "TestGeneralAccess.test_forbbden_access",
+        "type_comments": [
+            "(str, str, Dict) -> None",
+            "(str, str, Dict[str, int]) -> None"
+        ],
+        "samples": 7
+    },
+    {
+        "path": "tests/modules/roles/resources/test_get_requests.py",
+        "line": 15,
+        "func_name": "TestListView.test_get_options",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/roles/resources/test_get_requests.py",
+        "line": 18,
+        "func_name": "TestListView.test_get_list",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/roles/resources/test_get_requests.py",
+        "line": 28,
+        "func_name": "TestListView.test_get_item",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/roles/resources/test_modify_requests.py",
+        "line": 29,
+        "func_name": "TestRoleModify.test_add",
+        "type_comments": [
+            "(Dict[str, str], List[Dict[str, Union[int, str]]]) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/modules/roles/resources/test_modify_requests.py",
+        "line": 37,
+        "func_name": "TestRoleModify.test_delete",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/roles/resources/test_modify_requests.py",
+        "line": 40,
+        "func_name": "TestRoleModify.test_item_modify",
+        "type_comments": [
+            "(List[Dict[str, Union[int, str]]]) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/roles/resources/test_modify_requests.py",
+        "line": 52,
+        "func_name": "TestRoleModify.test_item_delete",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/roles/test_models.py",
+        "line": 10,
+        "func_name": "test_get_template",
+        "type_comments": [
+            "(bool, str) -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/modules/roles/test_models.py",
+        "line": 18,
+        "func_name": "test_add_permissions",
+        "type_comments": [
+            "(smorest_sfs.modules.roles.models.Role) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/storages/conftest.py",
+        "line": 13,
+        "func_name": "store",
+        "type_comments": [
+            "() -> werkzeug.datastructures.FileStorage"
+        ],
+        "samples": 8
+    },
+    {
+        "path": "tests/modules/storages/conftest.py",
+        "line": 18,
+        "func_name": "storage",
+        "type_comments": [
+            "(werkzeug.datastructures.FileStorage) -> smorest_sfs.modules.storages.models.Storages"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "tests/modules/storages/conftest.py",
+        "line": 23,
+        "func_name": "next_store",
+        "type_comments": [
+            "() -> werkzeug.datastructures.FileStorage"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "tests/modules/storages/conftest.py",
+        "line": 28,
+        "func_name": "add_storage",
+        "type_comments": [
+            "(werkzeug.datastructures.FileStorage) -> smorest_sfs.modules.storages.models.Storages"
+        ],
+        "samples": 4
+    },
+    {
+        "path": "tests/modules/storages/resources/test_general_access.py",
+        "line": 13,
+        "func_name": "TestGeneralAccess.test_unauthorized_access",
+        "type_comments": [
+            "(str, str, Dict[str, int]) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/modules/storages/resources/test_general_access.py",
+        "line": 27,
+        "func_name": "TestGeneralAccess.test_forbbden_access",
+        "type_comments": [
+            "(str, str, Dict[str, int]) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/modules/storages/resources/test_storages.py",
+        "line": 20,
+        "func_name": "TestStoragesView.test_get",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User, smorest_sfs.modules.storages.models.Storages) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/storages/resources/test_storages.py",
+        "line": 25,
+        "func_name": "TestStoragesView.test_put",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User, smorest_sfs.modules.storages.models.Storages) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/storages/resources/test_storages.py",
+        "line": 37,
+        "func_name": "TestStoragesView.test_delete",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User, smorest_sfs.modules.storages.models.Storages) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/storages/resources/test_storages.py",
+        "line": 48,
+        "func_name": "TestForceDeleteView.test_force_delete",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User, smorest_sfs.modules.storages.models.Storages) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/storages/resources/test_storages.py",
+        "line": 61,
+        "func_name": "TestUploadView.test_post",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/storages/test_models.py",
+        "line": 13,
+        "func_name": "TestStorage.test_model_save",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/storages/test_models.py",
+        "line": 19,
+        "func_name": "TestStorage.test_model_load",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/storages/test_models.py",
+        "line": 27,
+        "func_name": "TestStorage.test_model_update",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/storages/test_models.py",
+        "line": 35,
+        "func_name": "TestStorage.test_model_delete",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/test_load_module.py",
+        "line": 13,
+        "func_name": "test_invaild_module_loads",
+        "type_comments": [
+            "(_pytest.monkeypatch.MonkeyPatch) -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/users/resources/test_general_access.py",
+        "line": 12,
+        "func_name": "TestGeneralAccess.test_unauthorized_access",
+        "type_comments": [
+            "(str, str, Dict) -> None",
+            "(str, str, Dict[str, int]) -> None"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "tests/modules/users/resources/test_general_access.py",
+        "line": 29,
+        "func_name": "TestGeneralAccess.test_forbbden_access",
+        "type_comments": [
+            "(str, str, Dict) -> None",
+            "(str, str, Dict[str, int]) -> None"
+        ],
+        "samples": 6
+    },
+    {
+        "path": "tests/modules/users/resources/test_get_requests.py",
+        "line": 18,
+        "func_name": "TestListView.test_get_options",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/users/resources/test_get_requests.py",
+        "line": 21,
+        "func_name": "TestListView.test_get_list",
+        "type_comments": [
+            "(str) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/modules/users/resources/test_get_requests.py",
+        "line": 32,
+        "func_name": "TestListView.test_get_userinfo",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/users/resources/test_get_requests.py",
+        "line": 39,
+        "func_name": "TestListView.test_get_item",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/users/resources/test_modify_requests.py",
+        "line": 34,
+        "func_name": "inject_roles",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 5
+    },
+    {
+        "path": "tests/modules/users/resources/test_modify_requests.py",
+        "line": 45,
+        "func_name": "TestGeneralModify._get_data",
+        "type_comments": [
+            "() -> Dict[str, Optional[str]]"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/modules/users/resources/test_modify_requests.py",
+        "line": 50,
+        "func_name": "TestGeneralModify.test_delete",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/users/resources/test_modify_requests.py",
+        "line": 64,
+        "func_name": "TestGeneralModify.test_register",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/users/resources/test_modify_requests.py",
+        "line": 76,
+        "func_name": "TestGeneralModify.test_modify_userinfo",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/users/resources/test_modify_requests.py",
+        "line": 92,
+        "func_name": "TestGeneralModify.test_item_modify",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/users/resources/test_modify_requests.py",
+        "line": 115,
+        "func_name": "TestGeneralModify.test_item_delete",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/modules/users/test_models.py",
+        "line": 9,
+        "func_name": "test_get_by_unique",
+        "type_comments": [
+            "(smorest_sfs.modules.users.models.User, str) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/modules/users/test_models.py",
+        "line": 19,
+        "func_name": "TestUserInfo.test_userinfo_sex",
+        "type_comments": [
+            "(None, str) -> None",
+            "(int, str) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/modules/users/test_models.py",
+        "line": 24,
+        "func_name": "TestUserInfo.test_userinfo_nickname",
+        "type_comments": [
+            "(str, str, str) -> None",
+            "(None, str, str) -> None",
+            "(str, None, str) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/test_create_app.py",
+        "line": 14,
+        "func_name": "test_create_app",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/test_create_app.py",
+        "line": 18,
+        "func_name": "test_create_app_passing_config_name",
+        "type_comments": [
+            "(str) -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/test_create_app.py",
+        "line": 23,
+        "func_name": "test_create_app_passing_FLASK_ENV_env",
+        "type_comments": [
+            "(_pytest.monkeypatch.MonkeyPatch, str) -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/test_create_app.py",
+        "line": 29,
+        "func_name": "test_create_app_with_non_existing_config",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/test_create_app.py",
+        "line": 34,
+        "func_name": "test_create_app_with_broken_config",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/test_smorest_sfs.py",
+        "line": 4,
+        "func_name": "test_version",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/utils/test_datetime.py",
+        "line": 15,
+        "func_name": "test_utcnow",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/utils/test_datetime.py",
+        "line": 22,
+        "func_name": "test_utctoday",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/utils/test_datetime.py",
+        "line": 29,
+        "func_name": "test_convert_timezone_for_pendulum",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/utils/test_path.py",
+        "line": 19,
+        "func_name": "TestProjectPath.test_project_path",
+        "type_comments": [
+            "(str) -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/utils/test_path.py",
+        "line": 28,
+        "func_name": "test_uploads_subdir",
+        "type_comments": [
+            "(str, bool, List[str]) -> None",
+            "(str, bool, List) -> None"
+        ],
+        "samples": 2
+    },
+    {
+        "path": "tests/utils/test_path.py",
+        "line": 38,
+        "func_name": "test_make_uploaded_path",
+        "type_comments": [
+            "(str) -> None"
+        ],
+        "samples": 3
+    },
+    {
+        "path": "tests/utils/test_path.py",
+        "line": 50,
+        "func_name": "test_white_lst",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/utils/test_storages.py",
+        "line": 16,
+        "func_name": "test_read_storage_after_saved",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/utils/test_storages.py",
+        "line": 27,
+        "func_name": "test_load_storage_after_saved",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    },
+    {
+        "path": "tests/utils/test_storages.py",
+        "line": 39,
+        "func_name": "test_load_storage_after_deleted",
+        "type_comments": [
+            "() -> None"
+        ],
+        "samples": 1
+    }
+]

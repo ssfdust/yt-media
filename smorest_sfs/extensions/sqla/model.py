@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-    app.extensions.sqla.model
+    smorest_sfs.extensions.sqla.model
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
     自定义Model模块
 """

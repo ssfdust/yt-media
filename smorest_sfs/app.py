@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
     smorest_sfs.app
     ~~~~~~~~~~~~~~~~~~~~~~

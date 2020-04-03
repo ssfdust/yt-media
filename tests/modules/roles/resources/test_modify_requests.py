@@ -26,10 +26,7 @@ class TestRoleModify(GeneralModify):
         "role_items",
     )
 
-    @pytest.mark.parametrize(
-        "json",
-        param_helper(name="role", description="desc")
-    )
+    @pytest.mark.parametrize("json", param_helper(name="role", description="desc"))
     def test_add(self, json, permissions):
         json["permissions"] = permissions
         data = self._add_request(json)

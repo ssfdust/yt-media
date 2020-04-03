@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-    app.modules.projects
+    smorest_sfs.modules.projects
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     项目模块
 """

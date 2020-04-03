@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-文件Mixin处理模块
+    smorest_sfs.modules.storages.mixin
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    文件Mixin处理模块
 """
-from typing import Optional, IO
+from typing import IO, Optional
 
 from smorest_sfs.extensions import db
 from smorest_sfs.utils.storages import (FileStorage, load_storage_from_path,
@@ -15,6 +17,7 @@ class StoragesMixin:
 
     支持文件读写以及流操作
     """
+
     filename: str
     name = db.Column(db.String(256), nullable=True, doc="文件名")
     filetype = db.Column(db.String(256), nullable=True, doc="文件类型", default="")
@@ -35,7 +38,7 @@ class StoragesMixin:
         self._store = val
 
     def as_stream(self) -> IO[bytes]:
-        """文件流形式返回"""
+        # pylint: disable=C0116
         if self._store is not None:
             self._store.stream.seek(0)
             return self._store.stream

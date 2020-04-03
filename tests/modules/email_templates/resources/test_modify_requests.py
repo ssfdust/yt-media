@@ -26,8 +26,7 @@ class TestEmailTemplateModify(GeneralModify):
     schema = EmailTemplateSchema
 
     @pytest.mark.parametrize(
-        "data",
-        param_helper(name="email_template", template="test123")
+        "data", param_helper(name="email_template", template="test123")
     )
     def test_add(self, data):
         data = self._add_request(data)

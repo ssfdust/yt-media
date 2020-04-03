@@ -2,21 +2,20 @@
     sa模块
 """
 from typing import Any, Union
+from sqlalchemy import select
 
 from smorest_sfs.extensions import db
 
-from .query import SAQuery, query_decorator
-from .statement import SAStatement, sql_decorator
-
-__all__ = ["SAStatement", "SAQuery", "sql_decorator", "query_decorator"]
+from .query import SAQuery
+from .statement import SAStatement
 
 
-def _execute_sql(sa_sql):
+def _execute_sql(sa_sql: select) -> Any:
     cursor = db.session.execute(sa_sql)
     return cursor.fetchall()
 
 
-def _execute_sa(sql: SAStatement):
+def _execute_sa(sql: SAStatement) -> Any:
     sa_sql = sql.get_sa_sql()
     return _execute_sql(sa_sql)
 

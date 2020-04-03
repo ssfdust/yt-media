@@ -1,21 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Copyright 2019 RedLotus <ssfdust@gmail.com>
-# Author: RedLotus <ssfdust@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 """
-    app.extensions.sqla.mixin
+    smorest_sfs.extensions.sqla.mixin
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     CRUD Mixin模块
@@ -95,14 +79,14 @@ class UByMaMixin:
         return self.save(commit) if commit else self
 
     @staticmethod
-    def _get_loadable_fileds(schema) -> List[str]:
+    def _get_loadable_fileds(schema: Schema) -> List[str]:
         return [
             k
             for k, v in schema.fields.items()
             if not v.dump_only and k not in BLACK_LIST
         ]
 
-    def _setattr_from_instance(self, fields: List[str], instance: db.Model):
+    def _setattr_from_instance(self, fields: List[str], instance: db.Model) -> None:
         with db.session.no_autoflush:
             for field in fields:
                 set_attribute(self, field, get_attribute(instance, field))
@@ -116,7 +100,7 @@ class CRUDMixin(UByMaMixin):
     def create(cls, **kwargs: Any) -> db.Model:
         """新建一条数据 """
         commit = kwargs.get("commit", True)
-        instance = cls(**kwargs)
+        instance = cls(**kwargs)  # type: ignore
         return instance.save(commit)
 
     def update(self, commit: bool = True, **kwargs: Any) -> db.Model:
