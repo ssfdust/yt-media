@@ -23,12 +23,12 @@ class TestProjectModify(GeneralModify):
         data = self._add_request(data)
         assert data.keys() > {"id", "name"}
 
-    def test_delete(self):
+    def test_delete(self) -> None:
         self._delete_request()
 
-    def test_item_modify(self):
+    def test_item_modify(self) -> None:
         data = self._item_modify_request(json={"name": "tt"})
         assert data["name"] == "tt"
 
-    def test_item_delete(self):
+    def test_item_delete(self) -> None:
         self._item_delete_request()

@@ -68,7 +68,7 @@ class TestLogin(TestAuthHelper):
 
 
 class TestConfirm(TestAuthHelper):
-    def test_user_confirm(self):
+    def test_user_confirm(self) -> None:
         self.regular_user.update(confirmed_at=None)
         token = generate_confirm_token(self.regular_user, "confirm")
         resp = self.flask_app_client.get("/api/v1/auth/confirm?token={}".format(token))
@@ -82,7 +82,7 @@ class TestConfirm(TestAuthHelper):
             and after_resp.status_code == 401
         )
 
-    def test_login_jwt_cannot_use_at_confirm(self):
+    def test_login_jwt_cannot_use_at_confirm(self) -> None:
         token = login_user(self.regular_user)["tokens"]["access_token"]
         resp = self.flask_app_client.get("/api/v1/auth/confirm?token={}".format(token))
         assert resp.status_code == 403
@@ -115,7 +115,7 @@ class TestForgetPasswd(TestAuthHelper):
         resp = self.flask_app_client.get(TempStore.value)
         assert resp.status_code == 200
 
-    def test_passwd_must_be_the_same(self):
+    def test_passwd_must_be_the_same(self) -> None:
         resp = self.flask_app_client.put(
             TempStore.value, json={"password": "1234567", "confirm_password": "123456"}
         )
@@ -125,11 +125,11 @@ class TestForgetPasswd(TestAuthHelper):
         assert resp.status_code == 501
         assert self.forget_passwd_user.password == "123456"
 
-    def test_passwdurl_only_disabled(self):
+    def test_passwdurl_only_disabled(self) -> None:
         resp = self.flask_app_client.get(TempStore.value)
         assert resp.status_code == 401
 
-    def test_user_refresh_token(self):
+    def test_user_refresh_token(self) -> None:
         refresh_token = login_user(self.regular_user)["tokens"]["refresh_token"]
         headers = {"Authorization": "Bearer {}".format(refresh_token)}
         resp = self.flask_app_client.post("/api/v1/auth/refresh", headers=headers)

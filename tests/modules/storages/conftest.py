@@ -11,21 +11,21 @@ from smorest_sfs.services.storages.handlers import StorageFactory
 
 
 @pytest.fixture
-def store():
+def store() -> FileStorage:
     return FileStorage(io.BytesIO(b"abc"), "test.txt", "file", "text/txt")
 
 
 @pytest.fixture
-def storage(store):
+def storage(store: FileStorage) -> Storages:
     return Storages(name="test.txt", storetype="foo", store=store)
 
 
 @pytest.fixture
-def next_store():
+def next_store() -> FileStorage:
     return FileStorage(io.BytesIO(b"efg"), "test.txt", "file", "text/txt")
 
 
 @pytest.fixture
-def add_storage(store):
+def add_storage(store: FileStorage) -> Storages:
     factory = StorageFactory(Storages(name="test.txt", storetype="foo", store=store))
     return factory.save()

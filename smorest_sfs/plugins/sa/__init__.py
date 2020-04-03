@@ -20,7 +20,7 @@ def _execute_sa(sql: SAStatement) -> Any:
     return _execute_sql(sa_sql)
 
 
-def _execute_query(query: SAQuery):
+def _execute_query(query: SAQuery) -> Any:
     return query.get_record()
 
 
@@ -34,13 +34,13 @@ def execute(sql_cls: Union[SAStatement, SAQuery], *args: Any, **kwargs: Any) -> 
     return ret
 
 
-def debug_sql(sql_cls: Union[SAStatement, SAQuery], *args: Any, **kwargs: Any):
+def debug_sql(sql_cls: Union[SAStatement, SAQuery], *args: Any, **kwargs: Any) -> None:
     sql = sql_cls(*args, **kwargs)
     sql.debug_sql()
 
 
 def render_limit_results(
     sql_cls: Union[SAStatement, SAQuery], *args: Any, **kwargs: Any
-):
+) -> None:
     sql = sql_cls(*args, **kwargs)
     sql.render_results()

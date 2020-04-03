@@ -29,6 +29,7 @@ from smorest_sfs.modules.auth.decorators import (
 from smorest_sfs.services.users import create_user
 
 from . import blp, models, schemas
+from werkzeug.local import LocalProxy
 
 
 @blp.route("/options")
@@ -146,7 +147,7 @@ class UserSelfView(MethodView):
     @doc_login_required
     @role_required(ROLES.User)
     @blp.response(schemas.UserItemSchema, description="用户信息")
-    def get(self):
+    def get(self) -> Dict[str, LocalProxy]:
         """
         获取用户自己的信息
         """

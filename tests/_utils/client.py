@@ -63,7 +63,7 @@ class AutoAuthFlaskClient(FlaskClient):
         self._user.save()
         self._user = None
 
-    def open(self, *args, **kwargs):
+    def open(self, *args: str, **kwargs: Any) -> JSONResponse:
         if self._access_token is not None:
             kwargs = self._combine_headers(**kwargs)
 

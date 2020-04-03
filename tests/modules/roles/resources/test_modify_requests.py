@@ -7,6 +7,8 @@ from smorest_sfs.modules.roles.models import ROLES, Role
 from smorest_sfs.modules.roles.schemas import RoleSchema
 from tests._utils.injection import GeneralModify
 from tests._utils.helpers import param_helper
+from typing import Any
+from typing import List
 
 
 class TestRoleModify(GeneralModify):
@@ -34,10 +36,10 @@ class TestRoleModify(GeneralModify):
             0
         ].keys() == {"id", "name"}
 
-    def test_delete(self):
+    def test_delete(self) -> None:
         self._delete_request()
 
-    def test_item_modify(self, update_permissions):
+    def test_item_modify(self, update_permissions: List[Dict[str, Any]]) -> None:
         json = self._get_dumped_modified_item()
         json.update(
             {"name": "tt", "description": "qaqa", "permissions": update_permissions,}
@@ -49,5 +51,5 @@ class TestRoleModify(GeneralModify):
             and data["permissions"] == update_permissions
         )
 
-    def test_item_delete(self):
+    def test_item_delete(self) -> None:
         self._item_delete_request()

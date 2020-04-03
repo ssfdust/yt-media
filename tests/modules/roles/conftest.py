@@ -7,6 +7,12 @@ from typing import Callable
 import pytest
 from smorest_sfs.modules.auth import PERMISSIONS
 from smorest_sfs.modules.roles.models import Permission, Role
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Iterator
+from typing import Tuple
+from typing import Union
 
 
 @pytest.fixture
@@ -30,7 +36,7 @@ def test_role_with_permission(test_role: Role, test_permission: Permission) -> R
 
 @pytest.fixture
 @pytest.mark.usefixtures("flask_app")
-def permissions():
+def permissions() -> List[Dict[str, Any]]:
     return [
         {"id": p.id, "name": p.name}
         for p in Permission.get_by_names(PERMISSIONS.RoleAdd, PERMISSIONS.RoleQuery)
@@ -39,7 +45,7 @@ def permissions():
 
 @pytest.fixture
 @pytest.mark.usefixtures("flask_app")
-def update_permissions():
+def update_permissions() -> List[Dict[str, Any]]:
     return [
         {"id": p.id, "name": p.name}
         for p in Permission.get_by_names(
@@ -50,6 +56,8 @@ def update_permissions():
 
 @pytest.fixture
 @pytest.mark.usefixtures("flask_app")
-def role_items(temp_db_instance_helper):
+def role_items(
+    temp_db_instance_helper: Callable,
+) -> Iterator[Union[Iterator, Iterator[Tuple[Role, Role, Role]]]]:
     for _ in temp_db_instance_helper(Role(name="1"), Role(name="2"), Role(name="3")):
         yield _

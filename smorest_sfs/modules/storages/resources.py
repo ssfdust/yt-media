@@ -18,6 +18,7 @@ from smorest_sfs.services.storages.handlers import StorageFactory
 from smorest_sfs.utils.storages import FileStorage, Response, make_response_from_store
 
 from . import blp, models, schemas
+from typing import Any
 
 
 @blp.route("/<int:file_id>")
@@ -74,7 +75,7 @@ class ForceDeleteView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.FileForceDelete)
     @blp.response(BaseMsgSchema)
-    def delete(self, file_id):
+    def delete(self, file_id: int) -> Dict[str, Any]:
         """永久删除文件"""
         storage = models.Storages.get_by_id(file_id)
         factory = StorageFactory(storage)

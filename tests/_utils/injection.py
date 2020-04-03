@@ -9,19 +9,31 @@ import pytest
 from smorest_sfs.extensions.sqla import Model
 
 from .uniqueue import UniqueQueue
+from _pytest.fixtures import SubRequest
+from smorest_sfs.modules.email_templates.models import EmailTemplate
+from smorest_sfs.modules.email_templates.schemas import EmailTemplateSchema
+from smorest_sfs.modules.projects.models import Project
+from smorest_sfs.modules.projects.schemas import ProjectSchema
+from smorest_sfs.modules.roles.models import Role
+from smorest_sfs.modules.roles.schemas import RoleSchema
+from typing import Any
+from typing import Dict
+from tests._utils.client import JSONResponse
+from loguru._handler import Message
+from loguru._logger import Logger
 
 
-def log_to_queue(record):
+def log_to_queue(record: Message) -> Message:
     queue = UniqueQueue()
     queue.put(record.record["message"])
     return record
 
 
-def inject_logger(logger):
+def inject_logger(logger: Logger) -> None:
     logger.add(log_to_queue, serialize=False)
 
 
-def uninject_logger(logger):
+def uninject_logger(logger: Logger) -> None:
     logger.remove()
 
 
@@ -39,14 +51,14 @@ class FixturesInjectBase:
     fixture_names: Union[Tuple[str], Tuple] = ()
 
     @pytest.fixture(autouse=True)
-    def auto_injector_fixture(self, request):
+    def auto_injector_fixture(self, request: SubRequest) -> None:
         names = self.fixture_names
         for name in names:
             setattr(self, name, request.getfixturevalue(name))
 
 
 class GeneralModify(FixturesInjectBase):
-    def _add_request(self, data):
+    def _add_request(self, data: Dict[str, Any]) -> Dict[str, Any]:
         with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
             with self.flask_app.test_request_context():
                 url = url_for(self.view)
@@ -59,24 +71,29 @@ class GeneralModify(FixturesInjectBase):
                 assert resp.status_code == 200 and isinstance(resp.json["data"], dict)
                 return dumped_data
 
-    def _get_deleting_items(self):
+    def _get_deleting_items(self) -> Tuple[Union[EmailTemplate, Project, Role]]:
         items = getattr(self, self.items)
         return items[:1]
 
-    def _get_modified_item(self):
+    def _get_modified_item(self) -> Union[EmailTemplate, Project, Role]:
         items = getattr(self, self.items)
         return items[-1]
 
     @staticmethod
-    def __get_schema_dumped(schema, item):
+    def __get_schema_dumped(
+        schema: Union[EmailTemplateSchema, ProjectSchema, RoleSchema],
+        item: Union[EmailTemplate, Project, Role],
+    ) -> Dict[str, Any]:
         return schema.dump(item)
 
-    def _get_dumped_modified_item(self):
+    def _get_dumped_modified_item(self) -> Dict[str, Any]:
         item = self._get_modified_item()
         schema = self.schema()
         return self.__get_schema_dumped(schema, item)
 
-    def _delete_request(self):
+    def _delete_request(
+        self,
+    ) -> Tuple[JSONResponse, Tuple[Union[EmailTemplate, Project, Role]]]:
         with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
             with self.flask_app.test_request_context():
                 url = url_for(self.view)
@@ -94,7 +111,7 @@ class GeneralModify(FixturesInjectBase):
                 resp = client.open(url, method=method, **kwargs)
                 return resp
 
-    def _item_modify_request(self, json):
+    def _item_modify_request(self, json: Dict[str, Any]) -> Dict[str, Any]:
         resp = self.__item_modify_request("PUT", json=json)
         schema = self.schema()
         item = self._get_modified_item()
@@ -102,7 +119,9 @@ class GeneralModify(FixturesInjectBase):
         assert resp.status_code == 200
         return dumped_data
 
-    def _item_delete_request(self):
+    def _item_delete_request(
+        self,
+    ) -> Tuple[JSONResponse, Union[EmailTemplate, Project, Role]]:
         resp = self.__item_modify_request("DELETE")
         item = self._get_modified_item()
         assert resp.status_code == 200 and item.deleted
@@ -116,7 +135,7 @@ class GeneralGet(FixturesInjectBase):
                 url = url_for(endpoint, **kwargs)
                 return client.get(url)
 
-    def _get_options(self):
+    def _get_options(self) -> None:
         resp = self._get_view(self.listview)
         assert (
             resp.status_code == 200
@@ -124,12 +143,12 @@ class GeneralGet(FixturesInjectBase):
             and resp.json["data"][0].keys() == self.listkeys
         )
 
-    def _get_list(self, **kwargs):
+    def _get_list(self, **kwargs: Any) -> List[Dict[str, Any]]:
         resp = self._get_view(self.view, **kwargs)
         assert resp.status_code == 200 and isinstance(resp.json["data"], list)
         return resp.json["data"]
 
-    def _get_item(self, **kwargs):
+    def _get_item(self, **kwargs: Any) -> Dict[str, Any]:
         resp = self._get_view(self.item_view, **kwargs)
         assert resp.status_code == 200 and isinstance(resp.json["data"], dict)
         return resp.json["data"]

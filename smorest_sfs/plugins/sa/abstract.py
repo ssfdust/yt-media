@@ -14,8 +14,6 @@ from loguru import logger
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.sql.selectable import Select
 
-from smorest_sfs.extensions import db
-
 from .render import TableRender
 
 
@@ -60,5 +58,5 @@ class RenderableStatement(StatementAbstract, TableRender):
         raise NotImplementedError
 
     @abstractstaticmethod
-    def parse_records(records: List[Any]) -> Any:
+    def parse_records(records: List[Any]) -> Any:  # type: ignore
         raise NotImplementedError

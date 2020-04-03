@@ -36,6 +36,10 @@ from smorest_sfs.modules.auth import PERMISSIONS
 from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
 
 from . import blp, models, schemas
+from smorest_sfs.modules.email_templates.models import EmailTemplate
+from typing import Any
+from typing import Dict
+from typing import List
 
 
 @blp.route("/options")
@@ -43,7 +47,7 @@ class EmailTemplateListView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.EmailTemplateQuery)
     @blp.response(schemas.EmailTemplateListSchema)
-    def get(self, **kwargs):
+    def get(self, **kwargs: Any) -> Dict[str, List[EmailTemplate]]:
         # pylint: disable=unused-argument
         """
         获取所有电子邮件模板选项信息
@@ -77,7 +81,9 @@ class EmailTemplateView(MethodView):
     @permission_required(PERMISSIONS.EmailTemplateAdd)
     @blp.arguments(schemas.EmailTemplateSchema)
     @blp.response(schemas.EmailTemplateItemSchema)
-    def post(self, email_template, **kwargs):
+    def post(
+        self, email_template: EmailTemplate, **kwargs: Any
+    ) -> Dict[str, EmailTemplate]:
         # pylint: disable=unused-argument
         """
         新增电子邮件模板信息
@@ -91,7 +97,7 @@ class EmailTemplateView(MethodView):
     @permission_required(PERMISSIONS.EmailTemplateDelete)
     @blp.arguments(BaseIntListSchema, as_kwargs=False)
     @blp.response(BaseMsgSchema)
-    def delete(self, lst, **kwargs):
+    def delete(self, lst: Dict[str, List[int]], **kwargs: Any) -> None:
         # pylint: disable=unused-argument
         """
         批量删除电子邮件模板
@@ -112,7 +118,9 @@ class EmailTemplateItemView(MethodView):
     @permission_required(PERMISSIONS.EmailTemplateEdit)
     @blp.arguments(schemas.EmailTemplateSchema)
     @blp.response(schemas.EmailTemplateItemSchema)
-    def put(self, email_template, email_template_id, **kwargs):
+    def put(
+        self, email_template: EmailTemplate, email_template_id: int, **kwargs: Any
+    ) -> Dict[str, EmailTemplate]:
         # pylint: disable=unused-argument
         """
         更新电子邮件模板
@@ -128,7 +136,7 @@ class EmailTemplateItemView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.EmailTemplateDelete)
     @blp.response(BaseMsgSchema)
-    def delete(self, email_template_id, **kwargs):
+    def delete(self, email_template_id: int, **kwargs: Any) -> None:
         # pylint: disable=unused-argument
         """
         删除电子邮件模板
@@ -139,7 +147,7 @@ class EmailTemplateItemView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.EmailTemplateQuery)
     @blp.response(schemas.EmailTemplateItemSchema)
-    def get(self, email_template_id, **kwargs):
+    def get(self, email_template_id: int, **kwargs: Any) -> Dict[str, EmailTemplate]:
         # pylint: disable=unused-argument
         """
         获取单条电子邮件模板

@@ -16,7 +16,7 @@ from smorest_sfs.utils.storages import (
 @freeze_time("1994-09-11 08:20:00")
 @pytest.mark.usefixtures("patch_uuid")
 @pytest.mark.usefixtures("clean_dirs")
-def test_read_storage_after_saved():
+def test_read_storage_after_saved() -> None:
     store = FileStorage(
         io.BytesIO(b"abc"), "test.txt", "file", "application/octet-stream"
     )
@@ -27,7 +27,7 @@ def test_read_storage_after_saved():
 @freeze_time("1994-09-11 08:20:00")
 @pytest.mark.usefixtures("patch_uuid")
 @pytest.mark.usefixtures("clean_dirs")
-def test_load_storage_after_saved():
+def test_load_storage_after_saved() -> None:
     store = FileStorage(
         io.BytesIO(b"abc"), "test.txt", "file", "application/octet-stream"
     )
@@ -39,7 +39,7 @@ def test_load_storage_after_saved():
 @freeze_time("1994-09-11 08:20:00")
 @pytest.mark.usefixtures("patch_uuid")
 @pytest.mark.usefixtures("clean_dirs")
-def test_load_storage_after_deleted():
+def test_load_storage_after_deleted() -> None:
     store = FileStorage(
         io.BytesIO(b"abc"), "test.txt", "file", "application/octet-stream"
     )

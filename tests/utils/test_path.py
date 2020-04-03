@@ -13,6 +13,7 @@ from smorest_sfs.utils.paths import (
     get_relative_pathstr,
     make_uploaded_path,
 )
+from typing import List
 
 
 class TestProjectPath:
@@ -29,7 +30,9 @@ class TestUploadPath:
         "storetype, withdate, args",
         [("a", True, ["1994", "09", "11"]), ("b", False, [])],
     )
-    def test_uploads_subdir(self, storetype, withdate, args):
+    def test_uploads_subdir(
+        self, storetype: str, withdate: bool, args: List[str]
+    ) -> None:
         project_path = ProjectPath.get_project_path()
         dir_path = Path(project_path, "uploads", storetype, *args)
         assert UploadPath.get_uploads_subdir(storetype, withdate) == dir_path
@@ -39,7 +42,7 @@ class TestUploadPath:
 @pytest.mark.usefixtures("patch_uuid")
 @pytest.mark.usefixtures("clean_dirs")
 @pytest.mark.parametrize("key", ["foo", "bar", "new"])
-def test_make_uploaded_path(key):
+def test_make_uploaded_path(key: str) -> None:
     path = make_uploaded_path(key)
     pathstr = get_relative_pathstr(path)
     abs_path = ProjectPath.get_subpath_from_project(pathstr)
@@ -47,6 +50,6 @@ def test_make_uploaded_path(key):
     assert pathstr == f"uploads/{key}/1994/09/11/123456789" and path == abs_path
 
 
-def test_white_lst():
+def test_white_lst() -> None:
     for path in WHITE_LIST:
         assert os.path.exists(ProjectPath.get_subpath_from_project(path))
