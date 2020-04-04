@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-from typing import Any, Dict, NoReturn
+from typing import Any
 
 from flask import render_template_string
 from flask_mail import Message
@@ -19,13 +19,13 @@ class MailSender:
         self.msg = Message(self.subject, recipients=[to])
         self.template_str = EmailTemplate.get_template(template_name)
 
-    def send(self) -> NoReturn:
-        self.msg.html = self.template_str
+    def send(self) -> None:
+        self.msg.html = render_template_string(self.template_str, **self.content)
         mail.send(self.msg)
 
 
 class PasswdMailSender(MailSender):
-    def __init__(self, content, to: str = ""):
+    def __init__(self, content: Any, to: str = ""):
         super().__init__(
             template_name="reset-password",
             to=to,

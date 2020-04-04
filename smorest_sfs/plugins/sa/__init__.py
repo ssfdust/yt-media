@@ -1,7 +1,7 @@
 """
     sa模块
 """
-from typing import Any, Union
+from typing import Any, Union, Type
 
 from smorest_sfs.extensions import db
 
@@ -25,7 +25,7 @@ def _execute_query(query: SAQuery):
     return query.get_record()
 
 
-def execute(sql_cls: Union[SAStatement, SAQuery], *args: Any, **kwargs: Any) -> Any:
+def execute(sql_cls: Union[Type[SAStatement], Type[SAQuery]], *args: Any, **kwargs: Any) -> Any:
     sql = sql_cls(*args, **kwargs)
     if isinstance(sql, SAQuery):
         ret = _execute_query(sql)
