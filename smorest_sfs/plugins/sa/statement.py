@@ -10,7 +10,8 @@ from loguru import logger
 from sqlalchemy.sql.selectable import Select
 from sqlalchemy.engine.result import RowProxy
 
-from .abstract import RenderableStatement, db
+from .abstract import RenderableStatement
+from smorest_sfs.extensions import db
 
 
 class SAStatement(RenderableStatement):
