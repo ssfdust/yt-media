@@ -17,6 +17,7 @@ from smorest_sfs.modules.users.models import User
 from smorest_sfs.utils.paths import UploadPath
 
 from ._utils import client, users, injection, tables
+from typing import Iterator
 
 
 class fakeuuid:
@@ -29,7 +30,7 @@ def patch_uuid(monkeypatch: MonkeyPatch):
 
 
 @pytest.fixture
-def clean_dirs():
+def clean_dirs() -> Iterator:
     yield
     for key in ["foo", "new", "bar"]:
         path = UploadPath.get_uploads_subdir(key, withdate=False)
@@ -126,7 +127,7 @@ def guest_user(temp_db_instance_helper: Callable) -> User:
 
 
 @pytest.fixture
-def inject_logger():
+def inject_logger() -> Iterator:
     injection.inject_logger(logger)
     yield
     injection.uninject_logger(logger)

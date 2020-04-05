@@ -15,7 +15,7 @@ class TestListView(GeneralGet):
 
     fixture_names = ("flask_app_client", "flask_app", "regular_user")
 
-    def test_get_options(self):
+    def test_get_options(self) -> None:
         self._get_options()
 
     @pytest.mark.parametrize("name", ["qqq", "aaa", "regular"])
@@ -29,13 +29,13 @@ class TestListView(GeneralGet):
             and data[0]["userinfo"]["last_name"] == "baaab"
         )
 
-    def test_get_userinfo(self):
+    def test_get_userinfo(self) -> None:
         resp = self._get_view("User.UserSelfView")
         assert (
             resp.status_code == 200
             and resp.json["data"]["username"] == self.regular_user.username
         )
 
-    def test_get_item(self):
+    def test_get_item(self) -> None:
         data = self._get_item(user_id=self.regular_user.id)
         assert data.keys() >= {"id", "nickname"}

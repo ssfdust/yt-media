@@ -43,6 +43,7 @@ from smorest_sfs.services.mail import PasswdMailSender
 from . import blp, models, params, schemas
 from .decorators import doc_login_required, doc_refresh_required
 from .helpers import add_token_to_database
+from typing import Any
 
 Response = TypeVar("Response")
 
@@ -159,7 +160,7 @@ class ResetForgotPasswordView(MethodView):
     @doc_login_required
     @blp.response(code=403, description="禁止访问")
     @blp.response(BaseMsgSchema, description="可以访问")
-    def get(self):
+    def get(self) -> Dict[str, Any]:
         """
         忘记密码token测试
 
@@ -174,7 +175,7 @@ class ResetForgotPasswordView(MethodView):
 class RefreshJwtTokenView(MethodView):
     @blp.response(schemas.RefreshViewPostSchema, description="获取成功")
     @doc_refresh_required
-    def post(self):
+    def post(self) -> Dict[str, Any]:
         """
         用户刷新Token
 

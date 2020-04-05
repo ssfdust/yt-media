@@ -1,11 +1,10 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-自定义错误类型
+    smorest_sfs.extensions.errors
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    自定义错误类型
 """
-from typing import NoReturn
-
 from psycopg2.errors import StringDataRightTruncation, UniqueViolation
+from sqlalchemy.exc import DBAPIError
 
 from .db_instance import db
 
@@ -24,7 +23,8 @@ err_mapping = {
 }
 
 
-def pgerr_to_customerr(err: Exception) -> NoReturn:
+def pgerr_to_customerr(err: DBAPIError) -> None:
+    """转换PG的错误为自定义类型的错误并回滚"""
     for err_cls, custom_err_cls in err_mapping.items():
         if isinstance(err.orig, err_cls):
             db.session.rollback()

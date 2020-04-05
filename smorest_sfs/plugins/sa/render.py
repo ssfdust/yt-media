@@ -5,7 +5,7 @@
 
     渲染表格模块
 """
-from typing import List
+from typing import List, Any, Union, List, Dict
 from abc import ABC, abstractmethod, abstractstaticmethod
 from sqlalchemy.engine.result import RowProxy
 from tabulate import tabulate
@@ -20,11 +20,13 @@ class TableRender(ABC):
     """
 
     @abstractmethod
-    def get_keys(self):
+    def get_keys(self) -> Any:
+        """获取所有键"""
         raise NotImplementedError
 
     @abstractstaticmethod
-    def parse_records(records: List[RowProxy]):
+    def parse_records(records: List[RowProxy]) -> Any:
+        """处理结果"""
         raise NotImplementedError
 
     def _render_data_table(self, records: List[RowProxy]) -> str:

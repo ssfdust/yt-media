@@ -8,7 +8,7 @@ from tests._utils.injection import FixturesInjectBase
 
 @pytest.mark.parametrize("key", ["12345678", "regular_user", "regular_user@email.com"])
 @pytest.mark.usefixtures("flask_app")
-def test_get_by_unique(regular_user, key):
+def test_get_by_unique(regular_user: User, key: str) -> None:
     user = User.get_by_keyword(key)
     assert user is regular_user
 

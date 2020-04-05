@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# pylint: disable=missing-docstring
 
 import datetime
 import os
@@ -12,7 +13,7 @@ from marshmallow import Schema, fields
 from smorest_sfs.extensions import babel
 from smorest_sfs.extensions.sqla import Model, SurrogatePK
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
-from smorest_sfs.plugins.sa import SAQuery, SAStatement, query_decorator, sql_decorator
+from smorest_sfs.plugins.sa import SAQuery, SAStatement
 from tests._utils.tables import drop_tables
 
 FAKE_TIME = datetime.datetime(1994, 9, 11, 8, 20)
@@ -140,7 +141,6 @@ def TestTableTeardown(db: SQLAlchemy) -> NoReturn:
 @pytest.fixture
 def TestSASql(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAStatement]:
     # pylint: disable=W0621, W0613
-    @sql_decorator
     class TestSASql(SAStatement):
         def __init__(self, name):
             self.sa_sql = db.select([TestCRUDTable.name]).where(
@@ -153,7 +153,6 @@ def TestSASql(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAStatement]:
 @pytest.fixture
 def TestOneTableQuery(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:
     # pylint: disable=W0621, W0613
-    @query_decorator
     class TestOneTableQuery(SAQuery):
         def __init__(self):
             self.query = TestCRUDTable.query.filter(TestCRUDTable.name == "bbc")
@@ -169,7 +168,6 @@ def TestTwoTablesQuery(
     db: SQLAlchemy, TestCRUDTable: Type[Model], TestChildTable: Type[Model]
 ) -> Type[SAQuery]:
     # pylint: disable=W0621, W0613
-    @query_decorator
     class TestTwoTablesQuery(SAQuery):
         def __init__(self):
             self.query = db.session.query(
@@ -189,7 +187,6 @@ def TestTwoTablesQuery(
 @pytest.fixture
 def TestOneColQuery(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:
     # pylint: disable=W0621, W0613
-    @query_decorator
     class TestOneColQuery(SAQuery):
         def __init__(self):
             self.query = db.session.query(TestCRUDTable.name).filter(

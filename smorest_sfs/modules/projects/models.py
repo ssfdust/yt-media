@@ -21,5 +21,5 @@ class Project(Model, SurrogatePK):
 
     name = db.Column(db.String(length=128), nullable=False, doc="项目名称")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.name

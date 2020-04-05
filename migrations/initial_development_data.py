@@ -1,27 +1,15 @@
-# Copyright 2019 RedLotus <ssfdust@gmail.com>
-# Author: RedLotus <ssfdust@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 """
 数据初始化模板
 """
 from datetime import datetime
 from getpass import getpass
-from typing import Type
+from typing import Any, List, Type
 
-from smorest_sfs.modules.auth.permissions import \
-    DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping
+from smorest_sfs.modules.auth.permissions import (
+    DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping,
+)
 from smorest_sfs.modules.auth.permissions import PERMISSIONS, ROLES
+from smorest_sfs.modules.email_templates.models import EmailTemplate
 from smorest_sfs.modules.roles.models import Permission, Role
 from smorest_sfs.modules.storages.models import Storages
 from smorest_sfs.modules.users.models import Model, User, UserInfo, db
@@ -85,14 +73,22 @@ def init() -> None:
     root.save()
 
 
-def get_or_create(model_cls, name):
+def get_or_create(model_cls: Type[Model], name: str) -> Any:
+    """获取ORM或者根据name创建ORM
+
+    只支持name字段的创建
+    """
     item = model_cls.query.filter_by(name=name).first()
     if item:
         return item
     return model_cls(name=name).save(False)
 
 
-def get_or_create_from_lst(model_cls, *names):
+def get_or_create_from_lst(model_cls: Type[Model], *names: str) -> List[Any]:
+    """根据一系列name字段获取ORM或者根据name创建ORM
+
+    只支持name字段的获取与创建
+    """
     lst = []
     for name in names:
         lst.append(get_or_create(model_cls, name))
@@ -100,7 +96,7 @@ def get_or_create_from_lst(model_cls, *names):
     return lst
 
 
-def update_permissions():
+def update_permissions() -> None:
     """
     更新权限角色数据
     """
@@ -112,9 +108,8 @@ def update_permissions():
     db.session.commit()
 
 
-def init_email_templates():
+def init_email_templates() -> None:
     """初始化邮件模板"""
-    from smorest_sfs.modules.email_templates.models import EmailTemplate
 
     template = '<p>{{ message | safe }}</p><a href="{{ url }}" target="_blank">点击访问</a>'
     for name in ["default", "confirm", "reset-password"]:

@@ -1,10 +1,17 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-from typing import Union, Any, List
+"""
+    smorest_sfs.sqla.surrogatepk
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ORM默认主键模块
+"""
+from typing import Any, List, Union
+
+from flask_sqlalchemy import BaseQuery
+
 from marshmallow import Schema
+
 from .db_instance import db
 from .helpers import utcnow
-from .model import Model
+
 
 # https://speakerdeck.com/zzzeek/building-the-app
 class SurrogatePK:
@@ -16,6 +23,8 @@ class SurrogatePK:
     :attr modified: datetime 修改时间
     :attr created: datetime 创建时间
     """
+
+    query: BaseQuery
 
     id = db.Column(
         db.Integer, primary_key=True, info={"marshmallow": {"dump_only": True}}
@@ -44,7 +53,7 @@ class SurrogatePK:
     )
 
     @classmethod
-    def get_by_id(cls, _id: int) -> Model:
+    def get_by_id(cls, _id: int) -> Any:
         """
         根据ID查询数据库
         """
@@ -52,7 +61,7 @@ class SurrogatePK:
             return cls.query.get_or_404(_id)
 
     @classmethod
-    def delete_by_id(cls, _id: int, commit: bool = True) -> Union[bool, None]:
+    def delete_by_id(cls, _id: int, commit: bool = True) -> Any:
         """
         根据ID删除数据
         """
@@ -76,7 +85,7 @@ class SurrogatePK:
         schema: Union[Schema, object],
         instance: Any,
         commit: bool = True,
-    ) -> Model:
+    ) -> Any:
         """
         根据id，Schema，以及临时实例更新元素
 

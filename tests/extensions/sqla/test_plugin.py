@@ -8,7 +8,6 @@ import pyperclip
 
 import pytest
 from smorest_sfs.plugins.sa import debug_sql, execute, render_limit_results
-from smorest_sfs.plugins.sa.helpers import QueryAnalysis
 from tests._utils.uniqueue import UniqueQueue
 from tests.extensions.sqla.test_sqla import ItemsFixtureBase
 
@@ -60,7 +59,9 @@ class TestSAPlugin(ItemsFixtureBase):
         "TestTwoTablesQuery",
     )
 
-    @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "child_items", "inject_logger")
+    @pytest.mark.usefixtures(
+        "TestTableTeardown", "crud_items", "child_items", "inject_logger"
+    )
     @pytest.mark.parametrize(
         "func, sql, result",
         [

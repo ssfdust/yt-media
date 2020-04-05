@@ -11,7 +11,7 @@ from smorest_sfs.modules.roles.models import ROLES, Permission, Role
 @pytest.mark.parametrize(
     "is_admin, name", [(True, ROLES.SuperUser), (False, ROLES.User)]
 )
-def test_get_template(is_admin, name):
+def test_get_template(is_admin: bool, name: str) -> None:
     assert set(r.name for r in Role.get_by_user_default(is_admin)) == {name}
 
 

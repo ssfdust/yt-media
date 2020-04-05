@@ -24,7 +24,7 @@ class UserLoginChecker:
         self.code = code
         self._token = token
 
-    def _check_capture_code(self):
+    def _check_capture_code(self) -> bool:
         store = CaptchaStore(self._token)
         try:
             store.verify(self.code)

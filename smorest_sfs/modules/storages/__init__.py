@@ -1,5 +1,5 @@
 """
-    app.modules.storages
+    smorest_sfs.modules.storages
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     文件系统模块

@@ -32,7 +32,7 @@ class TestGeneralModify(FixturesInjectBase):
     }
 
     @pytest.fixture(autouse=True)
-    def inject_roles(self):
+    def inject_roles(self) -> None:
         setattr(
             self,
             "roles",
@@ -47,7 +47,7 @@ class TestGeneralModify(FixturesInjectBase):
         data.update(**kwargs)
         return data
 
-    def test_delete(self):
+    def test_delete(self) -> None:
         with self.flask_app_client.login(
             self.regular_user, [ROLES.UserManager]
         ) as client:
@@ -61,7 +61,7 @@ class TestGeneralModify(FixturesInjectBase):
                     and self.inactive_user.deleted
                 )
 
-    def test_register(self):
+    def test_register(self) -> None:
         with self.flask_app.test_request_context():
             data = self._get_data(
                 username="fake_user", email="fake_user@email.com", phonenum="1234"
@@ -73,7 +73,7 @@ class TestGeneralModify(FixturesInjectBase):
                 ROLES.User
             }
 
-    def test_modify_userinfo(self):
+    def test_modify_userinfo(self) -> None:
         with self.flask_app_client.login(self.regular_user, [ROLES.User]) as client:
             with self.flask_app.test_request_context():
                 url = url_for("User.UserSelfView")
@@ -89,7 +89,7 @@ class TestGeneralModify(FixturesInjectBase):
                     and self.regular_user.username != "asasarqwrasdasd"
                 )
 
-    def test_item_modify(self):
+    def test_item_modify(self) -> None:
         with self.flask_app_client.login(
             self.guest_user, [ROLES.UserManager]
         ) as client:
@@ -112,7 +112,7 @@ class TestGeneralModify(FixturesInjectBase):
                     and set(self.guest_user.roles) >= set(r for r in self.roles)
                 )
 
-    def test_item_delete(self):
+    def test_item_delete(self) -> None:
         with self.flask_app_client.login(
             self.regular_user, [ROLES.SuperUser]
         ) as client:

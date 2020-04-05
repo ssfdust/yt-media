@@ -1,29 +1,22 @@
-# Copyright 2019 RedLotus <ssfdust@gmail.com>
-# Author: RedLotus <ssfdust@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+"""
+    smorest_sfs.extensions.api
+    ~~~~~~~~~~~~~~~~~~~~
+    smorest api配置模块
+"""
+from typing import Any, Optional
 
-from typing import Any, NoReturn, Optional
-
-from flask_smorest import Blueprint, Api as BaseApi
+from flask_smorest import Api as BaseApi
+from flask_smorest import Blueprint
 
 from smorest_sfs.extensions.marshal import UploadField
 
 
 class Api(BaseApi):
+    """为flask-smorest的API模块提供base_prefix功能"""
+
     def register_blueprint(
         self, blp: Blueprint, base_prefix: Optional[str] = None, **options: Any
-    ) -> NoReturn:
+    ) -> None:
         # pylint: disable=W0221
         """注册蓝图
 

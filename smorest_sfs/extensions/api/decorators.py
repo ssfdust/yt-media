@@ -1,19 +1,5 @@
-# Copyright 2019 RedLotus <ssfdust@gmail.com>
-# Author: RedLotus <ssfdust@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 """
-    app.extensions.api.decorators
+    smorest_sfs.extensions.api.decorators
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     分页装饰器模块
 """
@@ -36,6 +22,7 @@ class PaginationParametersSchema(ma.Schema):
     """
 
     class Meta:
+        # pylint: disable=C0115
         ordered = True
 
     page = ma.fields.Integer(missing=1, validate=ma.validate.Range(min=1), doc="页码")
@@ -44,7 +31,14 @@ class PaginationParametersSchema(ma.Schema):
     )
 
 
-def generate_links(p: Pagination, per_page: int, **kwargs: Any) -> Dict:
+def generate_links(p: Pagination, per_page: int, **kwargs: Any) -> Dict[str, Any]:
+    """生成分页相关信息
+
+    next: 下一页
+    prev: 前一页
+    first: 首页
+    last: 尾页
+    """
     links = {}
     if p.has_next:
         links["next"] = url_for(
@@ -60,7 +54,7 @@ def generate_links(p: Pagination, per_page: int, **kwargs: Any) -> Dict:
     return links
 
 
-def paginate(max_per_page: int = 10) -> Callable:
+def paginate(max_per_page: int = 10) -> Callable[..., Any]:
     """
     分页装饰器
 
@@ -85,7 +79,7 @@ def paginate(max_per_page: int = 10) -> Callable:
     }
     """
 
-    def decorator(func: Callable) -> Callable:
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         # pylint: disable=W0212
         parameters = {
             "in": "query",
@@ -93,8 +87,9 @@ def paginate(max_per_page: int = 10) -> Callable:
         }
 
         # 注入apidoc显示注释等内容
-        func._apidoc = getattr(func, "_apidoc", {})
-        func._apidoc.setdefault("parameters", []).append(parameters)
+        _apidoc = getattr(func, "_apidoc", {})
+        _apidoc.setdefault("parameters", []).append(parameters)
+        setattr(func, "_apidoc", _apidoc)
 
         @functools.wraps(func)
         def wrapped(

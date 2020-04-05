@@ -11,18 +11,20 @@ from tests._utils.injection import FixturesInjectBase
 
 
 from flask import url_for
+from smorest_sfs.modules.storages.models import Storages
+from smorest_sfs.modules.users.models import User
 
 
 class TestStoragesView(FixturesInjectBase):
 
     fixture_names = ("flask_app_client", "flask_app")
 
-    def test_get(self, regular_user, add_storage):
+    def test_get(self, regular_user: User, add_storage: Storages) -> None:
         with self.flask_app_client.login(regular_user, [ROLES.User]) as client:
             resp = client.get(f"/api/v1/storages/{add_storage.id}")
             assert resp.data == b"abc"
 
-    def test_put(self, regular_user, add_storage):
+    def test_put(self, regular_user: User, add_storage: Storages) -> None:
         with self.flask_app_client.login(regular_user, [ROLES.User]) as client:
             store_id = add_storage.id
             client.put(
@@ -34,7 +36,7 @@ class TestStoragesView(FixturesInjectBase):
             resp = client.get(f"/api/v1/storages/{add_storage.id}")
             assert resp.data == b"789"
 
-    def test_delete(self, regular_user, add_storage):
+    def test_delete(self, regular_user: User, add_storage: Storages) -> None:
         with self.flask_app_client.login(regular_user, [ROLES.User]) as client:
             resp = client.delete(f"/api/v1/storages/{add_storage.id}")
             after_resp = client.get(f"/api/v1/storages/{add_storage.id}")
@@ -45,7 +47,7 @@ class TestForceDeleteView(FixturesInjectBase):
 
     fixture_names = ("flask_app_client", "flask_app")
 
-    def test_force_delete(self, regular_user, add_storage):
+    def test_force_delete(self, regular_user: User, add_storage: Storages) -> None:
         file_id = add_storage.id
         path = add_storage.path[:]
         with self.flask_app_client.login(regular_user, [ROLES.SuperUser]) as client:

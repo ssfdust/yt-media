@@ -1,20 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-# Copyright 2019 RedLotus <ssfdust@gmail.com>
-# Author: RedLotus <ssfdust@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 """
     app.extensions.config
     ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -34,23 +17,24 @@
 """
 
 import os
-from typing import Dict
+from typing import Any, Dict, Optional
 
 import toml
-
 from flask.config import Config as FlaskConfig
 
 
 class Config(FlaskConfig):
-    def __init__(self, root_path: str = None, defaults: Dict = None):
+    """支持from_toml的config模块"""
+
+    def __init__(
+        self,
+        root_path: str = Optional[None],
+        defaults: Optional[Dict["str", Any]] = None,
+    ):
         super().__init__(root_path, defaults)
 
     def from_toml(self, filename: str) -> bool:
-        """Updates the values in the config from a TOML file. This function
-        behaves as if the TOML object was a dictionary and passed to the
-        :param filename: the filename of the JSON file.  This can either be an
-                         absolute filename or a filename relative to the
-                         root path.
+        """从TOML文件中更新配置中的值。就好像TOML对象是一个字典，并传递到
         """
 
         # Prepeend the root path is we don't have an absolute path

@@ -41,14 +41,14 @@ class EmailTemplate(Model, SurrogatePK):
     template = db.Column(db.Text, nullable=False, doc="模板")
 
     @classmethod
-    def get_by_name(cls, name):
+    def get_by_name(cls, name: str) -> Model:
         return cls.query.filter_by(name=name).one()
 
     @classmethod
-    def get_template(cls, name):
+    def get_template(cls, name: str) -> str:
         """获取模板"""
         template = cls.get_by_name(name)
         return template.template
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.name

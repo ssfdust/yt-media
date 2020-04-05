@@ -4,6 +4,7 @@ import secrets
 import string
 
 from . import redis_store
+from typing import Optional
 
 
 class CaptchaStore:
@@ -33,5 +34,5 @@ class CaptchaStore:
             redis_store.delete(self.key)
         return self._code
 
-    def _decode_code(self, code):
+    def _decode_code(self, code: Optional[bytes]) -> None:
         self._code = code.decode("utf-8")
