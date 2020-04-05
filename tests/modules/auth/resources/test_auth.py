@@ -6,7 +6,7 @@
 import pytest
 from flask import url_for
 
-from smorest_sfs.services.auth.auth import login_user
+from smorest_sfs.services.auth.auth import login_user, User
 from smorest_sfs.services.auth.confirm import generate_confirm_token
 from tests._utils.injection import FixturesInjectBase
 from tests._utils.uniqueue import UniqueQueue
@@ -15,6 +15,9 @@ MAIL_QUEUE: UniqueQueue = UniqueQueue()
 
 
 class TestAuthHelper(FixturesInjectBase):
+    inactive_user: User
+    regular_user: User
+    forget_passwd_user: User
 
     fixture_names = ("flask_app_client", "inactive_user", "regular_user", "flask_app")
 
@@ -102,7 +105,7 @@ class TestForgetPasswd(TestAuthHelper):
     @pytest.mark.parametrize(
         "email, code", [("test", 404), ("forget_passwd_user@email.com", 200),]
     )
-    def test_user_forget_password_access(self, email, code):
+    def test_user_forget_password_access(self, email: str, code: str):
         resp = self.flask_app_client.post(
             "/api/v1/auth/forget-password", json={"email": email}
         )

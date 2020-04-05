@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 from typing import List, Tuple, Type, Union, Set
 
-from flask import url_for
+from flask import url_for, Flask
 from marshmallow import Schema
 
 import pytest
 from smorest_sfs.extensions.sqla import Model
+from flask_sqlalchemy import SQLAlchemy
 
 from .uniqueue import UniqueQueue
 from _pytest.fixtures import SubRequest
@@ -15,7 +16,9 @@ from smorest_sfs.modules.email_templates.schemas import EmailTemplateSchema
 from smorest_sfs.modules.projects.models import Project
 from smorest_sfs.modules.projects.schemas import ProjectSchema
 from smorest_sfs.modules.roles.models import Role
+from smorest_sfs.modules.users.models import User
 from smorest_sfs.modules.roles.schemas import RoleSchema
+from tests._utils.client import AutoAuthFlaskClient
 from typing import Any
 from typing import Dict
 from tests._utils.client import JSONResponse
@@ -50,6 +53,11 @@ class FixturesInjectBase:
     delete_param_key: str
     fixture_names: Union[Tuple[str], Tuple] = ()
 
+    flask_app_client: AutoAuthFlaskClient
+    flask_app: Flask
+    regular_user: User
+    db: SQLAlchemy
+
     @pytest.fixture(autouse=True)
     def auto_injector_fixture(self, request: SubRequest) -> None:
         names = self.fixture_names
@@ -58,6 +66,7 @@ class FixturesInjectBase:
 
 
 class GeneralModify(FixturesInjectBase):
+
     def _add_request(self, data: Dict[str, Any]) -> Dict[str, Any]:
         with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
             with self.flask_app.test_request_context():

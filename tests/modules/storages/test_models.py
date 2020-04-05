@@ -4,11 +4,13 @@ import pytest
 from tests._utils.injection import FixturesInjectBase
 from smorest_sfs.modules.storages.models import Storages
 from smorest_sfs.services.storages.handlers import StorageFactory
-from smorest_sfs.utils.storages import load_storage_from_path
+from smorest_sfs.utils.storages import load_storage_from_path, FileStorage
 
 
 class TestStorage(FixturesInjectBase):
     fixture_names = ("flask_app", "storage", "patch_uuid", "clean_dirs", "next_store")
+    storage: Storages
+    next_store: FileStorage
 
     def test_model_save(self) -> None:
         factory = StorageFactory(self.storage)
@@ -30,7 +32,7 @@ class TestStorage(FixturesInjectBase):
         factory.update(name="t.txt", store=self.next_store)
         storage = Storages.get_by_id(self.storage.id)
         storage.store = None
-        assert storage.store.read() == b"efg" and storage.name == "t.txt"
+        assert storage.store.read() == b"efg" and storage.name == "t.txt"  # type: ignore
 
     def test_model_delete(self) -> None:
         factory = StorageFactory(self.storage)

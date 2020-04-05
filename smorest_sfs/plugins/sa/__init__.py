@@ -34,13 +34,13 @@ def execute(sql_cls: Union[Type[SAStatement], Type[SAQuery]], *args: Any, **kwar
     return ret
 
 
-def debug_sql(sql_cls: Union[SAStatement, SAQuery], *args: Any, **kwargs: Any) -> None:
+def debug_sql(sql_cls: Union[Type[SAStatement], Type[SAQuery]], *args: Any, **kwargs: Any) -> None:
     sql = sql_cls(*args, **kwargs)
     sql.debug_sql()
 
 
 def render_limit_results(
-    sql_cls: Union[SAStatement, SAQuery], *args: Any, **kwargs: Any
+    sql_cls: Union[Type[SAStatement], Type[SAQuery]], *args: Any, **kwargs: Any
 ) -> None:
     sql = sql_cls(*args, **kwargs)
     sql.render_results()

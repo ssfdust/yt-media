@@ -1,0 +1,4 @@
+{
+    "reportUnknownParameterType": true,
+    "exclude": ["tasks", "migrations"]
+}

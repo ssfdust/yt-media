@@ -1,15 +1,22 @@
 """测试sqla"""
 
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.exceptions import NotFound
 
 import pytest
 from tests._utils.injection import FixturesInjectBase
+from typing import Callable, Type, List
+from smorest_sfs.extensions.sqla import Model
+from marshmallow import Schema
 
 
 class ItemsFixtureBase(FixturesInjectBase):
+    TestCRUDTable:Type[Model]
+    TestChildTable:Type[Model]
+
     @pytest.fixture
-    def temp_item_generator(self):
-        def temp_item_generator_func(cls):
+    def temp_item_generator(self) -> Callable[[Type[Model]], List[Model]]:
+        def temp_item_generator_func(cls: Type[Model]) -> List[Model]:
             return [
                 cls.create(
                     id=idx,
@@ -23,11 +30,11 @@ class ItemsFixtureBase(FixturesInjectBase):
         return temp_item_generator_func
 
     @pytest.fixture
-    def crud_items(self, temp_item_generator):
+    def crud_items(self, temp_item_generator: Callable[[Type[Model]], List[Model]]) -> List[Model]:
         return temp_item_generator(self.TestCRUDTable)
 
     @pytest.fixture
-    def child_items(self, temp_item_generator):
+    def child_items(self, temp_item_generator: Callable[[Type[Model]], List[Model]]) -> List[Model]:
         return temp_item_generator(self.TestChildTable)
 
 
@@ -35,7 +42,7 @@ class TestBaseQuery(ItemsFixtureBase):
     fixture_names = ("TestCRUDTable",)
 
     @pytest.mark.usefixtures("TestTableTeardown")
-    def test_soft_delete(self, crud_items):
+    def test_soft_delete(self, crud_items: List[Model]):
         pre_cnt = self.TestCRUDTable.query.count()
         deleted_one = crud_items[0]
         deleted_one.delete()
@@ -73,22 +80,25 @@ class TestBaseQuery(ItemsFixtureBase):
 
 
 class TestBaseRUDByID(ItemsFixtureBase):
+    TestParentTable: Type[Model]
+    TestParentSchema: Type[Schema]
+
     fixture_names = ("TestCRUDTable", "TestParentSchema", "TestParentTable")
 
     @pytest.mark.usefixtures("TestTableTeardown")
-    def test_base_read_by_id(self, crud_items):
+    def test_base_read_by_id(self, crud_items: List[Model]):
         item = crud_items[0]
         assert self.TestCRUDTable.get_by_id(item.id) == item
 
     @pytest.mark.usefixtures("TestTableTeardown")
-    def test_base_delete_by_id(self, crud_items):
+    def test_base_delete_by_id(self, crud_items: List[Model]):
         item = crud_items[0]
         self.TestCRUDTable.delete_by_id(item.id)
         with pytest.raises(NotFound):
             self.TestCRUDTable.get_by_id(item.id)
 
     @pytest.mark.usefixtures("TestTableTeardown")
-    def test_base_delete_by_idlst(self, crud_items):
+    def test_base_delete_by_idlst(self, crud_items: List[Model]):
         items = crud_items[0:-1]
         idlst = [item.id for item in items]
         self.TestCRUDTable.delete_by_ids(idlst)
@@ -96,7 +106,7 @@ class TestBaseRUDByID(ItemsFixtureBase):
             with pytest.raises(NotFound):
                 self.TestCRUDTable.get_by_id(item_id)
 
-    def test_base_update_by_id(self, db):
+    def test_base_update_by_id(self, db: SQLAlchemy):
         item = self.TestParentTable.create(name="base_update_by_id")
         temp_item = self.TestParentTable(name="test_update_by_id")
         self.TestParentTable.update_by_id(item.id, self.TestParentSchema, temp_item)

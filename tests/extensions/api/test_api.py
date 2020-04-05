@@ -5,9 +5,17 @@ import pytest
 from flask_smorest import Blueprint
 from smorest_sfs.extensions.api.decorators import paginate
 from tests._utils.injection import FixturesInjectBase
+from smorest_sfs.extensions.sqla import Model
+from marshmallow import Schema
+from flask_smorest import Api
+from flask import Flask
 
 
 class TestApi(FixturesInjectBase):
+    TestPagination: Model
+    TestPageSchema: Schema
+    api: Api
+    app: Flask
 
     fixture_names = ("app", "api", "TestPagination", "TestPageSchema")
 

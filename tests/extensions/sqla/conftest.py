@@ -4,7 +4,7 @@
 
 import datetime
 import os
-from typing import Any, NoReturn, Type
+from typing import Any, Iterator, Type
 
 import pytest
 from flask import Flask
@@ -82,7 +82,7 @@ def TestChildTable(db: SQLAlchemy, TestParentTable: Type[Model]) -> Type[Model]:
 
 
 @pytest.fixture(scope="package")
-def tables(TestCRUDTable: Type[Model], TestChildTable: Type[Model]) -> NoReturn:
+def tables(TestCRUDTable: Type[Model], TestChildTable: Type[Model]) -> None:
     # pylint: disable=W0613, W0621
     pass
 
@@ -126,7 +126,7 @@ def TestParentSchema(TestChildSchema: Type[Schema]) -> Type[Schema]:
 
 
 @pytest.fixture
-def TestTableTeardown(db: SQLAlchemy) -> NoReturn:
+def TestTableTeardown(db: SQLAlchemy) -> Iterator[None]:
     # pylint: disable=W0621, W0613
     yield
     for table in [

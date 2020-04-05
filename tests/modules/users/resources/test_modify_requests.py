@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Dict, List
+from typing import Dict, List, Any, Union
 
 import pytest
 from flask import url_for
@@ -12,6 +12,13 @@ from tests._utils.injection import FixturesInjectBase
 
 
 class TestGeneralModify(FixturesInjectBase):
+
+    roles: List[Role]
+    regular_user: User
+    forget_passwd_user: User
+    inactive_user: User
+    guest_user: User
+    role_dict: List[Dict[str, Union[str, int]]]
 
     fixture_names = (
         "flask_app_client",
@@ -42,7 +49,7 @@ class TestGeneralModify(FixturesInjectBase):
         )
         setattr(self, "role_dict", [{"id": r.id, "name": r.name} for r in self.roles])
 
-    def _get_data(self, **kwargs) -> Dict:
+    def _get_data(self, **kwargs: Any) -> Dict:
         data = self.data.copy()
         data.update(**kwargs)
         return data

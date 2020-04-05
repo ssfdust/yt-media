@@ -4,7 +4,7 @@
     sa raw sql模块
 """
 
-from typing import Dict, List, Type, Any
+from typing import Dict, List, Any
 
 from loguru import logger
 from sqlalchemy.sql.selectable import Select
@@ -16,6 +16,8 @@ from smorest_sfs.extensions import db
 
 class SAStatement(RenderableStatement):
     sa_sql: Select
+    def __init__(self, *args: Any, **kwargs):
+        pass
 
     def get_sa_sql(self) -> Select:
         return self.sa_sql
