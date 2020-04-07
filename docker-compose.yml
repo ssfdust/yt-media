@@ -2,7 +2,7 @@ version: '3.5'
 
 services:  
     db:
-        image: ssfdust/psql_jieba_swsc:latest
+        image: ccr.ccs.tencentyun.com/ssfdust/psql
         ports:
             - "9432:5432"
         environment:
@@ -12,10 +12,10 @@ services:
             PGDATA: /data/postgres
 
     redis:
-        image: redis
+        image: ccr.ccs.tencentyun.com/library/redis
 
     web:
-        image: ssfdust/yt-media
+        image: ccr.ccs.tencentyun.com/ssfdust/smart-smorest
         command: sh scripts/initapp.sh
         volumes:
             - .:/Application 
