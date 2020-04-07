@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:  
+    db:
+        image: ssfdust/psql_jieba_swsc:latest
+        ports:
+            - "9432:5432"
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER:-smorest-admin}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-smorest2019}
+            POSTGRES_DB: ${POSTGRES_DB:-my-smorest}
+            PGDATA: /data/postgres
+
+
+    redis:
+        image: redis
+    web:
+        image: ssfdust/full-stack-flask-smorest:latest
+        command: sh scripts/initapp.sh
+        volumes:
+            - .:/Application 
+        ports:
+            - "9001:5000"
+        restart: on-failure
+        depends_on:
+            - db
+            - redis

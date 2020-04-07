@@ -10,6 +10,7 @@ SQLALCHEMY_DATABASE_URI = 'postgresql://smorest-admin:smorest2019@db:5432/my-smo
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 
 SECRET_KEY = '6.ix6D={-+]qK;>Hd9xTQ\iU&!`O&W'
+REDIS_URL = "redis://redis:6379/0"
 JWT_SECRET_KEY = 'UiXC{?%6vBoqz?F#5w$^J{PNQxhLyW'
 JWT_BLACKLIST_ENABLED = true
 JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']

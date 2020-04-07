@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Union
-from pathlib import Path
 import uuid
+from pathlib import Path
+from typing import Any, Union
 
 import smorest_sfs
 
@@ -26,7 +26,7 @@ def todaytopath() -> Path:
 
 class ProjectPath:
     @classmethod
-    def __get_sfs_path(cls) -> Path:
+    def __get_sfs_path(cls) -> Any:
         return getattr(smorest_sfs, "__path__")[0]
 
     @classmethod
