@@ -44,12 +44,13 @@ def init_permission() -> None:
     db.session.commit()
 
 
-def init() -> None:
+def init(password=None) -> None:
     """
     初始化数据
     """
     su_role = Role.get_by_name(name="SuperUser")
-    password = getpass("Password:")
+    if not password:
+        password = getpass("Password:")
 
     # create super user
     root = User.create(

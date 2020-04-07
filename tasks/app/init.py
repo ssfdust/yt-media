@@ -72,7 +72,7 @@ def add_closure_table_procedure(context):
 
 
 @app_context_task(help={"skip_on_failure": "忽略错误（默认：否）"})
-def init_development_data(context, skip_on_failure=False):
+def init_development_data(context, skip_on_failure=False, password=None):
     """
     初始化诸如用户、用户权限等基本信息到数据库
     """
@@ -84,7 +84,7 @@ def init_development_data(context, skip_on_failure=False):
 
     try:
         initial_development_data.init_permission()
-        initial_development_data.init()
+        initial_development_data.init(password)
         initial_development_data.init_email_templates()
         initial_development_data.update_permissions()
     except AssertionError as exception:
