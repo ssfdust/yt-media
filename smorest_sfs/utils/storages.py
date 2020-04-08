@@ -9,7 +9,13 @@ from typing import TypeVar, Union
 from flask import send_file
 from werkzeug.datastructures import FileStorage
 
-from .paths import ProjectPath, UploadPath, get_relative_pathstr, make_uploaded_path
+from .paths import (
+    ProjectPath,
+    UploadPath,
+    get_relative_pathstr,
+    make_uploaded_path,
+    get_avator_path,
+)
 
 Response = TypeVar("Response")
 
@@ -20,10 +26,15 @@ def load_storage_from_path(filename: str, path: Union[Path, str]) -> FileStorage
     return FileStorage(file_pointer, filename, "file", content_type)
 
 
+def load_avator_from_path(avator_path: str) -> FileStorage:
+    path = get_avator_path(avator_path)
+    return load_storage_from_path(avator_path, path)
+
+
 def save_storage_to_path(store: FileStorage, subdir: str) -> str:
     path = make_uploaded_path(subdir)
     store.stream.seek(0)
-    store.save(path)
+    store.save(str(path))
     store.stream.seek(0)
     return get_relative_pathstr(path)
 

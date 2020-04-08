@@ -66,7 +66,6 @@ class FixturesInjectBase:
 
 
 class GeneralModify(FixturesInjectBase):
-
     def _add_request(self, data: Dict[str, Any]) -> Dict[str, Any]:
         with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
             with self.flask_app.test_request_context():

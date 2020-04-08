@@ -92,12 +92,14 @@ class UploadView(MethodView):
     @role_required(ROLES.User)
     @blp.arguments(schemas.UploadParams(), location="files")
     @blp.response(schemas.UploadSchema)
-    def post(self, args, storetype: str):
+    def post(
+        self, args: Dict[str, FileStorage], storetype: str
+    ) -> Dict[str, Union[int, str, Dict[str, int]]]:
         """
         上传文件
         """
         logger.info(f"上传了文件{args['file'].filename}")
-        args["_store"] = args.pop("file")
+        args["store"] = args.pop("file")
         factory = StorageFactory(models.Storages(storetype=storetype, **args))
         factory.save()
 

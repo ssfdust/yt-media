@@ -90,7 +90,9 @@ def temp_db_instance_helper(db: SQLAlchemy) -> Callable:
 
 
 @pytest.fixture(scope="session")
-def regular_user(temp_db_instance_helper: Callable[..., Iterator[Model]]) -> Iterator[User]:
+def regular_user(
+    temp_db_instance_helper: Callable[..., Iterator[Model]]
+) -> Iterator[User]:
     # pylint: disable=W0613, W0621
     for _ in temp_db_instance_helper(
         users.generate_user_instance(username="regular_user")
@@ -99,7 +101,9 @@ def regular_user(temp_db_instance_helper: Callable[..., Iterator[Model]]) -> Ite
 
 
 @pytest.fixture(scope="session")
-def inactive_user(temp_db_instance_helper: Callable[..., Iterator[Model]]) -> Iterator[User]:
+def inactive_user(
+    temp_db_instance_helper: Callable[..., Iterator[Model]]
+) -> Iterator[User]:
     # pylint: disable=W0613, W0621
     for _ in temp_db_instance_helper(
         users.generate_user_instance(username="inactive_user", phonenum="inactive_user")
@@ -108,7 +112,9 @@ def inactive_user(temp_db_instance_helper: Callable[..., Iterator[Model]]) -> It
 
 
 @pytest.fixture(scope="session")
-def forget_passwd_user(temp_db_instance_helper: Callable[..., Iterator[Model]]) -> Iterator[User]:
+def forget_passwd_user(
+    temp_db_instance_helper: Callable[..., Iterator[Model]]
+) -> Iterator[User]:
     # pylint: disable=W0613, W0621
     for _ in temp_db_instance_helper(
         users.generate_user_instance(
@@ -119,7 +125,9 @@ def forget_passwd_user(temp_db_instance_helper: Callable[..., Iterator[Model]]) 
 
 
 @pytest.fixture(scope="session")
-def guest_user(temp_db_instance_helper: Callable[..., Iterator[Model]]) -> Iterator[User]:
+def guest_user(
+    temp_db_instance_helper: Callable[..., Iterator[Model]]
+) -> Iterator[User]:
     # pylint: disable=W0613, W0621
     for _ in temp_db_instance_helper(
         users.generate_user_instance(username="guest_user", phonenum="guest_user")

@@ -1,0 +1,6 @@
+import marshmallow as ma
+from typing import Any
+
+class Upload(ma.fields.Field):
+    format: Any = ...
+    def __init__(self, format: str = ..., **kwargs: Any) -> None: ...

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import uuid
 from pathlib import Path
-from typing import Any, Union
+from typing import Optional, Union
 
 import smorest_sfs
 
@@ -26,12 +26,9 @@ def todaytopath() -> Path:
 
 class ProjectPath:
     @classmethod
-    def __get_sfs_path(cls) -> Any:
-        return getattr(smorest_sfs, "__path__")[0]
-
-    @classmethod
     def get_project_path(cls) -> Path:
-        sfs_path = Path(cls.__get_sfs_path())
+        __sfs_path = getattr(smorest_sfs, "__path__")[0]
+        sfs_path = Path(__sfs_path)
         return sfs_path.parent
 
     @classmethod
@@ -76,15 +73,21 @@ def _make_uploaded_path(path: Path) -> Path:
     return path
 
 
-def _make_secure_filepath(path: Path) -> Path:
-    secure_name = uuid.uuid4().hex
-    return path.joinpath(secure_name)
+def _make_child_filepath(path: Path, childname: Optional[str] = None) -> Path:
+    if childname is None:
+        childname = uuid.uuid4().hex
+    return path.joinpath(childname)
 
 
 def make_uploaded_path(subname: str) -> Path:
     uploads_path = UploadPath.get_uploads_subdir(subname)
     path = _make_uploaded_path(uploads_path)
-    return _make_secure_filepath(path)
+    return _make_child_filepath(path)
+
+
+def get_avator_path(avator_path: str) -> Path:
+    uploads_path = UploadPath.get_uploads_subdir("avators", withdate=False)
+    return _make_child_filepath(uploads_path, avator_path)
 
 
 def get_relative_pathstr(path: Path) -> str:

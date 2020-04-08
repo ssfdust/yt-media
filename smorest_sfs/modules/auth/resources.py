@@ -24,10 +24,10 @@ from typing import Dict, TypeVar, Union
 
 from captcha.image import ImageCaptcha
 from flask import current_app as app
-from flask import jsonify, send_file, url_for
+from flask import send_file, url_for
 from flask.views import MethodView
 from flask_jwt_extended import create_access_token, current_user, get_jwt_identity
-from flask_smorest import abort
+from flask_smorest import abort  # type: ignore
 from loguru import logger
 
 from smorest_sfs.extensions.marshal import BaseMsgSchema
@@ -40,7 +40,7 @@ from smorest_sfs.services.auth.confirm import (
 )
 from smorest_sfs.services.mail import PasswdMailSender
 
-from . import blp, models, params, schemas
+from . import blp, params, schemas
 from .decorators import doc_login_required, doc_refresh_required
 from .helpers import add_token_to_database
 from typing import Any
@@ -191,8 +191,8 @@ class RefreshJwtTokenView(MethodView):
 
 @blp.route("/logout")
 class LogoutView(MethodView):
-    @blp.response(BaseMsgSchema, description="登出成功")
     @doc_login_required
+    @blp.response(BaseMsgSchema, description="登出成功")
     def post(self) -> Dict[str, Union[str, int]]:
         """
         用户登出

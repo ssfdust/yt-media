@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-from typing import Dict, TypeVar
+from typing import Dict, TypeVar, Any
 
 from flask import jsonify
 from loguru import logger
@@ -15,7 +15,7 @@ Response = TypeVar("Response")
 
 
 @jwt.unauthorized_loader
-def unauthorized_callback(_) -> Response:
+def unauthorized_callback(_: Any) -> Response:
     logger.error("未受权的访问")
     response = jsonify({"code": 401, "msg": "未授权的访问"})
     response.status_code = 401
@@ -31,7 +31,7 @@ def token_expired() -> Response:
 
 
 @jwt.token_in_blacklist_loader
-def check_if_token_in_blacklist(decrypted_token: Dict) -> bool:
+def check_if_token_in_blacklist(decrypted_token: Dict[str, str]) -> bool:
     return is_token_revoked(decrypted_token)
 
 

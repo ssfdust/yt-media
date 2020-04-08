@@ -23,7 +23,7 @@ err_mapping = {
 }
 
 
-def pgerr_to_customerr(err: DBAPIError) -> None:
+def pgerr_to_customerr(err: DBAPIError) -> None:  # type: ignore
     """转换PG的错误为自定义类型的错误并回滚"""
     for err_cls, custom_err_cls in err_mapping.items():
         if isinstance(err.orig, err_cls):

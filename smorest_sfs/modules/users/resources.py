@@ -158,7 +158,7 @@ class UserSelfView(MethodView):
     @role_required(ROLES.User)
     @blp.arguments(schemas.UserSelfSchema)
     @blp.response(schemas.UserItemSchema, code=200, description="用户信息")
-    def patch(self, user: models.User):
+    def patch(self, user: models.User) -> Dict[str, models.User]:
         """
         更新用户信息
         """

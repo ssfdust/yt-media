@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import secrets
 import string
+from typing import Optional
 
 from . import redis_store
 from typing import Optional
@@ -27,7 +28,7 @@ class CaptchaStore:
             raise ValueError("验证码错误")
         return True
 
-    def _get_values(self) -> str:
+    def _get_values(self) -> Optional[str]:
         if self._code is None:
             code = redis_store.get(self.key)
             self._decode_code(code)

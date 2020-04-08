@@ -3,7 +3,7 @@
 """
 from datetime import datetime
 from getpass import getpass
-from typing import Any, List, Type
+from typing import Any, List, Type, Optional
 
 from smorest_sfs.modules.auth.permissions import (
     DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping,
@@ -44,7 +44,7 @@ def init_permission() -> None:
     db.session.commit()
 
 
-def init(password=None) -> None:
+def init(password: Optional[str] = None) -> None:
     """
     初始化数据
     """

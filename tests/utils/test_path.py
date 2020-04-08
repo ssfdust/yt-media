@@ -12,6 +12,7 @@ from smorest_sfs.utils.paths import (
     UploadPath,
     get_relative_pathstr,
     make_uploaded_path,
+    get_avator_path,
 )
 from typing import List
 
@@ -53,3 +54,11 @@ def test_make_uploaded_path(key: str) -> None:
 def test_white_lst() -> None:
     for path in WHITE_LIST:
         assert os.path.exists(ProjectPath.get_subpath_from_project(path))
+
+
+@pytest.mark.parametrize(
+    "avator_path", ["default/AdminAvator.jpg", "default/DefaultAvator.jpg"]
+)
+def test_avator_path(avator_path: str) -> None:
+    path = get_avator_path(avator_path)
+    assert path.exists()

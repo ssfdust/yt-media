@@ -103,9 +103,7 @@ class TestUpdateBySchema(FixturesInjectBase):
         self.item.update_by_ma(self.schema, temp_instance)
         return temp_instance
 
-    def create_item_and_schema(
-        self, schema_kwargs: Any, **item_kwargs: Any
-    ) -> None:
+    def create_item_and_schema(self, schema_kwargs: Any, **item_kwargs: Any) -> None:
         setattr(self, "item", self.TestParentTable(**item_kwargs))
         setattr(self, "schema", self.TestParentSchema(only=schema_kwargs))
 
@@ -170,9 +168,7 @@ class TestUpdateBySchema(FixturesInjectBase):
         assert temp_instance.id is None
 
     @pytest.mark.usefixtures("TestTableTeardown")
-    def test_temp_instance_should_be_flushed_after_query(
-        self, db: SQLAlchemy
-    ) -> None:
+    def test_temp_instance_should_be_flushed_after_query(self, db: SQLAlchemy) -> None:
         self.create_item_and_schema(None, name="should_not_be_flushed_after_query")
         temp_instance = self.do_init_update_by_schema(
             name="should_not_be_flushed_after_query"

@@ -9,7 +9,7 @@ from functools import wraps
 from typing import Any, Callable
 
 from flask_jwt_extended import current_user, jwt_refresh_token_required, jwt_required
-from flask_smorest import abort
+from flask_smorest import abort  # type: ignore
 from loguru import logger
 
 # 源码来自
@@ -48,7 +48,7 @@ def doc_login_required(func: Callable[..., Callable[..., Any]]) -> Callable[...,
         return auth_required_func(*args, **kwargs)
 
     # 增加验证
-    wrapper = __set_apidoc(wrapper, func)
+    wrapper = __set_apidoc(wrapper, func)  # type: ignore
 
     return wrapper
 
@@ -79,7 +79,7 @@ def doc_refresh_required(func: Callable[..., Any]) -> Callable[..., Any]:
         return refresh_required_func(*args, **kwargs)
 
     # 增加swagger信息
-    wrapper = __set_apidoc(wrapper, func)
+    wrapper = __set_apidoc(wrapper, func)  # type: ignore
 
     return wrapper
 

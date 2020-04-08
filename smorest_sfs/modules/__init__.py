@@ -24,10 +24,11 @@
 """
 from importlib import import_module
 from types import ModuleType
-from typing import List, NoReturn
+from typing import List
 
 from flask import Flask
 from loguru import logger
+from flask_smorest.blueprint import Blueprint
 
 from smorest_sfs.extensions import api
 
@@ -55,7 +56,7 @@ def load_module(module_name: str) -> ModuleType:
     return module
 
 
-def init_app(app: Flask):
+def init_app(app: Flask) -> None:
     """
     初始化模块
     """
@@ -67,4 +68,6 @@ def init_app(app: Flask):
 
     for module_name in module_names:
         module = load_module(module_name)
-        api.register_blueprint(module.blp, base_prefix=base_prefix)
+        blp = getattr(module, "blp")
+        if blp and isinstance(blp, Blueprint):
+            api.register_blueprint(blp, base_prefix=base_prefix)

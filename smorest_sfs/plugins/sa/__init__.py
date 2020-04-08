@@ -24,7 +24,9 @@ def _execute_query(query: SAQuery) -> Any:
     return query.get_record()
 
 
-def execute(sql_cls: Union[Type[SAStatement], Type[SAQuery]], *args: Any, **kwargs: Any) -> Any:
+def execute(
+    sql_cls: Union[Type[SAStatement], Type[SAQuery]], *args: Any, **kwargs: Any
+) -> Any:
     sql = sql_cls(*args, **kwargs)
     if isinstance(sql, SAQuery):
         ret = _execute_query(sql)
@@ -34,7 +36,9 @@ def execute(sql_cls: Union[Type[SAStatement], Type[SAQuery]], *args: Any, **kwar
     return ret
 
 
-def debug_sql(sql_cls: Union[Type[SAStatement], Type[SAQuery]], *args: Any, **kwargs: Any) -> None:
+def debug_sql(
+    sql_cls: Union[Type[SAStatement], Type[SAQuery]], *args: Any, **kwargs: Any
+) -> None:
     sql = sql_cls(*args, **kwargs)
     sql.debug_sql()
 

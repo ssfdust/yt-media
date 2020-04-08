@@ -17,7 +17,6 @@
 """
 
 import os
-from typing import Any, Dict, Optional
 
 import toml
 from flask.config import Config as FlaskConfig
@@ -25,13 +24,6 @@ from flask.config import Config as FlaskConfig
 
 class Config(FlaskConfig):
     """支持from_toml的config模块"""
-
-    def __init__(
-        self,
-        root_path: str = Optional[None],
-        defaults: Optional[Dict["str", Any]] = None,
-    ):
-        super().__init__(root_path, defaults)
 
     def from_toml(self, filename: str) -> bool:
         """从TOML文件中更新配置中的值。就好像TOML对象是一个字典，并传递到

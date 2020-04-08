@@ -23,7 +23,7 @@ class SchemaOpts(sqla.SchemaOpts):
     以及自定义的ModelConverter。
     """
 
-    def __init__(self, meta: Schema.Meta, **kwargs: Any):
+    def __init__(self, meta: Schema.Meta, **kwargs: Any):  # type: ignore
         if not hasattr(meta, "unknown"):
             meta.unknown = EXCLUDE
         super(SchemaOpts, self).__init__(meta, **kwargs)

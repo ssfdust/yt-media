@@ -7,6 +7,7 @@ import pytest
 from freezegun import freeze_time
 from werkzeug.datastructures import FileStorage
 from smorest_sfs.utils.storages import (
+    load_avator_from_path,
     save_storage_to_path,
     load_storage_from_path,
     delete_from_rel_path,
@@ -47,3 +48,11 @@ def test_load_storage_after_deleted() -> None:
     delete_from_rel_path(pathstr)
     with pytest.raises(FileNotFoundError):
         load_storage_from_path("test.txt", pathstr)
+
+
+@pytest.mark.parametrize(
+    "avator_path", ["default/AdminAvator.jpg", "default/DefaultAvator.jpg"]
+)
+def test_avator_path(avator_path: str) -> None:
+    storage = load_avator_from_path(avator_path)
+    assert len(storage.read()) > 0

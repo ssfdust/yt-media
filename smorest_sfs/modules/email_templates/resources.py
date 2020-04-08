@@ -24,6 +24,7 @@
 
 from flask.views import MethodView
 from flask_jwt_extended import current_user
+from flask_sqlalchemy import BaseQuery
 from loguru import logger
 
 from smorest_sfs.extensions.api.decorators import paginate
@@ -66,14 +67,14 @@ class EmailTemplateView(MethodView):
     @blp.arguments(GeneralLikeArgs, location="query", as_kwargs=True)
     @blp.response(schemas.EmailTemplatePageSchema)
     @paginate()
-    def get(self, **kwargs):
+    def get(self, name: str) -> BaseQuery:
         # pylint: disable=unused-argument
         """
         获取所有电子邮件模板信息——分页
         """
         query = models.EmailTemplate.query
-        if kwargs:
-            query = query.filter_like_by(**kwargs)
+        if name:
+            query = query.filter_like_by(name=name)
 
         return query
 

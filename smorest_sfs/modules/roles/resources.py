@@ -136,7 +136,7 @@ class RoleItemView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.RoleQuery)
     @blp.response(schemas.RoleItemSchema)
-    def get(self, role_id) -> Dict[str, models.Role]:
+    def get(self, role_id: int) -> Dict[str, models.Role]:
         # pylint: disable=unused-argument
         """
         获取单条角色权限

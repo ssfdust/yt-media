@@ -18,6 +18,7 @@
 from smorest_sfs.modules.storages.models import Storages
 from smorest_sfs.modules.users.models import User
 from smorest_sfs.modules.roles.models import Role
+from smorest_sfs.utils.storages import load_avator_from_path
 
 ADMIN_AVATOR = {
     "name": "AdminAvator.jpg",
@@ -45,6 +46,10 @@ def create_user(user: User, is_admin: bool = False) -> User:
     创建头像信息,创建用户基本信息
     """
     user.roles = Role.get_by_user_default(is_admin)
-    avator = Storages(**ADMIN_AVATOR) if is_admin else Storages(**USER_AVATOR)
+    avator = (
+        Storages(store=load_avator_from_path(ADMIN_AVATOR["path"]), **ADMIN_AVATOR)
+        if is_admin
+        else Storages(USER_AVATOR["path"], **USER_AVATOR)
+    )
     user.userinfo.avator = avator
     return user.save()

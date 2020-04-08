@@ -78,7 +78,7 @@ class Role(Model, SurrogatePK):
         return cls.query.filter_by(name=name).first()
 
     @classmethod
-    def get_by_user_default(cls, is_admin=False) -> Model:
+    def get_by_user_default(cls, is_admin: bool = False) -> Model:
         if is_admin:
             return cls.query.filter_by(name=ROLES.SuperUser).all()
         return cls.query.filter_by(user_default=True).all()

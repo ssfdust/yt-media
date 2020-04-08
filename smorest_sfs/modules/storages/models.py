@@ -6,7 +6,7 @@
 from typing import Any
 
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
-from .mixin import StoragesMixin
+from .mixin import StoragesMixin, FileStorage
 
 
 class Storages(StoragesMixin, Model, SurrogatePK):
@@ -24,8 +24,6 @@ class Storages(StoragesMixin, Model, SurrogatePK):
 
     uid = db.Column(db.Integer, doc="用户ID")
 
-    __trunk_size = 1000
-
-    def __init__(self, **kwargs: Any):
-        self.store = kwargs.pop("store", None)
+    def __init__(self, store: FileStorage, **kwargs: Any):
+        self.store = store
         db.Model.__init__(self, **kwargs)

@@ -11,8 +11,8 @@ from marshmallow import Schema
 
 
 class ItemsFixtureBase(FixturesInjectBase):
-    TestCRUDTable:Type[Model]
-    TestChildTable:Type[Model]
+    TestCRUDTable: Type[Model]
+    TestChildTable: Type[Model]
 
     @pytest.fixture
     def temp_item_generator(self) -> Callable[[Type[Model]], List[Model]]:
@@ -30,11 +30,15 @@ class ItemsFixtureBase(FixturesInjectBase):
         return temp_item_generator_func
 
     @pytest.fixture
-    def crud_items(self, temp_item_generator: Callable[[Type[Model]], List[Model]]) -> List[Model]:
+    def crud_items(
+        self, temp_item_generator: Callable[[Type[Model]], List[Model]]
+    ) -> List[Model]:
         return temp_item_generator(self.TestCRUDTable)
 
     @pytest.fixture
-    def child_items(self, temp_item_generator: Callable[[Type[Model]], List[Model]]) -> List[Model]:
+    def child_items(
+        self, temp_item_generator: Callable[[Type[Model]], List[Model]]
+    ) -> List[Model]:
         return temp_item_generator(self.TestChildTable)
 
 

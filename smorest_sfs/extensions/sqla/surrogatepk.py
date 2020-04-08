@@ -3,7 +3,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ORM默认主键模块
 """
-from typing import Any, List, Union
+from typing import Any, List, Union, Type
 
 from flask_sqlalchemy import BaseQuery
 
@@ -82,7 +82,7 @@ class SurrogatePK:
     def update_by_id(
         cls,
         _id: int,
-        schema: Union[Schema, object],
+        schema: Union[Schema, Type[Schema]],  # type: ignore
         instance: Any,
         commit: bool = True,
     ) -> Any:

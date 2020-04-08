@@ -12,11 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from typing import Dict, NoReturn, Optional
+from typing import Dict, Optional
 from datetime import datetime
 
 from sqlalchemy.orm.exc import NoResultFound
-from flask_jwt_extended import decode_token, get_raw_jwt
+from flask_jwt_extended import decode_token
 
 from .models import TokenBlackList
 
@@ -25,10 +25,10 @@ def _epoch_utc_to_datetime(epoch_utc: str) -> datetime:
     """
     转换时间戳为日期时间
     """
-    return datetime.fromtimestamp(epoch_utc)
+    return datetime.fromtimestamp(float(epoch_utc))
 
 
-def is_token_revoked(decoded_token: Dict) -> bool:
+def is_token_revoked(decoded_token: Dict[str, str]) -> bool:
     """
     从数据库中寻找token是否被撤销
     """
@@ -45,7 +45,7 @@ def add_token_to_database(
     identity_claim: str,
     custom_token_type: Optional[str] = None,
     allow_expired: bool = False,
-) -> NoReturn:
+) -> None:
     """
     将新的Token解码后加入到数据库
 

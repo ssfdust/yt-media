@@ -16,6 +16,7 @@ from smorest_sfs.extensions import db
 
 class SAStatement(RenderableStatement):
     sa_sql: Select
+
     def __init__(self, *args: Any, **kwargs):
         pass
 
