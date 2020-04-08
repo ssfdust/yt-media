@@ -1,5 +1,5 @@
 {
     "reportUnknownParameterType": true,
     "typeshedPath": "/Development/typeshed",
-    "exclude": ["tasks", "migrations", "tests/utils", "tests/modules/"]
+    "exclude": ["tasks", "migrations", "tests/modules/"]
 }

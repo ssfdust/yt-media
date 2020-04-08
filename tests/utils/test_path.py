@@ -19,7 +19,7 @@ from typing import List
 
 class TestProjectPath:
     @pytest.mark.parametrize("_dir", ["tests", "smorest_sfs"])
-    def test_project_path(self, _dir):
+    def test_project_path(self, _dir: str):
         project_path = ProjectPath.get_project_path()
         dir_path = Path(project_path, _dir)
         assert dir_path.exists()
