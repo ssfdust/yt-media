@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """测试基本类型"""
-from typing import Dict
+from typing import Any
 import pytest
 from smorest_sfs.extensions.marshal.bases import BaseMsgSchema
 from smorest_sfs.extensions.marshal.bases import BaseIntListSchema
@@ -18,7 +18,7 @@ class TestBasesMaClass:
     @pytest.mark.parametrize(
         "data, result", [({"lst": []}, []), ({"lst": [1, 2, 3, 4]}, [1, 2, 3, 4]),],
     )
-    def test_base_int_list(self, data: Dict, result: Dict):
+    def test_base_int_list(self, data: Any, result: Any) -> None:
 
         schema = BaseIntListSchema()
         rv = schema.load(data)
@@ -59,7 +59,7 @@ class TestBasesMaClass:
             )
         ],
     )
-    def test_base_page(self, data: Dict, result: Dict):
+    def test_base_page(self, data: Any, result: Any) -> None:
 
         schema = BasePageSchema()
         rv = schema.dump(data)

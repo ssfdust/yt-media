@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-from typing import Any, Dict, Mapping, List
-from collections import OrderedDict
+from typing import Any, Dict, List
 from contextlib import contextmanager
 
 from flask import Response
@@ -63,7 +62,7 @@ class AutoAuthFlaskClient(FlaskClient):
         self._user.save()
         self._user = None
 
-    def open(self, *args: str, **kwargs: Any) -> JSONResponse:
+    def open(self, *args: str, **kwargs: Any) -> Any:
         if self._access_token is not None:
             kwargs = self._combine_headers(**kwargs)
 

@@ -26,17 +26,17 @@ from loguru._handler import Message
 from loguru._logger import Logger
 
 
-def log_to_queue(record: Message) -> Message:
+def log_to_queue(record: Message) -> Message:  # type: ignore
     queue = UniqueQueue()
     queue.put(record.record["message"])
     return record
 
 
-def inject_logger(logger: Logger) -> None:
+def inject_logger(logger: Logger) -> None:  # type: ignore
     logger.add(log_to_queue, serialize=False)
 
 
-def uninject_logger(logger: Logger) -> None:
+def uninject_logger(logger: Logger) -> None:  # type: ignore
     logger.remove()
 
 
@@ -59,7 +59,7 @@ class FixturesInjectBase:
     db: SQLAlchemy
 
     @pytest.fixture(autouse=True)
-    def auto_injector_fixture(self, request: SubRequest) -> None:
+    def auto_injector_fixture(self, request: SubRequest) -> None:  # type: ignore
         names = self.fixture_names
         for name in names:
             setattr(self, name, request.getfixturevalue(name))
@@ -101,7 +101,7 @@ class GeneralModify(FixturesInjectBase):
 
     def _delete_request(
         self,
-    ) -> Tuple[JSONResponse, Tuple[Union[EmailTemplate, Project, Role]]]:
+    ) -> Tuple[Any, Tuple[Union[EmailTemplate, Project, Role]]]:
         with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
             with self.flask_app.test_request_context():
                 url = url_for(self.view)
@@ -111,7 +111,7 @@ class GeneralModify(FixturesInjectBase):
                 assert resp.status_code == 200 and all([i.deleted for i in items])
                 return resp, items
 
-    def __item_modify_request(self, method, **kwargs):
+    def __item_modify_request(self, method: str, **kwargs: Any) -> Any:
         with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
             with self.flask_app.test_request_context():
                 item = self._get_modified_item()
@@ -137,7 +137,7 @@ class GeneralModify(FixturesInjectBase):
 
 
 class GeneralGet(FixturesInjectBase):
-    def _get_view(self, endpoint: str, **kwargs):
+    def _get_view(self, endpoint: str, **kwargs: Any) -> Any:
         with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
             with self.flask_app.test_request_context():
                 url = url_for(endpoint, **kwargs)

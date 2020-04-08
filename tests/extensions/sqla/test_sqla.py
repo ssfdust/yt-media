@@ -110,7 +110,7 @@ class TestBaseRUDByID(ItemsFixtureBase):
             with pytest.raises(NotFound):
                 self.TestCRUDTable.get_by_id(item_id)
 
-    def test_base_update_by_id(self, db: SQLAlchemy):
+    def test_base_update_by_id(self, db: SQLAlchemy):  # type: ignore
         item = self.TestParentTable.create(name="base_update_by_id")
         temp_item = self.TestParentTable(name="test_update_by_id")
         self.TestParentTable.update_by_id(item.id, self.TestParentSchema, temp_item)

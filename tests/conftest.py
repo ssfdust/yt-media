@@ -3,7 +3,7 @@
 import os
 import shutil
 import uuid
-from typing import Callable, Iterator, Tuple
+from typing import Callable, Iterator, Tuple, Type, Union
 from loguru import logger
 
 import pytest
@@ -12,13 +12,11 @@ from flask import Flask
 
 from migrations.initial_development_data import init_permission, init_email_templates
 from smorest_sfs.app import create_app, ENABLED_MODULES
-from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
-from smorest_sfs.extensions.sqla import Model
+from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy  # type: ignore
 from smorest_sfs.modules.users.models import User, Model
 from smorest_sfs.utils.paths import UploadPath
 
 from ._utils import client, users, injection, tables
-from typing import Iterator
 
 
 class fakeuuid:
@@ -26,7 +24,7 @@ class fakeuuid:
 
 
 @pytest.fixture
-def patch_uuid(monkeypatch: MonkeyPatch):
+def patch_uuid(monkeypatch: MonkeyPatch):  # type: ignore
     monkeypatch.setattr(uuid, "uuid4", fakeuuid)
 
 
@@ -65,7 +63,7 @@ def db(flask_app: Flask) -> Iterator[SQLAlchemy]:
 
 
 @pytest.fixture(scope="session")
-def flask_app_client(flask_app: Flask) -> client.AutoAuthFlaskClient:
+def flask_app_client(flask_app: Flask) -> client.FlaskClient:
     # pylint: disable=W0613, W0621
     flask_app.test_client_class = client.AutoAuthFlaskClient
     flask_app.response_class = client.JSONResponse
@@ -73,9 +71,9 @@ def flask_app_client(flask_app: Flask) -> client.AutoAuthFlaskClient:
 
 
 @pytest.fixture(scope="session")
-def temp_db_instance_helper(db: SQLAlchemy) -> Callable:
+def temp_db_instance_helper(db: SQLAlchemy) -> Callable:  # type: ignore
     # pylint: disable=W0613, W0621
-    def temp_db_instance_manager(*instances: Tuple[Model]) -> db.Model:
+    def temp_db_instance_manager(*instances: Model) -> Iterator[Union[Model, Tuple[Model]]]:
         for instance in instances:
             instance.save()
 

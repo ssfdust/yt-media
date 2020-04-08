@@ -23,7 +23,7 @@ def test_create_app_passing_config_name(flask_config_name: str) -> None:
 
 @pytest.mark.parametrize("flask_config_name", ["development", "testing"])
 def test_create_app_passing_FLASK_ENV_env(
-    monkeypatch: MonkeyPatch, flask_config_name: str
+    monkeypatch: MonkeyPatch, flask_config_name: str  # type: ignore
 ) -> None:
     monkeypatch.setenv("FLASK_ENV", flask_config_name)
     create_app(ENABLED_MODULES)

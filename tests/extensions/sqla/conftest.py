@@ -4,7 +4,7 @@
 
 import datetime
 import os
-from typing import Any, Iterator, Type
+from typing import Any, Iterator, List, Type
 
 import pytest
 from flask import Flask
@@ -12,7 +12,7 @@ from marshmallow import Schema, fields
 
 from smorest_sfs.extensions import babel
 from smorest_sfs.extensions.sqla import Model, SurrogatePK
-from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
+from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy  # type: ignore
 from smorest_sfs.plugins.sa import SAQuery, SAStatement
 from tests._utils.tables import drop_tables
 
@@ -24,7 +24,7 @@ TABLES = [
 ]
 
 
-def get_inited_app(db: SQLAlchemy) -> Flask:
+def get_inited_app(db: SQLAlchemy) -> Flask:  # type: ignore
     # pylint: disable=W0621
     flask_app = Flask("TestSqla")
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
@@ -45,7 +45,7 @@ def db() -> SQLAlchemy:
 
 
 @pytest.fixture(scope="package")
-def TestCRUDTable(db: SQLAlchemy) -> Type[Model]:
+def TestCRUDTable(db: SQLAlchemy) -> Type[Model]:  # type: ignore
     # pylint: disable=W0621
     class TestCRUDTable(SurrogatePK, Model):
         __tablename__ = "sqla_test_crud_table"
@@ -56,7 +56,7 @@ def TestCRUDTable(db: SQLAlchemy) -> Type[Model]:
 
 
 @pytest.fixture(scope="package")
-def TestParentTable(db: SQLAlchemy) -> Type[Model]:
+def TestParentTable(db: SQLAlchemy) -> Type[Model]:  # type: ignore
     # pylint: disable=W0621
     class TestParentTable(SurrogatePK, Model):
         __tablename__ = "test_crud_parent_table"
@@ -66,7 +66,7 @@ def TestParentTable(db: SQLAlchemy) -> Type[Model]:
 
 
 @pytest.fixture(scope="package")
-def TestChildTable(db: SQLAlchemy, TestParentTable: Type[Model]) -> Type[Model]:
+def TestChildTable(db: SQLAlchemy, TestParentTable: Type[Model]) -> Type[Model]:  # type: ignore
     # pylint: disable=W0621
     class TestChildTable(SurrogatePK, Model):
         __tablename__ = "test_crud_child_table"
@@ -88,7 +88,7 @@ def tables(TestCRUDTable: Type[Model], TestChildTable: Type[Model]) -> None:
 
 
 @pytest.fixture(scope="package", autouse=True)
-def app(db: SQLAlchemy, tables: Any) -> Flask:
+def app(db: SQLAlchemy, tables: Any) -> Iterator[Flask]:  # type: ignore
     # pylint: disable=W0621, W0613
     flask_app = get_inited_app(db)
 
@@ -114,7 +114,7 @@ def TestChildSchema() -> Type[Schema]:
 
 
 @pytest.fixture(scope="package")
-def TestParentSchema(TestChildSchema: Type[Schema]) -> Type[Schema]:
+def TestParentSchema(TestChildSchema: Type[Schema]) -> Type[Schema]:  # type: ignore
     # pylint: disable=W0621, W0613
     class TestParentSchema(TestChildSchema):
         children = fields.List(fields.Nested(TestChildSchema))
@@ -126,7 +126,7 @@ def TestParentSchema(TestChildSchema: Type[Schema]) -> Type[Schema]:
 
 
 @pytest.fixture
-def TestTableTeardown(db: SQLAlchemy) -> Iterator[None]:
+def TestTableTeardown(db: SQLAlchemy) -> Iterator[None]:  # type: ignore
     # pylint: disable=W0621, W0613
     yield
     for table in [
@@ -139,7 +139,7 @@ def TestTableTeardown(db: SQLAlchemy) -> Iterator[None]:
 
 
 @pytest.fixture
-def TestSASql(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAStatement]:
+def TestSASql(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAStatement]:  # type: ignore
     # pylint: disable=W0621, W0613
     class TestSASql(SAStatement):
         def __init__(self, name):
@@ -151,13 +151,13 @@ def TestSASql(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAStatement]:
 
 
 @pytest.fixture
-def TestOneTableQuery(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:
+def TestOneTableQuery(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:  # type: ignore
     # pylint: disable=W0621, W0613
     class TestOneTableQuery(SAQuery):
         def __init__(self):
             self.query = TestCRUDTable.query.filter(TestCRUDTable.name == "bbc")
 
-        def get_record(self):
+        def get_record(self) -> List[Model]:
             return self.query.all()
 
     return TestOneTableQuery
@@ -165,7 +165,7 @@ def TestOneTableQuery(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuer
 
 @pytest.fixture
 def TestTwoTablesQuery(
-    db: SQLAlchemy, TestCRUDTable: Type[Model], TestChildTable: Type[Model]
+    db: SQLAlchemy, TestCRUDTable: Type[Model], TestChildTable: Type[Model]  # type: ignore
 ) -> Type[SAQuery]:
     # pylint: disable=W0621, W0613
     class TestTwoTablesQuery(SAQuery):
@@ -178,14 +178,14 @@ def TestTwoTablesQuery(
                 TestCRUDTable.id.label("crud_id"),
             ).filter(TestCRUDTable.name == "bbc")
 
-        def get_record(self):
+        def get_record(self) -> List[Model]:
             return self.query.all()
 
     return TestTwoTablesQuery
 
 
 @pytest.fixture
-def TestOneColQuery(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:
+def TestOneColQuery(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:  # type: ignore
     # pylint: disable=W0621, W0613
     class TestOneColQuery(SAQuery):
         def __init__(self):
@@ -193,7 +193,7 @@ def TestOneColQuery(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]
                 TestCRUDTable.name == "bbc"
             )
 
-        def get_record(self):
+        def get_record(self) -> List[Model]:
             return self.query.all()
 
     return TestOneColQuery

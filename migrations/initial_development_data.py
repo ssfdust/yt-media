@@ -3,6 +3,7 @@
 """
 from datetime import datetime
 from getpass import getpass
+from smorest_sfs.utils.storages import load_avator_from_path
 from typing import Any, List, Type, Optional
 
 from smorest_sfs.modules.auth.permissions import (
@@ -68,6 +69,7 @@ def init(password: Optional[str] = None) -> None:
         filetype="image/jpeg",
         path="default/AdminAvator.jpg",
         uid=1,
+        store=load_avator_from_path("default/AdminAvator.jpg")
     )
     UserInfo.create(user=root, avator=avator)
     root.roles.append(su_role)

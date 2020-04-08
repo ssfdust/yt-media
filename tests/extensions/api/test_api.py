@@ -1,5 +1,5 @@
 """测试API"""
-from typing import Dict
+from typing import Any, Dict
 from flask.views import MethodView
 import pytest
 from flask_smorest import Blueprint
@@ -9,6 +9,7 @@ from smorest_sfs.extensions.sqla import Model
 from marshmallow import Schema
 from flask_smorest import Api
 from flask import Flask
+from flask_sqlalchemy import BaseQuery
 
 
 class TestApi(FixturesInjectBase):
@@ -19,7 +20,7 @@ class TestApi(FixturesInjectBase):
 
     fixture_names = ("app", "api", "TestPagination", "TestPageSchema")
 
-    def setup_blp(self):
+    def setup_blp(self) -> None:
         blp = Blueprint("tests", "tests")
 
         TestPagination = self.TestPagination
@@ -28,7 +29,7 @@ class TestApi(FixturesInjectBase):
         class Pets(MethodView):  # pylint: disable=W0612
             @blp.response(TestPageSchema)
             @paginate()
-            def get(self):
+            def get(self) -> BaseQuery:
                 """List pets"""
                 return TestPagination.query.order_by(TestPagination.id)
 
@@ -55,7 +56,7 @@ class TestApi(FixturesInjectBase):
             )
         ],
     )
-    def test_api(self, meta: Dict):
+    def test_api(self, meta: Dict[str, Any]) -> None:
         # pylint: disable=W0613
         self.setup_blp()
         data = self.get_test_json("pets/?page=2&per_page=5")
