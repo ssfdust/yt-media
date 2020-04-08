@@ -56,7 +56,7 @@ class UserView(MethodView):
     @blp.arguments(GeneralLikeArgs, location="query", as_kwargs=True)
     @blp.response(schemas.UserPageSchema)
     @paginate()
-    def get(self, name) -> BaseQuery:
+    def get(self, name: str) -> BaseQuery:
         # pylint: disable=unused-argument
         """
         获取所有用户信息——分页

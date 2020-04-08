@@ -18,9 +18,10 @@
     验证模块
 """
 from datetime import timedelta
+from typing import Optional
 from sqlalchemy.orm.exc import NoResultFound
 
-from flask_smorest import abort
+from flask_smorest import abort  # type: ignore
 from flask_jwt_extended import create_access_token, get_raw_jwt
 from flask import current_app as app
 
@@ -29,7 +30,7 @@ from smorest_sfs.modules.auth.models import TokenBlackList
 from smorest_sfs.modules.users.models import User
 
 
-def confirm_current_token(token_type: str, revoked: bool = True) -> User:
+def confirm_current_token(token_type: str, revoked: bool = True) -> Optional[User]:
     """
     验证token
 

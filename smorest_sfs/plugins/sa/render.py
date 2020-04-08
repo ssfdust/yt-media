@@ -5,9 +5,8 @@
 
     渲染表格模块
 """
-from typing import List, Any, Union, List, Dict
+from typing import List, Any
 from abc import ABC, abstractmethod, abstractstaticmethod
-from sqlalchemy.engine.result import RowProxy
 from tabulate import tabulate
 
 
@@ -25,11 +24,11 @@ class TableRender(ABC):
         raise NotImplementedError
 
     @abstractstaticmethod
-    def parse_records(records: List[RowProxy]) -> Any:
+    def parse_records(records: List[Any]) -> Any:
         """处理结果"""
         raise NotImplementedError
 
-    def _render_data_table(self, records: List[RowProxy]) -> str:
+    def _render_data_table(self, records: List[Any]) -> str:
         headers = self.get_keys()
-        records = self.parse_records(records)
+        records = self.parse_records(records)  # type: ignore
         return tabulate(records, headers=headers, tablefmt="fancy_grid")

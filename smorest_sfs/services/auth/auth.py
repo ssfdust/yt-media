@@ -4,11 +4,11 @@
 验证用户登录
 """
 from contextlib import contextmanager
-from typing import Dict
+from typing import Dict, Iterator, Optional
 
 from flask import current_app
 from flask_jwt_extended import create_access_token, create_refresh_token
-from flask_smorest import abort
+from flask_smorest import abort  # type: ignore
 from loguru import logger
 
 from smorest_sfs.extensions.storage.captcha import CaptchaStore
@@ -24,7 +24,7 @@ class UserLoginChecker:
         self.code = code
         self._token = token
 
-    def _check_capture_code(self) -> bool:
+    def _check_capture_code(self) -> Optional[bool]:
         store = CaptchaStore(self._token)
         try:
             store.verify(self.code)
@@ -57,7 +57,7 @@ class UserLoginChecker:
         return True
 
     @contextmanager
-    def check(self) -> User:
+    def check(self) -> Iterator[User]:
         if self._check_capture_code() and self._check_user() and self._check_passwd():
             yield self.user
 

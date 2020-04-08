@@ -2,7 +2,6 @@
     sa模块
 """
 from typing import Any, Union, Type
-from sqlalchemy import select
 
 from smorest_sfs.extensions import db
 
@@ -10,7 +9,7 @@ from .query import SAQuery
 from .statement import SAStatement
 
 
-def _execute_sql(sa_sql: select) -> Any:
+def _execute_sql(sa_sql: Any) -> Any:
     cursor = db.session.execute(sa_sql)
     return cursor.fetchall()
 

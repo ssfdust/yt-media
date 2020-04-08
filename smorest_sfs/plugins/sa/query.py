@@ -11,7 +11,7 @@ from flask_sqlalchemy import BaseQuery
 from loguru import logger
 
 from .helpers import QueryAnalysis
-from .statement import SAStatement, Select
+from .statement import SAStatement
 
 
 class SAQuery(SAStatement):
@@ -23,7 +23,7 @@ class SAQuery(SAStatement):
     def get_record(self) -> Any:
         raise NotImplementedError
 
-    def get_sa_sql(self) -> Select:
+    def get_sa_sql(self) -> Any:
         return self.query.statement
 
     def get_keys(self) -> List[str]:

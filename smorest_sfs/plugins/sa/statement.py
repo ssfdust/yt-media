@@ -8,7 +8,6 @@ from typing import Dict, List, Any
 
 from loguru import logger
 from sqlalchemy.sql.selectable import Select
-from sqlalchemy.engine.result import RowProxy
 
 from .abstract import RenderableStatement
 from smorest_sfs.extensions import db
@@ -17,7 +16,7 @@ from smorest_sfs.extensions import db
 class SAStatement(RenderableStatement):
     sa_sql: Select
 
-    def __init__(self, *args: Any, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         pass
 
     def get_sa_sql(self) -> Select:
@@ -30,7 +29,7 @@ class SAStatement(RenderableStatement):
         return self.sa_sql.limit(size)
 
     @staticmethod
-    def parse_records(records: List[RowProxy]) -> List[Dict[str, Any]]:
+    def parse_records(records: List[Any]) -> List[Dict[str, Any]]:
         return [dict(record.items()) for record in records]
 
     def render_results(self, size: int = 50) -> None:

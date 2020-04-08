@@ -3,16 +3,15 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     一些辅助函数模块
 """
-from typing import Dict, List
+from typing import Any, Dict, List
 
-from flask_sqlalchemy import BaseQuery
 from smorest_sfs.extensions.sqla import Model
 
 
 class QueryAnalysis:
     """分析Query的keys以及parse函数"""
 
-    def __init__(self, query: BaseQuery):
+    def __init__(self, query: Any):
         self.query = query
         self.col_desc: List[Dict[str, Model]] = query.column_descriptions
         self.is_direct = self.__is_direct(self.col_desc)
