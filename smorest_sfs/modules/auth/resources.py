@@ -20,24 +20,24 @@
     用户验证的API资源模块
 """
 from datetime import datetime
-from typing import Any, Dict, TypeVar, Union
+from typing import Any, Dict, Optional, TypeVar, Union
 
 from captcha.image import ImageCaptcha
 from flask import current_app as app
 from flask import send_file, url_for
 from flask.views import MethodView
-from flask_jwt_extended import (create_access_token, current_user,
-                                get_jwt_identity)
+from flask_jwt_extended import create_access_token, current_user, get_jwt_identity
 from flask_smorest import abort  # type: ignore
 from loguru import logger
 
 from smorest_sfs.extensions.marshal import BaseMsgSchema
 from smorest_sfs.extensions.storage.captcha import CaptchaStore
 from smorest_sfs.modules.users.models import User
-from smorest_sfs.services.auth.auth import (UserLoginChecker, login_user,
-                                            logout_user)
-from smorest_sfs.services.auth.confirm import (confirm_current_token,
-                                               generate_confirm_token)
+from smorest_sfs.services.auth.auth import UserLoginChecker, login_user, logout_user
+from smorest_sfs.services.auth.confirm import (
+    confirm_current_token,
+    generate_confirm_token,
+)
 from smorest_sfs.services.mail import PasswdMailSender
 
 from . import blp, params, schemas
@@ -65,9 +65,8 @@ class LoginView(MethodView):
         用户名密码登录后，返回基本信息以及token，
         登录方式为token方式
         """
-        user = User.get_by_keyword(args["email"])
         with UserLoginChecker(
-            user, args["password"], args["captcha"], args["token"]
+            args["email"], args["password"], args["captcha"], args["token"]
         ).check() as user:
             data = login_user(user)
 
@@ -98,7 +97,7 @@ class ForgetPasswordView(MethodView):
     @blp.arguments(params.EmailParam, as_kwargs=True)
     @blp.response(code=404, description="用户不存在")
     @blp.response(BaseMsgSchema, description="成功")
-    def post(self, email: str) -> Dict[str, Union[str, int]]:
+    def post(self, email: str) -> Optional[Dict[str, Union[str, int]]]:
         """
         忘记密码
 
@@ -111,11 +110,13 @@ class ForgetPasswordView(MethodView):
 
         token = generate_confirm_token(user, "passwd")
         url = url_for("Auth.ResetForgotPasswordView", token=token, _external=True)
-        sender = PasswdMailSender(
-            to=user.email, content={"url": url, "message": "找回密码"}
-        )
-        sender.send()
-
+        if user.email:
+            sender = PasswdMailSender(
+                to=user.email, content={"url": url, "message": "找回密码"}
+            )
+            sender.send()
+        else:
+            abort(404, message="未填写电子邮箱")
         return {"code": 0, "msg": "success"}
 
 

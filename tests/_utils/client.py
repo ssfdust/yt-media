@@ -25,8 +25,6 @@ class JSONResponse(Response):
         return json.loads(self.get_data(as_text=True), object_pairs_hook=dict)
 
 
-
-
 class AutoAuthFlaskClient(FlaskClient):
     """
     A helper FlaskClient class with a useful for testing ``login`` context

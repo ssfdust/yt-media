@@ -12,8 +12,7 @@ from typing import Any, List, Type, Union
 
 import sqlalchemy as sa
 from marshmallow import Schema
-from sqlalchemy.orm.attributes import (del_attribute, get_attribute,
-                                       set_attribute)
+from sqlalchemy.orm.attributes import del_attribute, get_attribute, set_attribute
 
 from .db_instance import db
 from .errors import pgerr_to_customerr
@@ -120,7 +119,7 @@ class CRUDMixin(UByMaMixin):
 
         将数据库行的deleted字段设置为ture
         """
-        self.deleted = True
+        setattr(self, "deleted", True)
         return self.update(commit=commit)
 
     def hard_delete(self, commit: bool = True) -> Union[bool, None]:

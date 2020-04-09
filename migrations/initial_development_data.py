@@ -5,8 +5,9 @@ from datetime import datetime
 from getpass import getpass
 from typing import Any, List, Optional, Type
 
-from smorest_sfs.modules.auth.permissions import \
-    DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping
+from smorest_sfs.modules.auth.permissions import (
+    DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping,
+)
 from smorest_sfs.modules.auth.permissions import PERMISSIONS, ROLES
 from smorest_sfs.modules.email_templates.models import EmailTemplate
 from smorest_sfs.modules.roles.models import Permission, Role

@@ -32,10 +32,10 @@ def is_token_revoked(decoded_token: Dict[str, str]) -> bool:
     """
     从数据库中寻找token是否被撤销
     """
-    jti = decoded_token["jti"]
+    jti: str = decoded_token["jti"]
     try:
-        token = TokenBlackList.query.filter_by(jti=jti).one()
-        return bool(token.revoked)
+        token: TokenBlackList = TokenBlackList.query.filter_by(jti=jti).one()
+        return token.revoked
     except NoResultFound:
         return True
 

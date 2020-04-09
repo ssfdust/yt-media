@@ -16,13 +16,17 @@ from werkzeug.local import LocalProxy
 
 from smorest_sfs.extensions import db
 from smorest_sfs.extensions.api.decorators import paginate
-from smorest_sfs.extensions.marshal.bases import (BaseIntListSchema,
-                                                  BaseMsgSchema,
-                                                  GeneralLikeArgs)
+from smorest_sfs.extensions.marshal.bases import (
+    BaseIntListSchema,
+    BaseMsgSchema,
+    GeneralLikeArgs,
+)
 from smorest_sfs.modules.auth import PERMISSIONS, ROLES
-from smorest_sfs.modules.auth.decorators import (doc_login_required,
-                                                 permission_required,
-                                                 role_required)
+from smorest_sfs.modules.auth.decorators import (
+    doc_login_required,
+    permission_required,
+    role_required,
+)
 from smorest_sfs.services.users import create_user
 
 from . import blp, models, schemas

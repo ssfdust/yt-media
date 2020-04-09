@@ -17,7 +17,6 @@ except ImportError:
     pass
 
 
-
 class Task(BaseTask):
     """
     封装Task以便于支持装饰器

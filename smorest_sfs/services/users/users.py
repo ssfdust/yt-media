@@ -45,7 +45,7 @@ def create_user(user: User, is_admin: bool = False) -> User:
 
     创建头像信息,创建用户基本信息
     """
-    user.roles = Role.get_by_user_default(is_admin)
+    user.roles = Role.get_by_user_default(is_admin)  # type: ignore
     avator = (
         Storages(
             store=load_avator_from_path(ADMIN_AVATOR["path"]),

@@ -9,8 +9,13 @@ from typing import TypeVar, Union
 from flask import send_file
 from werkzeug.datastructures import FileStorage
 
-from .paths import (ProjectPath, UploadPath, get_avator_path,
-                    get_relative_pathstr, make_uploaded_path)
+from .paths import (
+    ProjectPath,
+    UploadPath,
+    get_avator_path,
+    get_relative_pathstr,
+    make_uploaded_path,
+)
 
 Response = TypeVar("Response")
 

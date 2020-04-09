@@ -9,10 +9,19 @@ import shutil
 from invoke import task
 
 from tasks.app._utils import create_dirs
-from tasks.app.consts import (ADDED_MAPPING, ADDED_PERMISSIONS, ADDED_ROLE,
-                              ADDED_SU, BACKUP_PERMISSIONS_FILE, EOF_MAPPING,
-                              EOF_PEMISSIONS, EOF_ROLES, EOF_SU,
-                              NEW_PERMISSIONS_FILE, PERMISSIONS_FILE)
+from tasks.app.consts import (
+    ADDED_MAPPING,
+    ADDED_PERMISSIONS,
+    ADDED_ROLE,
+    ADDED_SU,
+    BACKUP_PERMISSIONS_FILE,
+    EOF_MAPPING,
+    EOF_PEMISSIONS,
+    EOF_ROLES,
+    EOF_SU,
+    NEW_PERMISSIONS_FILE,
+    PERMISSIONS_FILE,
+)
 from tasks.app.crud import CrudOpts
 
 log = logging.getLogger(__name__)  # pylint: disable=invalid-name

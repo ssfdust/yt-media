@@ -10,8 +10,7 @@ from _pytest.monkeypatch import MonkeyPatch
 from flask import Flask
 from loguru import logger
 
-from migrations.initial_development_data import (init_email_templates,
-                                                 init_permission)
+from migrations.initial_development_data import init_email_templates, init_permission
 from smorest_sfs.app import ENABLED_MODULES, create_app
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy  # type: ignore
 from smorest_sfs.modules.users.models import Model, User

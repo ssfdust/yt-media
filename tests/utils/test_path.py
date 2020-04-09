@@ -7,9 +7,14 @@ from typing import List
 import pytest
 from freezegun import freeze_time
 
-from smorest_sfs.utils.paths import (WHITE_LIST, ProjectPath, UploadPath,
-                                     get_avator_path, get_relative_pathstr,
-                                     make_uploaded_path)
+from smorest_sfs.utils.paths import (
+    WHITE_LIST,
+    ProjectPath,
+    UploadPath,
+    get_avator_path,
+    get_relative_pathstr,
+    make_uploaded_path,
+)
 
 
 class TestProjectPath:

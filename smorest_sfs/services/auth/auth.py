@@ -10,6 +10,7 @@ from flask import current_app
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_smorest import abort  # type: ignore
 from loguru import logger
+from werkzeug.exceptions import NotFound
 
 from smorest_sfs.extensions.storage.captcha import CaptchaStore
 from smorest_sfs.modules.auth.helpers import add_token_to_database
@@ -18,8 +19,9 @@ from smorest_sfs.modules.users.models import User
 
 
 class UserLoginChecker:
-    def __init__(self, user: User, password: str, code: str, token: str):
-        self.user = user
+    def __init__(self, email: str, password: str, code: str, token: str):
+        self.email = email
+        self.user: User
         self.password = password
         self.code = code
         self._token = token
@@ -29,16 +31,15 @@ class UserLoginChecker:
         try:
             store.verify(self.code)
         except ValueError:
-            logger.error(
-                f"{self.user.email} 登录时验证码{self.code}错误，\n" f"正确验证码为{store._code}"
-            )
+            logger.error(f"登录时验证码{self.code}错误，\n" f"正确验证码为{store._code}")
             abort(403, message="验证码错误")
-        except AttributeError:
-            logger.error(f"{self.user.email} 登录时token{self._token}错误，\n")
-            abort(403, message="验证码token错误")
+        except NotFound:
+            logger.error(f"登录时token{self._token}错误，\n")
+            abort(404, message="验证码token不存在")
         return True
 
     def _check_user(self) -> bool:
+        self.user = User.get_by_keyword(self.email)
         if self.user is None:
             logger.warning("登录用户不存在")
             abort(404, message="用户不存在")

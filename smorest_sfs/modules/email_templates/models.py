@@ -22,8 +22,11 @@
 
     电子邮件模板的ORM模块
 """
+from __future__ import annotations
 
-from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
+from sqlalchemy import Column, String, Text
+
+from smorest_sfs.extensions.sqla import Model, SurrogatePK
 
 
 class EmailTemplate(Model, SurrogatePK):
@@ -35,14 +38,15 @@ class EmailTemplate(Model, SurrogatePK):
 
     __tablename__ = "email_templates"
 
-    name = db.Column(
-        db.String(length=128), nullable=False, unique=True, doc="email_templates的名称"
+    name = Column(
+        String(length=128), nullable=False, unique=True, doc="email_templates的名称"
     )
-    template = db.Column(db.Text, nullable=False, doc="模板")
+    template = Column(Text, nullable=False, doc="模板")
 
     @classmethod
-    def get_by_name(cls, name: str) -> Model:
-        return cls.query.filter_by(name=name).one()
+    def get_by_name(cls, name: str) -> EmailTemplate:
+        email_template: EmailTemplate = cls.query.filter_by(name=name).one()
+        return email_template
 
     @classmethod
     def get_template(cls, name: str) -> str:

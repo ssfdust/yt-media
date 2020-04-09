@@ -5,9 +5,11 @@ from typing import Any
 
 import pytest
 
-from smorest_sfs.extensions.marshal.bases import (BaseIntListSchema,
-                                                  BaseMsgSchema,
-                                                  BasePageSchema)
+from smorest_sfs.extensions.marshal.bases import (
+    BaseIntListSchema,
+    BaseMsgSchema,
+    BasePageSchema,
+)
 
 
 class TestBasesMaClass:

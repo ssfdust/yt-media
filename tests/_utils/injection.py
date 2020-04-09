@@ -48,7 +48,7 @@ class FixturesInjectBase:
     model: Type[Model]
     schema: Type[Schema]
     delete_param_key: str
-    fixture_names: Union[Tuple[str], Tuple] = ()
+    fixture_names: Tuple[str, ...] = tuple()
 
     flask_app_client: AutoAuthFlaskClient
     flask_app: Flask

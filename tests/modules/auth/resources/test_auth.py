@@ -25,10 +25,10 @@ class TestAuthHelper(FixturesInjectBase):
 class TestLogin(TestAuthHelper):
     @pytest.mark.parametrize(
         "captcha, code, token",
-        [("2345", 200, "1212"), ("1111", 403, "1212"), ("1111", 403, "wsfq"),],
+        [("2345", 200, "1212"), ("1111", 403, "1212"), ("1111", 404, "wsfq"),],
     )
     @pytest.mark.usefixtures("flask_app", "regular_user", "patch_code")
-    def test_user_login_captcha(self, captcha: str, code: int, token: str):
+    def test_user_login_captcha(self, captcha: str, code: int, token: str) -> None:
         self.flask_app_client.get("/api/v1/auth/captcha?token=1212")
         login_data = {
             "email": "regular_user@email.com",
@@ -38,6 +38,17 @@ class TestLogin(TestAuthHelper):
         }
         resp = self.flask_app_client.post("/api/v1/auth/login", json=login_data)
         assert resp.status_code == code
+
+    @pytest.mark.usefixtures("flask_app", "regular_user", "patch_code")
+    def test_user_login_captcha_missing_never_auth_user(self) -> None:
+        login_data = {
+            "email": "unexsit_user@email.com",
+            "password": "none_password",
+            "token": "wsfq",
+            "captcha": "1111",
+        }
+        resp = self.flask_app_client.post("/api/v1/auth/login", json=login_data)
+        assert resp.status_code == 404 and resp.json["message"] == "验证码token不存在"
 
     @pytest.mark.parametrize(
         "username, password, active, code",
@@ -51,7 +62,7 @@ class TestLogin(TestAuthHelper):
     @pytest.mark.usefixtures("flask_app", "patch_code")
     def test_user_login_status(
         self, username: str, password: str, active: bool, code: int
-    ):
+    ) -> None:
         self.inactive_user.update(active=active)
         self.flask_app_client.get("/api/v1/auth/captcha?token=1234")
         login_data = {
@@ -63,7 +74,7 @@ class TestLogin(TestAuthHelper):
         resp = self.flask_app_client.post("/api/v1/auth/login", json=login_data)
         assert resp.status_code == code
 
-    def test_user_expired_login(self, expired_token_headers: str):
+    def test_user_expired_login(self, expired_token_headers: str) -> None:
         with self.flask_app.test_request_context():
             url = url_for("Auth.LogoutView")
             resp = self.flask_app_client.post(url, headers=expired_token_headers)
@@ -105,7 +116,7 @@ class TestForgetPasswd(TestAuthHelper):
     @pytest.mark.parametrize(
         "email, code", [("test", 404), ("forget_passwd_user@email.com", 200),]
     )
-    def test_user_forget_password_access(self, email: str, code: str):
+    def test_user_forget_password_access(self, email: str, code: str) -> None:
         resp = self.flask_app_client.post(
             "/api/v1/auth/forget-password", json={"email": email}
         )
@@ -113,7 +124,7 @@ class TestForgetPasswd(TestAuthHelper):
         assert resp.status_code == code
 
     @pytest.mark.usefixtures("patched_mail")
-    def test_reset_passwd_pre_get(self):
+    def test_reset_passwd_pre_get(self) -> None:
         TempStore.value = MAIL_QUEUE.get(timeout=3)
         resp = self.flask_app_client.get(TempStore.value)
         assert resp.status_code == 200

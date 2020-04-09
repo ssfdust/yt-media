@@ -8,8 +8,7 @@
 from functools import wraps
 from typing import Any, Callable
 
-from flask_jwt_extended import (current_user, jwt_refresh_token_required,
-                                jwt_required)
+from flask_jwt_extended import current_user, jwt_refresh_token_required, jwt_required
 from flask_smorest import abort  # type: ignore
 from loguru import logger
 

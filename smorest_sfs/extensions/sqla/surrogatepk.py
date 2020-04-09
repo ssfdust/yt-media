@@ -7,6 +7,7 @@ from typing import Any, List, Type, Union
 
 from flask_sqlalchemy import BaseQuery
 from marshmallow import Schema
+from sqlalchemy import Boolean, Column, DateTime, Integer
 
 from .db_instance import db
 from .helpers import utcnow
@@ -25,26 +26,24 @@ class SurrogatePK:
 
     query: BaseQuery
 
-    id = db.Column(
-        db.Integer, primary_key=True, info={"marshmallow": {"dump_only": True}}
-    )
-    deleted = db.Column(
-        db.Boolean,
+    id = Column(Integer, primary_key=True, info={"marshmallow": {"dump_only": True}})
+    deleted = Column(
+        Boolean,
         nullable=False,
         doc="已删除",
         default=False,
         info={"marshmallow": {"dump_only": True}},
     )
-    modified = db.Column(
-        db.DateTime(),
+    modified = Column(
+        DateTime(),
         nullable=False,
         doc="修改时间",
         server_default=utcnow(),
         onupdate=db.select([utcnow()]),
         info={"marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}},
     )
-    created = db.Column(
-        db.DateTime(),
+    created = Column(
+        DateTime(),
         nullable=False,
         doc="创建时间",
         server_default=utcnow(),

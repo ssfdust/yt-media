@@ -10,8 +10,7 @@ import pyperclip
 import pytest
 
 from smorest_sfs.extensions.sqla import Model
-from smorest_sfs.plugins.sa import (SAQuery, debug_sql, execute,
-                                    render_limit_results)
+from smorest_sfs.plugins.sa import SAQuery, debug_sql, execute, render_limit_results
 from smorest_sfs.plugins.sa.statement import SAStatement
 from tests._utils.uniqueue import UniqueQueue
 from tests.extensions.sqla.test_sqla import ItemsFixtureBase

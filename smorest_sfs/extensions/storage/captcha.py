@@ -4,6 +4,8 @@ import secrets
 import string
 from typing import Optional
 
+from werkzeug.exceptions import NotFound
+
 from . import redis_store
 
 
@@ -37,3 +39,5 @@ class CaptchaStore:
     def _decode_code(self, code: Optional[bytes]) -> None:
         if code:
             self._code = code.decode("utf-8")
+        else:
+            raise NotFound
