@@ -4,7 +4,6 @@
 
     电子邮件模板模块的Schemas
 """
-
 from marshmallow import Schema, fields
 
 from smorest_sfs.extensions.marshal import ModelSchema
