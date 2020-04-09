@@ -73,7 +73,9 @@ def flask_app_client(flask_app: Flask) -> client.FlaskClient:
 @pytest.fixture(scope="session")
 def temp_db_instance_helper(db: SQLAlchemy) -> Callable:  # type: ignore
     # pylint: disable=W0613, W0621
-    def temp_db_instance_manager(*instances: Model) -> Iterator[Union[Model, Tuple[Model]]]:
+    def temp_db_instance_manager(
+        *instances: Model,
+    ) -> Iterator[Union[Model, Tuple[Model]]]:
         for instance in instances:
             instance.save()
 

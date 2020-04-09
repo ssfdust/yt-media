@@ -19,11 +19,10 @@
     用户验证参数模块
 """
 
-from marshmallow import fields
-from smorest_sfs.extensions import ma
+from marshmallow import fields, Schema
 
 
-class LoginParams(ma.Schema):
+class LoginParams(Schema):
     """
     登录用参数
 
@@ -39,7 +38,7 @@ class LoginParams(ma.Schema):
     token = fields.Str(required=True, allow_none=False, description="验证token")
 
 
-class JwtParam(ma.Schema):
+class JwtParam(Schema):
     """
     Jwt的Token参数
 
@@ -49,7 +48,7 @@ class JwtParam(ma.Schema):
     token = fields.Str(required=False, allow_none=False, description="token")
 
 
-class PasswdParam(ma.Schema):
+class PasswdParam(Schema):
     """
     验证密码
 
@@ -61,7 +60,7 @@ class PasswdParam(ma.Schema):
     confirm_password = fields.Str(required=True, allow_none=False, description="确认密码")
 
 
-class EmailParam(ma.Schema):
+class EmailParam(Schema):
     """
     邮箱参数
 
@@ -71,7 +70,7 @@ class EmailParam(ma.Schema):
     email = fields.Str(required=True, description="邮箱")
 
 
-class CaptchaParam(ma.Schema):
+class CaptchaParam(Schema):
     """
     验证图片Token参数
 

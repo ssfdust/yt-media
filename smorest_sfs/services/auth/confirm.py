@@ -30,7 +30,7 @@ from smorest_sfs.modules.auth.models import TokenBlackList
 from smorest_sfs.modules.users.models import User
 
 
-def confirm_current_token(token_type: str, revoked: bool = True) -> Optional[User]:
+def confirm_current_token(token_type: str, revoked: bool = True) -> User:
     """
     验证token
 
@@ -44,13 +44,15 @@ def confirm_current_token(token_type: str, revoked: bool = True) -> Optional[Use
         token = TokenBlackList.query.filter_by(jti=jti, token_type=token_type).one()
         token.update(revoked=revoked)
         user = User.get_by_keyword(token.user_identity)
-        return user
     except NoResultFound:
         abort(403, message="token无效")
+    return user
 
 
 def generate_confirm_token(user: User, token_type: str) -> str:
-    token = create_access_token(identity=user.email, expires_delta=timedelta(days=1))
+    token: str = create_access_token(
+        identity=user.email, expires_delta=timedelta(days=1)
+    )
     add_token_to_database(token, app.config["JWT_IDENTITY_CLAIM"], token_type)
 
     return token

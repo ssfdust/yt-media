@@ -24,7 +24,7 @@ def set_default_for_instance(instance: Model) -> Model:
     return instance
 
 
-class utcnow(expression.FunctionElement):
+class utcnow(expression.FunctionElement):  # type: ignore
     # pylint: disable=R0901,C0115
     type = DateTime()
 

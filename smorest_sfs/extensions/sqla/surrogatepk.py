@@ -82,7 +82,7 @@ class SurrogatePK:
     def update_by_id(
         cls,
         _id: int,
-        schema: Union[Schema, Type[Schema]],  # type: ignore
+        schema: Union[Schema, Type[Schema]],
         instance: Any,
         commit: bool = True,
     ) -> Any:

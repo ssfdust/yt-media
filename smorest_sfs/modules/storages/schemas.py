@@ -13,13 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from marshmallow import fields
+from marshmallow import fields, Schema
 
-from smorest_sfs.extensions import ma
 from smorest_sfs.extensions.marshal.bases import UploadField, BaseMsgSchema
 
 
-class UploadParams(ma.Schema):
+class UploadParams(Schema):
     """
     上传参数
     """
@@ -27,7 +26,7 @@ class UploadParams(ma.Schema):
     file = UploadField(description="文件", allow_none=False, required=True)
 
 
-class StoragesSchema(ma.Schema):
+class StoragesSchema(Schema):
 
     file_id = fields.Int()
 

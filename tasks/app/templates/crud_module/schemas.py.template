@@ -22,14 +22,14 @@
     {{ module_title }}模块的Schemas
 """
 
-from smorest_sfs.extensions import ma
+from smorest_sfs.extensions.marshal import ModelSchema
 from smorest_sfs.extensions.marshal.bases import BasePageSchema, BaseMsgSchema
-from marshmallow import fields
+from marshmallow import fields, Schema
 
 from . import models
 
 
-class {{ model_name }}Schema(ma.ModelSchema):
+class {{ model_name }}Schema(ModelSchema):
     """
     {{ module_title }}的序列化类
     """
@@ -50,14 +50,14 @@ class {{ model_name }}ItemSchema(BaseMsgSchema):
     data = fields.Nested({{ model_name }}Schema)
 
 
-class {{ model_name }}OptsSchema(ma.Schema):
+class {{ model_name }}OptsSchema(Schema):
     """{{ module_title }}的选项"""
 
     class Meta:
         fields = ('id', 'name')
 
 
-class {{ model_name }}ListSchema(ma.Schema):
+class {{ model_name }}ListSchema(Schema):
     """{{ module_title }}的选项列表"""
 
     data = fields.List(fields.Nested({{ model_name }}OptsSchema))

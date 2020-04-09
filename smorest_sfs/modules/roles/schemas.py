@@ -22,14 +22,14 @@
     角色权限模块的Schemas
 """
 
-from smorest_sfs.extensions import ma
+from smorest_sfs.extensions.marshal import ModelSchema
 from smorest_sfs.extensions.marshal.bases import BasePageSchema, BaseMsgSchema
-from marshmallow import fields
+from marshmallow import fields, Schema
 
 from . import models
 
 
-class RoleSchema(ma.ModelSchema):
+class RoleSchema(ModelSchema):
     """
     角色权限的序列化类
     """
@@ -51,14 +51,14 @@ class RoleItemSchema(BaseMsgSchema):
     data = fields.Nested(RoleSchema)
 
 
-class RoleOptsSchema(ma.Schema):
+class RoleOptsSchema(Schema):
     """角色权限的选项"""
 
     class Meta:
         fields = ("id", "name")
 
 
-class RoleListSchema(ma.Schema):
+class RoleListSchema(Schema):
     """角色权限的选项列表"""
 
     data = fields.List(fields.Nested(RoleOptsSchema))

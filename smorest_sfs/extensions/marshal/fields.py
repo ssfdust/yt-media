@@ -23,13 +23,13 @@ class PendulumField(fields.DateTime):
 
     def _deserialize(
         self, value: str, attr: Any, data: Any, **kwargs: Any
-    ) -> pendulum.datetime:
+    ) -> pendulum.DateTime:
         """反序列化"""
         if not value:
             raise self.make_error("invalid", input=value, obj_type=self.OBJ_TYPE)
 
         timezone = get_timezone()
-        dt = pendulum.parse(value, tz=timezone)
+        dt: pendulum.DateTime = pendulum.parse(value, tz=timezone)  # type: ignore
         return convert_timezone(dt, "utc")
 
     def _serialize(
@@ -40,4 +40,4 @@ class PendulumField(fields.DateTime):
             return value
         timezone = str(get_timezone())
         value = convert_timezone(pendulum.instance(value), timezone)
-        return super()._serialize(value, attr, obj, **kwargs)
+        return super()._serialize(value, attr, obj, **kwargs)  # type: ignore

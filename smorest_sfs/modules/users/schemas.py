@@ -22,14 +22,14 @@
     用户模块的Schemas
 """
 
-from smorest_sfs.extensions import ma
+from smorest_sfs.extensions.marshal import ModelSchema
 from smorest_sfs.extensions.marshal.bases import BasePageSchema, BaseMsgSchema
-from marshmallow import fields
+from marshmallow import fields, Schema
 
 from . import models
 
 
-class UserSchema(ma.ModelSchema):
+class UserSchema(ModelSchema):
     """
     用户的序列化类
     """
@@ -40,7 +40,7 @@ class UserSchema(ma.ModelSchema):
         model = models.User
 
 
-class UserSelfSchema(ma.ModelSchema):
+class UserSelfSchema(ModelSchema):
     """
     用户的序列化类
     """
@@ -64,14 +64,14 @@ class UserItemSchema(BaseMsgSchema):
     data = fields.Nested(UserSchema)
 
 
-class UserOptsSchema(ma.Schema):
+class UserOptsSchema(Schema):
     """用户的选项"""
 
     class Meta:
         fields = ("id", "nickname")
 
 
-class UserListSchema(ma.Schema):
+class UserListSchema(Schema):
     """用户的选项列表"""
 
     data = fields.List(fields.Nested(UserOptsSchema))

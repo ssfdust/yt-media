@@ -78,7 +78,7 @@ class RoleView(MethodView):
     @permission_required(PERMISSIONS.RoleAdd)
     @blp.arguments(schemas.RoleSchema)
     @blp.response(schemas.RoleItemSchema)
-    def post(self, role: models.Role):
+    def post(self, role: models.Role) -> Dict[str, models.Role]:
         # pylint: disable=unused-argument
         """
         新增角色权限信息
@@ -92,7 +92,7 @@ class RoleView(MethodView):
     @permission_required(PERMISSIONS.RoleDelete)
     @blp.arguments(BaseIntListSchema, as_kwargs=True)
     @blp.response(BaseMsgSchema)
-    def delete(self, lst: List[int]):
+    def delete(self, lst: List[int]) -> None:
         # pylint: disable=unused-argument
         """
         批量删除角色权限
@@ -126,7 +126,7 @@ class RoleItemView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.RoleDelete)
     @blp.response(BaseMsgSchema)
-    def delete(self, role_id: int):
+    def delete(self, role_id: int) -> None:
         """
         删除角色权限
         """

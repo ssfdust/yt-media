@@ -22,14 +22,14 @@
     项目模块的Schemas
 """
 
-from smorest_sfs.extensions import ma
+from smorest_sfs.extensions.marshal import ModelSchema
 from smorest_sfs.extensions.marshal.bases import BasePageSchema, BaseMsgSchema
-from marshmallow import fields
+from marshmallow import fields, Schema
 
 from . import models
 
 
-class ProjectSchema(ma.ModelSchema):
+class ProjectSchema(ModelSchema):
     """
     项目的序列化类
     """
@@ -50,14 +50,14 @@ class ProjectItemSchema(BaseMsgSchema):
     data = fields.Nested(ProjectSchema)
 
 
-class ProjectOptsSchema(ma.Schema):
+class ProjectOptsSchema(Schema):
     """项目的选项"""
 
     class Meta:
         fields = ("id", "name")
 
 
-class ProjectListSchema(ma.Schema):
+class ProjectListSchema(Schema):
     """项目的选项列表"""
 
     data = fields.List(fields.Nested(ProjectOptsSchema))

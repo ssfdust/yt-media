@@ -28,7 +28,6 @@ class UserLoginChecker:
         store = CaptchaStore(self._token)
         try:
             store.verify(self.code)
-            return True
         except ValueError:
             logger.error(
                 f"{self.user.email} 登录时验证码{self.code}错误，\n" f"正确验证码为{store._code}"
@@ -37,6 +36,7 @@ class UserLoginChecker:
         except AttributeError:
             logger.error(f"{self.user.email} 登录时token{self._token}错误，\n")
             abort(403, message="验证码token错误")
+        return True
 
     def _check_user(self) -> bool:
         if self.user is None:
@@ -77,7 +77,7 @@ def login_user(user: User) -> Dict[str, Dict[str, str]]:
     return {"tokens": {"refresh_token": refresh_token, "access_token": access_token}}
 
 
-def logout_user(user: User):
+def logout_user(user: User) -> None:
     TokenBlackList.query.filter(
         TokenBlackList.user_identity == user.email, TokenBlackList.revoked.is_(False)
     ).delete()

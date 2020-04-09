@@ -6,7 +6,7 @@
     abc模块
 """
 
-from abc import ABC, abstractmethod, abstractstaticmethod
+from abc import ABC, abstractmethod
 from typing import Any, List
 
 import pyperclip
@@ -57,6 +57,6 @@ class RenderableStatement(StatementAbstract, TableRender):
     def get_render_sql(self, size: int) -> Select:
         raise NotImplementedError
 
-    @abstractstaticmethod
-    def parse_records(records: List[Any]) -> Any:  # type: ignore
+    @abstractmethod
+    def parse_records(self, records: List[Any]) -> Any:  # type: ignore
         raise NotImplementedError

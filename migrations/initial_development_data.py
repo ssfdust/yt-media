@@ -69,7 +69,7 @@ def init(password: Optional[str] = None) -> None:
         filetype="image/jpeg",
         path="default/AdminAvator.jpg",
         uid=1,
-        store=load_avator_from_path("default/AdminAvator.jpg")
+        store=load_avator_from_path("default/AdminAvator.jpg"),
     )
     UserInfo.create(user=root, avator=avator)
     root.roles.append(su_role)

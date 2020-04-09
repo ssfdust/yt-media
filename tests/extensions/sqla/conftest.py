@@ -114,7 +114,7 @@ def TestChildSchema() -> Type[Schema]:
 
 
 @pytest.fixture(scope="package")
-def TestParentSchema(TestChildSchema: Type[Schema]) -> Type[Schema]:  # type: ignore
+def TestParentSchema(TestChildSchema: Type[Schema]) -> Type[Schema]:
     # pylint: disable=W0621, W0613
     class TestParentSchema(TestChildSchema):
         children = fields.List(fields.Nested(TestChildSchema))

@@ -6,7 +6,7 @@
     渲染表格模块
 """
 from typing import List, Any
-from abc import ABC, abstractmethod, abstractstaticmethod
+from abc import ABC, abstractmethod
 from tabulate import tabulate
 
 
@@ -23,8 +23,8 @@ class TableRender(ABC):
         """获取所有键"""
         raise NotImplementedError
 
-    @abstractstaticmethod
-    def parse_records(records: List[Any]) -> Any:
+    @abstractmethod
+    def parse_records(self, records: List[Any]) -> Any:
         """处理结果"""
         raise NotImplementedError
 

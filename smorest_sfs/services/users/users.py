@@ -15,22 +15,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Dict
 from smorest_sfs.modules.storages.models import Storages
 from smorest_sfs.modules.users.models import User
 from smorest_sfs.modules.roles.models import Role
 from smorest_sfs.utils.storages import load_avator_from_path
 
-ADMIN_AVATOR = {
+ADMIN_AVATOR: Dict[str, str] = {
     "name": "AdminAvator.jpg",
     "storetype": "avator",
-    "saved": True,
     "filetype": "image/jpeg",
     "path": "default/AdminAvator.jpg",
 }
-USER_AVATOR = {
+USER_AVATOR: Dict[str, str] = {
     "name": "DefaultAvator.jpg",
     "storetype": "avator",
-    "saved": True,
     "filetype": "image/jpeg",
     "path": "default/DefaultAvator.jpg",
 }
@@ -47,9 +46,15 @@ def create_user(user: User, is_admin: bool = False) -> User:
     """
     user.roles = Role.get_by_user_default(is_admin)
     avator = (
-        Storages(store=load_avator_from_path(ADMIN_AVATOR["path"]), **ADMIN_AVATOR)
+        Storages(
+            store=load_avator_from_path(ADMIN_AVATOR["path"]),
+            saved=True,
+            **ADMIN_AVATOR
+        )
         if is_admin
-        else Storages(USER_AVATOR["path"], **USER_AVATOR)
+        else Storages(
+            store=load_avator_from_path(USER_AVATOR["path"]), saved=True, **USER_AVATOR
+        )
     )
-    user.userinfo.avator = avator
-    return user.save()
+    user.userinfo.update(avator=avator)
+    return user

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-from typing import Any
+from typing import Any, Mapping
 
 from flask import render_template_string
 from flask_mail import Message
@@ -14,10 +14,10 @@ from smorest_sfs.modules.email_templates.models import EmailTemplate
 class MailSender:
     def __init__(self, template_name: str = "", to: str = "", **kwargs: Any):
         self.template_name = template_name
-        self.content = kwargs.get("content")
-        self.subject = kwargs.get("subject", "Mail From Me")
-        self.msg = Message(self.subject, recipients=[to])
-        self.template_str = EmailTemplate.get_template(template_name)
+        self.content: Mapping[str, Any] = kwargs.get("content", {})
+        self.subject: str = kwargs.get("subject", "Mail From Me")
+        self.msg: Message = Message(self.subject, recipients=[to])
+        self.template_str: str = EmailTemplate.get_template(template_name)
 
     def send(self) -> None:
         self.msg.html = render_template_string(self.template_str, **self.content)

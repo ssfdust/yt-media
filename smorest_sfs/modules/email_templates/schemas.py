@@ -16,20 +16,20 @@
 # limitations under the License.
 
 """
-    app.modules.email_templates.schemas
+    smorest_sfs.modules.email_templates.schemas
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     电子邮件模板模块的Schemas
 """
 
-from smorest_sfs.extensions import ma
+from smorest_sfs.extensions.marshal import ModelSchema
 from smorest_sfs.extensions.marshal.bases import BasePageSchema, BaseMsgSchema
-from marshmallow import fields
+from marshmallow import fields, Schema
 
 from . import models
 
 
-class EmailTemplateSchema(ma.ModelSchema):
+class EmailTemplateSchema(ModelSchema):
     """
     电子邮件模板的序列化类
     """
@@ -50,14 +50,14 @@ class EmailTemplateItemSchema(BaseMsgSchema):
     data = fields.Nested(EmailTemplateSchema)
 
 
-class EmailTemplateOptsSchema(ma.Schema):
+class EmailTemplateOptsSchema(Schema):
     """电子邮件模板的选项"""
 
     class Meta:
         fields = ("id", "name")
 
 
-class EmailTemplateListSchema(ma.Schema):
+class EmailTemplateListSchema(Schema):
     """电子邮件模板的选项列表"""
 
     data = fields.List(fields.Nested(EmailTemplateOptsSchema))

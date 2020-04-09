@@ -80,7 +80,7 @@ class {{ model_name }}View(MethodView):
     @permission_required(PERMISSIONS.{{ model_name }}Add)
     @blp.arguments(schemas.{{ model_name }}Schema)
     @blp.response(schemas.{{ model_name }}ItemSchema)
-    def post(self, {{ module_name_singular }}: models.{{ model_name }}):
+    def post(self, {{ module_name_singular }}: models.{{ model_name }}) -> Dict[str, models.{{ model_name }}]:
         # pylint: disable=unused-argument
         '''
         新增{{ module_title }}信息
@@ -94,7 +94,7 @@ class {{ model_name }}View(MethodView):
     @permission_required(PERMISSIONS.{{ model_name }}Delete)
     @blp.arguments(BaseIntListSchema, as_kwargs=True)
     @blp.response(BaseMsgSchema)
-    def delete(self, lst: List[int]):
+    def delete(self, lst: List[int]) -> None:
         # pylint: disable=unused-argument
         '''
         批量删除{{ module_title }}
@@ -131,7 +131,7 @@ class {{ model_name }}ItemView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.{{ model_name }}Delete)
     @blp.response(BaseMsgSchema)
-    def delete(self, {{ module_name_singular }}_id: int):
+    def delete(self, {{ module_name_singular }}_id: int) -> None:
         '''
         删除{{ module_title }}
         '''
@@ -141,7 +141,7 @@ class {{ model_name }}ItemView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.{{ model_name }}Query)
     @blp.response(schemas.{{ model_name }}ItemSchema)
-    def get(self, {{ module_name_singular }}_id) -> Dict[str, models.{{ model_name }}]:
+    def get(self, {{ module_name_singular }}_id: int) -> Dict[str, models.{{ model_name }}]:
         # pylint: disable=unused-argument
         '''
         获取单条{{ module_title }}

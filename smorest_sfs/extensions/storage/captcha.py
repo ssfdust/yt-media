@@ -12,7 +12,7 @@ class CaptchaStore:
     def __init__(self, token: str):
         self.token = token
         self.key = f"capture_{token}"
-        self._code = None
+        self._code: Optional[str] = None
 
     def generate_captcha(self, length: int = 4) -> str:
         passwd_str = string.digits + string.ascii_letters
@@ -36,4 +36,5 @@ class CaptchaStore:
         return self._code
 
     def _decode_code(self, code: Optional[bytes]) -> None:
-        self._code = code.decode("utf-8")
+        if code:
+            self._code = code.decode("utf-8")

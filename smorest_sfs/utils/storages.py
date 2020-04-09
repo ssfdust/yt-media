@@ -39,16 +39,17 @@ def save_storage_to_path(store: FileStorage, subdir: str) -> str:
     return get_relative_pathstr(path)
 
 
-def delete_from_rel_path(path: Union[Path, str]):
+def delete_from_rel_path(path: Union[Path, str]) -> None:
     filepath = ProjectPath.get_subpath_from_project(path)
     if filepath.exists() and not UploadPath.if_in_whitelst(filepath):
         os.remove(filepath)
 
 
 def make_response_from_store(store: FileStorage) -> Response:
-    return send_file(
+    resp: Response = send_file(
         store.stream,
         attachment_filename=store.filename,
         mimetype=store.content_type,
         as_attachment=False,
     )
+    return resp

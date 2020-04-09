@@ -35,7 +35,7 @@ def is_token_revoked(decoded_token: Dict[str, str]) -> bool:
     jti = decoded_token["jti"]
     try:
         token = TokenBlackList.query.filter_by(jti=jti).one()
-        return token.revoked
+        return bool(token.revoked)
     except NoResultFound:
         return True
 

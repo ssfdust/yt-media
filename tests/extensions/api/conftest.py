@@ -80,7 +80,7 @@ def TestSchema() -> ma.Schema:
 
 
 @pytest.fixture(scope="package")
-def TestPageSchema(TestSchema: ma.Schema) -> ma.Schema:  # type: ignore
+def TestPageSchema(TestSchema: ma.Schema) -> ma.Schema:
     # pylint: disable=W0621
     class TestPageSchema(BasePageSchema):
 

@@ -15,7 +15,7 @@ Response = TypeVar("Response")
 
 
 @jwt.unauthorized_loader
-def unauthorized_callback(_: Any) -> Response:
+def unauthorized_callback(_: Any) -> Any:
     logger.error("未受权的访问")
     response = jsonify({"code": 401, "msg": "未授权的访问"})
     response.status_code = 401
@@ -23,7 +23,7 @@ def unauthorized_callback(_: Any) -> Response:
 
 
 @jwt.expired_token_loader
-def token_expired() -> Response:
+def token_expired() -> Any:
     response = jsonify({"code": 402, "msg": "登录已过期"})
     logger.warning("登录过期")
     response.status_code = 402

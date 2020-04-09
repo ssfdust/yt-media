@@ -52,7 +52,7 @@ class StoragesView(MethodView):
         storage = models.Storages.get_by_id(file_id)
         factory = StorageFactory(storage)
         logger.info(f"修改了文件{storage.name} id: {storage.id}")
-        factory.update(**args)
+        factory.update(commit=True, **args)
 
         return {"code": 0, "msg": "success"}
 

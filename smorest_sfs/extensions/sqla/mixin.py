@@ -41,7 +41,7 @@ class UByMaMixin:
         return self
 
     def update_by_ma(
-        self, schema: Union[Schema, Type[Schema]], instance: Any, commit: bool = True,  # type: ignore
+        self, schema: Union[Schema, Type[Schema]], instance: Any, commit: bool = True,
     ) -> db.Model:
         """根据marshmallow以及SQLa实例更新
 
@@ -79,7 +79,7 @@ class UByMaMixin:
         return self.save(commit) if commit else self
 
     @staticmethod
-    def _get_loadable_fileds(schema: Schema) -> List[str]:  # type: ignore
+    def _get_loadable_fileds(schema: Schema) -> List[str]:
         return [
             k
             for k, v in schema.fields.items()
@@ -89,8 +89,8 @@ class UByMaMixin:
     def _setattr_from_instance(self, fields: List[str], instance: db.Model) -> None:  # type: ignore
         with db.session.no_autoflush:
             for field in fields:
-                set_attribute(self, field, get_attribute(instance, field))
-                del_attribute(instance, field)
+                set_attribute(self, field, get_attribute(instance, field))  # type: ignore
+                del_attribute(instance, field)  # type: ignore
 
 
 class CRUDMixin(UByMaMixin):

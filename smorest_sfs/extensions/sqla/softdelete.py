@@ -5,7 +5,7 @@
 """
 from typing import Any, Union
 from flask_sqlalchemy import BaseQuery
-from sqlalchemy.orm.base import _entity_descriptor
+from sqlalchemy.orm.base import _entity_descriptor  # type: ignore
 from .db_instance import db
 
 

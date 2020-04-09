@@ -21,7 +21,7 @@ def utctoday() -> datetime.date:
 
 
 def convert_timezone(
-    dt: Union[pendulum.datetime, datetime.datetime], timezone: str  # type: ignore
-) -> pendulum.datetime:
+    dt: Union[pendulum.DateTime, datetime.datetime], timezone: str
+) -> pendulum.DateTime:
     tz = pendulum.timezone(timezone)
-    return tz.convert(dt)
+    return tz.convert(dt)  # type: ignore

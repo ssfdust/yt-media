@@ -43,4 +43,4 @@ class Config(FlaskConfig):
             e.strerror = "Unable to load configuration file (%s)" % e.strerror
             raise
 
-        return self.from_mapping(obj)
+        return bool(self.from_mapping(obj))

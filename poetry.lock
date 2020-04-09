@@ -236,7 +236,7 @@ description = "Flask + marshmallow for beautiful APIs"
 name = "flask-marshmallow"
 optional = false
 python-versions = "*"
-version = "0.10.1"
+version = "0.11.0"
 
 [package.dependencies]
 Flask = "*"
@@ -244,10 +244,11 @@ marshmallow = ">=2.0.0"
 six = ">=1.9.0"
 
 [package.extras]
-dev = ["flask-sqlalchemy", "marshmallow-sqlalchemy (>=0.13.0)", "pytest", "mock", "flake8 (3.7.7)", "pre-commit (1.16.0)", "tox", "flake8-bugbear (19.3.0)"]
-lint = ["flake8 (3.7.7)", "pre-commit (1.16.0)", "flake8-bugbear (19.3.0)"]
-sqlalchemy = ["flask-sqlalchemy", "marshmallow-sqlalchemy (>=0.13.0)"]
-tests = ["flask-sqlalchemy", "marshmallow-sqlalchemy (>=0.13.0)", "pytest", "mock"]
+dev = ["flask-sqlalchemy", "pytest", "mock", "flake8 (3.7.9)", "pre-commit (>=1.20,<3.0)", "tox", "marshmallow-sqlalchemy (>=0.13.0,<0.19.0)", "flake8-bugbear (20.1.4)", "marshmallow-sqlalchemy (>=0.13.0)"]
+docs = ["marshmallow-sqlalchemy (>=0.13.0)", "Sphinx (2.3.1)", "sphinx-issues (1.2.0)"]
+lint = ["flake8 (3.7.9)", "pre-commit (>=1.20,<3.0)", "flake8-bugbear (20.1.4)"]
+sqlalchemy = ["flask-sqlalchemy", "marshmallow-sqlalchemy (>=0.13.0,<0.19.0)", "marshmallow-sqlalchemy (>=0.13.0)"]
+tests = ["flask-sqlalchemy", "pytest", "mock", "marshmallow-sqlalchemy (>=0.13.0,<0.19.0)", "marshmallow-sqlalchemy (>=0.13.0)"]
 
 [[package]]
 category = "main"
@@ -487,17 +488,17 @@ description = "SQLAlchemy integration with the marshmallow (de)serialization lib
 name = "marshmallow-sqlalchemy"
 optional = false
 python-versions = ">=3.6"
-version = "0.21.0"
+version = "0.22.3"
 
 [package.dependencies]
 SQLAlchemy = ">=1.2.0"
 marshmallow = ">=2.15.2"
 
 [package.extras]
-dev = ["pytest", "mock", "flake8 (3.7.9)", "flake8-bugbear (19.8.0)", "pre-commit (>=1.18,<2.0)", "tox"]
-docs = ["sphinx (2.2.2)", "alabaster (0.7.12)", "sphinx-issues (1.2.0)"]
-lint = ["flake8 (3.7.9)", "flake8-bugbear (19.8.0)", "pre-commit (>=1.18,<2.0)"]
-tests = ["pytest", "mock"]
+dev = ["pytest", "pytest-lazy-fixture", "mock", "flake8 (3.7.9)", "flake8-bugbear (20.1.4)", "pre-commit (>=2.0,<3.0)", "tox"]
+docs = ["sphinx (2.4.3)", "alabaster (0.7.12)", "sphinx-issues (1.2.0)"]
+lint = ["flake8 (3.7.9)", "flake8-bugbear (20.1.4)", "pre-commit (>=2.0,<3.0)"]
+tests = ["pytest", "pytest-lazy-fixture", "mock"]
 
 [[package]]
 category = "dev"
@@ -949,7 +950,7 @@ python-versions = "*"
 version = "0.3"
 
 [metadata]
-content-hash = "1e482e3878eeb757310dfbf1d796b21996bf8d640f8ca7f0cea59ce6ee6e014b"
+content-hash = "76b2f404b41bc95a633ac63e8eb8622c7ae57fdef22f3809ea0a3b69d3219563"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -1058,8 +1059,8 @@ flask-mail = [
     {file = "Flask-Mail-0.9.1.tar.gz", hash = "sha256:22e5eb9a940bf407bcf30410ecc3708f3c56cc44b29c34e1726fe85006935f41"},
 ]
 flask-marshmallow = [
-    {file = "flask-marshmallow-0.10.1.tar.gz", hash = "sha256:69e99e3a123393894884a032ae2d11e6bdf4519a505819b66cec7eda32057741"},
-    {file = "flask_marshmallow-0.10.1-py2.py3-none-any.whl", hash = "sha256:4f507f883838b397638a3a36c7d36ee146b255a49db952f5d9de3f6f4522e8a8"},
+    {file = "flask-marshmallow-0.11.0.tar.gz", hash = "sha256:01520ef1851ccb64d4ffb33196cddff895cc1302ae1585bff1abf58684a8111a"},
+    {file = "flask_marshmallow-0.11.0-py2.py3-none-any.whl", hash = "sha256:28b969193958d9602ab5d6add6d280e0e360c8e373d3492c2f73b024ecd36374"},
 ]
 flask-migrate = [
     {file = "Flask-Migrate-2.5.3.tar.gz", hash = "sha256:a69d508c2e09d289f6e55a417b3b8c7bfe70e640f53d2d9deb0d056a384f37ee"},
@@ -1158,8 +1159,8 @@ marshmallow = [
     {file = "marshmallow-3.5.1.tar.gz", hash = "sha256:90854221bbb1498d003a0c3cc9d8390259137551917961c8b5258c64026b2f85"},
 ]
 marshmallow-sqlalchemy = [
-    {file = "marshmallow-sqlalchemy-0.21.0.tar.gz", hash = "sha256:93fd8fad2b33d92a1ae58328eeb0f39ed174858d82f9e7084a174df7b41fd3a4"},
-    {file = "marshmallow_sqlalchemy-0.21.0-py2.py3-none-any.whl", hash = "sha256:0d72beaf777f8b420c4dc94684252ae0e0a79556ccc4128129d2588f9ff72888"},
+    {file = "marshmallow-sqlalchemy-0.22.3.tar.gz", hash = "sha256:9301c6fd197bd97337820ea1417aa1233d0ee3e22748ebd5821799bc841a57e8"},
+    {file = "marshmallow_sqlalchemy-0.22.3-py2.py3-none-any.whl", hash = "sha256:dde9e20bcb710e9e59f765a38e3d6d17f1b2d6b4320cbdc2cea0f6b57f70d08c"},
 ]
 more-itertools = [
     {file = "more-itertools-8.2.0.tar.gz", hash = "sha256:b1ddb932186d8a6ac451e1d95844b382f55e12686d51ca0c68b6f61f2ab7a507"},

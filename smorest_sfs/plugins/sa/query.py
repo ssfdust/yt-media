@@ -26,7 +26,7 @@ class SAQuery(SAStatement):
     def get_sa_sql(self) -> Any:
         return self.query.statement
 
-    def get_keys(self) -> List[str]:
+    def get_keys(self) -> Any:
         analysis = QueryAnalysis(self.query)
         return analysis.keys
 
@@ -36,7 +36,7 @@ class SAQuery(SAStatement):
     def render_results(self, size: int = 50) -> None:
         query = self.get_render_sql(size)
         analysis = QueryAnalysis(query)
-        self.parse_records = lambda x: [analysis.getter(r) for r in x]
+        self.parse_records = lambda x: [analysis.getter(r) for r in x]  # type: ignore
         records = query.all()
         table_data = self._render_data_table(records)
         logger.debug("\n" + table_data)

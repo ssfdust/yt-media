@@ -19,12 +19,12 @@
     用户验证序列化模块
 """
 
-from marshmallow import fields
+from marshmallow import fields, Schema
 
-from smorest_sfs.extensions.marshal import BaseMsgSchema, ma
+from smorest_sfs.extensions.marshal import BaseMsgSchema
 
 
-class UserTokenSchema(ma.Schema):
+class UserTokenSchema(Schema):
     """
     登录返回Token
     """
@@ -33,7 +33,7 @@ class UserTokenSchema(ma.Schema):
     refresh_token = fields.Str(description="刷新用token")
 
 
-class RefreshTokenSchema(ma.Schema):
+class RefreshTokenSchema(Schema):
     """
     刷新Token
     """
@@ -41,7 +41,7 @@ class RefreshTokenSchema(ma.Schema):
     refresh_token = fields.Str(description="刷新用token")
 
 
-class UserDataSchema(ma.Schema):
+class UserDataSchema(Schema):
     """
     用户返回数据
     """

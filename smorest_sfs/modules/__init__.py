@@ -35,7 +35,8 @@ from smorest_sfs.extensions import api
 
 def _get_preloadable_modules(module: ModuleType) -> List[str]:
     if hasattr(module, "preload_modules"):
-        return getattr(module, "preload_modules")
+        preload_modules: List[str] = getattr(module, "preload_modules")
+        return preload_modules
     return ["resources", "models"]
 
 

@@ -81,7 +81,7 @@ class UserView(MethodView):
     @permission_required(PERMISSIONS.UserDelete)
     @blp.arguments(BaseIntListSchema, as_kwargs=True)
     @blp.response(BaseMsgSchema)
-    def delete(self, lst: List[int]):
+    def delete(self, lst: List[int]) -> None:
         # pylint: disable=unused-argument
         """
         批量删除用户
@@ -114,7 +114,7 @@ class UserItemView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.UserDelete)
     @blp.response(BaseMsgSchema)
-    def delete(self, user_id: int):
+    def delete(self, user_id: int) -> None:
         """
         删除用户
         """

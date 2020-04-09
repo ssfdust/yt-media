@@ -14,6 +14,6 @@
 """
 
 from .bases import *
-from .ma import Marshmallow
+from .ma import Marshmallow, ModelSchema
 
 ma = Marshmallow()

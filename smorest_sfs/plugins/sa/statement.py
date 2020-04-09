@@ -22,7 +22,7 @@ class SAStatement(RenderableStatement):
     def get_sa_sql(self) -> Select:
         return self.sa_sql
 
-    def get_keys(self) -> Dict:
+    def get_keys(self) -> Any:
         return {}
 
     def get_render_sql(self, size: int) -> Select:

@@ -11,6 +11,8 @@ from smorest_sfs.extensions.sqla import Model
 class QueryAnalysis:
     """分析Query的keys以及parse函数"""
 
+    keys: List[str]
+
     def __init__(self, query: Any):
         self.query = query
         self.col_desc: List[Dict[str, Model]] = query.column_descriptions
@@ -30,7 +32,7 @@ class QueryAnalysis:
     def _parse(self) -> None:
         if self.is_direct:
             entity = self.__extract_entity()
-            self.keys = self.__get_entity_col_keys(entity)
+            self.keys: List[str] = self.__get_entity_col_keys(entity)
             self.getter = lambda x: [getattr(x, key) for key in self.keys]
         else:
             self.keys = [desc["name"] for desc in self.col_desc]
