@@ -3,15 +3,15 @@
 
 
 import io
+
 import pytest
 from freezegun import freeze_time
 from werkzeug.datastructures import FileStorage
-from smorest_sfs.utils.storages import (
-    load_avator_from_path,
-    save_storage_to_path,
-    load_storage_from_path,
-    delete_from_rel_path,
-)
+
+from smorest_sfs.utils.storages import (delete_from_rel_path,
+                                        load_avator_from_path,
+                                        load_storage_from_path,
+                                        save_storage_to_path)
 
 
 @freeze_time("1994-09-11 08:20:00")

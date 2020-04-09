@@ -5,7 +5,6 @@ import string
 from typing import Optional
 
 from . import redis_store
-from typing import Optional
 
 
 class CaptchaStore:

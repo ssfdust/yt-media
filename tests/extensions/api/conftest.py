@@ -3,16 +3,17 @@
 
 import os
 from typing import Iterator, Type
-from flask import Flask
-import pytest
+
 import marshmallow as ma
-from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy  # type: ignore
+import pytest
+from flask import Flask
+
 from smorest_sfs.extensions import babel
 from smorest_sfs.extensions.api import Api
-from smorest_sfs.extensions.sqla import SurrogatePK, Model
 from smorest_sfs.extensions.marshal.bases import BasePageSchema
+from smorest_sfs.extensions.sqla import Model, SurrogatePK
+from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy  # type: ignore
 from tests._utils.tables import drop_tables
-
 
 TABLES = ["test_pagination"]
 

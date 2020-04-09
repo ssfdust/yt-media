@@ -27,8 +27,8 @@ from types import ModuleType
 from typing import List
 
 from flask import Flask
-from loguru import logger
 from flask_smorest.blueprint import Blueprint
+from loguru import logger
 
 from smorest_sfs.extensions import api
 

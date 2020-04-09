@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import pytest
+
 from smorest_sfs.modules.projects.models import Project
 
 

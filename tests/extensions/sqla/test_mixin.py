@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 """测试mixin模块"""
 
-from typing import Type, List, Any
 from copy import copy
+from typing import Any, List, Type
 
 import pytest
-from smorest_sfs.extensions.sqla import CharsTooLong, DuplicateEntry
-from smorest_sfs.extensions.sqla.helpers import set_default_for_instance
-from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy  # type: ignore
-from smorest_sfs.extensions.sqla import Model
 from marshmallow import Schema
+
+from smorest_sfs.extensions.sqla import CharsTooLong, DuplicateEntry, Model
+from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy  # type: ignore
+from smorest_sfs.extensions.sqla.helpers import set_default_for_instance
 from tests._utils.injection import FixturesInjectBase
 
 

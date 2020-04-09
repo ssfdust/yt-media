@@ -8,18 +8,15 @@
     id, deleted, modified, created为系统默认字段
 """
 
-from typing import Any, Union, List, Type
+from typing import Any, List, Type, Union
+
 import sqlalchemy as sa
-from sqlalchemy.orm.attributes import (
-    get_attribute,
-    del_attribute,
-    set_attribute,
-)
 from marshmallow import Schema
+from sqlalchemy.orm.attributes import (del_attribute, get_attribute,
+                                       set_attribute)
 
 from .db_instance import db
 from .errors import pgerr_to_customerr
-
 
 BLACK_LIST = ["id", "deleted", "modified", "created"]
 

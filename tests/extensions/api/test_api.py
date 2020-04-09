@@ -1,15 +1,16 @@
 """测试API"""
 from typing import Any, Dict
-from flask.views import MethodView
+
 import pytest
-from flask_smorest import Blueprint
-from smorest_sfs.extensions.api.decorators import paginate
-from tests._utils.injection import FixturesInjectBase
-from smorest_sfs.extensions.sqla import Model
-from marshmallow import Schema
-from flask_smorest import Api
 from flask import Flask
+from flask.views import MethodView
+from flask_smorest import Api, Blueprint
 from flask_sqlalchemy import BaseQuery
+from marshmallow import Schema
+
+from smorest_sfs.extensions.api.decorators import paginate
+from smorest_sfs.extensions.sqla import Model
+from tests._utils.injection import FixturesInjectBase
 
 
 class TestApi(FixturesInjectBase):

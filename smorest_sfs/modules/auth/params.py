@@ -19,7 +19,7 @@
     用户验证参数模块
 """
 
-from marshmallow import fields, Schema
+from marshmallow import Schema, fields
 
 
 class LoginParams(Schema):

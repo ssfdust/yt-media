@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import pytest
 import datetime
 
+import pendulum
+import pytest
 from freezegun import freeze_time
 
-import pendulum
-from smorest_sfs.utils.datetime import utcnow, utctoday, convert_timezone
+from smorest_sfs.utils.datetime import convert_timezone, utcnow, utctoday
 
 FREEZETIME = "1994-09-11 08:20:00"
 

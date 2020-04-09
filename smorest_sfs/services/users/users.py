@@ -16,9 +16,10 @@
 # limitations under the License.
 
 from typing import Dict
+
+from smorest_sfs.modules.roles.models import Role
 from smorest_sfs.modules.storages.models import Storages
 from smorest_sfs.modules.users.models import User
-from smorest_sfs.modules.roles.models import Role
 from smorest_sfs.utils.storages import load_avator_from_path
 
 ADMIN_AVATOR: Dict[str, str] = {

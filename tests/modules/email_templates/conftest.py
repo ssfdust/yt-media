@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import Callable, Iterator, Tuple, Union
+
 import pytest
 
 from smorest_sfs.modules.email_templates.models import EmailTemplate
-from typing import Callable
-from typing import Iterator
-from typing import Tuple
-from typing import Union
 
 
 @pytest.fixture

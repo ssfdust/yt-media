@@ -3,6 +3,7 @@
 """测试自定义的Flask"""
 
 import tempfile
+
 from smorest_sfs.extensions.flask import Flask
 
 

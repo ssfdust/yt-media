@@ -22,25 +22,23 @@
     电子邮件模板的资源模块
 """
 
+from typing import Any, Dict, List
+
 from flask.views import MethodView
 from flask_jwt_extended import current_user
 from flask_sqlalchemy import BaseQuery
 from loguru import logger
 
 from smorest_sfs.extensions.api.decorators import paginate
-from smorest_sfs.extensions.marshal.bases import (
-    BaseIntListSchema,
-    BaseMsgSchema,
-    GeneralLikeArgs,
-)
+from smorest_sfs.extensions.marshal.bases import (BaseIntListSchema,
+                                                  BaseMsgSchema,
+                                                  GeneralLikeArgs)
 from smorest_sfs.modules.auth import PERMISSIONS
-from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
+from smorest_sfs.modules.auth.decorators import (doc_login_required,
+                                                 permission_required)
+from smorest_sfs.modules.email_templates.models import EmailTemplate
 
 from . import blp, models, schemas
-from smorest_sfs.modules.email_templates.models import EmailTemplate
-from typing import Any
-from typing import Dict
-from typing import List
 
 
 @blp.route("/options")

@@ -4,13 +4,14 @@
     sa raw sql模块
 """
 
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 from loguru import logger
 from sqlalchemy.sql.selectable import Select
 
-from .abstract import RenderableStatement
 from smorest_sfs.extensions import db
+
+from .abstract import RenderableStatement
 
 
 class SAStatement(RenderableStatement):

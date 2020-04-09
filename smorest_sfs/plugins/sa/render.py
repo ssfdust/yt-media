@@ -5,8 +5,9 @@
 
     渲染表格模块
 """
-from typing import List, Any
 from abc import ABC, abstractmethod
+from typing import Any, List
+
 from tabulate import tabulate
 
 

@@ -19,11 +19,11 @@
 """
 from datetime import timedelta
 from typing import Optional
-from sqlalchemy.orm.exc import NoResultFound
 
-from flask_smorest import abort  # type: ignore
-from flask_jwt_extended import create_access_token, get_raw_jwt
 from flask import current_app as app
+from flask_jwt_extended import create_access_token, get_raw_jwt
+from flask_smorest import abort  # type: ignore
+from sqlalchemy.orm.exc import NoResultFound
 
 from smorest_sfs.modules.auth.helpers import add_token_to_database
 from smorest_sfs.modules.auth.models import TokenBlackList

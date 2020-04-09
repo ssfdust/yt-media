@@ -1,18 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Callable
-
+from typing import Any, Callable, Dict, Iterator, List, Tuple, Union
 
 import pytest
+
 from smorest_sfs.modules.auth import PERMISSIONS
 from smorest_sfs.modules.roles.models import Permission, Role
-from typing import Any
-from typing import Dict
-from typing import List
-from typing import Iterator
-from typing import Tuple
-from typing import Union
 
 
 @pytest.fixture

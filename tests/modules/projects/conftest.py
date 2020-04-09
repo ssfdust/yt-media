@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import Callable, Iterator, Tuple, Union
+
 import pytest
 
 from smorest_sfs.modules.projects.models import Project
-from typing import Callable
-from typing import Iterator
-from typing import Tuple
-from typing import Union
 
 
 @pytest.fixture

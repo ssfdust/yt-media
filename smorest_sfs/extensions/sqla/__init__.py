@@ -9,7 +9,7 @@
     核心部分从一个flask-restful项目中摘录出来，现在已经找不到了
 """
 
-from .surrogatepk import SurrogatePK
+from .db_instance import db
 from .errors import CharsTooLong, DuplicateEntry
 from .model import Model
-from .db_instance import db
+from .surrogatepk import SurrogatePK

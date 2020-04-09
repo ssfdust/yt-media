@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import pytest
 from typing import Union
+
+import pytest
+
 from smorest_sfs.modules.users.models import User, UserInfo
 from tests._utils.injection import FixturesInjectBase
 

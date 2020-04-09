@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import pytest
+
 from smorest_sfs.modules.auth import ROLES
 from tests._utils.injection import GeneralGet
 

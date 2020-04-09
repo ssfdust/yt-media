@@ -9,10 +9,11 @@
 from typing import List
 
 from marshmallow.validate import OneOf, Range
+from sqlalchemy_utils.types import PasswordType
+
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.modules.auth.permissions import ROLES
 from smorest_sfs.modules.roles.models import permission_roles
-from sqlalchemy_utils.types import PasswordType
 
 roles_users = db.Table(
     "roles_users",

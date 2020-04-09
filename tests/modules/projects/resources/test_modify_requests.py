@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import pytest
+
 from smorest_sfs.modules.auth import ROLES
 from smorest_sfs.modules.projects.models import Project
 from smorest_sfs.modules.projects.schemas import ProjectSchema
-from tests._utils.injection import GeneralModify
 from tests._utils.helpers import param_helper
+from tests._utils.injection import GeneralModify
 
 
 class TestProjectModify(GeneralModify):

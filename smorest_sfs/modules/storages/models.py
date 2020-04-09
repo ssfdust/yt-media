@@ -6,7 +6,8 @@
 from typing import Any
 
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
-from .mixin import StoragesMixin, FileStorage
+
+from .mixin import FileStorage, StoragesMixin
 
 
 class Storages(StoragesMixin, Model, SurrogatePK):

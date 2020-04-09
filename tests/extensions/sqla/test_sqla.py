@@ -1,13 +1,14 @@
 """测试sqla"""
 
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.exceptions import NotFound
+from typing import Callable, List, Type
 
 import pytest
-from tests._utils.injection import FixturesInjectBase
-from typing import Callable, Type, List
-from smorest_sfs.extensions.sqla import Model
+from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema
+from werkzeug.exceptions import NotFound
+
+from smorest_sfs.extensions.sqla import Model
+from tests._utils.injection import FixturesInjectBase
 
 
 class ItemsFixtureBase(FixturesInjectBase):

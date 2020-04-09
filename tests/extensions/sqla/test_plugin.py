@@ -4,13 +4,15 @@
 """
 测试插件中的sa辅助函数
 """
-from smorest_sfs.plugins.sa.statement import SAStatement
-from smorest_sfs.extensions.sqla import Model
-import pyperclip
 from typing import Callable, Type
 
+import pyperclip
 import pytest
-from smorest_sfs.plugins.sa import debug_sql, execute, render_limit_results, SAQuery
+
+from smorest_sfs.extensions.sqla import Model
+from smorest_sfs.plugins.sa import (SAQuery, debug_sql, execute,
+                                    render_limit_results)
+from smorest_sfs.plugins.sa.statement import SAStatement
 from tests._utils.uniqueue import UniqueQueue
 from tests.extensions.sqla.test_sqla import ItemsFixtureBase
 

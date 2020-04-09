@@ -5,9 +5,9 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
     自定义Model模块
 """
-from .softdelete import QueryWithSoftDelete
 from .db_instance import db
 from .mixin import CRUDMixin
+from .softdelete import QueryWithSoftDelete
 
 
 class Model(CRUDMixin, db.Model):

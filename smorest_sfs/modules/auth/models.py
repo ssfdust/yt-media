@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from smorest_sfs.extensions.sqla import SurrogatePK, Model, db
+from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 
 
 class TokenBlackList(SurrogatePK, Model):

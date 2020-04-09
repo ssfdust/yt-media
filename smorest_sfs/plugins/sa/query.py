@@ -5,7 +5,7 @@
 """
 
 from abc import abstractmethod
-from typing import List, Any
+from typing import Any, List
 
 from flask_sqlalchemy import BaseQuery
 from loguru import logger

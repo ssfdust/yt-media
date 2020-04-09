@@ -6,7 +6,7 @@
 import pytest
 from flask import url_for
 
-from smorest_sfs.services.auth.auth import login_user, User
+from smorest_sfs.services.auth.auth import User, login_user
 from smorest_sfs.services.auth.confirm import generate_confirm_token
 from tests._utils.injection import FixturesInjectBase
 from tests._utils.uniqueue import UniqueQueue

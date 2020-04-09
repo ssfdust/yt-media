@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 import os
 from typing import Iterator
-from flask import Flask
+
 import pytest
+from flask import Flask
 
 
 @pytest.fixture(scope="package", autouse=True)

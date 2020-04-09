@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Dict
+from typing import Any, Dict, List
 
 import pytest
+
 from smorest_sfs.modules.roles.models import ROLES, Role
 from smorest_sfs.modules.roles.schemas import RoleSchema
-from tests._utils.injection import GeneralModify
 from tests._utils.helpers import param_helper
-from typing import Any
-from typing import List
+from tests._utils.injection import GeneralModify
 
 
 class TestRoleModify(GeneralModify):

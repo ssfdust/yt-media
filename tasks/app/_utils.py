@@ -3,17 +3,19 @@
 Invoke中App相关工具
 """
 import functools
+import os
 import platform
 from pathlib import Path
-import os
+
+from invoke import Task as BaseTask
+
+from tasks.app.consts import CONFIG_PATH, NGINX_PATH, SQL_PATH
 
 try:
     import readline
 except ImportError:
     pass
 
-from invoke import Task as BaseTask
-from tasks.app.consts import SQL_PATH, NGINX_PATH, CONFIG_PATH
 
 
 class Task(BaseTask):

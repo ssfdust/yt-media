@@ -10,9 +10,9 @@ from typing import List
 
 from loguru import logger
 
+from . import modules
 from .extensions import init_app
 from .extensions.flask import Flask
-from . import modules
 
 CONFIG_MAPPGING = {
     "development": "config/development.toml",

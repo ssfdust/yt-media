@@ -19,7 +19,7 @@
     用户验证序列化模块
 """
 
-from marshmallow import fields, Schema
+from marshmallow import Schema, fields
 
 from smorest_sfs.extensions.marshal import BaseMsgSchema
 

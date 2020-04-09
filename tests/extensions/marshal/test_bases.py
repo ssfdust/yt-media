@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 """测试基本类型"""
 from typing import Any
+
 import pytest
-from smorest_sfs.extensions.marshal.bases import BaseMsgSchema
-from smorest_sfs.extensions.marshal.bases import BaseIntListSchema
-from smorest_sfs.extensions.marshal.bases import BasePageSchema
+
+from smorest_sfs.extensions.marshal.bases import (BaseIntListSchema,
+                                                  BaseMsgSchema,
+                                                  BasePageSchema)
 
 
 class TestBasesMaClass:

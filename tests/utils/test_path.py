@@ -2,19 +2,14 @@
 # -*- coding: utf-8 -*-
 import os
 from pathlib import Path
+from typing import List
 
 import pytest
 from freezegun import freeze_time
 
-from smorest_sfs.utils.paths import (
-    WHITE_LIST,
-    ProjectPath,
-    UploadPath,
-    get_relative_pathstr,
-    make_uploaded_path,
-    get_avator_path,
-)
-from typing import List
+from smorest_sfs.utils.paths import (WHITE_LIST, ProjectPath, UploadPath,
+                                     get_avator_path, get_relative_pathstr,
+                                     make_uploaded_path)
 
 
 class TestProjectPath:

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from marshmallow import fields, Schema
+from marshmallow import Schema, fields
 
-from smorest_sfs.extensions.marshal.bases import UploadField, BaseMsgSchema
+from smorest_sfs.extensions.marshal.bases import BaseMsgSchema, UploadField
 
 
 class UploadParams(Schema):

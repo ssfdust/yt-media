@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import pytest
-from tests._utils.injection import FixturesInjectBase
+
 from smorest_sfs.modules.storages.models import Storages
 from smorest_sfs.services.storages.handlers import StorageFactory
-from smorest_sfs.utils.storages import load_storage_from_path, FileStorage
+from smorest_sfs.utils.storages import FileStorage, load_storage_from_path
+from tests._utils.injection import FixturesInjectBase
 
 
 class TestStorage(FixturesInjectBase):

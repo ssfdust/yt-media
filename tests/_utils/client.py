@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-from typing import Any, Dict, List
 from contextlib import contextmanager
+from typing import Any, Dict, List, Union
 
 from flask import Response
 from flask.testing import FlaskClient
@@ -25,7 +25,6 @@ class JSONResponse(Response):
         return json.loads(self.get_data(as_text=True), object_pairs_hook=dict)
 
 
-from typing import Union
 
 
 class AutoAuthFlaskClient(FlaskClient):

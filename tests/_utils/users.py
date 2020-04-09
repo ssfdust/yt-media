@@ -1,4 +1,4 @@
-from typing import Optional, Any
+from typing import Any, Optional
 
 from smorest_sfs.modules.users.models import User, UserInfo
 

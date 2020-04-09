@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from smorest_sfs.modules.email_templates.models import EmailTemplate
 from smorest_sfs.extensions.flask import Flask
+from smorest_sfs.modules.email_templates.models import EmailTemplate
 
 
 def test_get_template(flask_app: Flask) -> None:

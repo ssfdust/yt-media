@@ -2,23 +2,21 @@
     smorest_sfs.modules.storages.resources
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 """
-from typing import Dict, Union
+from typing import Any, Dict, Union
 
 from flask.views import MethodView
 from loguru import logger
 
 from smorest_sfs.extensions.marshal.bases import BaseMsgSchema
 from smorest_sfs.modules.auth import PERMISSIONS, ROLES
-from smorest_sfs.modules.auth.decorators import (
-    doc_login_required,
-    permission_required,
-    role_required,
-)
+from smorest_sfs.modules.auth.decorators import (doc_login_required,
+                                                 permission_required,
+                                                 role_required)
 from smorest_sfs.services.storages.handlers import StorageFactory
-from smorest_sfs.utils.storages import FileStorage, Response, make_response_from_store
+from smorest_sfs.utils.storages import (FileStorage, Response,
+                                        make_response_from_store)
 
 from . import blp, models, schemas
-from typing import Any
 
 
 @blp.route("/<int:file_id>")

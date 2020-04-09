@@ -3,10 +3,10 @@
 
 
 import pytest
+from _pytest.monkeypatch import MonkeyPatch
 
 from smorest_sfs.modules import auth, load_module
 from tests._utils.uniqueue import UniqueQueue
-from _pytest.monkeypatch import MonkeyPatch
 
 QUEUE = UniqueQueue()
 

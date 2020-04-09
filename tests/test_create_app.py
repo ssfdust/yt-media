@@ -5,9 +5,9 @@
 来源：https://github.com/frol/flask-restplus-server-example/
 """
 import pytest
+from _pytest.monkeypatch import MonkeyPatch
 
 from smorest_sfs.factory import CONFIG_MAPPGING, create_app
-from _pytest.monkeypatch import MonkeyPatch
 
 ENABLED_MODULES = ["users"]
 

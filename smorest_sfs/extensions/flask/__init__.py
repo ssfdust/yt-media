@@ -6,6 +6,7 @@
 """
 
 from flask import Flask as BaseFlask
+
 from .config import Config
 
 

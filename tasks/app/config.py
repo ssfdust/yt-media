@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import string
 import secrets
+import string
 import sys
 from itertools import chain
 from typing import Dict

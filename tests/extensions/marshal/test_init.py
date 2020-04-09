@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 """测试自定义ma的创建"""
 from flask import Flask
-from smorest_sfs.extensions.marshal import ma
 from marshmallow import EXCLUDE
+
+from smorest_sfs.extensions.marshal import ma
 
 
 class TestMaCreataion:

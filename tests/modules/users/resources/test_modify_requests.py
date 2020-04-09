@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Dict, List, Any, Union
+from typing import Any, Dict, List, Union
 
 import pytest
 from flask import url_for

@@ -3,7 +3,8 @@
 import logging
 import sys
 from pathlib import Path
-from typing import List, Dict
+from typing import Dict, List
+
 from tasks.app.config import Config
 from tasks.app.consts import CONFIG_PATH, NGINX_PATH, SQL_PATH
 

@@ -21,15 +21,15 @@
     拓展组件
 """
 
+from flask import Flask
 from flask_babel import Babel
 from flask_mail import Mail
 from flask_migrate import Migrate
-from flask import Flask
 
 from .api import api, spec_kwargs
+from .jwt import jwt as jwt_instance
 from .marshal import ma
 from .sqla import db
-from .jwt import jwt as jwt_instance
 from .storage import redis_store
 
 babel = Babel()

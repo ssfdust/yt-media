@@ -8,11 +8,8 @@
 from typing import IO, Optional
 
 from smorest_sfs.extensions import db
-from smorest_sfs.utils.storages import (
-    FileStorage,
-    load_storage_from_path,
-    save_storage_to_path,
-)
+from smorest_sfs.utils.storages import (FileStorage, load_storage_from_path,
+                                        save_storage_to_path)
 
 
 class StoragesMixin:

@@ -1,29 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import List, Tuple, Type, Union, Set
-
-from flask import url_for, Flask
-from marshmallow import Schema
+from typing import Any, Dict, List, Set, Tuple, Type, Union
 
 import pytest
-from smorest_sfs.extensions.sqla import Model
-from flask_sqlalchemy import SQLAlchemy
-
-from .uniqueue import UniqueQueue
 from _pytest.fixtures import SubRequest
+from flask import Flask, url_for
+from flask_sqlalchemy import SQLAlchemy
+from loguru._handler import Message
+from loguru._logger import Logger
+from marshmallow import Schema
+
+from smorest_sfs.extensions.sqla import Model
 from smorest_sfs.modules.email_templates.models import EmailTemplate
 from smorest_sfs.modules.email_templates.schemas import EmailTemplateSchema
 from smorest_sfs.modules.projects.models import Project
 from smorest_sfs.modules.projects.schemas import ProjectSchema
 from smorest_sfs.modules.roles.models import Role
-from smorest_sfs.modules.users.models import User
 from smorest_sfs.modules.roles.schemas import RoleSchema
-from tests._utils.client import AutoAuthFlaskClient
-from typing import Any
-from typing import Dict
-from tests._utils.client import JSONResponse
-from loguru._handler import Message
-from loguru._logger import Logger
+from smorest_sfs.modules.users.models import User
+from tests._utils.client import AutoAuthFlaskClient, JSONResponse
+
+from .uniqueue import UniqueQueue
 
 
 def log_to_queue(record: Message) -> Message:  # type: ignore

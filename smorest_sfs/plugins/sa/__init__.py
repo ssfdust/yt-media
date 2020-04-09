@@ -1,7 +1,7 @@
 """
     sa模块
 """
-from typing import Any, Union, Type
+from typing import Any, Type, Union
 
 from smorest_sfs.extensions import db
 

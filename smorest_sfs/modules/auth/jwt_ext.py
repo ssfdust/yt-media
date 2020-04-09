@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 
-from typing import Dict, TypeVar, Any
+from typing import Any, Dict, TypeVar
 
 from flask import jsonify
 from loguru import logger
 
 from smorest_sfs.extensions import jwt_instance as jwt
 from smorest_sfs.modules.users.models import User
+
 from .helpers import is_token_revoked
 
 Response = TypeVar("Response")

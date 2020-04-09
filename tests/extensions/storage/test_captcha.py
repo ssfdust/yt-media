@@ -1,5 +1,6 @@
 """测试验证码"""
 import pytest
+
 from smorest_sfs.extensions.storage.captcha import CaptchaStore
 
 

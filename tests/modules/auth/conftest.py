@@ -2,18 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import queue
+from typing import Any, Optional, Tuple
 
 import pytest
+from _pytest.monkeypatch import MonkeyPatch
+from freezegun import freeze_time
 
 from smorest_sfs.extensions.storage.captcha import redis_store
-
-from tests._utils.uniqueue import UniqueQueue
-from freezegun import freeze_time
-from typing import Optional
-from _pytest.monkeypatch import MonkeyPatch
 from smorest_sfs.modules.users.models import User
-from typing import Tuple
-from typing import Any
+from tests._utils.uniqueue import UniqueQueue
 
 SENDED: UniqueQueue = UniqueQueue()
 

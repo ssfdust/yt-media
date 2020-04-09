@@ -3,10 +3,9 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ORM默认主键模块
 """
-from typing import Any, List, Union, Type
+from typing import Any, List, Type, Union
 
 from flask_sqlalchemy import BaseQuery
-
 from marshmallow import Schema
 
 from .db_instance import db

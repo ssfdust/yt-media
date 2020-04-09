@@ -2,8 +2,8 @@
 """
 Shell相关的Invoke模块
 """
-import sys
 import pprint
+import sys
 
 from invoke import task
 

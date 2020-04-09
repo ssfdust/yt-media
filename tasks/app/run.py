@@ -4,8 +4,9 @@
 运行程序相关的Invoke模块
 """
 
-from invoke import task
 import logging
+
+from invoke import task
 
 log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

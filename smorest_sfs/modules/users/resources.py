@@ -9,27 +9,23 @@
 from typing import Dict, List
 
 from flask.views import MethodView
+from flask_jwt_extended import current_user
 from flask_sqlalchemy import BaseQuery
 from loguru import logger
+from werkzeug.local import LocalProxy
 
-from flask_jwt_extended import current_user
 from smorest_sfs.extensions import db
 from smorest_sfs.extensions.api.decorators import paginate
-from smorest_sfs.extensions.marshal.bases import (
-    BaseIntListSchema,
-    BaseMsgSchema,
-    GeneralLikeArgs,
-)
+from smorest_sfs.extensions.marshal.bases import (BaseIntListSchema,
+                                                  BaseMsgSchema,
+                                                  GeneralLikeArgs)
 from smorest_sfs.modules.auth import PERMISSIONS, ROLES
-from smorest_sfs.modules.auth.decorators import (
-    doc_login_required,
-    permission_required,
-    role_required,
-)
+from smorest_sfs.modules.auth.decorators import (doc_login_required,
+                                                 permission_required,
+                                                 role_required)
 from smorest_sfs.services.users import create_user
 
 from . import blp, models, schemas
-from werkzeug.local import LocalProxy
 
 
 @blp.route("/options")

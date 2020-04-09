@@ -4,19 +4,20 @@ import os
 import shutil
 import uuid
 from typing import Callable, Iterator, Tuple, Type, Union
-from loguru import logger
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 from flask import Flask
+from loguru import logger
 
-from migrations.initial_development_data import init_permission, init_email_templates
-from smorest_sfs.app import create_app, ENABLED_MODULES
+from migrations.initial_development_data import (init_email_templates,
+                                                 init_permission)
+from smorest_sfs.app import ENABLED_MODULES, create_app
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy  # type: ignore
-from smorest_sfs.modules.users.models import User, Model
+from smorest_sfs.modules.users.models import Model, User
 from smorest_sfs.utils.paths import UploadPath
 
-from ._utils import client, users, injection, tables
+from ._utils import client, injection, tables, users
 
 
 class fakeuuid:

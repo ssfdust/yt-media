@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import logging
 import re
 import sys
-import logging
 
 log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
