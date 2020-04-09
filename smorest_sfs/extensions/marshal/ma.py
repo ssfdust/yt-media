@@ -29,7 +29,7 @@ class SchemaOpts(sqla.SchemaOpts):
         super(SchemaOpts, self).__init__(meta, **kwargs)
 
 
-class ModelSchema(sqla.ModelSchema):
+class ModelSchema(sqla.msqla.ModelSchema, Schema):
     """
     为ModelSchema替换新的SchemaOpts类
     """
