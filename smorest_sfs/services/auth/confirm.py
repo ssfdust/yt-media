@@ -22,7 +22,7 @@ from typing import Optional
 
 from flask import current_app as app
 from flask_jwt_extended import create_access_token, get_raw_jwt
-from flask_smorest import abort  # type: ignore
+from flask_smorest import abort
 from sqlalchemy.orm.exc import NoResultFound
 
 from smorest_sfs.modules.auth.helpers import add_token_to_database

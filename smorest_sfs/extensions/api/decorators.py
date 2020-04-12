@@ -31,7 +31,7 @@ class PaginationParametersSchema(ma.Schema):
     )
 
 
-def generate_links(p: Pagination, per_page: int, **kwargs: Any) -> Dict[str, Any]:  # type: ignore
+def generate_links(p: Pagination, per_page: int, **kwargs: Any) -> Dict[str, Any]:
     """生成分页相关信息
 
     next: 下一页

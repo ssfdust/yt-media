@@ -8,7 +8,7 @@
     id, deleted, modified, created为系统默认字段
 """
 
-from typing import Any, List, Type, Union
+from typing import Any, List, Type, Union, TYPE_CHECKING
 
 import sqlalchemy as sa
 from marshmallow import Schema
@@ -22,6 +22,9 @@ BLACK_LIST = ["id", "deleted", "modified", "created"]
 
 class UByMaMixin:
     """根据marshmallow对象更新"""
+
+    def __init__(self, *args: Any, **kwargs: Any):
+        pass
 
     def save(self, commit: bool = True) -> db.Model:
         """保存对象
@@ -82,7 +85,7 @@ class UByMaMixin:
             if not v.dump_only and k not in BLACK_LIST
         ]
 
-    def _setattr_from_instance(self, fields: List[str], instance: db.Model) -> None:  # type: ignore
+    def _setattr_from_instance(self, fields: List[str], instance: Any) -> None:
         with db.session.no_autoflush:
             for field in fields:
                 set_attribute(self, field, get_attribute(instance, field))  # type: ignore
@@ -93,13 +96,13 @@ class CRUDMixin(UByMaMixin):
     """CRUD基础模块(create, read, update, delete) """
 
     @classmethod
-    def create(cls, **kwargs: Any) -> db.Model:
+    def create(cls, **kwargs: Any) -> Any:
         """新建一条数据 """
         commit = kwargs.get("commit", True)
-        instance = cls(**kwargs)  # type: ignore
+        instance = cls(**kwargs)
         return instance.save(commit)
 
-    def update(self, commit: bool = True, **kwargs: Any) -> db.Model:
+    def update(self, commit: bool = True, **kwargs: Any) -> Any:
         """根据特定字段更新
 
         更新除系统字段以外的字段，并更新修改时间
@@ -114,7 +117,7 @@ class CRUDMixin(UByMaMixin):
 
         return self.save() if commit else self
 
-    def delete(self, commit: bool = True) -> db.Model:
+    def delete(self, commit: bool = True) -> Any:
         """软删除对象
 
         将数据库行的deleted字段设置为ture

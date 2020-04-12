@@ -19,7 +19,7 @@ from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.modules.roles.models import permission_roles
 
 if TYPE_CHECKING:
-    from smorest_sfs.modules.roles.models import Role, Permission
+    from smorest_sfs.modules.roles.models import Role, Permission  # coverage: ignore
     from smorest_sfs.modules.storages.models import Storages
 
 roles_users = db.Table(

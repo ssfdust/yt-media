@@ -5,16 +5,12 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
     自定义Model模块
 """
-from flask_sqlalchemy.model import DefaultMeta
-
 from .db_instance import db
 from .mixin import CRUDMixin
 from .softdelete import QueryWithSoftDelete
 
-BaseModel: DefaultMeta = db.Model
 
-
-class Model(CRUDMixin, BaseModel):
+class Model(db.Model, CRUDMixin):
     """简单的CRUD处理"""
 
     query_class = QueryWithSoftDelete

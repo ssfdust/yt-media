@@ -11,7 +11,7 @@ from flask import current_app as app
 from flask import send_file, url_for
 from flask.views import MethodView
 from flask_jwt_extended import create_access_token, current_user, get_jwt_identity
-from flask_smorest import abort  # type: ignore
+from flask_smorest import abort
 from loguru import logger
 
 from smorest_sfs.extensions.marshal import BaseMsgSchema

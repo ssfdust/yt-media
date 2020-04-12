@@ -7,12 +7,11 @@
     项目的ORM模块
 """
 from sqlalchemy import Column, String
-from sqlalchemy_mptt.mixins import BaseNestedSets
 
 from smorest_sfs.extensions.sqla import Model, SurrogatePK
 
 
-class Project(Model, SurrogatePK, BaseNestedSets):
+class Project(Model, SurrogatePK):
     """
     项目
 
