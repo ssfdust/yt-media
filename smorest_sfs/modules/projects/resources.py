@@ -1,20 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Copyright
-# Author:
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """
     app.modules.projects.resource
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -29,13 +12,12 @@ from flask_sqlalchemy import BaseQuery
 from loguru import logger
 
 from smorest_sfs.extensions.api.decorators import paginate
-from smorest_sfs.extensions.marshal.bases import (
-    BaseIntListSchema,
-    BaseMsgSchema,
-    GeneralLikeArgs,
-)
+from smorest_sfs.extensions.marshal.bases import (BaseIntListSchema,
+                                                  BaseMsgSchema,
+                                                  GeneralLikeArgs)
 from smorest_sfs.modules.auth import PERMISSIONS
-from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
+from smorest_sfs.modules.auth.decorators import (doc_login_required,
+                                                 permission_required)
 
 from . import blp, models, schemas
 

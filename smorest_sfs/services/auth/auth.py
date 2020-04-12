@@ -8,7 +8,7 @@ from typing import Dict, Iterator, Optional
 
 from flask import current_app
 from flask_jwt_extended import create_access_token, create_refresh_token
-from flask_smorest import abort  # type: ignore
+from flask_smorest import abort
 from loguru import logger
 from werkzeug.exceptions import NotFound
 
@@ -39,10 +39,7 @@ class UserLoginChecker:
         return True
 
     def _check_user(self) -> bool:
-        self.user = User.get_by_keyword(self.email)
-        if self.user is None:
-            logger.warning("登录用户不存在")
-            abort(404, message="用户不存在")
+        self.user = User.get_by_keyword(self.email, raises=True)
 
         if self.user.active is not True:
             logger.warning(f"{self.user.email} 未激活，尝试登录")

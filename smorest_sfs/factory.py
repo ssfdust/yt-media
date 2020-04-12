@@ -10,7 +10,7 @@ from typing import List
 
 from loguru import logger
 
-from . import modules
+from . import modules, errors
 from .extensions import init_app
 from .extensions.flask import Flask
 
@@ -43,7 +43,7 @@ def create_app(module_names: List[str], config_name: str = "development") -> Fla
 
     app.config.from_toml(CONFIG_MAPPGING[config_type])
 
-    logger.info(f"Server Started. Server name: {app.config['SERVER_NAME']}")
+    logger.info("Server Started.")
 
     app.config["ENABLED_MODULES"] = module_names
 
@@ -60,5 +60,5 @@ def register_modules(app: Flask) -> None:
 
     为Flask实例注册项目的主要模块
     """
-
     modules.init_app(app)
+    errors.init_app(app)

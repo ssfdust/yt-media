@@ -92,20 +92,23 @@ class User(Model, SurrogatePK):
     )
 
     @classmethod
-    def get_by_keyword(cls, keyword: str) -> User:
+    def get_by_keyword(cls, keyword: str, raises: bool = False) -> User:
         """
         根据邮箱获取用户
         """
-        user: User = cls.query.filter(
-            and_(
-                cls.deleted.is_(False),
+        user: User
+        query = cls.query.filter(
+            db.and_(
                 or_(
                     cls.email == keyword,
                     cls.username == keyword,
                     cls.phonenum == keyword,
                 ),
             )
-        ).first()
+        )
+        if raises:
+            user = query.one()
+        user = query.first()
         return user
 
     def __str__(self) -> str:  # pragma: no cover

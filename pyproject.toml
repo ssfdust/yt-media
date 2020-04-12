@@ -30,6 +30,8 @@ flask-redis = "^0.4.0"
 alembic = "^1.4.2"
 flask-migrate = "^2.5.3"
 pendulum = "^2.1.0"
+rope = "^0.16.0"
+sqlalchemy-mptt = "^0.2.5"
 
 [tool.poetry.dev-dependencies]
 pytest = { git = "https://github.com/pytest-dev/pytest.git" }
@@ -39,6 +41,9 @@ freezegun = "^0.3.13"
 pytest-cov = "^2.8.1"
 ipython = "^7.13.0"
 pylint = "^2.4.4"
+mypy = "^0.770"
+sqlalchemy-stubs = "^0.3"
+sqlalchemy-mptt-stubs = "^0.2"
 
 [tool.coverage.run]
 include = ["smorest_sfs"]
