@@ -24,9 +24,7 @@
 """
 from __future__ import annotations
 
-from sqlalchemy import Column, String, Text
-
-from smorest_sfs.extensions.sqla import Model, SurrogatePK
+from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 
 
 class EmailTemplate(Model, SurrogatePK):
@@ -38,14 +36,15 @@ class EmailTemplate(Model, SurrogatePK):
 
     __tablename__ = "email_templates"
 
-    name = Column(
-        String(length=128), nullable=False, unique=True, doc="email_templates的名称"
+    name = db.Column(
+        db.String(length=128), nullable=False, unique=True, doc="email_templates的名称"
     )
-    template = Column(Text, nullable=False, doc="模板")
+    template = db.Column(db.Text, nullable=False, doc="模板")
 
     @classmethod
     def get_by_name(cls, name: str) -> EmailTemplate:
-        email_template: EmailTemplate = cls.query.filter_by(name=name).one()
+        """根据名称获取电子邮箱模板"""
+        email_template: EmailTemplate = cls.query.filter_by(name=name).first_or_404()
         return email_template
 
     @classmethod

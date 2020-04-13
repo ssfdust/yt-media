@@ -13,10 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy import Boolean, Column, DateTime, String
-
-from smorest_sfs.extensions.sqla import Model, SurrogatePK
-
+from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 
 class TokenBlackList(Model, SurrogatePK):
     """
@@ -31,8 +28,8 @@ class TokenBlackList(Model, SurrogatePK):
 
     __tablename__ = "jwt_token_blacklist"
 
-    user_identity = Column(String(50), nullable=False)
-    jti = Column(String(36), unique=True, nullable=False)
-    revoked = Column(Boolean, nullable=False, default=False)
-    token_type = Column(String(10), nullable=False)
-    expires = Column(DateTime(True), nullable=False)
+    user_identity = db.Column(db.String(50), nullable=False)
+    jti = db.Column(db.String(36), unique=True, nullable=False)
+    revoked = db.Column(db.Boolean, nullable=False, default=False)
+    token_type = db.Column(db.String(10), nullable=False)
+    expires = db.Column(db.DateTime(True), nullable=False)

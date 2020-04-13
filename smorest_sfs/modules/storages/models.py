@@ -27,4 +27,4 @@ class Storages(StoragesMixin, Model, SurrogatePK):
 
     def __init__(self, store: FileStorage, **kwargs: Any):
         self.store = store
-        db.Model.__init__(self, **kwargs)
+        db.Model.__init__(self, **kwargs)  # type: ignore

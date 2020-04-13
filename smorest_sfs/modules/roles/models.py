@@ -10,9 +10,7 @@ from __future__ import annotations
 
 from typing import List
 
-from sqlalchemy import Boolean, Column, String
 from sqlalchemy.orm import relationship
-
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.modules.auth.permissions import ROLES
 
@@ -35,8 +33,8 @@ class Permission(Model, SurrogatePK):
 
     __tablename__ = "permissions"
 
-    name = Column(String(80), unique=True, doc="权限名称", nullable=False)
-    description = Column(String(255), doc="权限描述")
+    name = db.Column(db.String(80), unique=True, doc="权限名称", nullable=False)
+    description = db.Column(db.String(255), doc="权限描述")
 
     @classmethod
     def get_by_name(cls, name: str) -> Permission:
@@ -65,10 +63,10 @@ class Role(Model, SurrogatePK):
 
     __tablename__ = "roles"
 
-    name = Column(String(80), unique=True, doc="角色名称", nullable=False)
-    description = Column(String(255), doc="角色描述")
-    user_default = Column(Boolean, doc="用户默认角色", default=False)
-    group_default = Column(Boolean, doc="组默认角色", default=False)
+    name = db.Column(db.String(80), unique=True, doc="角色名称", nullable=False)
+    description = db.Column(db.String(255), doc="角色描述")
+    user_default = db.Column(db.Boolean, doc="用户默认角色", default=False)
+    group_default = db.Column(db.Boolean, doc="组默认角色", default=False)
     permissions = relationship(
         "Permission",
         secondary=permission_roles,

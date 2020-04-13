@@ -5,12 +5,12 @@
 """
 from typing import Any, List, Type, Union
 
-from flask_sqlalchemy import BaseQuery
 from marshmallow import Schema
 from sqlalchemy import Boolean, Column, DateTime, Integer
 
 from .db_instance import db
 from .helpers import utcnow
+from .softdelete import QueryWithSoftDelete
 
 
 # https://speakerdeck.com/zzzeek/building-the-app
@@ -24,7 +24,7 @@ class SurrogatePK:
     :attr created: datetime 创建时间
     """
 
-    query: BaseQuery
+    query: QueryWithSoftDelete
 
     id = Column(Integer, primary_key=True, info={"marshmallow": {"dump_only": True}})
     deleted = Column(

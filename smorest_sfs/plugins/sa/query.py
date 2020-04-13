@@ -30,7 +30,7 @@ class SAQuery(SAStatement):
         analysis = QueryAnalysis(self.query)
         return analysis.keys
 
-    def get_render_sql(self, size: int = 50) -> BaseQuery:
+    def get_render_sql(self, size: int = 50) -> Any:
         return self.query.limit(size)
 
     def render_results(self, size: int = 50) -> None:

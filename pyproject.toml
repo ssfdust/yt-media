@@ -43,7 +43,7 @@ ipython = "^7.13.0"
 pylint = "^2.4.4"
 mypy = "^0.770"
 sqlalchemy-stubs = "^0.3"
-sqlalchemy-mptt-stubs = "^0.2"
+sqlalchemy-mptt-stubs = "^0.0.3"
 
 [tool.coverage.run]
 include = ["smorest_sfs"]

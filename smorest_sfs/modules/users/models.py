@@ -11,7 +11,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from marshmallow.validate import OneOf, Range
-from sqlalchemy import Boolean, Column, DateTime, Integer, String, and_, join, or_
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils.types import PasswordType
 
@@ -19,17 +18,16 @@ from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.modules.roles.models import permission_roles
 
 if TYPE_CHECKING:
-    from smorest_sfs.modules.roles.models import Role, Permission  # coverage: ignore
+    from smorest_sfs.modules.roles.models import Role, Permission
     from smorest_sfs.modules.storages.models import Storages
 
 roles_users = db.Table(
     "roles_users",
-    Column("user_id", Integer(), nullable=False),
-    Column("role_id", Integer(), nullable=False),
+    db.Column("user_id", db.Integer(), nullable=False),
+    db.Column("role_id", db.Integer(), nullable=False),
 )
 
-
-user_permissions = join(
+user_permissions = db.join(
     roles_users, permission_roles, roles_users.c.role_id == permission_roles.c.role_id
 )
 
@@ -49,14 +47,14 @@ class User(Model, SurrogatePK):
 
     __tablename__ = "users"
 
-    username = Column(String(255), nullable=False, unique=True, doc="用户名")
-    phonenum = Column(String(255), nullable=True, unique=True, doc="电话号码")
-    email = Column(String(255), nullable=True, unique=True, doc="用户邮箱")
-    password = Column(
+    username = db.Column(db.String(255), nullable=False, unique=True, doc="用户名")
+    phonenum = db.Column(db.String(255), nullable=True, unique=True, doc="电话号码")
+    email = db.Column(db.String(255), nullable=True, unique=True, doc="用户邮箱")
+    password = db.Column(
         PasswordType(schemes=["pbkdf2_sha512"]), nullable=False, doc="用户密码"
     )
-    active = Column(Boolean(), doc="启用", default=False)
-    confirmed_at = Column(DateTime(), doc="确认时间")
+    active = db.Column(db.Boolean(), doc="启用", default=False)
+    confirmed_at = db.Column(db.DateTime(), doc="确认时间")
     roles = relationship(
         "Role",
         secondary=roles_users,
@@ -99,7 +97,7 @@ class User(Model, SurrogatePK):
         user: User
         query = cls.query.filter(
             db.and_(
-                or_(
+                db.or_(
                     cls.email == keyword,
                     cls.username == keyword,
                     cls.phonenum == keyword,
@@ -139,18 +137,10 @@ class UserInfo(SurrogatePK, Model):
 
     __tablename__ = "userinfo"
 
-    avator_id = Column(Integer, doc="头像ID", info={"marshmallow": {"dump_only": True}})
-    uid = Column(Integer, doc="用户ID", info={"marshmallow": {"dump_only": True}})
-    avator = relationship(
-        "Storages",
-        primaryjoin="Storages.id == UserInfo.avator_id",
-        foreign_keys=avator_id,
-        doc="头像",
-        lazy="joined",
-        info={"marshmallow": {"dump_only": True}},
-    )
-    sex = Column(
-        Integer,
+    avator_id = db.Column(db.Integer, doc="头像ID", info={"marshmallow": {"dump_only": True}})
+    uid = db.Column(db.Integer, doc="用户ID", info={"marshmallow": {"dump_only": True}})
+    sex = db.Column(
+        db.Integer,
         doc="性别",
         default=1,
         info={
@@ -161,8 +151,8 @@ class UserInfo(SurrogatePK, Model):
             }
         },
     )
-    age = Column(
-        Integer,
+    age = db.Column(
+        db.Integer,
         doc="年龄",
         info={
             "marshmallow": {
@@ -172,13 +162,13 @@ class UserInfo(SurrogatePK, Model):
             }
         },
     )
-    first_name = Column(
-        String(80),
+    first_name = db.Column(
+        db.String(80),
         doc="姓",
         info={"marshmallow": {"allow_none": False, "required": True}},
     )
-    last_name = Column(
-        String(80),
+    last_name = db.Column(
+        db.String(80),
         doc="名",
         info={"marshmallow": {"allow_none": False, "required": True}},
     )
@@ -187,6 +177,14 @@ class UserInfo(SurrogatePK, Model):
         doc="用户",
         primaryjoin="User.id == UserInfo.uid",
         foreign_keys=uid,
+        info={"marshmallow": {"dump_only": True}},
+    )
+    avator = relationship(
+        "Storages",
+        primaryjoin="Storages.id == UserInfo.avator_id",
+        foreign_keys=avator_id,
+        doc="头像",
+        lazy="joined",
         info={"marshmallow": {"dump_only": True}},
     )
 

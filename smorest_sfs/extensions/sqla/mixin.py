@@ -8,7 +8,7 @@
     id, deleted, modified, created为系统默认字段
 """
 
-from typing import Any, List, Type, Union, TYPE_CHECKING
+from typing import Any, List, Type, Union
 
 import sqlalchemy as sa
 from marshmallow import Schema
@@ -26,7 +26,7 @@ class UByMaMixin:
     def __init__(self, *args: Any, **kwargs: Any):
         pass
 
-    def save(self, commit: bool = True) -> db.Model:
+    def save(self, commit: bool = True) -> Any:
         """保存对象
 
         保存对象并更新保存时间
@@ -41,7 +41,7 @@ class UByMaMixin:
 
     def update_by_ma(
         self, schema: Union[Schema, Type[Schema]], instance: Any, commit: bool = True,
-    ) -> db.Model:
+    ) -> Any:
         """根据marshmallow以及SQLa实例更新
 
         :param schema: Schema Schema类或实例

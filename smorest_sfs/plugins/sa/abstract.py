@@ -54,7 +54,7 @@ class RenderableStatement(StatementAbstract, TableRender):
         raise NotImplementedError
 
     @abstractmethod
-    def get_render_sql(self, size: int) -> Select:
+    def get_render_sql(self, size: int) -> Any:
         raise NotImplementedError
 
     @abstractmethod

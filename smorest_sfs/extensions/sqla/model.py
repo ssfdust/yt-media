@@ -9,7 +9,6 @@ from .db_instance import db
 from .mixin import CRUDMixin
 from .softdelete import QueryWithSoftDelete
 
-
 class Model(db.Model, CRUDMixin):
     """简单的CRUD处理"""
 

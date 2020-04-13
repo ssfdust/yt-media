@@ -6,10 +6,7 @@
 
     项目的ORM模块
 """
-from sqlalchemy import Column, String
-
-from smorest_sfs.extensions.sqla import Model, SurrogatePK
-
+from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 
 class Project(Model, SurrogatePK):
     """
@@ -20,7 +17,7 @@ class Project(Model, SurrogatePK):
 
     __tablename__ = "projects"
 
-    name = Column(String(length=128), nullable=False, doc="项目名称")
+    name = db.Column(db.String(length=128), nullable=False, doc="项目名称")
 
     def __repr__(self) -> str:
         return self.name

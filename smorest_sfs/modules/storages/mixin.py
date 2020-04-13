@@ -23,8 +23,8 @@ class StoragesMixin:
 
     filename: str
     name = db.Column(db.String(256), nullable=True, doc="文件名")
-    filetype = db.Column(db.String(256), nullable=True, doc="文件类型", default="")
-    storetype = db.Column(db.String(256), nullable=True, doc="存储类型")
+    filetype = db.Column(db.String(256), nullable=False, doc="文件类型", default="")
+    storetype = db.Column(db.String(256), nullable=False, doc="存储类型")
     saved = db.Column(db.Boolean, nullable=True, default=False, doc="是否保存")
     path = db.Column(db.String(2000), nullable=True, doc="文件路径")
     _store = None
@@ -55,6 +55,6 @@ class StoragesMixin:
         """
         if self.store is not None:
             self.name = self.store.filename if self.store.filename else self.filename
-            self.filetype = self.store.content_type
+            self.filetype = self.store.content_type or "application/octstream"
             self.path = save_storage_to_path(self.store, self.storetype)
             self.saved = True
