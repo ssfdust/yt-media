@@ -3,6 +3,8 @@
 """测试auth"""
 
 
+from typing import Tuple
+
 import pytest
 from flask import url_for
 
@@ -11,7 +13,7 @@ from smorest_sfs.services.auth.confirm import generate_confirm_token
 from tests._utils.injection import FixturesInjectBase
 from tests._utils.uniqueue import UniqueQueue
 
-MAIL_QUEUE: UniqueQueue = UniqueQueue()
+MAIL_QUEUE: UniqueQueue[str] = UniqueQueue()
 
 
 class TestAuthHelper(FixturesInjectBase):
@@ -19,7 +21,12 @@ class TestAuthHelper(FixturesInjectBase):
     regular_user: User
     forget_passwd_user: User
 
-    fixture_names = ("flask_app_client", "inactive_user", "regular_user", "flask_app")
+    fixture_names: Tuple[str, ...] = (
+        "flask_app_client",
+        "inactive_user",
+        "regular_user",
+        "flask_app",
+    )
 
 
 class TestLogin(TestAuthHelper):

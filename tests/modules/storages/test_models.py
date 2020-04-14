@@ -17,7 +17,7 @@ class TestStorage(FixturesInjectBase):
         factory = StorageFactory(self.storage)
         factory.save()
         store = load_storage_from_path(self.storage.name, self.storage.path)
-        assert store.read() == b"abc" and self.storage.store.read() == b"abc"
+        assert store.read() == b"abc" and self.storage.store.read() == b"abc"  # type: ignore
 
     def test_model_load(self) -> None:
         factory = StorageFactory(self.storage)

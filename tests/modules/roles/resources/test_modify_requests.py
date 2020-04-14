@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 import pytest
 
@@ -28,7 +28,11 @@ class TestRoleModify(GeneralModify):
     )
 
     @pytest.mark.parametrize("json", param_helper(name="role", description="desc"))
-    def test_add(self, json, permissions):
+    def test_add(
+        self,
+        json: Dict[str, Union[str, List[Dict[str, Union[str, int]]]]],
+        permissions: List[Dict[str, Union[int, str]]],
+    ) -> None:
         json["permissions"] = permissions
         data = self._add_request(json)
         assert data.keys() >= {"id", "name", "permissions"} and data["permissions"][

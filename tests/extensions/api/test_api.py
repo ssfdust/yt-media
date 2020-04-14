@@ -32,7 +32,8 @@ class TestApi(FixturesInjectBase):
             @paginate()
             def get(self) -> BaseQuery:
                 """List pets"""
-                return TestPagination.query.order_by(TestPagination.id)
+                query: BaseQuery = TestPagination.query.order_by(TestPagination.id)
+                return query
 
         blp.add_url_rule("", "pets", Pets.as_view("pets"))
 
@@ -64,7 +65,8 @@ class TestApi(FixturesInjectBase):
 
         assert data["meta"] == meta
 
-    def get_test_json(self, url: str) -> Dict:
+    def get_test_json(self, url: str) -> Dict[str, Any]:
         test_client = self.app.test_client()
         resp = test_client.get(url)
-        return resp.json
+        json: Dict[str, Any] = resp.json
+        return json

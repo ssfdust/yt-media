@@ -8,7 +8,7 @@ from smorest_sfs.extensions.flask import Flask
 
 
 class TestFlask:
-    def test_flask(self):
+    def test_flask(self) -> None:
 
         with tempfile.NamedTemporaryFile(delete=False) as fp:
             fp.write(b"TEST_CONFIG = 123")

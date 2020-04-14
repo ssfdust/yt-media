@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import List
+
 from smorest_sfs.modules.auth import ROLES
+from smorest_sfs.modules.projects.models import Project
 from tests._utils.injection import GeneralGet
 
 
@@ -11,6 +14,7 @@ class TestListView(GeneralGet):
     listview = "Project.ProjectListView"
     view = "Project.ProjectView"
     login_roles = [ROLES.ProjectManager]
+    project_items: List[Project]
 
     def test_get_options(self) -> None:
         self._get_options()

@@ -20,7 +20,7 @@ class TestListView(GeneralGet):
         self._get_options()
 
     @pytest.mark.parametrize("name", ["qqq", "aaa", "regular"])
-    def test_get_list(self, name):
+    def test_get_list(self, name: str) -> None:
         self.regular_user.userinfo.update(first_name="nqqqn", last_name="baaab")
         data = self._get_list(name=name)
         assert (

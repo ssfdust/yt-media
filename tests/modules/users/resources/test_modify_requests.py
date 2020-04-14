@@ -49,7 +49,7 @@ class TestGeneralModify(FixturesInjectBase):
         )
         setattr(self, "role_dict", [{"id": r.id, "name": r.name} for r in self.roles])
 
-    def _get_data(self, **kwargs: Any) -> Dict:
+    def _get_data(self, **kwargs: Any) -> Dict[str, Any]:
         data = self.data.copy()
         data.update(**kwargs)
         return data

@@ -71,7 +71,7 @@ def api(app: Flask) -> Api:
 
 
 @pytest.fixture(scope="package")
-def TestSchema() -> ma.Schema:
+def TestSchema() -> Type[ma.Schema]:
     # pylint: disable=W0621
     class TestSchema(ma.Schema):
         id = ma.fields.Int(dump_only=True)
@@ -81,7 +81,7 @@ def TestSchema() -> ma.Schema:
 
 
 @pytest.fixture(scope="package")
-def TestPageSchema(TestSchema: ma.Schema) -> ma.Schema:
+def TestPageSchema(TestSchema: ma.Schema) -> Type[ma.Schema]:
     # pylint: disable=W0621
     class TestPageSchema(BasePageSchema):
 

@@ -3,7 +3,7 @@
 import os
 import shutil
 import uuid
-from typing import Callable, Iterator, Tuple, Type, Union
+from typing import Any, Callable, Iterator, Tuple, Type, Union
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
@@ -29,7 +29,7 @@ def patch_uuid(monkeypatch: MonkeyPatch):  # type: ignore
 
 
 @pytest.fixture
-def clean_dirs() -> Iterator:
+def clean_dirs() -> Iterator[None]:
     yield
     for key in ["foo", "new", "bar"]:
         path = UploadPath.get_uploads_subdir(key, withdate=False)
@@ -63,19 +63,18 @@ def db(flask_app: Flask) -> Iterator[SQLAlchemy]:
 
 
 @pytest.fixture(scope="session")
-def flask_app_client(flask_app: Flask) -> client.FlaskClient:
+def flask_app_client(flask_app: Flask) -> client.FlaskClient[Any]:
     # pylint: disable=W0613, W0621
-    flask_app.test_client_class = client.AutoAuthFlaskClient
-    flask_app.response_class = client.JSONResponse
+    flask_app.test_client_class = client.AutoAuthFlaskClient[Any]
     return flask_app.test_client()
 
 
 @pytest.fixture(scope="session")
-def temp_db_instance_helper(db: SQLAlchemy) -> Callable:  # type: ignore
+def temp_db_instance_helper(db: SQLAlchemy) -> Callable[..., Any]:
     # pylint: disable=W0613, W0621
     def temp_db_instance_manager(
         *instances: Model,
-    ) -> Iterator[Union[Model, Tuple[Model]]]:
+    ) -> Iterator[Union[Model, Tuple[Model, ...]]]:
         for instance in instances:
             instance.save()
 
@@ -136,7 +135,7 @@ def guest_user(
 
 
 @pytest.fixture
-def inject_logger() -> Iterator:
+def inject_logger() -> Iterator[None]:
     injection.inject_logger(logger)
     yield
     injection.uninject_logger(logger)

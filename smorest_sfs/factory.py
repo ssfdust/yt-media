@@ -10,7 +10,7 @@ from typing import List
 
 from loguru import logger
 
-from . import modules, errors
+from . import errors, modules
 from .extensions import init_app
 from .extensions.flask import Flask
 

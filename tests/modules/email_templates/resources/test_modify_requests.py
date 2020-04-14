@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import Dict
+
 import pytest
 
 from smorest_sfs.modules.auth import ROLES
@@ -29,7 +31,7 @@ class TestEmailTemplateModify(GeneralModify):
     @pytest.mark.parametrize(
         "data", param_helper(name="email_template", template="test123")
     )
-    def test_add(self, data):
+    def test_add(self, data: Dict[str, str]) -> None:
         data = self._add_request(data)
         assert data.keys() >= {"id", "name", "template"}
 

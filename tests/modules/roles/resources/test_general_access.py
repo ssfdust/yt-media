@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import Any
+
 import pytest
 from flask import url_for
 
@@ -21,7 +23,7 @@ class TestGeneralAccess(FixturesInjectBase):
             ("DELETE", "Role.RoleItemView", {"role_id": 1}),
         ),
     )
-    def test_unauthorized_access(self, http_method, view, kw):
+    def test_unauthorized_access(self, http_method: str, view: str, kw: Any) -> None:
         with self.flask_app.test_request_context():
             url = url_for(view, **kw)
             response = self.flask_app_client.open(method=http_method, path=url)
@@ -39,7 +41,7 @@ class TestGeneralAccess(FixturesInjectBase):
             ("DELETE", "Role.RoleItemView", {"role_id": 1}),
         ),
     )
-    def test_forbbden_access(self, http_method, view, kw):
+    def test_forbbden_access(self, http_method: str, view: str, kw: Any) -> None:
         with self.flask_app.test_request_context():
             with self.flask_app_client.login(self.regular_user, []) as client:
                 url = url_for(view, **kw)

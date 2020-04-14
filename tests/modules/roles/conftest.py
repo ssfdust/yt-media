@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Any, Callable, Dict, Iterator, List, Tuple, Union
+from typing import Any, Callable, Dict, Iterator, List, Tuple
 
 import pytest
 
@@ -11,21 +11,24 @@ from smorest_sfs.modules.roles.models import Permission, Role
 
 @pytest.fixture
 @pytest.mark.usefixtures("flask_app")
-def test_role(temp_db_instance_helper: Callable):
+def test_role(temp_db_instance_helper: Callable[..., Iterator[Any]]) -> Iterator[Any]:
     for _ in temp_db_instance_helper(Role(name="test_role")):
         yield _
 
 
 @pytest.fixture
 @pytest.mark.usefixtures("flask_app")
-def test_permission(temp_db_instance_helper: Callable):
+def test_permission(
+    temp_db_instance_helper: Callable[..., Iterator[Any]]
+) -> Iterator[Any]:
     for _ in temp_db_instance_helper(Permission(name="test_permission")):
         yield _
 
 
 @pytest.fixture
 def test_role_with_permission(test_role: Role, test_permission: Permission) -> Role:
-    return test_role.update(permissions=[test_permission])
+    new_role: Role = test_role.update(permissions=[test_permission])
+    return new_role
 
 
 @pytest.fixture
@@ -51,7 +54,7 @@ def update_permissions() -> List[Dict[str, Any]]:
 @pytest.fixture
 @pytest.mark.usefixtures("flask_app")
 def role_items(
-    temp_db_instance_helper: Callable,
-) -> Iterator[Union[Iterator, Iterator[Tuple[Role, Role, Role]]]]:
+    temp_db_instance_helper: Callable[..., Any],
+) -> Iterator[Iterator[Tuple[Role, Role, Role]]]:
     for _ in temp_db_instance_helper(Role(name="1"), Role(name="2"), Role(name="3")):
         yield _

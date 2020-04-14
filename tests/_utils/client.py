@@ -1,31 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import json
-from contextlib import contextmanager
-from typing import Any, Dict, List, Union
+from __future__ import annotations
 
-from flask import Response
-from flask.testing import FlaskClient
-from werkzeug.utils import cached_property
+from contextlib import contextmanager
+from typing import TYPE_CHECKING, Any, Iterator, List, Optional, TypeVar, Union
+
+from flask import testing
 
 from smorest_sfs.modules.users.models import User
 
+_R = TypeVar("_R")
 
-class JSONResponse(Response):
-    """
-    A Response class with extra useful helpers, i.e. ``.json`` property.
+if TYPE_CHECKING:
+    FlaskClient = testing.FlaskClient
+else:
 
-    来源：https://github.com/frol/flask-restplus-server-example/
-    """
+    class FakeGenericMeta(type):
+        def __getitem__(self, item):
+            return self
 
-    # pylint: disable=too-many-ancestors
-
-    @cached_property
-    def json(self) -> Dict:
-        return json.loads(self.get_data(as_text=True), object_pairs_hook=dict)
+    class FlaskClient(testing.FlaskClient, metaclass=FakeGenericMeta):
+        pass
 
 
-class AutoAuthFlaskClient(FlaskClient):
+#  class JSONResponse(Response):
+#      """
+#      A Response class with extra useful helpers, i.e. ``.json`` property.
+#
+#      来源：https://github.com/frol/flask-restplus-server-example/
+#      """
+#
+#      # pylint: disable=too-many-ancestors
+#
+#      @cached_property
+#      def json(self) -> JSONMixin:
+#          return json.loads(self.get_data(as_text=True), object_pairs_hook=dict)
+#
+#
+class AutoAuthFlaskClient(FlaskClient[_R]):
     """
     A helper FlaskClient class with a useful for testing ``login`` context
     manager.
@@ -35,10 +47,12 @@ class AutoAuthFlaskClient(FlaskClient):
         super(AutoAuthFlaskClient, self).__init__(*args, **kwargs)
         self._user: Union[User, None] = None
         self._access_token: Union[str, None] = None
-        self._roles: Union[List, None] = None
+        self._roles: List[str] = []
 
     @contextmanager
-    def login(self, user: User, roles: List[str] = None):
+    def login(
+        self, user: User, roles: Optional[List[str]] = None
+    ) -> Iterator[AutoAuthFlaskClient[Any]]:
         """
         示例：
             >>> with flask_app_client.login(user, permissions=['SuperUserPrivilege']):
@@ -49,7 +63,7 @@ class AutoAuthFlaskClient(FlaskClient):
 
         self._user = user
         self._roles = roles or []
-        self._user.roles = Role.query.filter(Role.name.in_(roles)).all()
+        self._user.roles = Role.query.filter(Role.name.in_(self._roles)).all()
         self._user.save()
         if self._user is not None:
             self._access_token = login_user(self._user)["tokens"]["access_token"]

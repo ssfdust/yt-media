@@ -32,7 +32,6 @@ class ROLES:
     RoleManager = "RoleManager"
     GroupManager = "GroupManager"
     ProjectManager = "ProjectManager"
-    CodeManager = "CodeManager"
     # End Of ROLES
 
 
@@ -68,11 +67,6 @@ class PERMISSIONS:
     ProjectEdit = "ProjectEditPrivilege"
     ProjectDelete = "ProjectDeletePrivilege"
     ProjectQuery = "ProjectQueryPrivilege"
-    # CodeManager
-    CodeAdd = "CodeAddPrivilege"
-    CodeEdit = "CodeEditPrivilege"
-    CodeDelete = "CodeDeletePrivilege"
-    CodeQuery = "CodeQueryPrivilege"
     # End Of PERMISSIONS
 
 
@@ -110,11 +104,6 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.ProjectDelete,
         PERMISSIONS.ProjectEdit,
         PERMISSIONS.ProjectQuery,
-        # 编码管理
-        PERMISSIONS.CodeAdd,
-        PERMISSIONS.CodeDelete,
-        PERMISSIONS.CodeEdit,
-        PERMISSIONS.CodeQuery,
         # End Of SuperUser
     ],
     ROLES.GroupManager: [
@@ -146,12 +135,6 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.ProjectDelete,
         PERMISSIONS.ProjectEdit,
         PERMISSIONS.ProjectQuery,
-    ],
-    ROLES.CodeManager: [
-        PERMISSIONS.CodeAdd,
-        PERMISSIONS.CodeDelete,
-        PERMISSIONS.CodeEdit,
-        PERMISSIONS.CodeQuery,
     ],
     # End Of Permissions Mapping
 }

@@ -4,7 +4,6 @@
 
     db实例模块
 """
-
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()

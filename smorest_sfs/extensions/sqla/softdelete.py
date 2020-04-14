@@ -4,6 +4,7 @@
     软删除模块
 """
 from __future__ import annotations
+
 from typing import Any, Optional
 
 from flask_sqlalchemy import BaseQuery
@@ -18,6 +19,7 @@ class QueryWithSoftDelete(BaseQuery):
 
     根据deleted字段来决定是否显示此对象
     """
+
     _mapper_zero: Any
     _joinpoint_zero: Any
 

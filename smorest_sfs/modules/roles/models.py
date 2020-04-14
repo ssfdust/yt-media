@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import List
 
 from sqlalchemy.orm import relationship
+
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.modules.auth.permissions import ROLES
 
@@ -42,7 +43,7 @@ class Permission(Model, SurrogatePK):
         return permission
 
     @classmethod
-    def get_by_names(cls, *names: List[str]) -> List[Permission]:
+    def get_by_names(cls, *names: str) -> List[Permission]:
         permissions: List[Permission] = cls.query.filter(cls.name.in_(names)).all()
         return permissions
 

@@ -8,6 +8,7 @@
 """
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 
+
 class Project(Model, SurrogatePK):
     """
     项目

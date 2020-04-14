@@ -13,7 +13,7 @@ from smorest_sfs.extensions.marshal.bases import (
 
 
 class TestBasesMaClass:
-    def test_base_msg(self):
+    def test_base_msg(self) -> None:
 
         schema = BaseMsgSchema()
         data = schema.dump({})

@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import queue
-from typing import Any, Optional, Tuple
+from typing import Any, List, Optional, Tuple
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
@@ -12,7 +11,7 @@ from smorest_sfs.extensions.storage.captcha import redis_store
 from smorest_sfs.modules.users.models import User
 from tests._utils.uniqueue import UniqueQueue
 
-SENDED: UniqueQueue = UniqueQueue()
+SENDED: UniqueQueue[str] = UniqueQueue()
 
 
 @pytest.fixture
@@ -28,7 +27,7 @@ def patch_code(monkeypatch: MonkeyPatch) -> None:
 
 
 @pytest.fixture
-def permissions():
+def permissions() -> List[str]:
     from smorest_sfs.modules.auth.permissions import PERMISSIONS
 
     return [PERMISSIONS.UserEdit, PERMISSIONS.GroupQuery, PERMISSIONS.GroupAdd]

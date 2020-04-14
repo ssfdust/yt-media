@@ -93,11 +93,11 @@ class TestSqlaCRUD:
 
 class TestUpdateBySchema(FixturesInjectBase):
     TestParentTable: Model
-    TestParentSchema: Schema
+    TestParentSchema: Type[Schema]
     item: Model
     fixture_names = ("TestParentTable", "TestParentSchema")
 
-    def do_init_update_by_schema(self, **kwargs: Any) -> Model:
+    def do_init_update_by_schema(self, **kwargs: Any) -> Any:
         temp_instance = self.TestParentTable(**kwargs)
         temp_instance = set_default_for_instance(temp_instance)
         self.item.update_by_ma(self.schema, temp_instance)
@@ -214,7 +214,7 @@ class TestComplexParentChildrenUpdateBySchema(FixturesInjectBase):
         return [children_lst[2]]
 
     @pytest.fixture
-    def parent_a(self, origin_a_children_lst: List[Model]) -> Model:
+    def parent_a(self, origin_a_children_lst: List[Model]) -> Any:
         parent = self.TestParentTable.create(name="A", children=origin_a_children_lst)
         return parent
 

@@ -59,7 +59,7 @@ class TestUploadView(FixturesInjectBase):
     fixture_names = ("flask_app_client", "flask_app")
 
     @pytest.mark.usefixtures("clean_dirs")
-    def test_post(self, regular_user):
+    def test_post(self, regular_user: User) -> None:
         with self.flask_app_client.login(regular_user, [ROLES.User]) as client:
             with self.flask_app.test_request_context():
                 resp = client.post(

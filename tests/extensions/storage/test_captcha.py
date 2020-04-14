@@ -1,7 +1,7 @@
 """测试验证码"""
 import pytest
-
 from werkzeug.exceptions import NotFound
+
 from smorest_sfs.extensions.storage.captcha import CaptchaStore
 
 

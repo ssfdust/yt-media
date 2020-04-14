@@ -28,4 +28,5 @@ def next_store() -> FileStorage:
 @pytest.fixture
 def add_storage(store: FileStorage) -> Storages:
     factory = StorageFactory(Storages(name="test.txt", storetype="foo", store=store))
-    return factory.save()
+    storage: Storages = factory.save()
+    return storage

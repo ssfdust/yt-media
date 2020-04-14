@@ -19,7 +19,7 @@ from smorest_sfs.utils.paths import (
 
 class TestProjectPath:
     @pytest.mark.parametrize("_dir", ["tests", "smorest_sfs"])
-    def test_project_path(self, _dir: str):
+    def test_project_path(self, _dir: str) -> None:
         project_path = ProjectPath.get_project_path()
         dir_path = Path(project_path, _dir)
         assert dir_path.exists()

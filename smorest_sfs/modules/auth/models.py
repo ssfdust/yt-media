@@ -15,6 +15,7 @@
 
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 
+
 class TokenBlackList(Model, SurrogatePK):
     """
     Token Black List Table

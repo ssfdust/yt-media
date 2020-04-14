@@ -1,39 +1,41 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Any, Dict, List, Set, Tuple, Type, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Set, Tuple, Type, Union
 
 import pytest
 from _pytest.fixtures import SubRequest
 from flask import Flask, url_for
+from flask.wrappers import Response
 from flask_sqlalchemy import SQLAlchemy
-from loguru._handler import Message
-from loguru._logger import Logger
 from marshmallow import Schema
 
 from smorest_sfs.extensions.sqla import Model
 from smorest_sfs.modules.email_templates.models import EmailTemplate
-from smorest_sfs.modules.email_templates.schemas import EmailTemplateSchema
 from smorest_sfs.modules.projects.models import Project
-from smorest_sfs.modules.projects.schemas import ProjectSchema
 from smorest_sfs.modules.roles.models import Role
-from smorest_sfs.modules.roles.schemas import RoleSchema
 from smorest_sfs.modules.users.models import User
-from tests._utils.client import AutoAuthFlaskClient, JSONResponse
+from tests._utils.client import AutoAuthFlaskClient
 
 from .uniqueue import UniqueQueue
 
+if TYPE_CHECKING:
+    from loguru import Message
+    from loguru import Logger
+else:
+    from loguru._handler import Message
+    from loguru._logger import Logger
 
-def log_to_queue(record: Message) -> Message:  # type: ignore
-    queue = UniqueQueue()
+
+def log_to_queue(record: Message) -> None:
+    queue: UniqueQueue[str] = UniqueQueue()
     queue.put(record.record["message"])
-    return record
 
 
-def inject_logger(logger: Logger) -> None:  # type: ignore
+def inject_logger(logger: Logger) -> None:
     logger.add(log_to_queue, serialize=False)
 
 
-def uninject_logger(logger: Logger) -> None:  # type: ignore
+def uninject_logger(logger: Logger) -> None:
     logger.remove()
 
 
@@ -50,7 +52,7 @@ class FixturesInjectBase:
     delete_param_key: str
     fixture_names: Tuple[str, ...] = tuple()
 
-    flask_app_client: AutoAuthFlaskClient
+    flask_app_client: AutoAuthFlaskClient[Any]
     flask_app: Flask
     regular_user: User
     db: SQLAlchemy
@@ -76,20 +78,18 @@ class GeneralModify(FixturesInjectBase):
                 assert resp.status_code == 200 and isinstance(resp.json["data"], dict)
                 return dumped_data
 
-    def _get_deleting_items(self) -> Tuple[Union[EmailTemplate, Project, Role]]:
-        items = getattr(self, self.items)
+    def _get_deleting_items(self) -> Tuple[Any]:
+        items: Tuple[Any] = getattr(self, self.items)
         return items[:1]
 
-    def _get_modified_item(self) -> Union[EmailTemplate, Project, Role]:
+    def _get_modified_item(self) -> Any:
         items = getattr(self, self.items)
         return items[-1]
 
     @staticmethod
-    def __get_schema_dumped(
-        schema: Union[EmailTemplateSchema, ProjectSchema, RoleSchema],
-        item: Union[EmailTemplate, Project, Role],
-    ) -> Dict[str, Any]:
-        return schema.dump(item)
+    def __get_schema_dumped(schema: Schema, item: Any,) -> Dict[str, Any]:
+        dumpd: Dict[str, Any] = schema.dump(item)
+        return dumpd
 
     def _get_dumped_modified_item(self) -> Dict[str, Any]:
         item = self._get_modified_item()
@@ -124,9 +124,7 @@ class GeneralModify(FixturesInjectBase):
         assert resp.status_code == 200
         return dumped_data
 
-    def _item_delete_request(
-        self,
-    ) -> Tuple[JSONResponse, Union[EmailTemplate, Project, Role]]:
+    def _item_delete_request(self,) -> Tuple[Response, Any]:
         resp = self.__item_modify_request("DELETE")
         item = self._get_modified_item()
         assert resp.status_code == 200 and item.deleted

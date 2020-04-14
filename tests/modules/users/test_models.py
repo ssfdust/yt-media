@@ -19,7 +19,7 @@ class TestUserInfo(FixturesInjectBase):
     fixture_names = ("flask_app", "regular_user", "temp_db_instance_helper")
 
     @pytest.mark.parametrize("sex, label", [(None, "未填写"), (1, "男"), (2, "女")])
-    def test_userinfo_sex(self, sex: Union[None, int], label: str):
+    def test_userinfo_sex(self, sex: Union[None, int], label: str) -> None:
         self.regular_user.userinfo.update(sex=sex)
         assert self.regular_user.userinfo.sex_label == label
 
@@ -27,6 +27,8 @@ class TestUserInfo(FixturesInjectBase):
         "first_name, last_name, nickname",
         [(None, "b", "regular_user"), ("a", None, "regular_user"), ("a", "b", "a b")],
     )
-    def test_userinfo_nickname(self, first_name: str, last_name: str, nickname: str):
+    def test_userinfo_nickname(
+        self, first_name: str, last_name: str, nickname: str
+    ) -> None:
         self.regular_user.userinfo.update(first_name=first_name, last_name=last_name)
         assert self.regular_user.nickname == nickname

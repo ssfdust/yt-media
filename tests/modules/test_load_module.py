@@ -8,7 +8,7 @@ from _pytest.monkeypatch import MonkeyPatch
 from smorest_sfs.modules import auth, load_module
 from tests._utils.uniqueue import UniqueQueue
 
-QUEUE = UniqueQueue()
+QUEUE: UniqueQueue[str] = UniqueQueue()
 
 
 @pytest.mark.usefixtures("inject_logger")

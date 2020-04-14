@@ -21,7 +21,7 @@ def app() -> Flask:
 
 
 @pytest.fixture(scope="package")
-def pendulum_field_schema() -> Type[Schema]:
+def pendulum_field_schema() -> Schema:
     class TestPendulumSchema(Schema):
         time = PendulumField(format="%Y-%m-%d %H:%M:%S", allow_none=True)
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import Dict
+
 import pytest
 
 from smorest_sfs.modules.auth import ROLES
@@ -20,7 +22,7 @@ class TestProjectModify(GeneralModify):
     schema = ProjectSchema
 
     @pytest.mark.parametrize("data", param_helper(name="project"))
-    def test_add(self, data):
+    def test_add(self, data: Dict[str, str]) -> None:
         data = self._add_request(data)
         assert data.keys() > {"id", "name"}
 

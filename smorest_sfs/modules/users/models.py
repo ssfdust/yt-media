@@ -137,7 +137,9 @@ class UserInfo(SurrogatePK, Model):
 
     __tablename__ = "userinfo"
 
-    avator_id = db.Column(db.Integer, doc="头像ID", info={"marshmallow": {"dump_only": True}})
+    avator_id = db.Column(
+        db.Integer, doc="头像ID", info={"marshmallow": {"dump_only": True}}
+    )
     uid = db.Column(db.Integer, doc="用户ID", info={"marshmallow": {"dump_only": True}})
     sex = db.Column(
         db.Integer,
