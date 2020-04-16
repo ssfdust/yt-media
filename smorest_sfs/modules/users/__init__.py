@@ -8,4 +8,4 @@
 """
 from flask_smorest import Blueprint
 
-blp = Blueprint("User", __name__, url_prefix="/users", description="")
+blp = Blueprint("User", __name__, url_prefix="/users", description="用户管理模块")

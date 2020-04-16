@@ -138,6 +138,9 @@ class UserRegisterView(MethodView):
     @blp.arguments(schemas.UserSchema)
     @blp.response(schemas.UserItemSchema)
     def put(self, user: models.User) -> Dict[str, models.User]:
+        """
+        注册用户
+        """
         user = create_user(user)
         return {"data": user}
 

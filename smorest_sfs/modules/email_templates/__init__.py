@@ -10,5 +10,5 @@
 from flask_smorest import Blueprint
 
 blp = Blueprint(
-    "EmailTemplate", __name__, url_prefix="/email_templates", description="电子邮件模板"
+    "EmailTemplate", __name__, url_prefix="/email_templates", description="电子邮件模板模块"
 )

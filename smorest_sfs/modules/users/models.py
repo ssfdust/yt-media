@@ -64,7 +64,6 @@ class User(Model, SurrogatePK):
         doc="权限",
         primaryjoin="User.id == roles_users.c.user_id",
         secondaryjoin="Permission.id == permission_roles.c.permission_id",
-        backref=db.backref("users", doc="用户", lazy="dynamic"),
         viewonly=True,
         info={"marshmallow": {"dump_only": True, "column": ["id", "name"]}},
     )

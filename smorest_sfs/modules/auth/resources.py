@@ -34,12 +34,12 @@ Response = TypeVar("Response")
 @blp.route("/login")
 class LoginView(MethodView):
     @blp.arguments(params.LoginParams, location="json")
+    @blp.response(schemas.UserViewPostSchema, description="登录成功")
     @blp.response(code=407, description="用户未激活")
     @blp.response(code=408, description="验证码失效")
     @blp.response(code=409, description="验证码错误")
     @blp.response(code=404, description="用户不存在")
     @blp.response(code=403, description="用户密码错误")
-    @blp.response(schemas.UserViewPostSchema, description="登录成功")
     def post(
         self, args: Dict[str, str]
     ) -> Dict[str, Union[int, str, Dict[str, Dict[str, str]]]]:
@@ -78,8 +78,8 @@ class CaptchaView(MethodView):
 @blp.route("/forget-password")
 class ForgetPasswordView(MethodView):
     @blp.arguments(params.EmailParam, as_kwargs=True)
-    @blp.response(code=404, description="用户不存在")
     @blp.response(BaseMsgSchema, description="成功")
+    @blp.response(code=404, description="用户不存在")
     def post(self, email: str) -> Optional[Dict[str, Union[str, int]]]:
         """
         忘记密码
@@ -123,8 +123,8 @@ class UserConfirmView(MethodView):
 class ResetForgotPasswordView(MethodView):
     @doc_login_required
     @blp.arguments(params.PasswdParam, as_kwargs=True)
-    @blp.response(code=501, description="密码不一致，修改失败")
     @blp.response(BaseMsgSchema, description="验证成功")
+    @blp.response(code=501, description="密码不一致，修改失败")
     def put(self, password: str, confirm_password: str) -> Dict[str, Union[int, str]]:
         """
         忘记密码后修改
@@ -142,8 +142,8 @@ class ResetForgotPasswordView(MethodView):
         return {"code": 0, "msg": "success"}
 
     @doc_login_required
-    @blp.response(code=403, description="禁止访问")
     @blp.response(BaseMsgSchema, description="可以访问")
+    @blp.response(code=403, description="禁止访问")
     def get(self) -> Dict[str, Any]:
         """
         忘记密码token测试
@@ -157,8 +157,8 @@ class ResetForgotPasswordView(MethodView):
 
 @blp.route("/refresh")
 class RefreshJwtTokenView(MethodView):
-    @blp.response(schemas.RefreshViewPostSchema, description="获取成功")
     @doc_refresh_required
+    @blp.response(schemas.RefreshViewPostSchema, description="获取成功")
     def post(self) -> Dict[str, Any]:
         """
         用户刷新Token
