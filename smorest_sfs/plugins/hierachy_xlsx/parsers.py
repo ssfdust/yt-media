@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Protocol, Union
+from typing import Any, Dict, Iterator, List, Optional, Protocol, Tuple, Union
 
 import openpyxl
 from openpyxl import Workbook
@@ -88,13 +88,18 @@ class _RelationParser:
     relation_sheet: Worksheet
     relation_list: List[List[str]]
 
+    @staticmethod
+    def __parse_one_col(col: Tuple[Any]) -> List[Any]:
+        ret_col = []
+        for value in col:
+            if value is None:
+                break
+            ret_col.append(value)
+        return ret_col
+
     def _parse_relation_worksheet(self) -> None:
         for col in self.relation_sheet.iter_cols(values_only=True):
-            ret_col = []
-            for value in col:
-                if value is None:
-                    break
-                ret_col.append(value)
+            ret_col = self.__parse_one_col(col)
             self.relation_list.append(ret_col)
 
 
