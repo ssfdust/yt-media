@@ -37,7 +37,6 @@ class CrudOpts:
         self.model_name = "".join(
             [word.capitalize() for word in self.module_name_singular.split("_")]
         )
-        print(self.model_name)
 
     def to_config(self):
         return dict(

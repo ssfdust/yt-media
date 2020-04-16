@@ -3,9 +3,12 @@
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional, Protocol, Tuple, Union
 
+
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.worksheet.worksheet import Worksheet
+
+from smorest_sfs.utils.text import camel_to_snake
 
 IDENT_KEY = "<IDENT>"
 NAME_KEY = "name"
@@ -68,7 +71,12 @@ class _AttrParser:
 
     def __iter_raw_title(self) -> Iterator[str]:
         for row in self.attr_sheet.iter_rows(min_row=1, max_row=1, values_only=True):
-            for item in row:
+            for title in self.__parse_titile_row(row):
+                yield title
+
+    def __parse_titile_row(self, row: List[str]) -> Iterator[str]:
+        for item in row:
+            if item:
                 yield self.__confirm_ident(item.strip())
 
     def __check_ident(self) -> None:
@@ -80,8 +88,8 @@ class _AttrParser:
     def __confirm_ident(self, ident: str) -> str:
         if IDENT_KEY in ident:
             ident = ident.replace(IDENT_KEY, "")
-            self.ident = ident
-        return ident
+            self.ident = camel_to_snake(ident)
+        return camel_to_snake(ident)
 
 
 class _RelationParser:

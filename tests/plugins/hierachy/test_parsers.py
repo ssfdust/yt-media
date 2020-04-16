@@ -27,7 +27,7 @@ class TestHierachyReader:
         "path, records",
         [
             ("test-ident-code.xlsx", [["key", "A1"], ["value", 2]]),
-            ("test-code.xlsx", [["name", "A1"], ["value", 6]]),
+            ("test-camel-code.xlsx", [["name", "A1"], ["snake_value", 6]]),
         ],
     )
     def test_ident_reader(

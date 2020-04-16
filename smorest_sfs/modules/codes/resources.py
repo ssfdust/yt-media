@@ -4,12 +4,13 @@
 
     编码的资源模块
 """
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 from flask.views import MethodView
 
 from smorest_sfs.modules.auth import PERMISSIONS
-from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
+from smorest_sfs.modules.auth.decorators import (doc_login_required,
+                                                 permission_required)
 
 from . import blp, models, schemas
 
