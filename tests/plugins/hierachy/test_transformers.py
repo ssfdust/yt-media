@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from typing import Any, Type
-from marshmallow import Schema, fields
 
 from flask_sqlalchemy import SQLAlchemy
+from marshmallow import Schema, fields
 
 from smorest_sfs.extensions.sqla import Model
 from smorest_sfs.plugins.hierachy_xlsx.parsers import HierachyParser
-from smorest_sfs.plugins.hierachy_xlsx.transformers import Transformer, CodeTransformer
+from smorest_sfs.plugins.hierachy_xlsx.transformers import CodeTransformer, Transformer
 
 
 class TestTransformer:

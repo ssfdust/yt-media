@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Any, Dict, List, Type, Protocol
+from typing import Any, Dict, List, Protocol, Type
 
 from sqlalchemy.orm.session import Session
 

@@ -6,41 +6,29 @@
 """
 from marshmallow import Schema, fields
 
-from smorest_sfs.extensions.marshal import ModelSchema
-from smorest_sfs.extensions.marshal.bases import BaseMsgSchema, BasePageSchema
-
-from . import models
+from smorest_sfs.extensions.marshal.bases import BaseMsgSchema
 
 
-class CodeSchema(ModelSchema):
-    """
-    编码的序列化类
-    """
-
-    class Meta:
-        model = models.Code
-
-
-class CodePageSchema(BasePageSchema):
-    """编码的分页"""
-
-    data = fields.List(fields.Nested(CodeSchema))
-
-
-class CodeItemSchema(BaseMsgSchema):
-    """编码的单项"""
-
-    data = fields.Nested(CodeSchema)
+class TypeCodeSchema(Schema):
+    type_code = fields.Str()
 
 
 class CodeOptsSchema(Schema):
     """编码的选项"""
 
     class Meta:
-        fields = ("id", "name", "type_code")
+        fields = ("id", "name")
 
 
-class CodeListSchema(Schema):
+class NestedCodeSchema(Schema):
+
+    children = fields.List(fields.Nested("NestedCodeSchema"))
+
+    class Meta:
+        fields = ("id", "name", "children")
+
+
+class CodeListSchema(BaseMsgSchema):
     """编码的选项列表"""
 
-    data = fields.List(fields.Nested(CodeOptsSchema))
+    data = fields.List(fields.Nested(NestedCodeSchema))

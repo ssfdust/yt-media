@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Callable, Any, List
 from pathlib import Path
+from typing import Any, Callable, List
 
-from werkzeug.datastructures import FileStorage
 import pytest
+from werkzeug.datastructures import FileStorage
 
-from .utils import get_parsed_reader, HierachyParser
+from .utils import HierachyParser, get_parsed_reader
 
 
 class TestHierachyReader:

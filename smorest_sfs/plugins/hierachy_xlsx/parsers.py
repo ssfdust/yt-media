@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Any, Dict, Union, List, Iterator, Optional, Protocol
 from pathlib import Path
+from typing import Any, Dict, Iterator, List, Optional, Protocol, Union
+
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.worksheet.worksheet import Worksheet
-
 
 IDENT_KEY = "<IDENT>"
 NAME_KEY = "name"

@@ -61,7 +61,7 @@ class UserView(MethodView):
         """
         获取所有用户信息——分页
         """
-        query: BaseQuery = models.User.query.join(models.User.userinfo)
+        query = models.User.query.join(models.User.userinfo)
         if name:
             like_key = "%{}%".format(name)
             query = query.filter(

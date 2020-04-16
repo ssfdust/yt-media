@@ -39,13 +39,11 @@ class Permission(Model, SurrogatePK):
 
     @classmethod
     def get_by_name(cls, name: str) -> Permission:
-        permission: Permission = cls.query.filter_by(name=name).first()
-        return permission
+        return cls.query.filter_by(name=name).first()
 
     @classmethod
     def get_by_names(cls, *names: str) -> List[Permission]:
-        permissions: List[Permission] = cls.query.filter(cls.name.in_(names)).all()
-        return permissions
+        return cls.query.filter(cls.name.in_(names)).all()
 
     def __str__(self) -> str:
         return self.name
@@ -80,17 +78,13 @@ class Role(Model, SurrogatePK):
 
     @classmethod
     def get_by_name(cls, name: str) -> Role:
-        role: Role = cls.query.filter_by(name=name).first()
-        return role
+        return cls.query.filter_by(name=name).first_or_404()
 
     @classmethod
     def get_by_user_default(cls, is_admin: bool = False) -> List[Role]:
-        roles: List[Role]
         if is_admin:
-            roles = cls.query.filter_by(name=ROLES.SuperUser).all()
-        else:
-            roles = cls.query.filter_by(user_default=True).all()
-        return roles
+            return cls.query.filter_by(name=ROLES.SuperUser).all()
+        return cls.query.filter_by(user_default=True).all()
 
     def add_permissions(self, permissions: List[Permission]) -> List[Permission]:
         """

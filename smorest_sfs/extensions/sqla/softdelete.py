@@ -20,9 +20,6 @@ class QueryWithSoftDelete(BaseQuery):
     根据deleted字段来决定是否显示此对象
     """
 
-    _mapper_zero: Any
-    _joinpoint_zero: Any
-
     _with_deleted = False
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Any:

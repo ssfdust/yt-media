@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
 import uuid
 from pathlib import Path
 from typing import Optional, Union
@@ -93,3 +94,9 @@ def get_avator_path(avator_path: str) -> Path:
 def get_relative_pathstr(path: Path) -> str:
     project_path = ProjectPath.get_project_path()
     return str(path.relative_to(project_path))
+
+
+def check_ext(filename: str, ext: str) -> bool:
+    _, file_ext = os.path.splitext(filename)
+    ext = ext if ext.startswith(".") else f".{ext}"
+    return file_ext == ext and not filename.startswith(".")

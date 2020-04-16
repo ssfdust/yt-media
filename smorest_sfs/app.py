@@ -6,6 +6,14 @@
 
 from .factory import create_app
 
-ENABLED_MODULES = ["auth", "storages", "roles", "users", "email_templates", "projects"]
+ENABLED_MODULES = [
+    "auth",
+    "storages",
+    "roles",
+    "users",
+    "email_templates",
+    "codes",
+    "projects",
+]
 
 app = create_app(ENABLED_MODULES)

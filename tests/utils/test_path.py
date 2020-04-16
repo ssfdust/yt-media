@@ -11,6 +11,7 @@ from smorest_sfs.utils.paths import (
     WHITE_LIST,
     ProjectPath,
     UploadPath,
+    check_ext,
     get_avator_path,
     get_relative_pathstr,
     make_uploaded_path,
@@ -62,3 +63,23 @@ def test_white_lst() -> None:
 def test_avator_path(avator_path: str) -> None:
     path = get_avator_path(avator_path)
     assert path.exists()
+
+
+@pytest.mark.parametrize(
+    "filename, ext", [("AdminAvator.jpg", "jpg"), ("DefaultAvator.jpg", ".jpg")]
+)
+def test_check_ext_success(filename: str, ext: str) -> None:
+    assert check_ext(filename, ext)
+
+
+@pytest.mark.parametrize(
+    "filename, ext",
+    [
+        (".~AdminAvator.jpg", ".jpg"),
+        (".~DefaultAvator.jpg", "jpg"),
+        ("other.xlsx", "jpg"),
+        ("other.xlsx", ".jpg"),
+    ],
+)
+def test_check_ext_fail(filename: str, ext: str) -> None:
+    assert not check_ext(filename, ext)

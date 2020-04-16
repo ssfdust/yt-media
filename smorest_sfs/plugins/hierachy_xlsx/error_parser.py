@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Optional
 import re
+from typing import Optional
 
 
 def _parse_mater(match: Optional[re.Match]) -> str:

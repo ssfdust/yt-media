@@ -5,8 +5,8 @@ from typing import Any, Callable, Iterator, Tuple
 import pytest
 from flask_sqlalchemy import SQLAlchemy
 
-from smorest_sfs.services.codes import import_codes_from_dir
 from smorest_sfs.modules.codes.models import Code
+from smorest_sfs.services.codes import import_codes_from_dir
 
 
 @pytest.fixture
@@ -14,5 +14,5 @@ from smorest_sfs.modules.codes.models import Code
 def fake_codes(db: SQLAlchemy) -> Iterator[None]:
     import_codes_from_dir("tests/data/codes/")
     yield
-    db.session.execute("truncate table {}".format(Code.__tablename__))
+    db.session.execute("TRUNCATE TABLE {} RESTART IDENTITY".format(Code.__tablename__))
     db.session.commit()

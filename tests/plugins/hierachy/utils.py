@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
 from typing import Callable
+
 from smorest_sfs.plugins.hierachy_xlsx.parsers import HierachyParser
 
 

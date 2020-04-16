@@ -39,7 +39,7 @@ class UserLoginChecker:
         return True
 
     def _check_user(self) -> bool:
-        self.user = User.get_by_keyword(self.email, raises=True)
+        self.user = User.get_by_keyword(self.email)
 
         if self.user.active is not True:
             logger.warning(f"{self.user.email} 未激活，尝试登录")

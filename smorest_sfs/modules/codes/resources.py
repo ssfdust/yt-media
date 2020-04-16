@@ -4,7 +4,7 @@
 
     编码的资源模块
 """
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from flask.views import MethodView
 
@@ -18,14 +18,19 @@ from . import blp, models, schemas
 class CodeListView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.CodeQuery)
+    @blp.arguments(schemas.TypeCodeSchema, location="query", as_kwargs=True)
     @blp.response(schemas.CodeListSchema)
-    def get(self) -> Dict[str, List[models.Code]]:
+    def get(self, type_code: str) -> Dict[str, Any]:
         # pylint: disable=unused-argument
         """
         获取所有编码选项信息
         """
-        query = models.Code.query
+        schema = schemas.CodeOptsSchema()
+        codes = models.Code.get_tree(
+            models.db.session,
+            json=True,
+            json_fields=schema.dump,
+            query=lambda q: q.filter_by(type_code=type_code),
+        )
 
-        items = query.all()
-
-        return {"data": items}
+        return {"data": codes}

@@ -134,7 +134,7 @@ def TestTableTeardown(db: SQLAlchemy) -> Iterator[None]:
         "test_crud_child_table",
         "test_crud_parent_table",
     ]:
-        db.session.execute(f"TRUNCATE TABLE {table} CASCADE")
+        db.session.execute(f"TRUNCATE TABLE {table} RESTART IDENTITY CASCADE ")
     db.session.commit()
 
 

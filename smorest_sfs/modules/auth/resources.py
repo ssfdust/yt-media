@@ -72,8 +72,7 @@ class CaptchaView(MethodView):
         code = store.generate_captcha()
         data = image.generate(code)
 
-        resp: Response = send_file(data, attachment_filename="captcha.jpeg")
-        return resp
+        return send_file(data, attachment_filename="captcha.jpeg")
 
 
 @blp.route("/forget-password")

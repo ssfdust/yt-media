@@ -138,13 +138,14 @@ class GeneralGet(FixturesInjectBase):
                 url = url_for(endpoint, **kwargs)
                 return client.get(url)
 
-    def _get_options(self) -> None:
-        resp = self._get_view(self.listview)
+    def _get_options(self, **kwargs: Any) -> Any:
+        resp = self._get_view(self.listview, **kwargs)
         assert (
             resp.status_code == 200
             and isinstance(resp.json["data"], list)
             and resp.json["data"][0].keys() == self.listkeys
         )
+        return resp.json["data"]
 
     def _get_list(self, **kwargs: Any) -> List[Dict[str, Any]]:
         resp = self._get_view(self.view, **kwargs)

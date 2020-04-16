@@ -8,18 +8,11 @@
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from marshmallow.validate import OneOf, Range
-from sqlalchemy.orm import relationship
 from sqlalchemy_utils.types import PasswordType
 
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.modules.roles.models import permission_roles
-
-if TYPE_CHECKING:
-    from smorest_sfs.modules.roles.models import Role, Permission
-    from smorest_sfs.modules.storages.models import Storages
 
 roles_users = db.Table(
     "roles_users",
@@ -55,7 +48,7 @@ class User(Model, SurrogatePK):
     )
     active = db.Column(db.Boolean(), doc="启用", default=False)
     confirmed_at = db.Column(db.DateTime(), doc="确认时间")
-    roles = relationship(
+    roles = db.relationship(
         "Role",
         secondary=roles_users,
         uselist=True,
@@ -65,7 +58,7 @@ class User(Model, SurrogatePK):
         backref=db.backref("users", lazy="dynamic", doc="所有用户"),
         info={"marshmallow": {"column": ["id", "name"]}},
     )
-    permissions = relationship(
+    permissions = db.relationship(
         "Permission",
         secondary=user_permissions,
         doc="权限",
@@ -75,7 +68,7 @@ class User(Model, SurrogatePK):
         viewonly=True,
         info={"marshmallow": {"dump_only": True, "column": ["id", "name"]}},
     )
-    userinfo = relationship(
+    userinfo = db.relationship(
         "UserInfo",
         doc="用户",
         primaryjoin="User.id == UserInfo.uid",
@@ -90,11 +83,10 @@ class User(Model, SurrogatePK):
     )
 
     @classmethod
-    def get_by_keyword(cls, keyword: str, raises: bool = False) -> User:
+    def get_by_keyword(cls, keyword: str) -> User:
         """
         根据邮箱获取用户
         """
-        user: User
         query = cls.query.filter(
             db.and_(
                 db.or_(
@@ -104,10 +96,7 @@ class User(Model, SurrogatePK):
                 ),
             )
         )
-        if raises:
-            user = query.one()
-        user = query.first()
-        return user
+        return query.first_or_404()
 
     def __str__(self) -> str:  # pragma: no cover
         if self.email:
@@ -174,14 +163,14 @@ class UserInfo(SurrogatePK, Model):
         doc="名",
         info={"marshmallow": {"allow_none": False, "required": True}},
     )
-    user = relationship(
+    user = db.relationship(
         "User",
         doc="用户",
         primaryjoin="User.id == UserInfo.uid",
         foreign_keys=uid,
         info={"marshmallow": {"dump_only": True}},
     )
-    avator = relationship(
+    avator = db.relationship(
         "Storages",
         primaryjoin="Storages.id == UserInfo.avator_id",
         foreign_keys=avator_id,

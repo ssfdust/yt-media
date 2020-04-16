@@ -20,12 +20,14 @@ class StorageFactory:
     def __init__(self, storage: Storages):
         self.storage = storage
 
-    def save(self, commit: bool = True) -> Any:
+    def save(self, commit: bool = True) -> Storages:
         """文件保存"""
         self.storage.save_store()
         return self.storage.save(commit)
 
-    def update(self, store: FileStorage, commit: bool = True, **kwargs: Any) -> Any:
+    def update(
+        self, store: FileStorage, commit: bool = True, **kwargs: Any
+    ) -> Storages:
         """文件更新"""
         self.storage.store = store
         self.storage.save_store()
