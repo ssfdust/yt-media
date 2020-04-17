@@ -38,8 +38,8 @@ class StoragesView(MethodView):
         return make_response_from_store(storage.store)
 
     @doc_login_required
-    @blp.arguments(schemas.UploadParams(), location="files")
     @role_required(ROLES.User)
+    @blp.arguments(schemas.UploadParams(), location="files")
     @blp.response(BaseMsgSchema)
     def put(
         self, args: Dict[str, FileStorage], file_id: int
@@ -56,8 +56,8 @@ class StoragesView(MethodView):
         return {"code": 0, "msg": "success"}
 
     @doc_login_required
-    @blp.response(BaseMsgSchema)
     @role_required(ROLES.User)
+    @blp.response(BaseMsgSchema)
     def delete(self, file_id: int) -> None:
         """
         删除文件

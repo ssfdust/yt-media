@@ -32,7 +32,6 @@ SETTING_KEYS = [
     "MAIL_DEFAULT_SENDER",
     "MAIL_PASSWORD",
     "CELERY_BROKER_URL",
-    "server_name",
 ]
 
 RANDOM_KEYS = ["SECRET_KEY"]
@@ -48,7 +47,6 @@ HELPS = {
     "MAIL_DEFAULT_SENDER": "发件人",
     "MAIL_PORT": "邮箱服务端口",
     "CELERY_BROKER_URL": "celery broker地址",
-    "server_name": "Web服务域名",
     "SECRET_KEY": "Flask-Login用的密钥字符串",
 }
 
@@ -73,7 +71,6 @@ class _Config:
         "MAIL_SERVER": "smtp.exmail.qq.com",
         "MAIL_PORT": "465",
         "CELERY_BROKER_URL": "amqp://",
-        "server_name": "full-flask.net",
     }
     development_config = {}
     production_config = {}
