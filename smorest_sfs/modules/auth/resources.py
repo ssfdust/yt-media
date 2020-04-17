@@ -35,11 +35,6 @@ Response = TypeVar("Response")
 class LoginView(MethodView):
     @blp.arguments(params.LoginParams, location="json")
     @blp.response(schemas.UserViewPostSchema, description="登录成功")
-    @blp.response(code=407, description="用户未激活")
-    @blp.response(code=408, description="验证码失效")
-    @blp.response(code=409, description="验证码错误")
-    @blp.response(code=404, description="用户不存在")
-    @blp.response(code=403, description="用户密码错误")
     def post(
         self, args: Dict[str, str]
     ) -> Dict[str, Union[int, str, Dict[str, Dict[str, str]]]]:
@@ -60,7 +55,7 @@ class LoginView(MethodView):
 @blp.route("/captcha")
 class CaptchaView(MethodView):
     @blp.arguments(params.CaptchaParam, location="query", as_kwargs=True)
-    @blp.response(code=200, description="图片")
+    @blp.response(description="图片")
     def get(self, token: str) -> Response:
         """
         获取验证码图片
@@ -79,7 +74,6 @@ class CaptchaView(MethodView):
 class ForgetPasswordView(MethodView):
     @blp.arguments(params.EmailParam, as_kwargs=True)
     @blp.response(BaseMsgSchema, description="成功")
-    @blp.response(code=404, description="用户不存在")
     def post(self, email: str) -> Optional[Dict[str, Union[str, int]]]:
         """
         忘记密码
@@ -124,7 +118,6 @@ class ResetForgotPasswordView(MethodView):
     @doc_login_required
     @blp.arguments(params.PasswdParam, as_kwargs=True)
     @blp.response(BaseMsgSchema, description="验证成功")
-    @blp.response(code=501, description="密码不一致，修改失败")
     def put(self, password: str, confirm_password: str) -> Dict[str, Union[int, str]]:
         """
         忘记密码后修改
@@ -143,7 +136,6 @@ class ResetForgotPasswordView(MethodView):
 
     @doc_login_required
     @blp.response(BaseMsgSchema, description="可以访问")
-    @blp.response(code=403, description="禁止访问")
     def get(self) -> Dict[str, Any]:
         """
         忘记密码token测试

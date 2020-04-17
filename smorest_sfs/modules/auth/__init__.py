@@ -23,8 +23,6 @@
 
 from flask_smorest import Blueprint
 
-from smorest_sfs.extensions import api
-
 from . import permissions
 
 ROLES = permissions.ROLES  # alias
