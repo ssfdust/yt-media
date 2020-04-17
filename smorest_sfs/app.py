@@ -14,6 +14,7 @@ ENABLED_MODULES = [
     "email_templates",
     "codes",
     "projects",
+    "menus",
 ]
 
 app = create_app(ENABLED_MODULES)

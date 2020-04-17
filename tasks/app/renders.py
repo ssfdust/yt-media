@@ -18,7 +18,9 @@ except ImportError as e:
 
 
 class Render:
-    def __init__(self, loader_path: str, template_and_paths: List[str], config: Dict):
+    def __init__(
+        self, loader_path: str, template_and_paths: List[List[str]], config: Dict
+    ):
         self.loader_path = loader_path
         self.config = config
         self.env = jinja2.Environment(
@@ -60,16 +62,37 @@ def render_config_to_dockercompose(configs: Config):
 
 def render_crud_modules(module_name: str, config: Dict):
     module_path = Path("smorest_sfs/modules/%s" % module_name)
+    test_module_path = Path("tests/modules/%s" % module_name)
 
     if module_path.exists():
         log.critical("模块 `%s` 已存在.", module_name)
         sys.exit(1)
 
     module_path.mkdir(parents=True)
+    Path(test_module_path, "resources").mkdir(parents=True)
 
     template_and_paths_list = [
         ["%s.py.template" % template_file, "%s/%s.py" % (module_path, template_file),]
         for template_file in ("__init__", "models", "resources", "schemas",)
     ]
+    test_template_and_path_list = [
+        [
+            "%s.py.template" % template_file,
+            "%s/%s.py" % (test_module_path, template_file),
+        ]
+        for template_file in (
+            "__init__",
+            "test_models",
+            "conftest",
+            "resources/__init__",
+            "resources/test_general_access",
+            "resources/test_get_requests",
+            "resources/test_modify_requests",
+        )
+    ]
     render = Render("tasks/app/templates/crud_module", template_and_paths_list, config)
+    test_render = Render(
+        "tasks/app/templates/test_module", test_template_and_path_list, config
+    )
     render.render()
+    test_render.render()

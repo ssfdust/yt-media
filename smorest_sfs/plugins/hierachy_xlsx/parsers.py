@@ -3,7 +3,6 @@
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional, Protocol, Tuple, Union
 
-
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.worksheet.worksheet import Worksheet

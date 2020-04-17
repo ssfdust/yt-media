@@ -33,13 +33,14 @@ class ROLES:
     GroupManager = "GroupManager"
     ProjectManager = "ProjectManager"
     CodeManager = "CodeManager"
+    MenuManager = "MenuManager"
     # End Of ROLES
 
 
 class PERMISSIONS:
     """权限字段定义"""
 
-    SuperUser = "SuperPrivilege"
+    SuperUser = "SuperUserPrivilege"
     User = "UserPrivilege"
     # RoleManager
     RoleAdd = "RoleAddPrivilege"
@@ -73,6 +74,11 @@ class PERMISSIONS:
     CodeEdit = "CodeEditPrivilege"
     CodeDelete = "CodeDeletePrivilege"
     CodeQuery = "CodeQueryPrivilege"
+    # MenuManager
+    MenuAdd = "MenuAddPrivilege"
+    MenuEdit = "MenuEditPrivilege"
+    MenuDelete = "MenuDeletePrivilege"
+    MenuQuery = "MenuQueryPrivilege"
     # End Of PERMISSIONS
 
 
@@ -115,6 +121,11 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.CodeDelete,
         PERMISSIONS.CodeEdit,
         PERMISSIONS.CodeQuery,
+        # 菜单管理
+        PERMISSIONS.MenuAdd,
+        PERMISSIONS.MenuDelete,
+        PERMISSIONS.MenuEdit,
+        PERMISSIONS.MenuQuery,
         # End Of SuperUser
     ],
     ROLES.GroupManager: [
@@ -152,6 +163,12 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.CodeDelete,
         PERMISSIONS.CodeEdit,
         PERMISSIONS.CodeQuery,
+    ],
+    ROLES.MenuManager: [
+        PERMISSIONS.MenuAdd,
+        PERMISSIONS.MenuDelete,
+        PERMISSIONS.MenuEdit,
+        PERMISSIONS.MenuQuery,
     ],
     # End Of Permissions Mapping
 }

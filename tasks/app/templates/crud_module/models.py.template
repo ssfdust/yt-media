@@ -4,8 +4,7 @@
 
     {{ module_title }}的ORM模块
 """
-from sqlalchemy import Column, String
-from smorest_sfs.extensions.sqla import Model, SurrogatePK
+from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 
 
 class {{ model_name }}(Model, SurrogatePK):
@@ -17,7 +16,7 @@ class {{ model_name }}(Model, SurrogatePK):
 
     __tablename__ = "{{ module_name }}"
 
-    name = Column(String(length=128), nullable=False, doc="{{ module_title }}名称")
+    name = db.Column(db.String(length=128), nullable=False, doc="{{ module_title }}名称")
 
     def __repr__(self) -> str:
         return self.name

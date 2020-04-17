@@ -5,9 +5,9 @@
 
     为请求添加权限装饰器，参数为权限
 """
+from copy import deepcopy
 from functools import wraps
 from typing import Any, Callable
-from copy import deepcopy
 
 from flask_jwt_extended import current_user, jwt_refresh_token_required, jwt_required
 from flask_smorest import abort  # type: ignore
@@ -18,7 +18,9 @@ from loguru import logger
 
 
 def __set_apidoc(
-    wrapper: Callable[..., Any], func: Callable[..., Any], security_mehod: str = "api_key"
+    wrapper: Callable[..., Any],
+    func: Callable[..., Any],
+    security_mehod: str = "api_key",
 ) -> Callable[..., Any]:
     _apidoc = deepcopy(getattr(func, "_apidoc", {}))
     _apidoc["manual_doc"] = {"security": [{security_mehod: []}]}
