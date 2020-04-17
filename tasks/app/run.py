@@ -30,7 +30,7 @@ def server(
     启动服务器
     """
     if gunicorn:
-        command = f"gunicorn -b {bind} -k eventlet smorest_sfs.app:app"
+        command = f"gunicorn -b {bind} -k egg:meinheld#gunicorn_worker -c gunicorn.py smorest_sfs.app:app"
         context.run(command, pty=True)
     else:
         host, port = bind.split(":")

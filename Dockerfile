@@ -19,6 +19,4 @@ COPY pyproject.toml poetry.lock /Application/
 RUN poetry config virtualenvs.create false \
   && poetry install --no-dev --no-interaction --no-ansi
 
-RUN pip install invoke gunicorn eventlet
-
 CMD ["scripts/initapp.sh"]

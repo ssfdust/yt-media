@@ -7,6 +7,7 @@
 """
 from functools import wraps
 from typing import Any, Callable
+from copy import deepcopy
 
 from flask_jwt_extended import current_user, jwt_refresh_token_required, jwt_required
 from flask_smorest import abort  # type: ignore
@@ -17,10 +18,10 @@ from loguru import logger
 
 
 def __set_apidoc(
-    wrapper: Callable[..., Any], func: Callable[..., Any]
+    wrapper: Callable[..., Any], func: Callable[..., Any], security_mehod: str = "api_key"
 ) -> Callable[..., Any]:
-    _apidoc = getattr(func, "_apidoc", {})
-    _apidoc.setdefault("security", [{"api_key": []}])
+    _apidoc = deepcopy(getattr(func, "_apidoc", {}))
+    _apidoc["manual_doc"] = {"security": [{security_mehod: []}]}
     setattr(wrapper, "_apidoc", _apidoc)
     return wrapper
 
@@ -79,7 +80,7 @@ def doc_refresh_required(func: Callable[..., Any]) -> Callable[..., Any]:
         return refresh_required_func(*args, **kwargs)
 
     # 增加swagger信息
-    wrapper = __set_apidoc(wrapper, func)  # type: ignore
+    wrapper = __set_apidoc(wrapper, func, "refresh_key")  # type: ignore
 
     return wrapper
 
