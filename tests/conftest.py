@@ -136,6 +136,6 @@ def guest_user(
 
 @pytest.fixture
 def inject_logger() -> Iterator[None]:
-    injection.inject_logger(logger)
+    logger_id = injection.inject_logger(logger)
     yield
-    injection.uninject_logger(logger)
+    injection.uninject_logger(logger, logger_id)

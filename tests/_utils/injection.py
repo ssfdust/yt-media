@@ -31,12 +31,12 @@ def log_to_queue(record: Message) -> None:
     queue.put(record.record["message"])
 
 
-def inject_logger(logger: Logger) -> None:
-    logger.add(log_to_queue, serialize=False)
+def inject_logger(logger: Logger) -> int:
+    return logger.add(log_to_queue, serialize=False)
 
 
-def uninject_logger(logger: Logger) -> None:
-    logger.remove()
+def uninject_logger(logger: Logger, logger_id) -> None:
+    logger.remove(logger_id)
 
 
 class FixturesInjectBase:
