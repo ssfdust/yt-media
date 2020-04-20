@@ -17,4 +17,3 @@ def test_celery_creation(
     celery_sess_worker.reload()
 
     assert mul.delay(4, 4).get(timeout=1) == 16
-    celery_sess_worker.terminate()

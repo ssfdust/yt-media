@@ -7,6 +7,7 @@ import pytest
 from flask import Flask
 from flask.testing import FlaskClient
 from kombu import Queue
+from loguru import logger
 
 
 @pytest.fixture(scope="package")
@@ -30,6 +31,7 @@ def app(queue: Queue) -> Iterator[Flask]:
 
     with flask_app.app_context():
         yield flask_app
+        logger.remove(flask_app.extensions['logger_ext'].handler_id)
 
 
 @pytest.fixture(scope="package")

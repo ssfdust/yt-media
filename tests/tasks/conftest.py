@@ -29,5 +29,5 @@ def flask_celery_worker(flask_celery_app):
         flask_celery_app, pool="solo", perform_ping_check=False,
     ) as w:
         yield w
-        w.terminate(False)
-        w.stop(False)
+    w._on_started.set()
+    w.stop()

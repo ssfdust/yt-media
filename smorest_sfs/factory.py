@@ -8,8 +8,6 @@
 import os
 from typing import List
 
-from loguru import logger
-
 from . import errors, modules
 from .extensions import init_app
 from .extensions.flask import Flask
@@ -42,8 +40,6 @@ def create_app(module_names: List[str], config_name: str = "development") -> Fla
     config_type = os.environ.get("FLASK_ENV", config_name)
 
     app.config.from_toml(CONFIG_MAPPGING[config_type])
-
-    logger.info("Server Started.")
 
     app.config["ENABLED_MODULES"] = module_names
 

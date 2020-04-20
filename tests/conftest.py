@@ -40,13 +40,14 @@ def clean_dirs() -> Iterator[None]:
 @pytest.fixture(scope="session")
 def flask_app() -> Iterator[Flask]:
     # pylint: disable=W0613, W0621
-    from smorest_sfs.extensions import db
+    from smorest_sfs.extensions import db, logger as log
 
     os.environ["FLASK_ENV"] = "testing"
     app = create_app(ENABLED_MODULES)
 
     with app.app_context():
         db.create_all()
+        logger.remove(app.extensions['logger_ext'].handler_id)
         init_permission()
         init_email_templates()
         yield app

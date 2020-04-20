@@ -32,7 +32,7 @@ def app(config: Any) -> Flask:
     return flask_app
 
 
-@pytest.fixture(scope="package")
+@pytest.fixture
 def celery_ext(app: Flask) -> Celery:
     # pylint: disable=W0621
     celery_extension = Celery(app)
@@ -40,7 +40,7 @@ def celery_ext(app: Flask) -> Celery:
     return celery_extension
 
 
-@pytest.fixture(scope="package")
+@pytest.fixture
 def celery_sess_app(celery_ext: Celery) -> Iterator[celery.Celery]:
     # pylint: disable=W0621
     test_app = celery_ext.get_celery_app()
@@ -51,10 +51,12 @@ def celery_sess_app(celery_ext: Celery) -> Iterator[celery.Celery]:
         yield test_app
 
 
-@pytest.fixture(scope="package")
+@pytest.fixture
 def celery_sess_worker(celery_sess_app: celery.Celery) -> Iterator[Any]:
     # pylint: disable=W0621
     with worker.start_worker(
         celery_sess_app, pool="solo", perform_ping_check=False,
     ) as w:
         yield w
+    w._on_started.set()
+    w.stop()

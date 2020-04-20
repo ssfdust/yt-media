@@ -21,7 +21,7 @@ def tests(context, directory="tests", pdb=False, cov=True):
 
     command = [directory]
     if pdb:
-        command.extend(["--pdb", "-s", "-vvv"])
+        command.extend(["--pdb", "-s", "-vvv", '--full-trace'])
     if cov:
         cov_dir = directory.replace("tests", "smorest_sfs")
         command.extend(["--cov", cov_dir, "--cov-report", "term-missing"])

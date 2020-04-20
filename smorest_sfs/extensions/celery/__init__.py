@@ -26,9 +26,11 @@ from flask import Flask, current_app
 
 
 def _check_context() -> bool:
-    if hasattr(current_app, "name"):
+    try:
+        getattr(current_app, "name")
         return True
-    return False
+    except RuntimeError:
+        return False
 
 
 class Celery:
