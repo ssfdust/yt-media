@@ -1,9 +1,4 @@
 OPENAPI_VERSION = '3.0.2'
-OPENAPI_REDOC_PATH = 'redoc'
-OPENAPI_REDOC_VERSION = 'next'
-OPENAPI_SWAGGER_UI_PATH = 'swagger'
-OPENAPI_SWAGGER_UI_VERSION = '3.23.5'
-OPENAPI_URL_PREFIX = 'doc'
 MODULE_BASE_PREFIX = '/api/v1'
 
 SQLALCHEMY_DATABASE_URI = 'postgresql://smorest-admin:smorest2019@localhost:5432/my-smorest-testing'

@@ -7,8 +7,8 @@ from typing import Any, Mapping
 from flask import render_template_string
 from flask_mail import Message
 
-from smorest_sfs.extensions import mail
 from smorest_sfs.modules.email_templates.models import EmailTemplate
+from smorest_sfs.tasks.send_mail import send_mail
 
 
 class MailSender:
@@ -21,7 +21,7 @@ class MailSender:
 
     def send(self) -> None:
         self.msg.html = render_template_string(self.template_str, **self.content)
-        mail.send(self.msg)
+        send_mail(self.msg)
 
 
 class PasswdMailSender(MailSender):

@@ -130,7 +130,6 @@ class TestForgetPasswd(TestAuthHelper):
         self.forget_passwd_user.update(active=True)
         assert resp.status_code == code
 
-    @pytest.mark.usefixtures("patched_mail")
     def test_reset_passwd_pre_get(self) -> None:
         TempStore.value = MAIL_QUEUE.get(timeout=3)
         resp = self.flask_app_client.get(TempStore.value)

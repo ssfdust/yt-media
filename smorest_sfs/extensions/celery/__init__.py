@@ -22,7 +22,12 @@ from typing import Any, Callable, Optional
 
 import celery
 from celery.signals import task_postrun, task_prerun, worker_process_init
-from flask import Flask
+from flask import Flask, current_app
+
+def _check_context() -> bool:
+    if hasattr(current_app, "name"):
+        return True
+    return False
 
 
 class Celery:
@@ -57,6 +62,7 @@ class Celery:
             )
         return self.celery.task(name=name, *args, **kwargs)
 
+
     @property
     def tasks(self) -> Any:
         return self.celery.tasks
@@ -71,11 +77,11 @@ class Celery:
         return self.celery
 
     def _worker_process_init(self, **_: Any) -> None:
-        if self.app:
+        if self.app and not _check_context():
             self.app.app_context().push()
 
     def _task_prerun(self, task: Any, **_: Any) -> None:
-        if self.app is None:
+        if self.app is None or _check_context():
             return
 
         context = task._flask_context = [
