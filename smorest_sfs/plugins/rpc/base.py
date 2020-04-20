@@ -14,4 +14,4 @@ class RPCBase:
         self.value = value
         self.queue = queue
         self.exchange = Exchange(self.queue.exchange)
-        self.conn = Connection(current_app.config["CELERY_BROKER_URL"], heartbeat=0)
+        self.conn = Connection(current_app.config["AMQP_URL"], heartbeat=0)

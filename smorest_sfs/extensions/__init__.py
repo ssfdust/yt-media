@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-    app.extensions
+    smorest_sfs.extensions
     ~~~~~~~~~~~~~~~~~~~~
 
     拓展组件
@@ -31,15 +31,20 @@ from .jwt import jwt as jwt_instance
 from .marshal import ma
 from .sqla import db
 from .storage import redis_store
+from .logger_helper import create_logger
+from .celery import Celery
 
 babel = Babel()
 mail = Mail()
 migrate = Migrate()
+celery = Celery()
+
+logger = create_logger()
 
 
 def init_app(app: Flask) -> None:
     """拓展组件的初始化"""
-    for ext in [db, ma, babel, mail, jwt_instance, redis_store]:
+    for ext in [db, ma, babel, mail, jwt_instance, redis_store, logger, celery]:
         ext.init_app(app)
     api.init_app(app, spec_kwargs=spec_kwargs)
     migrate.init_app(app, db)

@@ -5,6 +5,7 @@
 """
 
 from .factory import create_app
+from .extensions import celery
 
 ENABLED_MODULES = [
     "auth",
@@ -18,3 +19,4 @@ ENABLED_MODULES = [
 ]
 
 app = create_app(ENABLED_MODULES)
+celery_app = celery.get_celery_app()

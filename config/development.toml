@@ -29,6 +29,7 @@ MAIL_PASSWORD = ''
 CELERY_MONGODB_SCHEDULER_COLLECTION = 'schedules'
 CELERY_RESULT_BACKEND = 'app.extensions.celerybackend:MongoBackend'
 CELERY_BROKER_URL = "amqp://"
+AMQP_URL = "amqp://"
 CELERY_IMPORTS = ["app.backtasks"]
 CELERY_TASK_SERIALIZER = "bson"
 CELERY_ACCEPT_CONTENT = ["bson", "json"]

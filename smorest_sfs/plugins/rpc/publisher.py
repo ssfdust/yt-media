@@ -18,7 +18,7 @@
 
     rabbitMQ存储模块
 """
-from typing import Optional
+from typing import Optional, Any
 from kombu.pools import producers
 
 from .base import RPCBase
@@ -36,14 +36,16 @@ class Publisher(RPCBase):
     :param auto_delete: 是否自动删除
     """
 
-    def publish(self, expiration: Optional[int] = None) -> None:
+    def publish(
+        self, value: Optional[Any] = None, expiration: Optional[int] = None
+    ) -> None:
         """ 保存
 
         :param expiration 过期时间
         """
         with producers[self.conn].acquire(block=True) as producer:
             producer.publish(
-                self.value,
+                value if value else self.value,
                 exchange=self.queue.exchange,
                 routing_key=self.queue.routing_key,
                 correlation_id=self.queue.routing_key,
