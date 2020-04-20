@@ -13,6 +13,16 @@ class Subscriber(RPCBase):
         """
         重载数值
         """
+        if self.conn:
+            for i in self._subscribe(no_ack, requeue):
+                yield i
+        else:
+            raise RuntimeError("No Connection Found")
+
+    def _subscribe(self, no_ack: bool = False, requeue: bool = False) -> Iterator[Any]:
+        """
+        重载数值
+        """
         for i in self.extract_from_queue(no_ack):
             yield i.payload
             if no_ack is False and requeue is False:

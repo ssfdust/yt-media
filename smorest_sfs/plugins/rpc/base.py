@@ -15,4 +15,7 @@ class RPCBase:
         self.value = value
         self.queue = queue
         self.exchange = Exchange(self.queue.exchange)
-        self.conn = Connection(current_app.config["AMQP_URL"], heartbeat=0)
+        try:
+            self.conn = Connection(current_app.config["AMQP_URL"], heartbeat=0)
+        except RuntimeError:
+            self.conn = None

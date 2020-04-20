@@ -37,7 +37,7 @@ class Publisher(RPCBase):
     :param auto_delete: 是否自动删除
     """
 
-    def publish(
+    def _publish(
         self, value: Optional[Any] = None, expiration: Optional[int] = None
     ) -> None:
         """ 保存
@@ -56,3 +56,9 @@ class Publisher(RPCBase):
                 delivery_mode=2,
                 expiration=expiration,
             )
+
+    def publish(
+        self, value: Optional[Any] = None, expiration: Optional[int] = None
+    ) -> None:
+        if self.conn:
+            self._publish(value, expiration)
