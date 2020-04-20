@@ -25,9 +25,11 @@ def flask_celery_app(flask_celery):
 
 @pytest.fixture(scope="package")
 def flask_celery_worker(flask_celery_app):
+    from time import sleep
     with worker.start_worker(
         flask_celery_app, pool="solo", perform_ping_check=False,
     ) as w:
         yield w
+    sleep(2)
     w._on_started.set()
     w.stop()

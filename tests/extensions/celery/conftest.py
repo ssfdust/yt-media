@@ -54,9 +54,11 @@ def celery_sess_app(celery_ext: Celery) -> Iterator[celery.Celery]:
 @pytest.fixture
 def celery_sess_worker(celery_sess_app: celery.Celery) -> Iterator[Any]:
     # pylint: disable=W0621
+    from time import sleep
     with worker.start_worker(
         celery_sess_app, pool="solo", perform_ping_check=False,
     ) as w:
         yield w
+    sleep(1)
     w._on_started.set()
     w.stop()
