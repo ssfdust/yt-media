@@ -8,7 +8,7 @@ from smorest_sfs.extensions import Celery
 
 def test_celery_creation(
     celery_ext: Celery, celery_sess_app: Any, celery_sess_worker: Any
-):
+) -> None:
     # pylint: disable=W0613
     @celery_ext.task("mul")
     def mul(x, y):  # type: ignore

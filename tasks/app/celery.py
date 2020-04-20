@@ -10,7 +10,7 @@ def start(context, level="INFO"):
     启动Celery服务
     """
     command = f"""
-        celery --app=app.app:celery worker -l {level} -E -P eventlet
+        celery --app=smorest_sfs.app:celery_app worker -l {level} -E -P eventlet
     """
     context.run(command, pty=True)
 
