@@ -27,12 +27,12 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 
 from .api import api, spec_kwargs
+from .celery import Celery
 from .jwt import jwt as jwt_instance
+from .logger_helper import create_logger
 from .marshal import ma
 from .sqla import db
 from .storage import redis_store
-from .logger_helper import create_logger
-from .celery import Celery
 
 babel = Babel()
 mail = Mail()

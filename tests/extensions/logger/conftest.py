@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import Iterator
+
 import pytest
 from flask import Flask
 from flask.testing import FlaskClient

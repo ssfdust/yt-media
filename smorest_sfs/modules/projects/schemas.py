@@ -4,9 +4,10 @@
 
     项目模块的Schemas
 """
+from marshmallow import Schema, fields
+
 from smorest_sfs.extensions.marshal import ModelSchema
-from smorest_sfs.extensions.marshal.bases import BasePageSchema, BaseMsgSchema
-from marshmallow import fields, Schema
+from smorest_sfs.extensions.marshal.bases import BaseMsgSchema, BasePageSchema
 
 from . import models
 

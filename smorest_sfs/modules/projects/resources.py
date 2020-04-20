@@ -7,10 +7,10 @@
 from typing import Dict, List
 
 from flask.views import MethodView
+from flask_jwt_extended import current_user
 from flask_sqlalchemy import BaseQuery
 from loguru import logger
 
-from flask_jwt_extended import current_user
 from smorest_sfs.extensions.api.decorators import paginate
 from smorest_sfs.extensions.marshal.bases import (
     BaseIntListSchema,

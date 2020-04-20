@@ -4,9 +4,8 @@ from functools import wraps
 from socket import timeout
 from typing import Callable
 
-from flask import Flask
-
 import pytest
+from flask import Flask
 from kombu import Connection, Queue
 
 

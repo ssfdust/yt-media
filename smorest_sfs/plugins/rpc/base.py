@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from typing import Any, Optional
-from kombu import Connection, Exchange, Queue
+
 from flask import current_app
+from kombu import Connection, Exchange, Queue
 
 
 class RPCBase:

@@ -13,7 +13,9 @@ from tests._utils.injection import UniqueQueue
 class MsgProtocol(Protocol):
     html: str
 
+
 SENDED: UniqueQueue[MsgProtocol] = UniqueQueue()
+
 
 def fake_send(msg):
     SENDED.put(msg)
@@ -36,13 +38,10 @@ class TestSendMail:
             )
         ],
     )
-    @pytest.mark.usefixtures("flask_app", "flask_celery_app", "flask_celery_worker",
-                             "patched_send_mail")
-    def test_send_mail(
-        self,
-        content: Dict[str, str],
-        result: str,
-    ) -> None:
+    @pytest.mark.usefixtures(
+        "flask_app", "flask_celery_app", "flask_celery_worker", "patched_send_mail"
+    )
+    def test_send_mail(self, content: Dict[str, str], result: str,) -> None:
         sender = PasswdMailSender(content, "test@test.com")
         sender.send()
         msg = SENDED.get()

@@ -4,8 +4,8 @@
     实例模块
 """
 
-from .factory import create_app
 from .extensions import celery
+from .factory import create_app
 
 ENABLED_MODULES = [
     "auth",

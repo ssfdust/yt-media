@@ -18,7 +18,8 @@
 
     rabbitMQ存储模块
 """
-from typing import Optional, Any
+from typing import Any, Optional
+
 from kombu.pools import producers
 
 from .base import RPCBase

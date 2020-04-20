@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from celery.contrib.testing.app import setup_default_app
 from celery.contrib.testing import worker
+from celery.contrib.testing.app import setup_default_app
 
 
 @pytest.fixture(scope="package")

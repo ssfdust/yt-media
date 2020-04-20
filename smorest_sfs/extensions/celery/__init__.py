@@ -24,6 +24,7 @@ import celery
 from celery.signals import task_postrun, task_prerun, worker_process_init
 from flask import Flask, current_app
 
+
 def _check_context() -> bool:
     if hasattr(current_app, "name"):
         return True
@@ -61,7 +62,6 @@ class Celery:
                 "Tasks must have a name specified. Recommend: zeus.[task-name]"
             )
         return self.celery.task(name=name, *args, **kwargs)
-
 
     @property
     def tasks(self) -> Any:

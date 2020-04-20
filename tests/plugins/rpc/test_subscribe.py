@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from typing import Any
+
 import pytest
 
 from smorest_sfs.plugins.rpc import Publisher, Subscriber, default_queues
