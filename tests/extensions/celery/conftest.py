@@ -58,4 +58,3 @@ def celery_sess_worker(celery_sess_app: celery.Celery) -> Iterator[Any]:
         celery_sess_app, pool="solo", perform_ping_check=False,
     ) as w:
         yield w
-        w.terminate()

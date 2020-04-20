@@ -16,13 +16,6 @@ JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']
 JWT_TOKEN_LOCATION = ['headers', 'query_string']
 JWT_QUERY_STRING_NAME = 'token'
 
-SECURITY_LOGIN_URL = '/admin/login'
-SECURITY_LOGOUT_URL = '/admin/logout'
-SECURITY_POST_LOGIN_VIEW = '/admin/'
-SECURITY_POST_LOGOUT_VIEW = '/admin/'
-SECURITY_REGISTER_URL = '/admin/register'
-SECURITY_REGISTERABLE = true
-SECURITY_PASSWORD_SALT = 'KCzR\0%1\@)xFSo)\N1px9<W*H?Gs#'
 BABEL_DEFAULT_LOCALE = 'zh_cn'
 BABEL_DEFAULT_TIMEZONE = 'Asia/Shanghai'
 
@@ -33,22 +26,11 @@ MAIL_USERNAME = ''
 MAIL_DEFAULT_SENDER = ''
 MAIL_PASSWORD = ''
 
-CELERY_MONGODB_SCHEDULER_COLLECTION = 'schedules'
-CELERY_RESULT_BACKEND = 'app.extensions.celerybackend:MongoBackend'
+AMQP_URL = "amqp://"
+
+CELERY_RESULT_BACKEND = 'redis://'
 CELERY_BROKER_URL = "amqp://"
-CELERY_IMPORTS = ["app.backtasks"]
-CELERY_TASK_SERIALIZER = "bson"
-CELERY_ACCEPT_CONTENT = ["bson", "json"]
-CELERY_EVENT_SERIALIZER = "bson"
-CELERY_RESULT_SERIALIZER = "bson"
+CELERY_IMPORTS = ["smorest_sfs.tasks"]
+CELERY_ACCEPT_CONTENT = ["json"]
 
 PREFERRED_URL_SCHEME = 'http'
-
-[MONGODB_SETTINGS]
-    db = 'my-smorest-testing'
-    username = 'smorest-admin'
-    password = 'smorest2019'
-    host = '127.0.0.1'
-    authentication_source = 'my-smorest-testing'
-    port = 27017
-    connect = false
