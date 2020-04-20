@@ -17,7 +17,7 @@ class Subscriber(RPCBase):
             yield i.payload
             if no_ack is False and requeue is False:
                 i.ack()
-            if requeue is True:
+            elif requeue is True:
                 i.requeue()
 
     def extract_from_queue(self, no_ack: bool = False) -> Iterator[Any]:
