@@ -9,3 +9,4 @@ from .celery import disconnect
 def clear_dummy(app: Flask) -> None:
     logger.remove(app.extensions["logger_ext"].handler_id)
     disconnect(app)
+    app.after_request_funcs = {}

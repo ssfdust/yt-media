@@ -15,6 +15,7 @@ from smorest_sfs.extensions import Celery
 def flask_celery(flask_app: Flask, celery_session_app: celery.Celery) -> Celery:
     # pylint: disable=W0621
     from smorest_sfs.extensions import Celery
+
     celery = Celery()
     celery.init_app(flask_app)
 
