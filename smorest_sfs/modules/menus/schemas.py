@@ -6,13 +6,13 @@
 """
 from marshmallow import Schema, fields
 
-from smorest_sfs.extensions.marshal import ModelSchema
-from smorest_sfs.extensions.marshal.bases import BaseMsgSchema
+from smorest_sfs.extensions import ma
+from smorest_sfs.extensions.marshal import BaseMsgSchema
 
 from . import models
 
 
-class MenuSchema(ModelSchema):
+class MenuSchema(ma.ModelSchema):
     """
     菜单的序列化类
     """
@@ -25,6 +25,7 @@ class MenuSchema(ModelSchema):
         exclude = ["permission_id", "level", "left", "tree_id", "parent", "right"]
         dump_only = ["id", "children"]
         load_only = ["permission"]
+        session = models.db.session
 
 
 class MenuOptsSchema(Schema):

@@ -10,6 +10,5 @@ from flask import Flask
 @pytest.fixture(scope="package", autouse=True)
 def captcha_app() -> Iterator[Flask]:
     app = Flask("TestStorage")
-    app.config["CELERY_BROKER_URL"] = os.environ.get("AMQP_URI") or "amqp://"
     with app.app_context():
         yield app

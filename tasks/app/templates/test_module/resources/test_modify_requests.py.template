@@ -19,7 +19,7 @@ class Test{{ model_name }}Modify(GeneralModify):
     login_roles = [ROLES.{{ model_name }}Manager]
     model = {{ model_name }}
     delete_param_key = "{{ module_name_singular }}_id"
-    schema = {{ model_name }}Schema
+    schema = "{{ model_name }}Schema"
 
     @pytest.mark.parametrize("data", param_helper(name="{{ module_name_singular }}"))
     def test_add(self, data: Dict[str, str]) -> None:

@@ -17,9 +17,9 @@ class TestApi(FixturesInjectBase):
     TestPagination: Model
     TestPageSchema: Schema
     api: Api
-    app: Flask
+    api_app: Flask
 
-    fixture_names = ("app", "api", "TestPagination", "TestPageSchema")
+    fixture_names = ("api_app", "api", "TestPagination", "TestPageSchema")
 
     def setup_blp(self) -> None:
         blp = Blueprint("tests", "tests")
@@ -66,7 +66,7 @@ class TestApi(FixturesInjectBase):
         assert data["meta"] == meta
 
     def get_test_json(self, url: str) -> Dict[str, Any]:
-        test_client = self.app.test_client()
+        test_client = self.api_app.test_client()
         resp = test_client.get(url)
         json: Dict[str, Any] = resp.json
         return json

@@ -12,7 +12,7 @@ from smorest_sfs.extensions.marshal.fields import PendulumField
 
 
 @pytest.fixture(scope="package")
-def app() -> Flask:
+def ma_app() -> Flask:
     flask_app = Flask("TestMa")
     flask_app.config["BABEL_DEFAULT_TIMEZONE"] = "Asia/Shanghai"
     flask_app.config["BABEL_DEFAULT_LOCALE"] = "zh_cn"

@@ -11,12 +11,11 @@ from flask import Flask
 from loguru import logger
 
 from migrations.initial_development_data import init_email_templates, init_permission
-from smorest_sfs.app import ENABLED_MODULES, create_app
 from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy  # type: ignore
 from smorest_sfs.modules.users.models import Model, User
 from smorest_sfs.utils.paths import UploadPath
 
-from ._utils import client, injection, tables, users
+from ._utils import client, injection, tables, users, clear
 
 
 class fakeuuid:
@@ -40,14 +39,15 @@ def clean_dirs() -> Iterator[None]:
 @pytest.fixture(scope="session")
 def flask_app() -> Iterator[Flask]:
     # pylint: disable=W0613, W0621
-    from smorest_sfs.extensions import db, logger as log
+    from smorest_sfs.app import ENABLED_MODULES, create_app
+    from smorest_sfs.extensions import db
 
     os.environ["FLASK_ENV"] = "testing"
     app = create_app(ENABLED_MODULES)
+    clear.clear_dummy(app)
 
     with app.app_context():
         db.create_all()
-        logger.remove(app.extensions['logger_ext'].handler_id)
         init_permission()
         init_email_templates()
         yield app

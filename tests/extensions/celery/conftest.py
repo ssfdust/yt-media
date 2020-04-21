@@ -1,15 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 
 from typing import Any, Iterator, Type
 
 import celery
 import pytest
-from celery.contrib.testing import worker
-from celery.contrib.testing.app import setup_default_app
+from celery.contrib.pytest import worker
 from flask import Flask
-
-from smorest_sfs.extensions.celery import Celery
 
 
 @pytest.fixture(scope="package")
@@ -24,7 +22,7 @@ def config() -> Type[Any]:
 
 
 @pytest.fixture(scope="package")
-def app(config: Any) -> Flask:
+def celery_flask_app(config: Any) -> Flask:
     # pylint: disable=W0621
     flask_app = Flask("TestCelery")
     flask_app.config.from_object(config)
@@ -33,32 +31,19 @@ def app(config: Any) -> Flask:
 
 
 @pytest.fixture
-def celery_ext(app: Flask) -> Celery:
+def celery_ext(celery_flask_app: Flask, celery_app: celery.Celery) -> Any:
     # pylint: disable=W0621
-    celery_extension = Celery(app)
+    from smorest_sfs.extensions.celery import Celery
+
+    celery_extension = Celery(celery_flask_app)
+    celery_extension.update_celery(celery_app)
 
     return celery_extension
 
 
 @pytest.fixture
-def celery_sess_app(celery_ext: Celery) -> Iterator[celery.Celery]:
+def celery_worker(celery_ext: Any) -> Iterator[Any]:
     # pylint: disable=W0621
-    test_app = celery_ext.get_celery_app()
-    test_app.loader.import_task_module("celery.contrib.testing.tasks")
-    with setup_default_app(test_app):
-        test_app.set_default()
-        test_app.set_current()
-        yield test_app
-
-
-@pytest.fixture
-def celery_sess_worker(celery_sess_app: celery.Celery) -> Iterator[Any]:
-    # pylint: disable=W0621
-    from time import sleep
-    with worker.start_worker(
-        celery_sess_app, pool="solo", perform_ping_check=False,
-    ) as w:
+    _celery_app = celery_ext.get_celery_app()
+    with worker.start_worker(_celery_app, pool="solo",) as w:
         yield w
-    sleep(1)
-    w._on_started.set()
-    w.stop()

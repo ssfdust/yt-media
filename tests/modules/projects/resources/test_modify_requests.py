@@ -19,7 +19,7 @@ class TestProjectModify(GeneralModify):
     login_roles = [ROLES.ProjectManager]
     model = Project
     delete_param_key = "project_id"
-    schema = ProjectSchema
+    schema = "ProjectSchema"
 
     @pytest.mark.parametrize("data", param_helper(name="project"))
     def test_add(self, data: Dict[str, str]) -> None:

@@ -8,11 +8,11 @@ from typing import Any, Iterator, Type
 
 import pytest
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
 
 from smorest_sfs.extensions import babel
 from smorest_sfs.extensions.sqla import Model, SurrogatePK
-from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy
 from smorest_sfs.plugins.sa import SAQuery, SAStatement
 from tests._utils.tables import drop_tables
 
@@ -24,57 +24,57 @@ TABLES = [
 ]
 
 
-def get_inited_app(db: SQLAlchemy) -> Flask:
+def get_inited_app(sqla_db: SQLAlchemy) -> Flask:
     # pylint: disable=W0621
     flask_app = Flask("TestSqla")
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
         "PG_URI", "postgresql://postgres@localhost/postgres"
     )
     flask_app.config["BABEL_DEFAULT_TIMEZONE"] = "Asia/Shanghai"
-    db.init_app(flask_app)
+    sqla_db.init_app(flask_app)
     babel.init_app(flask_app)
 
     return flask_app
 
 
 @pytest.fixture(scope="package")
-def db() -> SQLAlchemy:
-    from smorest_sfs.extensions.sqla import db as db_instance
+def sqla_db() -> SQLAlchemy:
+    from smorest_sfs.extensions.sqla import db as sqla_db_instance
 
-    return db_instance
+    return sqla_db_instance
 
 
 @pytest.fixture(scope="package")
-def TestCRUDTable(db: SQLAlchemy) -> Type[Model]:
+def TestCRUDTable(sqla_db: SQLAlchemy) -> Type[Model]:
     # pylint: disable=W0621
     class TestCRUDTable(SurrogatePK, Model):
         __tablename__ = "sqla_test_crud_table"
 
-        name = db.Column(db.String(80), unique=True)
+        name = sqla_db.Column(sqla_db.String(80), unique=True)
 
     return TestCRUDTable
 
 
 @pytest.fixture(scope="package")
-def TestParentTable(db: SQLAlchemy) -> Type[Model]:
+def TestParentTable(sqla_db: SQLAlchemy) -> Type[Model]:
     # pylint: disable=W0621
     class TestParentTable(SurrogatePK, Model):
         __tablename__ = "test_crud_parent_table"
-        name = db.Column(db.String(80), unique=True)
+        name = sqla_db.Column(sqla_db.String(80), unique=True)
 
     return TestParentTable
 
 
 @pytest.fixture(scope="package")
-def TestChildTable(db: SQLAlchemy, TestParentTable: Type[Model]) -> Type[Model]:
+def TestChildTable(sqla_db: SQLAlchemy, TestParentTable: Type[Model]) -> Type[Model]:
     # pylint: disable=W0621
     class TestChildTable(SurrogatePK, Model):
         __tablename__ = "test_crud_child_table"
-        name = db.Column(db.String(80), unique=True)
-        pid = db.Column(db.Integer, db.ForeignKey(TestParentTable.id))
-        parnet = db.relationship(
+        name = sqla_db.Column(sqla_db.String(80), unique=True)
+        pid = sqla_db.Column(sqla_db.Integer, sqla_db.ForeignKey(TestParentTable.id))
+        parnet = sqla_db.relationship(
             TestParentTable,
-            backref=db.backref("children", active_history=True),
+            backref=sqla_db.backref("children", active_history=True),
             active_history=True,
         )
 
@@ -88,15 +88,15 @@ def tables(TestCRUDTable: Type[Model], TestChildTable: Type[Model]) -> None:
 
 
 @pytest.fixture(scope="package", autouse=True)
-def app(db: SQLAlchemy, tables: Any) -> Iterator[Flask]:
+def sqla_app(sqla_db: SQLAlchemy, tables: Any) -> Iterator[Flask]:
     # pylint: disable=W0621, W0613
-    flask_app = get_inited_app(db)
+    flask_app = get_inited_app(sqla_db)
 
     with flask_app.app_context():
-        db.create_all()
+        sqla_db.create_all()
         yield flask_app
-        db.session.rollback()
-        drop_tables(db, TABLES)
+        sqla_db.session.rollback()
+        drop_tables(sqla_db, TABLES)
 
 
 @pytest.fixture(scope="package")
@@ -126,7 +126,7 @@ def TestParentSchema(TestChildSchema: Type[Schema]) -> Type[Schema]:
 
 
 @pytest.fixture
-def TestTableTeardown(db: SQLAlchemy) -> Iterator[None]:
+def TestTableTeardown(sqla_db: SQLAlchemy) -> Iterator[None]:
     # pylint: disable=W0621, W0613
     yield
     for table in [
@@ -134,16 +134,16 @@ def TestTableTeardown(db: SQLAlchemy) -> Iterator[None]:
         "test_crud_child_table",
         "test_crud_parent_table",
     ]:
-        db.session.execute(f"TRUNCATE TABLE {table} RESTART IDENTITY CASCADE ")
-    db.session.commit()
+        sqla_db.session.execute(f"TRUNCATE TABLE {table} RESTART IDENTITY CASCADE ")
+    sqla_db.session.commit()
 
 
 @pytest.fixture
-def TestSASql(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAStatement]:
+def TestSASql(sqla_db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAStatement]:
     # pylint: disable=W0621, W0613
     class TestSASql(SAStatement):
         def __init__(self, name: str) -> None:
-            self.sa_sql = db.select([TestCRUDTable.name]).where(
+            self.sa_sql = sqla_db.select([TestCRUDTable.name]).where(
                 TestCRUDTable.name == name
             )
 
@@ -151,7 +151,7 @@ def TestSASql(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAStatement]:
 
 
 @pytest.fixture
-def TestOneTableQuery(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:
+def TestOneTableQuery(sqla_db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:
     # pylint: disable=W0621, W0613
     class TestOneTableQuery(SAQuery):
         def __init__(self) -> None:
@@ -165,12 +165,12 @@ def TestOneTableQuery(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuer
 
 @pytest.fixture
 def TestTwoTablesQuery(
-    db: SQLAlchemy, TestCRUDTable: Type[Model], TestChildTable: Type[Model]
+    sqla_db: SQLAlchemy, TestCRUDTable: Type[Model], TestChildTable: Type[Model]
 ) -> Type[SAQuery]:
     # pylint: disable=W0621, W0613
     class TestTwoTablesQuery(SAQuery):
         def __init__(self) -> None:
-            self.query = db.session.query(
+            self.query = sqla_db.session.query(
                 TestCRUDTable,
                 TestChildTable,
                 TestChildTable.name,
@@ -185,11 +185,11 @@ def TestTwoTablesQuery(
 
 
 @pytest.fixture
-def TestOneColQuery(db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:
+def TestOneColQuery(sqla_db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[SAQuery]:
     # pylint: disable=W0621, W0613
     class TestOneColQuery(SAQuery):
         def __init__(self) -> None:
-            self.query = db.session.query(TestCRUDTable.name).filter(
+            self.query = sqla_db.session.query(TestCRUDTable.name).filter(
                 TestCRUDTable.name == "bbc"
             )
 

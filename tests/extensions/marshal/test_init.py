@@ -8,9 +8,9 @@ from smorest_sfs.extensions.marshal import ma
 
 
 class TestMaCreataion:
-    def test_ma_meta(self, app: Flask) -> None:
+    def test_ma_meta(self, ma_app: Flask) -> None:
 
-        ma.init_app(app)
+        ma.init_app(ma_app)
 
         TestSchema = type("TestSchema", (ma.Schema,), dict())
 

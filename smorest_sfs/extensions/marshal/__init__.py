@@ -13,7 +13,24 @@
             id = fields.Int()
 """
 
-from .bases import *
+from .bases import (
+    BaseIntListSchema,
+    BaseMsgSchema,
+    BasePageSchema,
+    GeneralLikeArgs,
+    UploadField,
+)
 from .ma import Marshmallow, ModelSchema
 
 ma = Marshmallow()
+
+__all__ = [
+    "ma",
+    "Marshmallow",
+    "ModelSchema",
+    "BaseMsgSchema",
+    "BasePageSchema",
+    "BaseIntListSchema",
+    "UploadField",
+    "GeneralLikeArgs",
+]

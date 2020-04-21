@@ -6,7 +6,6 @@ import pytest
 
 from smorest_sfs.modules.auth import ROLES
 from smorest_sfs.modules.email_templates.models import EmailTemplate
-from smorest_sfs.modules.email_templates.schemas import EmailTemplateSchema
 from tests._utils.helpers import param_helper
 from tests._utils.injection import GeneralModify
 
@@ -26,7 +25,7 @@ class TestEmailTemplateModify(GeneralModify):
     view = "EmailTemplate.EmailTemplateView"
     delete_param_key = "email_template_id"
     model = EmailTemplate
-    schema = EmailTemplateSchema
+    schema = "EmailTemplateSchema"
 
     @pytest.mark.parametrize(
         "data", param_helper(name="email_template", template="test123")

@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Any, Callable, Dict, Iterator, List, Tuple
+from typing import Any, Callable, Dict, Iterator, List, Tuple, Type
 
 import pytest
+from marshmallow import Schema
 
 from smorest_sfs.modules.auth import PERMISSIONS
 from smorest_sfs.modules.roles.models import Permission, Role
@@ -58,3 +59,12 @@ def role_items(
 ) -> Iterator[Iterator[Tuple[Role, Role, Role]]]:
     for _ in temp_db_instance_helper(Role(name="1"), Role(name="2"), Role(name="3")):
         yield _
+
+
+@pytest.fixture
+@pytest.mark.usefixtures("flask_app")
+def RoleSchema() -> Type[Schema]:
+    # pylint: disable=W0621
+    from smorest_sfs.modules.roles.schemas import RoleSchema
+
+    return RoleSchema

@@ -8,20 +8,20 @@ import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
 from smorest_sfs.factory import CONFIG_MAPPGING, create_app
-from loguru import logger
+from tests._utils.clear import clear_dummy as _clear_dummy
 
 ENABLED_MODULES = ["users"]
 
 
 def test_create_app() -> None:
     app = create_app(ENABLED_MODULES)
-    logger.remove(app.extensions['logger_ext'].handler_id)
+    _clear_dummy(app)
 
 
 @pytest.mark.parametrize("flask_config_name", ["development", "testing"])
 def test_create_app_passing_config_name(flask_config_name: str) -> None:
     app = create_app(ENABLED_MODULES, flask_config_name)
-    logger.remove(app.extensions['logger_ext'].handler_id)
+    _clear_dummy(app)
 
 
 @pytest.mark.parametrize("flask_config_name", ["development", "testing"])
@@ -30,7 +30,7 @@ def test_create_app_passing_FLASK_ENV_env(
 ) -> None:
     monkeypatch.setenv("FLASK_ENV", flask_config_name)
     app = create_app(ENABLED_MODULES)
-    logger.remove(app.extensions['logger_ext'].handler_id)
+    _clear_dummy(app)
 
 
 def test_create_app_with_non_existing_config() -> None:

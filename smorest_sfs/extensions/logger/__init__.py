@@ -69,7 +69,7 @@ class Logger:
     def init_app(self, app: Flask) -> None:
         self._app = app
         self._app.after_request(self.save_resp)
-        self._app.extensions['logger_ext'] = self
+        self._app.extensions["logger_ext"] = self
         self.handler_id = logger.add(self.handle_record)
 
     def check_publisher(self) -> None:
@@ -80,28 +80,28 @@ class Logger:
         """保存Request请求"""
         self.check_publisher()
         args = _parse_args(resp)
-        data =  dict(
-                created=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
-                url=request.path,
-                arguments=args,
-                method=request.method,
-                ip=_parse_ip(),
-                module=request.endpoint if request.endpoint else "unknown",
-                level="info",
-                status_code=resp.status_code,
-                message="请求发起",
+        data = dict(
+            created=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+            url=request.path,
+            arguments=args,
+            method=request.method,
+            ip=_parse_ip(),
+            module=request.endpoint if request.endpoint else "unknown",
+            level="info",
+            status_code=resp.status_code,
+            message="请求发起",
         )
-        self.publisher.publish( data )
+        self.publisher.publish(data)
         return resp
 
     def handle_record(self, message: Any) -> None:
         """处理来自loguru的信息"""
         self.check_publisher()
-        data =   dict(
-                created=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
-                module=message.record["name"],
-                line=message.record["line"],
-                level=message.record["level"].name,
-                message=str(message.record["message"]),
+        data = dict(
+            created=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+            module=message.record["name"],
+            line=message.record["line"],
+            level=message.record["level"].name,
+            message=str(message.record["message"]),
         )
         self.publisher.publish(data)

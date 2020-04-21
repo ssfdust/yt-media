@@ -34,40 +34,40 @@ def init_flaskapp(db: SQLAlchemy) -> Flask:  # type: ignore
 
 
 @pytest.fixture(scope="package")
-def db() -> SQLAlchemy:
+def api_db() -> SQLAlchemy:
     from smorest_sfs.extensions import db as db_instance
 
     return db_instance
 
 
 @pytest.fixture(scope="package")
-def TestPagination(db: SQLAlchemy) -> Type[Model]:  # type: ignore
+def TestPagination(api_db: SQLAlchemy) -> Type[Model]:  # type: ignore
     # pylint: disable=W0621
     class TestPagination(SurrogatePK, Model):
 
         __tablename__ = "test_pagination"
 
-        name = db.Column(db.String(10))
+        name = api_db.Column(api_db.String(10))
 
     return TestPagination
 
 
 @pytest.fixture(scope="package")
-def app(db: SQLAlchemy) -> Iterator[Flask]:  # type: ignore
+def api_app(api_db: SQLAlchemy) -> Iterator[Flask]:  # type: ignore
     # pylint: disable=W0621
-    flask_app = init_flaskapp(db)
+    flask_app = init_flaskapp(api_db)
 
     with flask_app.app_context():
-        db.create_all()
+        api_db.create_all()
         yield flask_app
-        db.session.rollback()
-        drop_tables(db, TABLES)
+        api_db.session.rollback()
+        drop_tables(api_db, TABLES)
 
 
 @pytest.fixture(scope="package")
-def api(app: Flask) -> Api:
+def api(api_app: Flask) -> Api:
     # pylint: disable=W0621
-    return Api(app)
+    return Api(api_app)
 
 
 @pytest.fixture(scope="package")
@@ -91,9 +91,9 @@ def TestPageSchema(TestSchema: ma.Schema) -> Type[ma.Schema]:
 
 
 @pytest.fixture(scope="package", autouse=True)
-def setup_db(app: Flask, db: SQLAlchemy, TestPagination: Type[Model]):  # type: ignore
+def setup_db(api_app: Flask, api_db: SQLAlchemy, TestPagination: Type[Model]):  # type: ignore
     # pylint: disable=W0613, W0621
-    db.create_all()
+    api_db.create_all()
     data = [TestPagination(name=str(i + 1)) for i in range(20)]
-    db.session.bulk_save_objects(data)
-    db.session.commit()
+    api_db.session.bulk_save_objects(data)
+    api_db.session.commit()

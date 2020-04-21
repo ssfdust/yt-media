@@ -45,7 +45,6 @@ class StoragesMixin:
         if self._store is not None:
             self._store.stream.seek(0)
             return self._store.stream
-        raise FileNotFoundError("文件不存在")
 
     def save_store(self) -> None:
         """

@@ -48,7 +48,7 @@ class FixturesInjectBase:
     item_view: str
     login_roles: List[str]
     model: Type[Model]
-    schema: Type[Schema]
+    schema: Union[Type[Schema], str]
     delete_param_key: str
     fixture_names: Tuple[str, ...] = tuple()
 
@@ -65,6 +65,11 @@ class FixturesInjectBase:
 
 
 class GeneralModify(FixturesInjectBase):
+    @pytest.fixture(autouse=True)
+    def auto_convert_schema(self, request: SubRequest) -> None:
+        if hasattr(self, "schema") and isinstance(getattr(self, "schema"), str):
+            setattr(self, "schema", request.getfixturevalue(getattr(self, "schema")))
+
     def _add_request(self, data: Dict[str, Any]) -> Dict[str, Any]:
         with self.flask_app_client.login(self.regular_user, self.login_roles) as client:
             with self.flask_app.test_request_context():

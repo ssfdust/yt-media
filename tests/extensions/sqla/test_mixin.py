@@ -6,10 +6,10 @@ from copy import copy
 from typing import Any, List, Type
 
 import pytest
+from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema
 
 from smorest_sfs.extensions.sqla import CharsTooLong, DuplicateEntry, Model
-from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy  # type: ignore
 from smorest_sfs.extensions.sqla.helpers import set_default_for_instance
 from tests._utils.injection import FixturesInjectBase
 
@@ -57,25 +57,25 @@ class TestSqlaCRUD:
         )
 
     def test_soft_delete_id_should_exists(
-        self, TestCRUDTable: Type[Model], db: SQLAlchemy  # type: ignore
+        self, TestCRUDTable: Type[Model], sqla_db: SQLAlchemy  # type: ignore
     ) -> None:
         item = TestCRUDTable.create(name="soft_delete_id_should_exists")
         item.delete()
 
         assert (
             item.deleted is True
-            and db.session.query(TestCRUDTable).get(item.id) is not None
+            and sqla_db.session.query(TestCRUDTable).get(item.id) is not None
         )
 
     def test_hard_delete_id_never_exists(
-        self, TestCRUDTable: Type[Model], db: SQLAlchemy  # type: ignore
+        self, TestCRUDTable: Type[Model], sqla_db: SQLAlchemy  # type: ignore
     ) -> None:
         item = TestCRUDTable.create(name="hard_delete_id_never_exists")
         item.hard_delete()
 
         assert (
             item.deleted is False
-            and db.session.query(TestCRUDTable).get(item.id) is None
+            and sqla_db.session.query(TestCRUDTable).get(item.id) is None
         )
 
     def test_errors(self, TestCRUDTable: Type[Model]) -> None:
@@ -142,40 +142,40 @@ class TestUpdateBySchema(FixturesInjectBase):
         assert temp_instance.id is None
 
     @pytest.mark.usefixtures("TestTableTeardown")
-    def test_temp_instance_should_not_in_session(self, db: SQLAlchemy) -> None:  # type: ignore
+    def test_temp_instance_should_not_in_session(self, sqla_db: SQLAlchemy) -> None:  # type: ignore
         self.create_item_and_schema(None, name="temp_instance_should_not_in_session")
         temp_instance = self.do_init_update_by_schema(
             name="the_temp_instance_not_in_session"
         )
-        assert temp_instance not in db.session
+        assert temp_instance not in sqla_db.session
 
     @pytest.mark.usefixtures("TestTableTeardown")
-    def test_temp_instance_should_be_flushed(self, db: SQLAlchemy) -> None:  # type: ignore
+    def test_temp_instance_should_be_flushed(self, sqla_db: SQLAlchemy) -> None:  # type: ignore
         self.create_item_and_schema(None, name="temp_instance_should_not_be_flushed")
         temp_instance = self.do_init_update_by_schema(
             name="the_temp_instance_not_be_flushed"
         )
-        db.session.flush()
+        sqla_db.session.flush()
         assert temp_instance.id is None
 
     @pytest.mark.usefixtures("TestTableTeardown")
-    def test_temp_instance_should_be_commited(self, db: SQLAlchemy) -> None:  # type: ignore
+    def test_temp_instance_should_be_commited(self, sqla_db: SQLAlchemy) -> None:  # type: ignore
         self.create_item_and_schema(None, name="temp_instance_should_not_be_commited")
         temp_instance = self.do_init_update_by_schema(
             name="the_temp_instance_not_be_commited"
         )
-        db.session.commit()
+        sqla_db.session.commit()
         assert temp_instance.id is None
 
     @pytest.mark.usefixtures("TestTableTeardown")
-    def test_temp_instance_should_be_flushed_after_query(self, db: SQLAlchemy) -> None:  # type: ignore
+    def test_temp_instance_should_be_flushed_after_query(self, sqla_db: SQLAlchemy) -> None:  # type: ignore
         self.create_item_and_schema(None, name="should_not_be_flushed_after_query")
         temp_instance = self.do_init_update_by_schema(
             name="should_not_be_flushed_after_query"
         )
         query_cls = temp_instance.__class__
         query_cls.query.first()
-        assert temp_instance.id is None and temp_instance not in db.session
+        assert temp_instance.id is None and temp_instance not in sqla_db.session
 
 
 class TestComplexParentChildrenUpdateBySchema(FixturesInjectBase):
@@ -184,7 +184,7 @@ class TestComplexParentChildrenUpdateBySchema(FixturesInjectBase):
         "TestChildTable",
         "TestParentSchema",
         "TestParentTable",
-        "db",
+        "sqla_db",
     )
     TestChildTable: Model
     TestParentTable: Model
@@ -232,7 +232,7 @@ class TestComplexParentChildrenUpdateBySchema(FixturesInjectBase):
             and parent_a.children == modified_a_children_lst
             and parent_a.name == "modified_a"
             and parent_a.modified > pre_modified
-            and temp_parent not in self.db.session
+            and temp_parent not in self.sqla_db.session
         )
 
     @pytest.mark.usefixtures("TestTableTeardown")

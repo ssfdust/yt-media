@@ -44,19 +44,23 @@ class Celery:
 
     def init_app(self, app: Flask) -> None:
         self.app = app
+        self.app.extensions["celery_ext"] = self
         new_celery = celery.Celery(
             app.name + "-Celery",
             broker=app.config["CELERY_BROKER_URL"],
             backend=app.config["CELERY_RESULT_BACKEND"],
         )
-        # XXX(dcramer): why the hell am I wasting time trying to make Celery work?
-        self.celery.__dict__.update(vars(new_celery))
-        self.celery.conf.update(app.config)
+        self.update_celery(new_celery)
 
-        worker_process_init.connect(self._worker_process_init)
+    def update_celery(self, new_celery: celery.Celery) -> None:
+        if self.app:
+            self.celery.__dict__.update(vars(new_celery))
+            self.celery.conf.update(self.app.config)
 
-        task_postrun.connect(self._task_postrun)
-        task_prerun.connect(self._task_prerun)
+            worker_process_init.connect(self._worker_process_init)
+
+            task_postrun.connect(self._task_postrun)
+            task_prerun.connect(self._task_prerun)
 
     def task(self, name: str, *args: Any, **kwargs: Any) -> Callable[..., Any]:
         if not name:
@@ -84,7 +88,7 @@ class Celery:
 
     def _task_prerun(self, task: Any, **_: Any) -> None:
         if self.app is None or _check_context():
-            return
+            return  # progma: no cover
 
         context = task._flask_context = [
             self.app.app_context(),
@@ -96,7 +100,7 @@ class Celery:
     def _task_postrun(self, task: Any, **_: Any) -> None:
         try:
             context = getattr(task, "_flask_context")
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             return
 
         for ctx in context:

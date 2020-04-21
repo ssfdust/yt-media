@@ -18,7 +18,7 @@ def queue() -> Queue:
 
 
 @pytest.fixture(scope="package")
-def app(queue: Queue) -> Iterator[Flask]:
+def logger_app(queue: Queue) -> Iterator[Flask]:
     # pylint: disable=W0621
     from smorest_sfs.extensions.logger import Logger
     from smorest_sfs.plugins.rpc import Publisher
@@ -31,10 +31,10 @@ def app(queue: Queue) -> Iterator[Flask]:
 
     with flask_app.app_context():
         yield flask_app
-        logger.remove(flask_app.extensions['logger_ext'].handler_id)
+        logger.remove(flask_app.extensions["logger_ext"].handler_id)
 
 
 @pytest.fixture(scope="package")
-def test_client(app: Flask) -> FlaskClient:
+def logger_test_client(logger_app: Flask) -> FlaskClient:
     # pylint: disable=W0621
-    return app.test_client()
+    return logger_app.test_client()

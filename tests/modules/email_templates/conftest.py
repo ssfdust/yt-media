@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Any, Callable, Iterator, Tuple
+from typing import Any, Callable, Iterator, Tuple, Type
 
 import pytest
-
+from marshmallow import Schema
 from smorest_sfs.modules.email_templates.models import EmailTemplate
 
 
@@ -16,3 +16,11 @@ def email_template_items(
         *(EmailTemplate(name=str(_), template="qq") for _ in range(3))
     ):
         yield _
+
+
+@pytest.fixture
+def EmailTemplateSchema() -> Type[Schema]:
+    # pylint: disable=W0621
+    from smorest_sfs.modules.email_templates.schemas import EmailTemplateSchema
+
+    return EmailTemplateSchema

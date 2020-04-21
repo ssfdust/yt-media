@@ -10,8 +10,6 @@ from __future__ import annotations
 
 from typing import List
 
-from sqlalchemy.orm import relationship
-
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.modules.auth.permissions import ROLES
 
@@ -66,7 +64,7 @@ class Role(Model, SurrogatePK):
     description = db.Column(db.String(255), doc="角色描述")
     user_default = db.Column(db.Boolean, doc="用户默认角色", default=False)
     group_default = db.Column(db.Boolean, doc="组默认角色", default=False)
-    permissions = relationship(
+    permissions = db.relationship(
         "Permission",
         secondary=permission_roles,
         doc="所有权限",

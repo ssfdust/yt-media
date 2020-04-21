@@ -3,9 +3,7 @@
 from typing import Any, Dict, List, Union
 
 import pytest
-
 from smorest_sfs.modules.roles.models import ROLES, Role
-from smorest_sfs.modules.roles.schemas import RoleSchema
 from tests._utils.helpers import param_helper
 from tests._utils.injection import GeneralModify
 
@@ -16,7 +14,7 @@ class TestRoleModify(GeneralModify):
     item_view = "Role.RoleItemView"
     login_roles = [ROLES.RoleManager]
     model = Role
-    schema = RoleSchema
+    schema = "RoleSchema"
     delete_param_key = "role_id"
 
     fixture_names = (

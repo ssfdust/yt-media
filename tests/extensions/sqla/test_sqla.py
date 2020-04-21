@@ -111,8 +111,8 @@ class TestBaseRUDByID(ItemsFixtureBase):
             with pytest.raises(NotFound):
                 self.TestCRUDTable.get_by_id(item_id)
 
-    def test_base_update_by_id(self, db: SQLAlchemy) -> None:
+    def test_base_update_by_id(self, sqla_db: SQLAlchemy) -> None:
         item = self.TestParentTable.create(name="base_update_by_id")
         temp_item = self.TestParentTable(name="test_update_by_id")
         self.TestParentTable.update_by_id(item.id, self.TestParentSchema, temp_item)
-        assert temp_item not in db.session and item.name == "test_update_by_id"
+        assert temp_item not in sqla_db.session and item.name == "test_update_by_id"
