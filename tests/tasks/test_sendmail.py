@@ -40,7 +40,7 @@ class TestSendMail:
     @pytest.mark.usefixtures(
         "patched_send_mail"
     )
-    def test_send_mail(self, flask_celery, flask_celery_worker, content: Dict[str, str], result: str,) -> None:
+    def test_send_mail(self, content: Dict[str, str], result: str) -> None:
         sender = PasswdMailSender(content, "test@test.com")
         sender.send()
         msg = SENDED.get()

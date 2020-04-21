@@ -26,7 +26,9 @@ def flask_celery(flask_app: Flask, celery_session_app: celery.Celery) -> Celery:
 @pytest.fixture(scope="package", autouse=True)
 def flask_celery_app(flask_celery: Celery) -> celery.Celery:
     # pylint: disable=W0621
-    return flask_celery.get_celery_app()
+    celery_app = flask_celery.get_celery_app()
+    celery_app.loader.import_task_module("smorest_sfs.tasks")
+    return celery_app
 
 
 @pytest.fixture(scope="package", autouse=True)
