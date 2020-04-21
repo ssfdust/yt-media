@@ -3,6 +3,7 @@
 from typing import Any, Dict, List, Union
 
 import pytest
+
 from smorest_sfs.modules.roles.models import ROLES, Role
 from tests._utils.helpers import param_helper
 from tests._utils.injection import GeneralModify

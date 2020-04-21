@@ -14,13 +14,13 @@ class Storages(StoragesMixin, Model, SurrogatePK):
     """
     文件管理表
 
-    :param          name: str(256)                  文件名
-    :param          filetype: str(256)              文件类型
-    :param          storetype: str(256)             存储类型
-    :param          saved: bool                     是否保存
-    :param          path: str(2000)                 保存路径
-    :param          uid: int                        用户ID
-    :param          _store: FileStorage             文件
+    :attr name: str(256) 文件名
+    :attr filetype: str(256) 文件类型
+    :attr storetype: str(256) 存储类型
+    :attr saved: bool 是否保存
+    :attr path: str(2000) 保存路径
+    :attr uid: int 用户ID
+    :attr _store: FileStorage 文件
     """
 
     uid = db.Column(db.Integer, doc="用户ID")

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
 from loguru import logger
+
 from .celery import disconnect
 
 

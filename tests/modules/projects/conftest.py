@@ -4,6 +4,7 @@ from typing import Any, Callable, Iterator, Tuple, Type
 
 import pytest
 from marshmallow import Schema
+
 from smorest_sfs.modules.projects.models import Project
 
 

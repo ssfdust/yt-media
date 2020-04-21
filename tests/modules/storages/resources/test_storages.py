@@ -8,7 +8,6 @@ from flask import url_for
 from smorest_sfs.modules.auth.permissions import ROLES
 from smorest_sfs.modules.storages.models import Storages
 from smorest_sfs.modules.users.models import User
-from smorest_sfs.services.storages.handlers import StorageFactory
 from smorest_sfs.utils.storages import load_storage_from_path
 from tests._utils.injection import FixturesInjectBase
 
@@ -30,7 +29,7 @@ class TestStoragesView(FixturesInjectBase):
                 data={"file": (io.BytesIO(b"789"), "new.txt")},
                 content_type="multipart/form-data",
             )
-            add_storage.store = None
+            add_storage.as_stream()
             resp = client.get(f"/api/v1/storages/{add_storage.id}")
             assert resp.data == b"789"
 

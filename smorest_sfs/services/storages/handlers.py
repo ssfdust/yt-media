@@ -36,4 +36,6 @@ class StorageFactory:
     def hard_delete(self, commit: bool = True) -> None:
         """文件永久删除"""
         delete_from_rel_path(self.storage.path)
+        self.storage.deleted = True
+        self.storage.saved = False
         self.storage.hard_delete(commit)

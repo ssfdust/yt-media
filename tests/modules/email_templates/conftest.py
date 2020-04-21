@@ -4,6 +4,7 @@ from typing import Any, Callable, Iterator, Tuple, Type
 
 import pytest
 from marshmallow import Schema
+
 from smorest_sfs.modules.email_templates.models import EmailTemplate
 
 

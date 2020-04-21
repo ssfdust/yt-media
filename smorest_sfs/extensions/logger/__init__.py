@@ -28,10 +28,10 @@ from loguru import logger
 class Publisher(Protocol):
     def __init__(self, *args: Any, **kwargs: Any):
         # pylint: disable=W0231
-        ...
+        ...  # pragma: no cover
 
     def publish(self, item: Any) -> None:
-        ...
+        ...  # pragma: no cover
 
 
 def _parse_args(resp: Response) -> Dict[str, Any]:

@@ -88,7 +88,7 @@ class Celery:
 
     def _task_prerun(self, task: Any, **_: Any) -> None:
         if self.app is None or _check_context():
-            return  # progma: no cover
+            return  # pragma: no cover
 
         context = task._flask_context = [
             self.app.app_context(),

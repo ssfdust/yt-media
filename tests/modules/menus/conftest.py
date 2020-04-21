@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 from typing import Iterator, Type
 
-from marshmallow import Schema
-
 import pytest
 from flask_sqlalchemy import SQLAlchemy
+from marshmallow import Schema
 
 from smorest_sfs.services.menus.import_menus import import_menus_from_filepath, models
 

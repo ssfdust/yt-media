@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import queue
 from typing import Any, Dict, Protocol
 
 import pytest
@@ -17,7 +16,7 @@ class MsgProtocol(Protocol):
 SENDED: UniqueQueue[MsgProtocol] = UniqueQueue()
 
 
-def fake_send(msg):
+def fake_send(msg: Any) -> None:
     SENDED.put(msg)
 
 

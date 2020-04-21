@@ -15,7 +15,7 @@ from smorest_sfs.extensions.sqla.db_instance import SQLAlchemy  # type: ignore
 from smorest_sfs.modules.users.models import Model, User
 from smorest_sfs.utils.paths import UploadPath
 
-from ._utils import client, injection, tables, users, clear
+from ._utils import clear, client, injection, tables, users
 
 
 class fakeuuid:

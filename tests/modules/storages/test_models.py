@@ -41,3 +41,6 @@ class TestStorage(FixturesInjectBase):
         factory.hard_delete()
         with pytest.raises(FileNotFoundError):
             load_storage_from_path(self.storage.name, self.storage.path)
+        with pytest.raises(FileExistsError):
+            self.storage.store.close()
+            self.storage.as_stream()
