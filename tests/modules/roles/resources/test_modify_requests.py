@@ -50,7 +50,8 @@ class TestRoleModify(GeneralModify):
         assert (
             data["name"] == "tt"
             and data["description"] == "qaqa"
-            and data["permissions"] == update_permissions
+            and set(i["name"] for i in data["permissions"])
+            == set(i["name"] for i in update_permissions)
         )
 
     def test_item_delete(self) -> None:

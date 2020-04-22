@@ -34,6 +34,7 @@ class ROLES:
     ProjectManager = "ProjectManager"
     CodeManager = "CodeManager"
     MenuManager = "MenuManager"
+    LogManager = "LogManager"
     # End Of ROLES
 
 
@@ -79,6 +80,11 @@ class PERMISSIONS:
     MenuEdit = "MenuEditPrivilege"
     MenuDelete = "MenuDeletePrivilege"
     MenuQuery = "MenuQueryPrivilege"
+    # LogManager
+    LogAdd = "LogAddPrivilege"
+    LogEdit = "LogEditPrivilege"
+    LogDelete = "LogDeletePrivilege"
+    LogQuery = "LogQueryPrivilege"
     # End Of PERMISSIONS
 
 
@@ -126,6 +132,11 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.MenuDelete,
         PERMISSIONS.MenuEdit,
         PERMISSIONS.MenuQuery,
+        # 日志管理
+        PERMISSIONS.LogAdd,
+        PERMISSIONS.LogDelete,
+        PERMISSIONS.LogEdit,
+        PERMISSIONS.LogQuery,
         # End Of SuperUser
     ],
     ROLES.GroupManager: [
@@ -169,6 +180,12 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.MenuDelete,
         PERMISSIONS.MenuEdit,
         PERMISSIONS.MenuQuery,
+    ],
+    ROLES.LogManager: [
+        PERMISSIONS.LogAdd,
+        PERMISSIONS.LogDelete,
+        PERMISSIONS.LogEdit,
+        PERMISSIONS.LogQuery,
     ],
     # End Of Permissions Mapping
 }

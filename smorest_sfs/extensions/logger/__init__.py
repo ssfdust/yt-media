@@ -82,14 +82,13 @@ class Logger:
         args = _parse_args(resp)
         data = dict(
             created=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+            log_type="response",
             url=request.path,
             arguments=args,
             method=request.method,
             ip=_parse_ip(),
             module=request.endpoint if request.endpoint else "unknown",
-            level="info",
             status_code=resp.status_code,
-            message="请求发起",
         )
         self.publisher.publish(data)
         return resp
@@ -98,6 +97,7 @@ class Logger:
         """处理来自loguru的信息"""
         self.check_publisher()
         data = dict(
+            log_type="logging",
             created=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
             module=message.record["name"],
             line=message.record["line"],

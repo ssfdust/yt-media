@@ -39,11 +39,10 @@ def clean_dirs() -> Iterator[None]:
 @pytest.fixture(scope="session")
 def flask_app() -> Iterator[Flask]:
     # pylint: disable=W0613, W0621
-    from smorest_sfs.app import ENABLED_MODULES, create_app
+    os.environ["FLASK_ENV"] = "testing"
+    from smorest_sfs.app import app
     from smorest_sfs.extensions import db
 
-    os.environ["FLASK_ENV"] = "testing"
-    app = create_app(ENABLED_MODULES)
     clear.clear_dummy(app)
 
     with app.app_context():
