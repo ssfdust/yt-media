@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from amqp.exceptions import NotFound
 from flask import Flask
 from kombu import Connection, Queue
 from kombu.pools import connections
@@ -20,4 +21,7 @@ def clear_queue(queue_name: str) -> None:
     queue = Queue(queue_name)
     with pool.acquire_channel(block=True) as (_, channel):
         binding = queue(channel)
-        binding.purge()
+        try:
+            binding.purge()
+        except NotFound:
+            pass

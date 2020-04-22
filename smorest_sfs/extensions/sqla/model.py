@@ -5,12 +5,13 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
     自定义Model模块
 """
+from sqlalchemy_mixins import SmartQueryMixin, EagerLoadMixin
 from .db_instance import db
 from .mixin import CRUDMixin
 from .softdelete import QueryWithSoftDelete
 
 
-class Model(db.Model, CRUDMixin):
+class Model(db.Model, CRUDMixin, SmartQueryMixin, EagerLoadMixin):
     """简单的CRUD处理"""
 
     query_class = QueryWithSoftDelete

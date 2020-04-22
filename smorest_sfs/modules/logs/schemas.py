@@ -21,6 +21,8 @@ class LogSchema(SQLAlchemySchema):
         model = models.Log
         load_instance = False
 
+    gt__created = auto_field("created", load_only=True, dump_only=False)
+
 
 class LogPageSchema(BasePageSchema):
     """日志的分页"""

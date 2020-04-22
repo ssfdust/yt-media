@@ -52,6 +52,9 @@ def TestCRUDTable(sqla_db: SQLAlchemy) -> Type[Model]:
 
         name = sqla_db.Column(sqla_db.String(80), unique=True)
 
+        def __repr__(self) -> str:
+            return f"<TestCRUDTable {self.id}>"
+
     return TestCRUDTable
 
 
@@ -77,6 +80,9 @@ def TestChildTable(sqla_db: SQLAlchemy, TestParentTable: Type[Model]) -> Type[Mo
             backref=sqla_db.backref("children", active_history=True),
             active_history=True,
         )
+
+        def __repr__(self) -> str:
+            return f"<TestChildTable {self.id}>"
 
     return TestChildTable
 
