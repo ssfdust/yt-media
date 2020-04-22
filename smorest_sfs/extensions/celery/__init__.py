@@ -47,8 +47,10 @@ class Celery:
         self.app.extensions["celery_ext"] = self
         new_celery = celery.Celery(
             app.name + "-Celery",
+            enable_utc=True,
             broker=app.config["CELERY_BROKER_URL"],
             backend=app.config["CELERY_RESULT_BACKEND"],
+            heartbeat=0,
         )
         self.update_celery(new_celery)
 

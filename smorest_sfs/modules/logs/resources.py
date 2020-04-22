@@ -23,25 +23,27 @@ from smorest_sfs.modules.auth.decorators import doc_login_required, permission_r
 from . import blp, models, schemas
 
 
-@blp.route("/options")
-class LogListView(MethodView):
+@blp.route("/log-details")
+class LogView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.LogQuery)
-    @blp.response(schemas.LogListSchema)
-    def get(self) -> Dict[str, List[models.Log]]:
+    @blp.arguments(schemas.LogSchema, location="query", as_kwargs=True)
+    @blp.response(schemas.LogPageSchema)
+    @paginate()
+    def get(self, module: str, level: str) -> BaseQuery:
         # pylint: disable=unused-argument
         """
-        获取所有日志选项信息
+        获取所有日志信息——分页
         """
         query = models.Log.query
+        if module or level:
+            query = query.filter_like_by(name=name)
 
-        items = query.all()
-
-        return {"data": items}
+        return query
 
 
-@blp.route("")
-class LogView(MethodView):
+@blp.route("/responselog-details")
+class ResponseLogView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.LogQuery)
     @blp.arguments(GeneralLikeArgs, location="query", as_kwargs=True)
@@ -57,74 +59,3 @@ class LogView(MethodView):
             query = query.filter_like_by(name=name)
 
         return query
-
-    @doc_login_required
-    @permission_required(PERMISSIONS.LogAdd)
-    @blp.arguments(schemas.LogSchema)
-    @blp.response(schemas.LogItemSchema)
-    def post(self, log: models.Log) -> Dict[str, models.Log]:
-        # pylint: disable=unused-argument
-        """
-        新增日志信息
-        """
-        log.save()
-        logger.info(f"{current_user.username}新增了日志{log}")
-
-        return {"data": log}
-
-    @doc_login_required
-    @permission_required(PERMISSIONS.LogDelete)
-    @blp.arguments(BaseIntListSchema, as_kwargs=True)
-    @blp.response(BaseMsgSchema)
-    def delete(self, lst: List[int]) -> None:
-        # pylint: disable=unused-argument
-        """
-        批量删除日志
-        -------------------------------
-        :param lst: list 包含id列表的字典
-        """
-
-        models.Log.delete_by_ids(lst)
-        logger.info(f"{current_user.username}删除了日志{lst}")
-
-
-@blp.route(
-    "/<int:log_id>",
-    parameters=[{"in": "path", "name": "log_id", "description": "日志id"}],
-)
-class LogItemView(MethodView):
-    @doc_login_required
-    @permission_required(PERMISSIONS.LogEdit)
-    @blp.arguments(schemas.LogSchema)
-    @blp.response(schemas.LogItemSchema)
-    def put(self, log: models.Log, log_id: int) -> Dict[str, models.Log]:
-        """
-        更新日志
-        """
-
-        log = models.Log.update_by_id(log_id, schemas.LogSchema, log)
-        logger.info(f"{current_user.username}更新了日志{log.id}")
-
-        return {"data": log}
-
-    @doc_login_required
-    @permission_required(PERMISSIONS.LogDelete)
-    @blp.response(BaseMsgSchema)
-    def delete(self, log_id: int) -> None:
-        """
-        删除日志
-        """
-        models.Log.delete_by_id(log_id)
-        logger.info(f"{current_user.username}删除了日志{log_id}")
-
-    @doc_login_required
-    @permission_required(PERMISSIONS.LogQuery)
-    @blp.response(schemas.LogItemSchema)
-    def get(self, log_id: int) -> Dict[str, models.Log]:
-        # pylint: disable=unused-argument
-        """
-        获取单条日志
-        """
-        log = models.Log.get_by_id(log_id)
-
-        return {"data": log}

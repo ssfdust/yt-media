@@ -13,7 +13,7 @@ class Log(Model, SurrogatePK):
     """
     日志
 
-    :attr name: str(128) 日志名称
+    :attr module: str(128) 请求模块
     :attr line: int 行
     :attr level 日志等级
     :attr message 日志消息
@@ -22,9 +22,13 @@ class Log(Model, SurrogatePK):
     __tablename__ = "logs"
 
     module = db.Column(db.String(length=128), nullable=False, doc="请求模块")
-    line = db.Column(db.Integer, nullable=False, doc="行")
+    line = db.Column(
+        db.Integer, nullable=False, doc="行", info={"marshmallow": {"dump_only": True}}
+    )
     level = db.Column(db.String(length=20), nullable=False, doc="日志等级")
-    message = db.Column(db.TEXT, nullable=False, doc="日志消息")
+    message = db.Column(
+        db.TEXT, nullable=False, doc="日志消息", info={"marshmallow": {"dump_only": True}}
+    )
 
     def __repr__(self) -> str:
         return self.message[:20]
@@ -48,3 +52,6 @@ class ResponseLog(Model, SurrogatePK):
     ip = db.Column(db.String(128), doc="IP地址")
     module = db.Column(db.String(128), doc="模块名")
     status_code = db.Column(db.Integer, doc="状态码")
+
+    def __repr__(self) -> str:
+        return "{} {}".format(self.method, self.url[0:20])

@@ -13,15 +13,7 @@ class TestGeneralAccess(FixturesInjectBase):
 
     @pytest.mark.parametrize(
         "http_method, view, kw",
-        (
-            ("GET", "Log.LogListView", {}),
-            ("GET", "Log.LogView", {}),
-            ("POST", "Log.LogView", {}),
-            ("DELETE", "Log.LogView", {}),
-            ("GET", "Log.LogItemView", {"log_id": 1}),
-            ("PUT", "Log.LogItemView", {"log_id": 1}),
-            ("DELETE", "Log.LogItemView", {"log_id": 1}),
-        ),
+        (("GET", "Log.LogView", {}), ("GET", "Log.ResponseLogView", {}),),
     )
     def test_unauthorized_access(self, http_method: str, view: str, kw: Any) -> None:
         with self.flask_app.test_request_context():
@@ -31,15 +23,7 @@ class TestGeneralAccess(FixturesInjectBase):
 
     @pytest.mark.parametrize(
         "http_method, view, kw",
-        (
-            ("GET", "Log.LogListView", {}),
-            ("GET", "Log.LogView", {}),
-            ("POST", "Log.LogView", {}),
-            ("DELETE", "Log.LogView", {}),
-            ("GET", "Log.LogItemView", {"log_id": 1}),
-            ("PUT", "Log.LogItemView", {"log_id": 1}),
-            ("DELETE", "Log.LogItemView", {"log_id": 1}),
-        ),
+        (("GET", "Log.LogView", {}), ("GET", "Log.ResponseLogView", {}),),
     )
     def test_forbbden_access(self, http_method: str, view: str, kw: Any) -> None:
         with self.flask_app.test_request_context():

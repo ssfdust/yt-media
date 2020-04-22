@@ -16,6 +16,7 @@ ENABLED_MODULES = [
     "codes",
     "projects",
     "menus",
+    "logs",
 ]
 
 app = create_app(ENABLED_MODULES)
