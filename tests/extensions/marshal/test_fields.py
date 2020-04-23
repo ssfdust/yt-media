@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Dict, Union, Tuple
 from datetime import datetime
+from typing import Dict, Tuple, Union
 
 import pytest
 from flask import Flask

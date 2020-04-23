@@ -21,7 +21,7 @@
 
     角色权限的资源模块
 """
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 from flask.views import MethodView
 from flask_jwt_extended import current_user

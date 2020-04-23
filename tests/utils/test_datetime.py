@@ -9,9 +9,9 @@ from freezegun import freeze_time
 
 from smorest_sfs.utils.datetime import (
     convert_timezone,
+    expand_datetime,
     utcnow,
     utctoday,
-    expand_datetime,
 )
 
 FREEZETIME = "1994-09-11 08:20:00"

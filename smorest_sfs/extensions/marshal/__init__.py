@@ -13,13 +13,14 @@
             id = fields.Int()
 """
 from flask_marshmallow.sqla import auto_field
+
 from .bases import (
     BaseIntListSchema,
     BaseMsgSchema,
     BasePageSchema,
+    BaseTimeParam,
     GeneralParam,
     UploadField,
-    BaseTimeParam,
 )
 from .ma import Marshmallow, SQLAlchemyAutoSchema, SQLAlchemySchema
 
