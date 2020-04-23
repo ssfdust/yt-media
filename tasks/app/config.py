@@ -32,9 +32,11 @@ SETTING_KEYS = [
     "MAIL_DEFAULT_SENDER",
     "MAIL_PASSWORD",
     "CELERY_BROKER_URL",
+    "CELERY_REDIS_BACKEND_URL",
+    "AMQP_URL"
 ]
 
-RANDOM_KEYS = ["SECRET_KEY"]
+RANDOM_KEYS = ["JWT_SECRET_KEY"]
 
 HELPS = {
     "SQLALCHEMY_DATABASE_URI": "Postgresql数据库连接地址(SQLAlchemy地址)",
@@ -47,7 +49,9 @@ HELPS = {
     "MAIL_DEFAULT_SENDER": "发件人",
     "MAIL_PORT": "邮箱服务端口",
     "CELERY_BROKER_URL": "celery broker地址",
-    "SECRET_KEY": "Flask-Login用的密钥字符串",
+    "CELERY_REDIS_BACKEND_URL": "celery redis地址",
+    "AMQP_URL": "amqp地址",
+    "JWT_SECRET_KEY": "JWT用的密钥字符串",
 }
 
 
@@ -71,6 +75,8 @@ class _Config:
         "MAIL_SERVER": "smtp.exmail.qq.com",
         "MAIL_PORT": "465",
         "CELERY_BROKER_URL": "amqp://",
+        "CELERY_REDIS_BACKEND_URL": "redis://",
+        "AMQP_URL": "amqp://",
     }
     development_config = {}
     production_config = {}

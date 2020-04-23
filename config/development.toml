@@ -9,7 +9,6 @@ MODULE_BASE_PREFIX = '/api/v1'
 SQLALCHEMY_DATABASE_URI = 'postgresql://smorest-admin:smorest2019@localhost:5432/my-smorest'
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 
-SECRET_KEY = '6.ix6D={-+]qK;>Hd9xTQ\iU&!`O&W'
 JWT_SECRET_KEY = 'UiXC{?%6vBoqz?F#5w$^J{PNQxhLyW'
 JWT_BLACKLIST_ENABLED = true
 JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']
@@ -26,11 +25,10 @@ MAIL_USERNAME = ''
 MAIL_DEFAULT_SENDER = ''
 MAIL_PASSWORD = ''
 
-CELERY_MONGODB_SCHEDULER_COLLECTION = 'schedules'
 CELERY_RESULT_BACKEND = 'redis://'
 CELERY_BROKER_URL = "amqp://"
-AMQP_URL = "amqp://"
 CELERY_IMPORTS = ["smorest_sfs.tasks"]
-CELERY_ACCEPT_CONTENT = ["json"]
 
 PREFERRED_URL_SCHEME = 'http'
+
+AMQP_URL = "amqp://"
