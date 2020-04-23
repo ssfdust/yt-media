@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from typing import Dict, Union, Tuple
 from datetime import datetime
 
 import pytest
 from flask import Flask
 from marshmallow import Schema, ValidationError
+from pendulum import DateTime, tz
+
+utc = tz.timezone("utc")
 
 
 def test_fields_dump(ma_app: Flask, pendulum_field_schema: Schema) -> None:
@@ -40,3 +44,69 @@ def test_fileds_none_dump_handle(ma_app: Flask, pendulum_field_schema: Schema) -
         data = {"time": None}
         res = pendulum_field_schema.dump(data)
         assert res["time"] is None
+
+
+@pytest.mark.parametrize(
+    "data, result",
+    [
+        (
+            {"created_date": "2019-04-03", "modified_date": "2019-04-03"},
+            {
+                "created__between": (
+                    DateTime(2019, 4, 2, 16, tzinfo=utc),
+                    DateTime(2019, 4, 3, 16, tzinfo=utc),
+                ),
+                "modified__between": (
+                    DateTime(2019, 4, 2, 16, tzinfo=utc),
+                    DateTime(2019, 4, 3, 16, tzinfo=utc),
+                ),
+            },
+        ),
+        (
+            {"created_date": "2019-04-05"},
+            {
+                "created__between": (
+                    DateTime(2019, 4, 4, 16, tzinfo=utc),
+                    DateTime(2019, 4, 5, 16, tzinfo=utc),
+                )
+            },
+        ),
+        (
+            {"modified_date": "2019-04-07"},
+            {
+                "modified__between": (
+                    DateTime(2019, 4, 6, 16, tzinfo=utc),
+                    DateTime(2019, 4, 7, 16, tzinfo=utc),
+                )
+            },
+        ),
+        (
+            {
+                "created_date": "2019-04-03",
+                "modified_date": "2019-04-03",
+                "created_ge": "2019-04-16 13:00:00",
+            },
+            {
+                "created__between": (
+                    DateTime(2019, 4, 2, 16, tzinfo=utc),
+                    DateTime(2019, 4, 3, 16, tzinfo=utc),
+                ),
+                "modified__between": (
+                    DateTime(2019, 4, 2, 16, tzinfo=utc),
+                    DateTime(2019, 4, 3, 16, tzinfo=utc),
+                ),
+                "created_ge": DateTime(2019, 4, 16, 5, tzinfo=utc),
+            },
+        ),
+    ],
+)
+def test_query_params_schema(
+    ma_app: Flask,
+    data: Dict[str, str],
+    result: Dict[str, Union[DateTime, Tuple[DateTime, DateTime]]],
+) -> None:
+    from smorest_sfs.extensions.marshal.bases import BaseParamSchema
+
+    with ma_app.app_context():
+        schema = BaseParamSchema()
+        assert schema.load(data) == result

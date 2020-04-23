@@ -18,9 +18,7 @@ def test_get_template(is_admin: bool, name: str) -> None:
 
 @pytest.mark.usefixtures("flask_app")
 def test_add_permissions(test_role_with_permission: Role) -> None:
-    permissions = Permission.query.filter(
-        Permission.name.in_(mapping[ROLES.User])
-    ).all()
+    permissions = Permission.where(name__in=mapping[ROLES.User]).all()
     test_role_with_permission.add_permissions(permissions)
     test_role_with_permission.save()
     assert set(p.name for p in test_role_with_permission.permissions) == set(

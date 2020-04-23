@@ -41,7 +41,7 @@ def confirm_current_token(token_type: str, revoked: bool = True) -> User:
     """
     try:
         jti = get_raw_jwt()["jti"]
-        token = TokenBlackList.query.filter_by(jti=jti, token_type=token_type).one()
+        token = TokenBlackList.where(jti=jti, token_type=token_type).one()
         token.update(revoked=revoked)
         user = User.get_by_keyword(token.user_identity)
     except NoResultFound:

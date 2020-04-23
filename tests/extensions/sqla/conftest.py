@@ -161,7 +161,7 @@ def TestOneTableQuery(sqla_db: SQLAlchemy, TestCRUDTable: Type[Model]) -> Type[S
     # pylint: disable=W0621, W0613
     class TestOneTableQuery(SAQuery):
         def __init__(self) -> None:
-            self.query = TestCRUDTable.query.filter(TestCRUDTable.name == "bbc")
+            self.query = TestCRUDTable.where(name="bbc")
 
         def get_record(self) -> Any:
             return self.query.all()

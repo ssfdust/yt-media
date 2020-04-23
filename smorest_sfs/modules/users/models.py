@@ -86,16 +86,11 @@ class User(Model, SurrogatePK):
         """
         根据邮箱获取用户
         """
-        query = cls.query.filter(
-            db.and_(
-                db.or_(
-                    cls.email == keyword,
-                    cls.username == keyword,
-                    cls.phonenum == keyword,
-                ),
-            )
-        )
-        return query.first_or_404()
+        return cls.query.filter(
+            db.or_(
+                cls.email == keyword, cls.username == keyword, cls.phonenum == keyword,
+            ),
+        ).first_or_404()
 
     def __str__(self) -> str:  # pragma: no cover
         if self.email:

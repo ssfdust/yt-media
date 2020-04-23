@@ -73,7 +73,7 @@ class EmailTemplateView(MethodView):
         """
         query = models.EmailTemplate.query
         if name:
-            query = query.filter_like_by(name=name)
+            query = models.EmailTemplate.where(name__contains=name)
 
         return query
 

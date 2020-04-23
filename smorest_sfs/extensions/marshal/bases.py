@@ -26,8 +26,13 @@
         "data": data
     }
 """
+from typing import Any, Dict
 
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_load
+
+from smorest_sfs.utils.datetime import expand_datetime
+
+from .fields import PendulumField
 
 
 class BaseMsgSchema(Schema):
@@ -78,3 +83,29 @@ class GeneralLikeArgs(Schema):
     """统一模糊查询"""
 
     name = fields.Str(description="名称")
+
+
+class BaseParamSchema(Schema):
+    """
+    常用的参数序列化类
+    """
+
+    created__between = PendulumField(
+        data_key="created_date", description="创建日期", load_only=True
+    )
+    modified__between = PendulumField(
+        data_key="modified_date", description="修改日期", load_only=True
+    )
+    created_ge = PendulumField(description="晚于创建时间", load_only=True)
+    created_le = PendulumField(description="早于创建时间", load_only=True)
+    modified_ge = PendulumField(description="晚于修改时间", load_only=True)
+    modified_le = PendulumField(description="早于修改时间", load_only=True)
+
+    @post_load
+    def expand_to_range(self, data: Dict[str, Any], **_: Any) -> Dict[str, Any]:
+        for key in ["created__between", "modified__between"]:
+            try:
+                data[key] = expand_datetime(data[key])
+            except KeyError:
+                continue
+        return data

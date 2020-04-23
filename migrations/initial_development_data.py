@@ -35,10 +35,8 @@ def init_permission() -> None:
     create_item_from_cls(Role, ROLES)
     create_item_from_cls(Permission, PERMISSIONS)
     for role, permissions in mapping.items():
-        permission_instances = Permission.query.filter(
-            Permission.name.in_(permissions)
-        ).all()
-        role_instance = Role.query.filter_by(name=role).first()
+        permission_instances = Permission.where(name__in=permissions).all()
+        role_instance = Role.where(name=role).first()
         _handle_default_role(role_instance)
         role_instance.permissions = permission_instances
         db.session.add(role_instance)
@@ -81,7 +79,7 @@ def get_or_create(model_cls: Type[Model], name: str) -> Any:
 
     只支持name字段的创建
     """
-    item = model_cls.query.filter_by(name=name).first()
+    item = model_cls.where(name=name).first()
     if item:
         return item
     return model_cls(name=name).save(False)

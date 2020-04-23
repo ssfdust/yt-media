@@ -44,7 +44,7 @@ class EmailTemplate(Model, SurrogatePK):
     @classmethod
     def get_by_name(cls, name: str) -> EmailTemplate:
         """根据名称获取电子邮箱模板"""
-        return cls.query.filter_by(name=name).first_or_404()
+        return cls.where(name=name).first_or_404()
 
     @classmethod
     def get_template(cls, name: str) -> str:

@@ -19,7 +19,7 @@ def test_menu() -> None:
 @pytest.mark.usefixtures("flask_app", "fake_menus")
 def test_sub_menu_should_not_load(db: SQLAlchemy) -> None:
     permission = Permission.get_by_name(PERMISSIONS.User)
-    menus_list = Menu.query.filter_by(permission_id=permission.id).all()
+    menus_list = Menu.where(permission_id=permission.id).all()
     menus_json = {menu.name for menu in menus_list}
     menus = Menu.get_tree(
         db.session,

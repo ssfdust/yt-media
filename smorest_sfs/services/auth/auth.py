@@ -76,6 +76,4 @@ def login_user(user: User) -> Dict[str, Dict[str, str]]:
 
 
 def logout_user(user: User) -> None:
-    TokenBlackList.query.filter(
-        TokenBlackList.user_identity == user.email, TokenBlackList.revoked.is_(False)
-    ).delete()
+    TokenBlackList.where(user_identity=user.email, revoked=False).delete()

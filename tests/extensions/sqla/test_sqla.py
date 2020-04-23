@@ -64,11 +64,6 @@ class TestBaseQuery(ItemsFixtureBase):
             and cur_cnt == pre_cnt - 1
         )
 
-    @pytest.mark.usefixtures("TestTableTeardown", "crud_items")
-    def test_filter_like_by(self) -> None:
-        cnt = self.TestCRUDTable.query.filter_like_by(name="bc").count()
-        assert cnt == 3
-
     def test_surrogatepk_keys(self) -> None:
         for key in ["id", "deleted", "modified", "created"]:
             assert hasattr(self.TestCRUDTable, key)

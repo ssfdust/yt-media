@@ -63,7 +63,7 @@ class AutoAuthFlaskClient(FlaskClient[_R]):
 
         self._user = user
         self._roles = roles or []
-        self._user.roles = Role.query.filter(Role.name.in_(self._roles)).all()
+        self._user.roles = Role.where(name__in=self._roles).all()
         self._user.save()
         if self._user is not None:
             self._access_token = login_user(self._user)["tokens"]["access_token"]

@@ -42,30 +42,14 @@ def generate_links(p: Pagination, per_page: int, **kwargs: Any) -> Dict[str, Any
     links = {}
     if p.has_next:
         links["next"] = url_for(
-            request.endpoint,
-            page=p.next_num,
-            per_page=per_page,
-            **kwargs
+            request.endpoint, page=p.next_num, per_page=per_page, **kwargs
         )
     if p.has_prev:
         links["prev"] = url_for(
-            request.endpoint,
-            page=p.prev_num,
-            per_page=per_page,
-            **kwargs
+            request.endpoint, page=p.prev_num, per_page=per_page, **kwargs
         )
-    links["first"] = url_for(
-        request.endpoint,
-        page=1,
-        per_page=per_page,
-        **kwargs
-    )
-    links["last"] = url_for(
-        request.endpoint,
-        page=p.pages,
-        per_page=per_page,
-        **kwargs
-    )
+    links["first"] = url_for(request.endpoint, page=1, per_page=per_page, **kwargs)
+    links["last"] = url_for(request.endpoint, page=p.pages, per_page=per_page, **kwargs)
 
     return links
 

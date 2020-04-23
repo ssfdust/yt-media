@@ -4,24 +4,35 @@
 
     日志模块的Schemas
 """
-from marshmallow import fields
-from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 
-from smorest_sfs.extensions.marshal.bases import BasePageSchema
+from marshmallow import fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
+
+from smorest_sfs.extensions.marshal.bases import BasePageSchema, BaseParamSchema
 
 from . import models
 
 
-class LogSchema(SQLAlchemySchema):
+class LogParamSchema(SQLAlchemyAutoSchema, BaseParamSchema):
+    """
+    日志参数反序列化
+    """
+
+    module = auto_field(required=False)
+    level = auto_field(required=False)
+
+    class Meta:
+        model = models.Log
+        load_instance = False
+
+
+class LogSchema(SQLAlchemyAutoSchema):
     """
     日志的序列化类
     """
 
     class Meta:
         model = models.Log
-        load_instance = False
-
-    gt__created = auto_field("created", load_only=True, dump_only=False)
 
 
 class LogPageSchema(BasePageSchema):

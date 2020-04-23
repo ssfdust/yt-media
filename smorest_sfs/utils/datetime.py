@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-from typing import Union
+from typing import Tuple, Union
 
 import pendulum
 
@@ -23,5 +23,11 @@ def utctoday() -> datetime.date:
 def convert_timezone(
     dt: Union[pendulum.DateTime, datetime.datetime], timezone: str
 ) -> pendulum.DateTime:
-    tz = pendulum.timezone(timezone)
+    tz = pendulum.tz.timezone(timezone)
     return tz.convert(dt)  # type: ignore
+
+
+def expand_datetime(
+    dt: pendulum.DateTime,
+) -> Tuple[pendulum.DateTime, pendulum.DateTime]:
+    return dt, dt.add(days=1)

@@ -5,7 +5,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
     自定义Model模块
 """
-from sqlalchemy_mixins import SmartQueryMixin, EagerLoadMixin
+from sqlalchemy_mixins import EagerLoadMixin, SmartQueryMixin
+
 from .db_instance import db
 from .mixin import CRUDMixin
 from .softdelete import QueryWithSoftDelete

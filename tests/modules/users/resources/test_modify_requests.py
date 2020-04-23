@@ -43,9 +43,7 @@ class TestGeneralModify(FixturesInjectBase):
         setattr(
             self,
             "roles",
-            Role.query.filter(
-                Role.name.in_([ROLES.GroupManager, ROLES.EmailTemplateManager])
-            ).all(),
+            Role.where(name__in=[ROLES.GroupManager, ROLES.EmailTemplateManager]).all(),
         )
         setattr(self, "role_dict", [{"id": r.id, "name": r.name} for r in self.roles])
 

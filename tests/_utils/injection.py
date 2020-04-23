@@ -35,7 +35,7 @@ def inject_logger(logger: Logger) -> int:
     return logger.add(log_to_queue, serialize=False)
 
 
-def uninject_logger(logger: Logger, logger_id) -> None:
+def uninject_logger(logger: Logger, logger_id: int) -> None:
     logger.remove(logger_id)
 
 
@@ -76,9 +76,8 @@ class GeneralModify(FixturesInjectBase):
                 url = url_for(self.view)
                 resp = client.post(url, json=data)
                 item = self.model.get_by_id(resp.json["data"]["id"])
-                schema = self.schema()
-                dumped_data = self.__get_schema_dumped(schema, item)
-                self.model.query.filter_by(id=resp.json["data"]["id"]).delete()
+                dumped_data = self.__dump_item_from_schema(item)
+                self.model.where(id=resp.json["data"]["id"]).delete()
                 self.db.session.commit()
                 assert resp.status_code == 200 and isinstance(resp.json["data"], dict)
                 return dumped_data
@@ -91,6 +90,12 @@ class GeneralModify(FixturesInjectBase):
         items = getattr(self, self.items)
         return items[-1]
 
+    def __dump_item_from_schema(self, item: Any) -> Dict[str, Any]:
+        if isinstance(self.schema, str):
+            raise RuntimeError(f"Schema {self.schema} fixture doesn't defined")
+        schema = self.schema()
+        return self.__get_schema_dumped(schema, item)
+
     @staticmethod
     def __get_schema_dumped(schema: Schema, item: Any,) -> Dict[str, Any]:
         dumpd: Dict[str, Any] = schema.dump(item)
@@ -98,8 +103,7 @@ class GeneralModify(FixturesInjectBase):
 
     def _get_dumped_modified_item(self) -> Dict[str, Any]:
         item = self._get_modified_item()
-        schema = self.schema()
-        return self.__get_schema_dumped(schema, item)
+        return self.__dump_item_from_schema(item)
 
     def _delete_request(
         self,
