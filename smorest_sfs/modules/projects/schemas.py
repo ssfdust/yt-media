@@ -4,10 +4,8 @@
 
     项目模块的Schemas
 """
-from marshmallow import Schema, fields
-
-from smorest_sfs.extensions.marshal import SQLAlchemyAutoSchema
-from smorest_sfs.extensions.marshal.bases import BaseMsgSchema, BasePageSchema
+from smorest_sfs.extensions.marshal import BasePageSchema, BaseMsgSchema, SQLAlchemyAutoSchema
+from marshmallow import fields, Schema
 
 from . import models
 
@@ -37,7 +35,7 @@ class ProjectOptsSchema(Schema):
     """项目的选项"""
 
     class Meta:
-        fields = ("id", "name")
+        fields = ('id', 'name')
 
 
 class ProjectListSchema(Schema):

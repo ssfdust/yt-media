@@ -4,14 +4,13 @@
 
     {{ module_title }}模块的Schemas
 """
-from smorest_sfs.extensions.marshal import ModelSchema
-from smorest_sfs.extensions.marshal.bases import BasePageSchema, BaseMsgSchema
+from smorest_sfs.extensions.marshal import BasePageSchema, BaseMsgSchema, SQLAlchemyAutoSchema
 from marshmallow import fields, Schema
 
 from . import models
 
 
-class {{ model_name }}Schema(ModelSchema):
+class {{ model_name }}Schema(SQLAlchemyAutoSchema):
     """
     {{ module_title }}的序列化类
     """

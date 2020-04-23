@@ -4,7 +4,6 @@ from typing import Any, Callable, Iterator, Tuple, Type
 
 import pytest
 from marshmallow import Schema
-
 from smorest_sfs.modules.projects.models import Project
 
 
@@ -23,5 +22,4 @@ def project_items(
 def ProjectSchema() -> Type[Schema]:
     # pylint: disable=W0621
     from smorest_sfs.modules.projects.schemas import ProjectSchema
-
     return ProjectSchema
