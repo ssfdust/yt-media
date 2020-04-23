@@ -4,6 +4,8 @@ ENV FLASK_ENV=production
 
 ENV FLASK_APP=/Application/smorest_sfs/app.py
 
+ENV HOST=0.0.0.0
+
 RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
 
 ENV PATH="${PATH}:/root/.poetry/bin"
