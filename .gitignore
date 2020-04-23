@@ -102,3 +102,6 @@ ENV/
 
 # backup files
 *.bak.py
+
+# version files
+migrations/versions/*

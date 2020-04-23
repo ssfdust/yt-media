@@ -80,13 +80,13 @@ def init_development_data(context, skip_on_failure=False, password=None):
     log.info("初始化应用数据...")
     add_closure_table_procedure(context)
 
-    from migrations import initial_development_data
+    from migrations import initial_data
 
     try:
-        initial_development_data.init_permission()
-        initial_development_data.init(password)
-        initial_development_data.init_email_templates()
-        initial_development_data.update_permissions()
+        initial_data.init_permission()
+        initial_data.init_development_users(password)
+        initial_data.init_email_templates()
+        initial_data.update_permissions()
     except AssertionError as exception:
         if not skip_on_failure:
             log.error("%s", exception)
@@ -103,9 +103,9 @@ def update_app_permissions(context):
     """
 
     log.info("正在更新应用权限...")
-    from migrations import initial_development_data
+    from migrations import initial_data
 
-    initial_development_data.update_permissions()
+    initial_data.update_permissions()
 
     log.info("应用权限更新完毕.")
 

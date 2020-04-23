@@ -5,3 +5,6 @@ all:
 	docker build --build-arg http_proxy=$(PROXYBIND) \
 		--build-arg https_proxy=$(PROXYBIND) \
 		-t ssfdust/yt-media .
+
+services:
+	sudo systemctl start postgresql rabbitmq redis

@@ -265,29 +265,3 @@ def stamp(context, directory='migrations', revision='head', sql=False, tag=None)
     migrations"""
     config = _get_config(directory)
     command.stamp(config, revision, sql=sql, tag=tag)
-
-
-@app_context_task
-def init_development_data(context, upgrade_db=True, skip_on_failure=False):
-    """
-    Fill a database with development data like default users.
-    """
-    if upgrade_db:
-        context.invoke_execute(context, 'app.db.upgrade')
-
-    log.info("Initializing development data...")
-
-    from migrations import initial_development_data
-    try:
-        initial_development_data.init()
-    except AssertionError as exception:
-        if not skip_on_failure:
-            log.error("%s", exception)
-        else:
-            log.debug(
-                "The following error was ignored due to the `skip_on_failure` flag: %s",
-                exception
-            )
-            log.info("Initializing development data step is skipped.")
-    else:
-        log.info("Fixtures have been successfully applied.")

@@ -43,7 +43,7 @@ def init_permission() -> None:
     db.session.commit()
 
 
-def init(password: Optional[str] = None) -> None:
+def init_development_users(password: Optional[str] = None) -> None:
     """
     初始化数据
     """
