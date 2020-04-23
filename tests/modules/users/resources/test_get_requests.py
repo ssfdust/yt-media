@@ -22,7 +22,7 @@ class TestListView(GeneralGet):
     @pytest.mark.parametrize("name", ["qqq", "aaa", "regular"])
     def test_get_list(self, name: str) -> None:
         self.regular_user.userinfo.update(first_name="nqqqn", last_name="baaab")
-        data = self._get_list(name=name)
+        data = self._get_list(username=name)
         assert (
             data[0].keys() > {"id", "nickname"}
             and data[0]["id"] == self.regular_user.id

@@ -79,13 +79,13 @@ class UploadField(fields.Field):
     """文件提交栏，复用Field类型"""
 
 
-class GeneralLikeArgs(Schema):
+class GeneralParam(Schema):
     """统一模糊查询"""
 
-    name = fields.Str(description="名称")
+    name__contains = fields.Str(description="名称", data_key="name")
 
 
-class BaseParamSchema(Schema):
+class BaseTimeParam(Schema):
     """
     常用的参数序列化类
     """

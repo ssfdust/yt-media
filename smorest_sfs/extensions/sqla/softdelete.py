@@ -8,7 +8,6 @@ from __future__ import annotations
 from typing import Any, Optional
 
 from flask_sqlalchemy import BaseQuery
-from sqlalchemy.orm.base import _entity_descriptor  # type: ignore
 
 from .db_instance import db
 
@@ -48,12 +47,3 @@ class QueryWithSoftDelete(BaseQuery):
     def get(self, ident: Any) -> Optional[Any]:
         obj = self.with_deleted()._get(ident)  # pylint: disable=W0212
         return obj if obj is None or self._with_deleted or not obj.deleted else None
-
-    def filter_like_by(self, **kwargs: Any) -> QueryWithSoftDelete:
-        """like方法"""
-        clauses = [
-            _entity_descriptor(self._joinpoint_zero(), key).like("%{}%".format(value))
-            for key, value in kwargs.items()
-        ]
-        query: QueryWithSoftDelete = self.filter(*clauses)
-        return query

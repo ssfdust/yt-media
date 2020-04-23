@@ -6,13 +6,13 @@
 """
 from marshmallow import Schema, fields
 
-from smorest_sfs.extensions.marshal import ModelSchema
+from smorest_sfs.extensions.marshal import SQLAlchemyAutoSchema
 from smorest_sfs.extensions.marshal.bases import BaseMsgSchema, BasePageSchema
 
 from . import models
 
 
-class ProjectSchema(ModelSchema):
+class ProjectSchema(SQLAlchemyAutoSchema):
     """
     项目的序列化类
     """

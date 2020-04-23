@@ -24,13 +24,21 @@
 
 from marshmallow import Schema, fields
 
-from smorest_sfs.extensions.marshal import ModelSchema
+from smorest_sfs.extensions.marshal import SQLAlchemyAutoSchema
 from smorest_sfs.extensions.marshal.bases import BaseMsgSchema, BasePageSchema
 
 from . import models
 
 
-class UserSchema(ModelSchema):
+class UserParam(Schema):
+    """
+    用户查询参数
+    """
+
+    username = fields.Str(description="用户名相关信息")
+
+
+class UserSchema(SQLAlchemyAutoSchema):
     """
     用户的序列化类
     """
@@ -38,10 +46,11 @@ class UserSchema(ModelSchema):
     nickname = fields.Str(dump_only=True)
 
     class Meta:
+        include_relationships = True
         model = models.User
 
 
-class UserSelfSchema(ModelSchema):
+class UserSelfSchema(SQLAlchemyAutoSchema):
     """
     用户的序列化类
     """

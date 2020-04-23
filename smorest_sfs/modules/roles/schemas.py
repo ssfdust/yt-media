@@ -24,13 +24,13 @@
 
 from marshmallow import Schema, fields
 
-from smorest_sfs.extensions.marshal import ModelSchema
+from smorest_sfs.extensions.marshal import SQLAlchemyAutoSchema
 from smorest_sfs.extensions.marshal.bases import BaseMsgSchema, BasePageSchema
 
 from . import models
 
 
-class RoleSchema(ModelSchema):
+class RoleSchema(SQLAlchemyAutoSchema):
     """
     角色权限的序列化类
     """

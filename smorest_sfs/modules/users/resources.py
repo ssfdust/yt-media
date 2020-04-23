@@ -19,7 +19,6 @@ from smorest_sfs.extensions.api.decorators import paginate
 from smorest_sfs.extensions.marshal.bases import (
     BaseIntListSchema,
     BaseMsgSchema,
-    GeneralLikeArgs,
 )
 from smorest_sfs.modules.auth import PERMISSIONS, ROLES
 from smorest_sfs.modules.auth.decorators import (
@@ -53,24 +52,23 @@ class UserListView(MethodView):
 class UserView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.UserQuery)
-    @blp.arguments(GeneralLikeArgs, location="query", as_kwargs=True)
+    @blp.arguments(schemas.UserParam, location="query", as_kwargs=True)
     @blp.response(schemas.UserPageSchema)
     @paginate()
-    def get(self, name: str) -> BaseQuery:
+    def get(self, username: str) -> BaseQuery:
         # pylint: disable=unused-argument
         """
         获取所有用户信息——分页
         """
         query = models.User.query.join(models.User.userinfo)
-        if name:
-            like_key = "%{}%".format(name)
+        if username:
             query = query.filter(
                 db.or_(
-                    models.UserInfo.last_name.like(like_key),
-                    models.UserInfo.first_name.like(like_key),
-                    models.User.username.like(like_key),
-                    (models.UserInfo.first_name + models.UserInfo.last_name).like(
-                        like_key
+                    models.UserInfo.last_name.contains(username),
+                    models.UserInfo.first_name.contains(username),
+                    models.User.username.contains(username),
+                    (models.UserInfo.first_name + models.UserInfo.last_name).contains(
+                        username
                     ),
                 )
             )

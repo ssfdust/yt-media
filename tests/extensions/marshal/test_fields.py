@@ -105,8 +105,8 @@ def test_query_params_schema(
     data: Dict[str, str],
     result: Dict[str, Union[DateTime, Tuple[DateTime, DateTime]]],
 ) -> None:
-    from smorest_sfs.extensions.marshal.bases import BaseParamSchema
+    from smorest_sfs.extensions.marshal.bases import BaseTimeParam
 
     with ma_app.app_context():
-        schema = BaseParamSchema()
+        schema = BaseTimeParam()
         assert schema.load(data) == result

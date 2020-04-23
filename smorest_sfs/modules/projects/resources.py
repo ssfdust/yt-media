@@ -4,7 +4,7 @@
 
     项目的资源模块
 """
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from flask.views import MethodView
 from flask_jwt_extended import current_user
@@ -15,7 +15,7 @@ from smorest_sfs.extensions.api.decorators import paginate
 from smorest_sfs.extensions.marshal.bases import (
     BaseIntListSchema,
     BaseMsgSchema,
-    GeneralLikeArgs,
+    GeneralParam,
 )
 from smorest_sfs.modules.auth import PERMISSIONS
 from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
@@ -44,17 +44,15 @@ class ProjectListView(MethodView):
 class ProjectView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.ProjectQuery)
-    @blp.arguments(GeneralLikeArgs, location="query", as_kwargs=True)
+    @blp.arguments(GeneralParam, location="query", as_kwargs=True)
     @blp.response(schemas.ProjectPageSchema)
     @paginate()
-    def get(self, name: str) -> BaseQuery:
+    def get(self, **kwargs: Any) -> BaseQuery:
         # pylint: disable=unused-argument
         """
         获取所有项目信息——分页
         """
-        query = models.Project.query
-        if name:
-            query = query.filter_like_by(name=name)
+        query = models.Project.where(**kwargs)
 
         return query
 

@@ -33,7 +33,7 @@ from smorest_sfs.extensions.api.decorators import paginate
 from smorest_sfs.extensions.marshal.bases import (
     BaseIntListSchema,
     BaseMsgSchema,
-    GeneralLikeArgs,
+    GeneralParam,
 )
 from smorest_sfs.modules.auth import PERMISSIONS
 from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
@@ -63,17 +63,15 @@ class EmailTemplateListView(MethodView):
 class EmailTemplateView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.EmailTemplateQuery)
-    @blp.arguments(GeneralLikeArgs, location="query", as_kwargs=True)
+    @blp.arguments(GeneralParam, location="query", as_kwargs=True)
     @blp.response(schemas.EmailTemplatePageSchema)
     @paginate()
-    def get(self, name: str) -> BaseQuery:
+    def get(self, **kwargs: Dict[str, Any]) -> BaseQuery:
         # pylint: disable=unused-argument
         """
         获取所有电子邮件模板信息——分页
         """
-        query = models.EmailTemplate.query
-        if name:
-            query = models.EmailTemplate.where(name__contains=name)
+        query = models.EmailTemplate.where(**kwargs)
 
         return query
 

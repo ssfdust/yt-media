@@ -21,7 +21,7 @@
 
     角色权限的资源模块
 """
-from typing import Dict, List
+from typing import Dict, List, Any
 
 from flask.views import MethodView
 from flask_jwt_extended import current_user
@@ -32,7 +32,7 @@ from smorest_sfs.extensions.api.decorators import paginate
 from smorest_sfs.extensions.marshal.bases import (
     BaseIntListSchema,
     BaseMsgSchema,
-    GeneralLikeArgs,
+    GeneralParam,
 )
 from smorest_sfs.modules.auth import PERMISSIONS
 from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
@@ -60,17 +60,15 @@ class RoleListView(MethodView):
 class RoleView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.RoleQuery)
-    @blp.arguments(GeneralLikeArgs, location="query", as_kwargs=True)
+    @blp.arguments(GeneralParam, location="query", as_kwargs=True)
     @blp.response(schemas.RolePageSchema)
     @paginate()
-    def get(self, name: str) -> BaseQuery:
+    def get(self, **kwargs: Dict[str, Any]) -> BaseQuery:
         # pylint: disable=unused-argument
         """
         获取所有角色权限信息——分页
         """
-        query = models.Role.query
-        if name:
-            query = query.filter_like_by(name=name)
+        query = models.Role.where(**kwargs)
 
         return query
 

@@ -12,7 +12,7 @@ from smorest_sfs.extensions.marshal import BaseMsgSchema
 from . import models
 
 
-class MenuSchema(ma.ModelSchema):
+class MenuSchema(ma.SQLAlchemyAutoSchema):
     """
     菜单的序列化类
     """

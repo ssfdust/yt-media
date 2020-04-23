@@ -12,25 +12,29 @@
     >>> class SampleSchema(ma.Schema):
             id = fields.Int()
 """
-
+from flask_marshmallow.sqla import auto_field
 from .bases import (
     BaseIntListSchema,
     BaseMsgSchema,
     BasePageSchema,
-    GeneralLikeArgs,
+    GeneralParam,
     UploadField,
+    BaseTimeParam,
 )
-from .ma import Marshmallow, ModelSchema
+from .ma import Marshmallow, SQLAlchemyAutoSchema, SQLAlchemySchema
 
 ma = Marshmallow()
 
 __all__ = [
     "ma",
+    "auto_field",
+    "SQLAlchemySchema",
     "Marshmallow",
-    "ModelSchema",
+    "SQLAlchemyAutoSchema",
+    "BaseTimeParam",
     "BaseMsgSchema",
     "BasePageSchema",
     "BaseIntListSchema",
     "UploadField",
-    "GeneralLikeArgs",
+    "GeneralParam",
 ]
