@@ -1,3 +1,0 @@
-CREATE ROLE "{{ DB_URL_INFO['username'] }}" WITH LOGIN ENCRYPTED PASSWORD '{{ DB_URL_INFO["password"] }}';
-CREATE DATABASE "{{ DB_URL_INFO['database'] }}";
-GRANT ALL PRIVILEGES ON DATABASE "{{ DB_URL_INFO['database'] }}" to "{{ DB_URL_INFO['username'] }}";

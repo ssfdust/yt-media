@@ -24,23 +24,6 @@ services:
       POSTGRES_DB: {{ '${POSTGRES_DB:-' + db_name + '}' }}
       PGDATA: /data/postgres
 
-  mongo:
-    image: mongo:latest
-    ports:
-      - "27017:27017"
-    volumes:
-      - ./scripts/mongo:/docker-entrypoint-initdb.d/
-    environment:
-      MONGO_INITDB_DATABASE: {{ '${MONGO_INITDB_DATABASE:-' + mongo_db + '}' }}
-      MONGO_INITDB_ROOT_USERNAME: {{ '${MONGO_INITDB_ROOT_USERNAME:-' + mongo_user + '}' }}
-      MONGO_INITDB_ROOT_PASSWORD: {{ '${MONGO_INITDB_ROOT_PASSWORD:-' + mongo_passwd + '}' }}
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet 1
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 40s
-
   web:
     image: ssfdust/full-stack-flask-smorest:latest
     volumes:
@@ -51,7 +34,6 @@ services:
     depends_on:
       - rabbit
       - db
-      - mongo
 
   worker:
     image: ssfdust/full-stack-flask-smorest:latest
@@ -62,7 +44,6 @@ services:
     depends_on:
       - rabbit
       - db
-      - mongo
 
   beat:
     image: ssfdust/full-stack-flask-smorest:latest
@@ -73,4 +54,3 @@ services:
     depends_on:
       - rabbit
       - db
-      - mongo

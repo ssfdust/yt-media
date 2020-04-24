@@ -21,22 +21,22 @@ except ImportError as e:
     log.critical("缺少%s模块，请通过`pip install %s`安装", e.name, e.name)
     sys.exit(1)
 
-SETTING_KEYS = [
-    "SQLALCHEMY_DATABASE_URI",
-    "BABEL_DEFAULT_LOCALE",
+SETTING_KEYS = {
     "MODULE_BASE_PREFIX",
+    "SQLALCHEMY_DATABASE_URI",
+    "CELERY_BROKER_URL",
+    "CELERY_REDIS_BACKEND_URL",
+    "AMQP_URL",
     "BABEL_DEFAULT_TIMEZONE",
+    "BABEL_DEFAULT_LOCALE",
     "MAIL_SERVER",
     "MAIL_PORT",
     "MAIL_USERNAME",
     "MAIL_DEFAULT_SENDER",
     "MAIL_PASSWORD",
-    "CELERY_BROKER_URL",
-    "CELERY_REDIS_BACKEND_URL",
-    "AMQP_URL"
-]
+}
 
-RANDOM_KEYS = ["JWT_SECRET_KEY"]
+RANDOM_KEYS = {"JWT_SECRET_KEY"}
 
 HELPS = {
     "SQLALCHEMY_DATABASE_URI": "Postgresql数据库连接地址(SQLAlchemy地址)",
@@ -81,8 +81,9 @@ class _Config:
     development_config = {}
     production_config = {}
     testing_config = {}
-    _setting_keys = set(SETTING_KEYS)
-    _random_keys = set(RANDOM_KEYS)
+    _setting_keys = sorted(list(SETTING_KEYS))
+    _random_keys = sorted(list(RANDOM_KEYS))
+    current_type = ""
 
     def __init__(self, configdir=None):
         self.configdir = configdir
@@ -97,6 +98,7 @@ class _Config:
 
     def set_configurations(self):
         for config_type, config in self.config_types.items():
+            self.current_type = config_type
             log.info("正在为%s环境设置配置....", config_type)
             self._set_key_values(config)
             self._parse_config(config)
@@ -107,7 +109,7 @@ class _Config:
             self._update_config_for(key, config)
 
     def _update_config_for(self, key: str, config: Dict):
-        default = self._get_default_for(key)
+        default = "{}-testing".format(self._get_default_for(key)) if self.current_type == "testing" and key == "SQLALCHEMY_DATABASE_URI" else self._get_default_for(key)
         prompt = "请设置 %s (%s) \n(默认 %s): \n" % (key, HELPS[key], default)
         config[key] = rlinput(prompt, default)
         print()
@@ -120,7 +122,7 @@ class _Config:
                 for key in self.default_config
                 if key not in ["DB_URL_INFO", "BROKER_URL_INFO"]
             )
-            self._random_keys = self._random_keys - self._setting_keys
+            self._random_keys = set(self._random_keys) - set(self._setting_keys)
 
     def _get_default_for(self, key: str):
         try:

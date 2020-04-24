@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from tasks.app.config import Config
-from tasks.app.consts import CONFIG_PATH, NGINX_PATH, SQL_PATH
+from tasks.app.consts import CONFIG_PATH
 
 log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -39,8 +39,6 @@ def render_config_to_toml(configs: Config):
         log.info("正在生成 %s 配置...", config_type)
         template_and_paths_list = [
             ["config.template", CONFIG_PATH.format(config=config_type)],
-            ["nginx.template", NGINX_PATH.format(config=config_type)],
-            ["sql.template", SQL_PATH.format(config=config_type)],
         ]
 
         render = Render(
