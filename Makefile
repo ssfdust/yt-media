@@ -1,5 +1,5 @@
 IPADDR := $(shell ip -f inet addr show docker0 | grep -Po 'inet \K[\d.]+')
-PROXYBIND := "http://$(IPADDR):9987"
+PROXYBIND := "http://$(IPADDR):1081"
 
 all:
 	docker build --build-arg http_proxy=$(PROXYBIND) \
