@@ -8,7 +8,7 @@ ENV HOST=0.0.0.0
 
 ENV PYTHONPYCACHEPREFIX=/pycache
 
-RUN apk --no-cache add curl zlib-dev jpeg-dev postgresql-libs && \
+RUN apk --no-cache add curl zlib-dev jpeg-dev postgresql-dev && \
         curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python  && \
         pip install --upgrade pip poetry && \
         pip install --no-build-isolation pendulum
@@ -22,6 +22,8 @@ WORKDIR /Application/
 
 # add requirements.txt to the image
 COPY pyproject.toml poetry.lock /Application/
+
+RUN apk info -a postgresql-dev
 
 RUN poetry config virtualenvs.create false \
   && poetry install --no-dev --no-interaction --no-ansi
