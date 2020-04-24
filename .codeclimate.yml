@@ -2,13 +2,7 @@ engines:
     bandit:
         enabled: true
         checks:
-            assert_used:
-                enabled: false
             blacklist:
                 enabled: false
     duplication:
         enabled: true
-        config:
-            language:
-                python:
-                    mass_threshold: 65
