@@ -3,8 +3,6 @@ version: '3.5'
 services:  
     db:
         image: ccr.ccs.tencentyun.com/ssfdust/psql:latest
-        ports:
-            - "9432:5432"
         environment:
             POSTGRES_USER: ${POSTGRES_USER:-smorest-admin}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-smorest2019}
@@ -14,14 +12,30 @@ services:
     redis:
         image: ccr.ccs.tencentyun.com/library/redis:latest
 
+    rabbitmq:
+        image: rabbitmq:latest
+        environment:
+            RABBITMQ_DEFAULT_USER: admin
+            RABBITMQ_DEFAULT_PASS: admin
+
+    nginx:
+        image: nginx:latest
+        ports:
+            - "8080:80"
+            - "8081:81"
+        volumes:
+            - ./deploy/nginx:/etc/nginx/conf.d
+
     web:
         image: ccr.ccs.tencentyun.com/ssfdust/smart-smorest:latest
         command: sh scripts/initapp.sh
         volumes:
             - .:/Application 
-        ports:
-            - "9001:5000"
         restart: on-failure
         depends_on:
             - db
+            - rabbitmq
             - redis
+
+    pgadmin:
+        image: ccr.ccs.tencentyun.com/ssfdust/pgadmin4:latest

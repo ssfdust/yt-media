@@ -6,10 +6,10 @@ OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 OPENAPI_URL_PREFIX = 'doc'
 MODULE_BASE_PREFIX = '/api/v1'
 
-SQLALCHEMY_DATABASE_URI = 'postgresql://smorest-admin:smorest2019@localhost:5432/my-smorest'
+SQLALCHEMY_DATABASE_URI = 'postgresql://smorest-admin:smoret2019@localhost/smorest'
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 
-JWT_SECRET_KEY = 'UiXC{?%6vBoqz?F#5w$^J{PNQxhLyW'
+JWT_SECRET_KEY = '8TI8/KpMArmw9ZVtrXA&amp;=7w\&amp;I$wbX'
 JWT_BLACKLIST_ENABLED = true
 JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']
 JWT_TOKEN_LOCATION = ['headers', 'query_string']
@@ -26,12 +26,12 @@ MAIL_DEFAULT_SENDER = ''
 MAIL_PASSWORD = ''
 
 CELERY_RESULT_BACKEND = 'redis://'
-CELERY_REDBEAT_REDIS_URL = "redis://"
+CELERY_REDBEAT_REDIS_URL = 'redis://'
 CELERY_BROKER_URL = "amqp://"
 CELERY_IMPORTS = ["smorest_sfs.tasks"]
 
 PREFERRED_URL_SCHEME = 'http'
-AMQP_URL = "amqp://"
+AMQP_URL = 'amqp://'
 
 [CELERY_BEAT_SCHEDULE.logger]
 task="get-logger"
