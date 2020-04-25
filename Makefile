@@ -7,4 +7,4 @@ all:
 		-t ssfdust/yt-media .
 
 services:
-	sudo systemctl start postgresql rabbitmq redis
+	sudo systemctl start postgresql rabbitmq redis docker
