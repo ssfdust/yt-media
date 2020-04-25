@@ -34,30 +34,31 @@ def _check_context() -> bool:
 
 
 class Celery:
-    def __init__(self, app: Optional[Flask] = None):
+    def __init__(self, app: Optional[Flask] = None, update_celery_immediately: bool = True):
         # we create the celery immediately as otherwise NOTHING WORKS
         self.app = app
         self.context = None
         self.celery = celery.Celery(__name__)
         if app:
-            self.init_app(app)
+            self.init_app(app, update_celery_immediately=update_celery_immediately)
 
-    def init_app(self, app: Flask) -> None:
+    def init_app(self, app: Flask, update_celery_immediately: bool = True) -> None:
         self.app = app
         self.app.extensions["celery_ext"] = self
-        new_celery = celery.Celery(
-            app.name + "-Celery",
-            enable_utc=True,
-            broker=app.config["CELERY_BROKER_URL"],
-            backend=app.config["CELERY_RESULT_BACKEND"],
-            heartbeat=0,
-        )
-        self.update_celery(new_celery)
+        if update_celery_immediately:
+            new_celery = celery.Celery(
+                app.name + "-Celery",
+                enable_utc=True,
+                broker=app.config["CELERY_BROKER_URL"],
+                backend=app.config["CELERY_RESULT_BACKEND"],
+                heartbeat=0,
+            )
+            self.update_celery(new_celery)
 
     def update_celery(self, new_celery: celery.Celery) -> None:
         if self.app:
             self.celery.__dict__.update(vars(new_celery))
-            self.celery.conf.update(self.app.config)
+            self.celery.conf.update(self.app.config.get_namespace("CELERY_"))
 
             worker_process_init.connect(self._worker_process_init)
 

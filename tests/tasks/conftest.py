@@ -18,14 +18,13 @@ from tests._utils.clear import clear_queue
 @pytest.fixture(scope="package", autouse=True)
 def flask_celery(flask_app: Flask, celery_session_app: celery.Celery) -> Celery:
     # pylint: disable=W0621
-    from smorest_sfs.extensions import Celery
 
-    celery = Celery()
-    celery.init_app(flask_app)
+    celery_ext = Celery()
+    celery_ext.init_app(flask_app)
 
-    celery.update_celery(celery_session_app)
+    celery_ext.update_celery(celery_session_app)
 
-    return celery
+    return celery_ext
 
 
 @pytest.fixture(scope="package", autouse=True)

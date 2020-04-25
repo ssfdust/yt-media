@@ -13,10 +13,11 @@ from flask import Flask
 @pytest.fixture(scope="package")
 def config() -> Type[Any]:
     class TestConfig:
-        CELERY_MONGODB_SCHEDULER_COLLECTION = "schedules"
-        CELERY_RESULT_BACKEND = "redis://"
-        CELERY_BROKER_URL = "amqp://"
-        CELERY_ACCEPT_CONTENT = ["json", "json"]
+        CELERY_BACKEND = "redis://"
+        CELERY_BROKER = "amqp://"
+        CELERY_ACCEPT_CONTENT = ["json"]
+        CELERY_REDBEAT_REDIS_URL = "redis://"
+        CELERY_REDBEAT_LOCK_TIMEOUT = 30
 
     return TestConfig
 
@@ -35,7 +36,7 @@ def celery_ext(celery_flask_app: Flask, celery_app: celery.Celery) -> Any:
     # pylint: disable=W0621
     from smorest_sfs.extensions.celery import Celery
 
-    celery_extension = Celery(celery_flask_app)
+    celery_extension = Celery(celery_flask_app, update_celery_immediately=False)
     celery_extension.update_celery(celery_app)
 
     return celery_extension

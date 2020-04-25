@@ -50,6 +50,7 @@ mypy = "^0.770"
 invoke = "^1.4.0"
 sqlalchemy-stubs = "^0.3"
 sqlalchemy-mptt-stubs = "^0.0.3"
+supervisor = "^4.1.0"
 
 [tool.coverage.run]
 include = ["smorest_sfs"]
