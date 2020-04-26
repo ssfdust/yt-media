@@ -18,7 +18,7 @@ RUN /entrypoint.sh \
         -b zlib-dev \
         -b libffi-dev \
         -b jpeg-dev \
-        -a freetype-dev \
+        -b freetype-dev \
         -b postgresql-dev
 
 CMD ["scripts/initapp.sh"]

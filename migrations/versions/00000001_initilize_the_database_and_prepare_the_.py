@@ -14,8 +14,21 @@ from smorest_sfs.extensions import db
 from migrations import initial_data
 
 def upgrade():
+    from smorest_sfs.services.users import create_user
+    from smorest_sfs.modules.users.schemas import UserSchema
     db.create_all()
     initial_data.init_permission()
+    data = {
+        "phonenum": "18718188181",
+        "username": "kanno",
+        "confirmed_at": "2020-04-30 00:00:00",
+        "email": "kanno@mail.com",
+        "password": "kanno",
+        "active": True,
+        "userinfo": {"first_name": "飘", "last_name": "尘", "sex": 1, "age": 26}
+    }
+    user = UserSchema.load(data)
+    create_user(user, is_admin=True)
     initial_data.init_email_templates()
 
 

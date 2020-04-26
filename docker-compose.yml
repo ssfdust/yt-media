@@ -66,4 +66,4 @@ services:
         environment:
             - VIRTUAL_HOST=pgadmin.local
             - PGADMIN_DEFAULT_EMAIL=admin@mail.com
-            - PGADMIN_DEFAULT_PASSWORD=24WKisxian
+            - PGADMIN_DEFAULT_PASSWORD=admin
