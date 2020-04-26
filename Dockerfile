@@ -16,6 +16,7 @@ RUN /entrypoint.sh \
         -a libjpeg \
         -a freetype \
         -b zlib-dev \
+        -b libffi-dev \
         -b jpeg-dev \
         -b postgresql-dev
 
