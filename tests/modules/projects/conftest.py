@@ -22,4 +22,5 @@ def project_items(
 def ProjectSchema() -> Type[Schema]:
     # pylint: disable=W0621
     from smorest_sfs.modules.projects.schemas import ProjectSchema
+
     return ProjectSchema

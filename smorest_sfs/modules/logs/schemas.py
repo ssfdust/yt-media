@@ -37,7 +37,7 @@ class RespLogParam(SQLAlchemySchema, BaseTimeParam):
     """
 
     url__contains = fields.Str(description="url地址", data_key="url")
-    method = auto_field(required=False)
+    method__ilike = fields.Str(description="方法", data_key="method")
     ip = auto_field(required=False)
     status_code = auto_field(required=False)
 

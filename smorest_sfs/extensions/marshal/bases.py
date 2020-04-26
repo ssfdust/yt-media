@@ -96,10 +96,10 @@ class BaseTimeParam(Schema):
     modified__between = PendulumField(
         data_key="modified_date", description="修改日期", load_only=True
     )
-    created_ge = PendulumField(description="晚于创建时间", load_only=True)
-    created_le = PendulumField(description="早于创建时间", load_only=True)
-    modified_ge = PendulumField(description="晚于修改时间", load_only=True)
-    modified_le = PendulumField(description="早于修改时间", load_only=True)
+    created__ge = PendulumField(description="晚于创建时间", load_only=True)
+    created__le = PendulumField(description="早于创建时间", load_only=True)
+    modified__ge = PendulumField(description="晚于修改时间", load_only=True)
+    modified__le = PendulumField(description="早于修改时间", load_only=True)
 
     @post_load
     def expand_to_range(self, data: Dict[str, Any], **_: Any) -> Dict[str, Any]:

@@ -4,13 +4,12 @@
 
     日志的资源模块
 """
-from typing import Any, Dict, List
+from typing import Any, List
 
 from flask.views import MethodView
 from flask_sqlalchemy import BaseQuery
 
 from smorest_sfs.extensions.api.decorators import paginate
-from smorest_sfs.extensions.marshal.bases import GeneralParam
 from smorest_sfs.modules.auth import PERMISSIONS
 from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
 

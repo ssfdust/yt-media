@@ -14,14 +14,70 @@ def log_items(
     temp_db_instance_helper: Callable[..., Iterator[Any]],
 ) -> Iterator[Tuple[Log, ...]]:
     for _ in temp_db_instance_helper(
-        Log(module="test.info", line=15, level="info", message="test"),
-        Log(module="test.info", line=15, level="info", message="test"),
-        Log(module="test.info", line=15, level="info", message="test"),
-        Log(module="test.debug", line=15, level="debug", message="test"),
-        Log(module="test.debug", line=15, level="debug", message="test"),
-        Log(module="test.error", line=15, level="error", message="test"),
-        Log(module="test.warn", line=15, level="warn", message="test"),
-        Log(module="test.warn", line=15, level="warn", message="test"),
+        Log(
+            module="test.info",
+            line=15,
+            level="info",
+            message="test",
+            created="2020-04-12 09:00:00",
+            modified="2020-04-12 10:00:00",
+        ),
+        Log(
+            module="test.info",
+            line=15,
+            level="info",
+            message="test",
+            created="2020-04-13 17:00:00",
+            modified="2020-04-13 17:00:00",
+        ),
+        Log(
+            module="test.info",
+            line=15,
+            level="info",
+            message="test",
+            created="2020-04-13 09:00:00",
+            modified="2020-04-13 10:00:00",
+        ),
+        Log(
+            module="test.debug",
+            line=15,
+            level="debug",
+            message="test",
+            created="2020-04-12 09:00:00",
+            modified="2020-04-12 18:00:00",
+        ),
+        Log(
+            module="test.debug",
+            line=15,
+            level="debug",
+            message="test",
+            created="2020-04-12 09:00:00",
+            modified="2020-04-12 10:00:00",
+        ),
+        Log(
+            module="test.error",
+            line=15,
+            level="error",
+            message="test",
+            created="2020-04-12 09:00:00",
+            modified="2020-04-12 10:00:00",
+        ),
+        Log(
+            module="test.warn",
+            line=15,
+            level="warn",
+            message="test",
+            created="2020-04-12 09:00:00",
+            modified="2020-04-12 10:00:00",
+        ),
+        Log(
+            module="test.warn",
+            line=15,
+            level="warn",
+            message="test",
+            created="2020-04-12 09:00:00",
+            modified="2020-04-12 10:00:00",
+        ),
     ):
         yield _
 
@@ -38,6 +94,8 @@ def resp_log_items(
             ip="127.0.0.1",
             method="PUT",
             url="/test/test_1",
+            created="2020-04-11 09:00:00",
+            modified="2020-04-12 10:00:00",
         ),
         ResponseLog(
             module="test.test_2",
@@ -45,6 +103,8 @@ def resp_log_items(
             ip="127.0.0.1",
             method="PUT",
             url="/test/test_2",
+            created="2020-04-12 09:00:00",
+            modified="2020-04-12 10:00:00",
         ),
         ResponseLog(
             module="test.test_3",
@@ -52,6 +112,8 @@ def resp_log_items(
             ip="127.0.0.1",
             method="GET",
             url="/test/test_3",
+            created="2020-04-12 09:00:00",
+            modified="2020-04-12 10:00:00",
         ),
         ResponseLog(
             module="test.test_4",
@@ -59,13 +121,17 @@ def resp_log_items(
             ip="127.0.0.1",
             method="OPTIONS",
             url="/test/test_4",
+            created="2020-04-12 09:00:00",
+            modified="2020-04-12 10:00:00",
         ),
         ResponseLog(
             module="test.test_5",
-            status_code=200,
+            status_code=301,
             ip="127.0.0.1",
             method="POST",
             url="/test/test_5",
+            created="2020-04-12 09:00:00",
+            modified="2020-04-12 10:00:00",
         ),
         ResponseLog(
             module="test.test_6",
@@ -73,6 +139,8 @@ def resp_log_items(
             ip="127.0.0.1",
             method="POST",
             url="/test/test_6",
+            created="2020-04-13 17:00:00",
+            modified="2020-04-13 17:00:00",
         ),
         ResponseLog(
             module="test.test_7",
@@ -80,6 +148,8 @@ def resp_log_items(
             ip="127.0.0.1",
             method="DELETE",
             url="/test/test_7",
+            created="2020-04-13 15:00:00",
+            modified="2020-04-13 15:00:00",
         ),
     ):
         yield _

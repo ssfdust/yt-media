@@ -34,7 +34,9 @@ def _check_context() -> bool:
 
 
 class Celery:
-    def __init__(self, app: Optional[Flask] = None, update_celery_immediately: bool = True):
+    def __init__(
+        self, app: Optional[Flask] = None, update_celery_immediately: bool = True
+    ):
         # we create the celery immediately as otherwise NOTHING WORKS
         self.app = app
         self.context = None

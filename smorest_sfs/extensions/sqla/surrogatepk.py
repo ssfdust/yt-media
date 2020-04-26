@@ -8,6 +8,7 @@ from typing import Any, List, Type, Union
 from flask_sqlalchemy import _QueryProperty
 from marshmallow import Schema
 from sqlalchemy import Boolean, Column, DateTime, Integer
+from sqlalchemy_utils.types.enriched_datetime.enriched_datetime_type import EnrichedDateTimeType
 
 from .db_instance import db
 from .helpers import utcnow
@@ -35,7 +36,7 @@ class SurrogatePK:
         info={"marshmallow": {"dump_only": True}},
     )
     modified = Column(
-        DateTime(),
+        EnrichedDateTimeType(),
         nullable=False,
         doc="修改时间",
         server_default=utcnow(),
@@ -43,7 +44,7 @@ class SurrogatePK:
         info={"marshmallow": {"format": "%Y-%m-%d %H:%M:%S", "dump_only": True}},
     )
     created = Column(
-        DateTime(),
+        EnrichedDateTimeType(),
         nullable=False,
         doc="创建时间",
         server_default=utcnow(),

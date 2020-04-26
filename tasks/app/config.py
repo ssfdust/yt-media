@@ -109,7 +109,11 @@ class _Config:
             self._update_config_for(key, config)
 
     def _update_config_for(self, key: str, config: Dict):
-        default = "{}-testing".format(self._get_default_for(key)) if self.current_type == "testing" and key == "SQLALCHEMY_DATABASE_URI" else self._get_default_for(key)
+        default = (
+            "{}-testing".format(self._get_default_for(key))
+            if self.current_type == "testing" and key == "SQLALCHEMY_DATABASE_URI"
+            else self._get_default_for(key)
+        )
         prompt = "请设置 %s (%s) \n(默认 %s): \n" % (key, HELPS[key], default)
         config[key] = rlinput(prompt, default)
         print()

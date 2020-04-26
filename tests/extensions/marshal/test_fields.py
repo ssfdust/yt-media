@@ -84,7 +84,7 @@ def test_fileds_none_dump_handle(ma_app: Flask, pendulum_field_schema: Schema) -
             {
                 "created_date": "2019-04-03",
                 "modified_date": "2019-04-03",
-                "created_ge": "2019-04-16 13:00:00",
+                "created__ge": "2019-04-16 13:00:00",
             },
             {
                 "created__between": (
@@ -95,7 +95,7 @@ def test_fileds_none_dump_handle(ma_app: Flask, pendulum_field_schema: Schema) -
                     DateTime(2019, 4, 2, 16, tzinfo=utc),
                     DateTime(2019, 4, 3, 16, tzinfo=utc),
                 ),
-                "created_ge": DateTime(2019, 4, 16, 5, tzinfo=utc),
+                "created__ge": DateTime(2019, 4, 16, 5, tzinfo=utc),
             },
         ),
     ],
