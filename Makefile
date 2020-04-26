@@ -8,3 +8,9 @@ all:
 
 services:
 	sudo systemctl start postgresql rabbitmq redis docker
+
+prepare:
+	sudo docker-compose up -d db rabbitmq redis pgadmin 
+
+run:
+	sudo docker-compose up -d nginx web

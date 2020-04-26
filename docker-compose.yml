@@ -6,7 +6,7 @@ services:
         environment:
             POSTGRES_USER: ${POSTGRES_USER:-smorest-admin}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-smorest2019}
-            POSTGRES_DB: ${POSTGRES_DB:-my-smorest}
+            POSTGRES_DB: ${POSTGRES_DB:-smorest-production}
             PGDATA: /data/postgres
 
     redis:
@@ -19,23 +19,32 @@ services:
             RABBITMQ_DEFAULT_PASS: admin
 
     nginx:
-        image: nginx:latest
+        image: jwilder/nginx-proxy
         ports:
-            - "8080:80"
-            - "8081:81"
+            - "80:80"
         volumes:
-            - ./deploy/nginx:/etc/nginx/conf.d
+            - /var/run/docker.sock:/tmp/docker.sock:ro
 
     web:
-        image: ccr.ccs.tencentyun.com/ssfdust/smart-smorest:latest
+        image: ccr.ccs.tencentyun.com/ssfdust/smart-smorest:master
         command: sh scripts/initapp.sh
         volumes:
             - .:/Application 
         restart: on-failure
+        expose: 
+            - "8000"
         depends_on:
             - db
             - rabbitmq
             - redis
+        environment:
+            - VIRTUAL_HOST=smorest.local
 
     pgadmin:
-        image: ccr.ccs.tencentyun.com/ssfdust/pgadmin4:latest
+        image: dpage/pgadmin4
+        expose: 
+            - "80"
+        environment:
+            - VIRTUAL_HOST=pgadmin.local
+            - PGADMIN_DEFAULT_EMAIL=admin@mail.com
+            - PGADMIN_DEFAULT_PASSWORD=24WKisxian
