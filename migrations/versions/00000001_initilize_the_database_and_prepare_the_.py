@@ -27,7 +27,7 @@ def upgrade():
         "active": True,
         "userinfo": {"first_name": "飘", "last_name": "尘", "sex": 1, "age": 26}
     }
-    user = UserSchema.load(data)
+    user = UserSchema().load(data)
     create_user(user, is_admin=True)
     initial_data.init_email_templates()
 
