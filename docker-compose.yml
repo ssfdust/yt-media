@@ -45,7 +45,7 @@ services:
 
     beat:
         image: ccr.ccs.tencentyun.com/ssfdust/smart-smorest:master
-        command: celery beat --app=smorest_sfs.app:celery_app -S redbeat.RedBeatScheduler --pid-file=
+        command: celery beat --app=smorest_sfs.app:celery_app -S redbeat.RedBeatScheduler
         volumes:
             - .:/Application 
         depends_on:

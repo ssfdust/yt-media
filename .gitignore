@@ -105,3 +105,6 @@ ENV/
 
 # version files
 migrations/versions/*
+
+# pid files
+*.pid
