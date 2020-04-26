@@ -1,31 +1,22 @@
-FROM jfloff/alpine-python:3.8
+FROM ccr.ccs.tencentyun.com/ssfdust/alpine-poetry:latest
 
-ENV FLASK_ENV=production
-
-ENV FLASK_APP=/Application/smorest_sfs/app.py
-
-ENV HOST=0.0.0.0
-
-ENV PYTHONPYCACHEPREFIX=/pycache
-
-RUN apk --no-cache add curl zlib-dev jpeg-dev postgresql-dev && \
-        curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python  && \
-        pip install --upgrade pip poetry && \
-        pip install --no-build-isolation pendulum
-
-ENV PATH="${PATH}:/root/.poetry/bin"
+ENV FLASK_ENV="production" \
+      FLASK_APP="/Application/smorest_sfs/app.py" \
+      HOST="0.0.0.0" \
+      PYTHONPYCACHEPREFIX="/pycache"
 
 RUN mkdir Application
 
-# set working directory to /app/
 WORKDIR /Application/
 
-# add requirements.txt to the image
-COPY pyproject.toml poetry.lock /Application/
+COPY pyproject.toml poetry.lock /
 
-RUN apk info -a postgresql-dev
-
-RUN poetry config virtualenvs.create false \
-  && poetry install --no-dev --no-interaction --no-ansi
+RUN /entrypoint.sh \
+        -a zlib \
+        -a libjpeg \
+        -a freetype \
+        -b zlib-dev \
+        -b jpeg-dev \
+        -b postgresql-dev
 
 CMD ["scripts/initapp.sh"]
