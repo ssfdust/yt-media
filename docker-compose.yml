@@ -11,12 +11,14 @@ services:
 
     redis:
         image: ccr.ccs.tencentyun.com/library/redis:latest
+        command: redis-server --requirepass "smorest2019"
 
     rabbitmq:
         image: rabbitmq:latest
         environment:
             RABBITMQ_DEFAULT_USER: admin
             RABBITMQ_DEFAULT_PASS: admin
+            RABBITMQ_DEFAULT_VHOST: smorest
 
     nginx:
         image: jwilder/nginx-proxy
@@ -39,6 +41,23 @@ services:
             - redis
         environment:
             - VIRTUAL_HOST=smorest.local
+            - WEB_CONCURRENCY=2
+
+    beat:
+        image: ccr.ccs.tencentyun.com/ssfdust/smart-smorest:master
+        command: celery beat --app=smorest_sfs.app:celery_app -S redbeat.RedBeatScheduler --pid-file=
+        volumes:
+            - .:/Application 
+        depends_on:
+            - web
+
+    celery:
+        image: ccr.ccs.tencentyun.com/ssfdust/smart-smorest:master
+        command: celery --app=smorest_sfs.app:celery_app worker -l INFO -E
+        volumes:
+            - .:/Application 
+        depends_on:
+            - web
 
     pgadmin:
         image: dpage/pgadmin4
