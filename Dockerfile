@@ -1,4 +1,4 @@
-FROM ccr.ccs.tencentyun.com/ssfdust/alpine-poetry:latest
+FROM ssfdust/alpine-python-poetry:latest
 
 ENV FLASK_ENV="production" \
       FLASK_APP="/Application/smorest_sfs/app.py" \
