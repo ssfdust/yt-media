@@ -7,6 +7,7 @@ import os
 from typing import Any, Iterator, Type
 
 import pytest
+import toml
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
@@ -14,6 +15,7 @@ from marshmallow import Schema, fields
 from smorest_sfs.extensions import babel
 from smorest_sfs.extensions.sqla import Model, SurrogatePK
 from smorest_sfs.plugins.sa import SAQuery, SAStatement
+from smorest_sfs.utils.paths import ProjectPath
 from tests._utils.tables import drop_tables
 
 FAKE_TIME = datetime.datetime(1994, 9, 11, 8, 20)
@@ -24,12 +26,18 @@ TABLES = [
 ]
 
 
+def get_pg_uri() -> str:
+    test_config_path = ProjectPath.get_subpath_from_project("config/testing.toml")
+    try:
+        return toml.load(test_config_path)["SQLALCHEMY_DATABASE_URI"]
+    except (FileNotFoundError, KeyError):
+        return os.environ.get("PG_URI", "postgresql://postgres@localhost/postgres")
+
+
 def get_inited_app(sqla_db: SQLAlchemy) -> Flask:
     # pylint: disable=W0621
     flask_app = Flask("TestSqla")
-    flask_app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-        "PG_URI", "postgresql://postgres@localhost/postgres"
-    )
+    flask_app.config["SQLALCHEMY_DATABASE_URI"] = get_pg_uri()
     flask_app.config["BABEL_DEFAULT_TIMEZONE"] = "Asia/Shanghai"
     sqla_db.init_app(flask_app)
     babel.init_app(flask_app)

@@ -2,7 +2,7 @@ version: '3.5'
 
 services:  
     db:
-        image: ccr.ccs.tencentyun.com/ssfdust/psql:latest
+        image: ssfdust/psql_jieba_swsc
         environment:
             POSTGRES_USER: ${POSTGRES_USER:-smorest-admin}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-smorest2019}
@@ -10,15 +10,18 @@ services:
             PGDATA: /data/postgres
 
     redis:
-        image: ccr.ccs.tencentyun.com/library/redis:latest
+        image: redis:5.0.9-alpine
         command: redis-server --requirepass "smorest2019"
 
     rabbitmq:
-        image: rabbitmq:latest
+        image: rabbitmq:3.8.3-management-alpine
+        expose: 
+            - "15672"
         environment:
             RABBITMQ_DEFAULT_USER: admin
             RABBITMQ_DEFAULT_PASS: admin
             RABBITMQ_DEFAULT_VHOST: smorest
+            VIRTUAL_HOST: rabbitmq.local
 
     nginx:
         image: jwilder/nginx-proxy
@@ -28,7 +31,7 @@ services:
             - /var/run/docker.sock:/tmp/docker.sock:ro
 
     web:
-        image: ccr.ccs.tencentyun.com/ssfdust/smart-smorest:master
+        image: ssfdust/smorest-sfs
         command: sh scripts/initapp.sh
         volumes:
             - .:/Application 
@@ -44,7 +47,7 @@ services:
             - WEB_CONCURRENCY=2
 
     beat:
-        image: ccr.ccs.tencentyun.com/ssfdust/smart-smorest:master
+        image: ssfdust/smorest-sfs
         command: celery beat --app=smorest_sfs.app:celery_app -S redbeat.RedBeatScheduler
         volumes:
             - .:/Application 
@@ -52,7 +55,7 @@ services:
             - web
 
     celery:
-        image: ccr.ccs.tencentyun.com/ssfdust/smart-smorest:master
+        image: ssfdust/smorest-sfs
         command: celery --app=smorest_sfs.app:celery_app worker -l INFO -E
         volumes:
             - .:/Application 

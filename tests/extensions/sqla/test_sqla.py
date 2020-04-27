@@ -6,6 +6,7 @@ import pytest
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema
 from werkzeug.exceptions import NotFound
+from pendulum import datetime
 
 from smorest_sfs.extensions.sqla import Model
 from tests._utils.injection import FixturesInjectBase
@@ -22,8 +23,8 @@ class ItemsFixtureBase(FixturesInjectBase):
                 cls.create(
                     id=idx,
                     name=name,
-                    created="1994-09-11 08:20:00",
-                    modified="1994-09-11 08:20:00",
+                    created=datetime(1994, 9, 11, 8, 20),
+                    modified=datetime(1994, 9, 11, 8, 20),
                 )
                 for idx, name in enumerate(["aaabbb", "bbbbcccc", "bbcccc", "bbc"], 1)
             ]

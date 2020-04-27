@@ -9,8 +9,19 @@ all:
 services:
 	sudo systemctl start postgresql rabbitmq redis docker
 
-prepare:
-	sudo docker-compose up -d db rabbitmq redis pgadmin 
+services-off:
+	sudo systemctl stop postgresql rabbitmq redis
 
-run:
-	sudo docker-compose up -d nginx web
+deploy:
+	sudo docker-compose up -d db rabbitmq redis pgadmin 
+	sleep 20
+	sudo docker-compose up -d web celery beat
+	sleep 5
+	sudo docker-compose up -d nginx
+
+stop:
+	sudo docker-compose exec beat rm -f celerybeat.pid
+	sudo docker-compose stop
+
+start:
+	sudo docker-compose start
