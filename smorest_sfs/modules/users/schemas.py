@@ -24,7 +24,7 @@
 
 from marshmallow import Schema, fields
 
-from smorest_sfs.extensions.marshal import SQLAlchemyAutoSchema
+from smorest_sfs.extensions.marshal import SQLAlchemyAutoSchema, auto_field
 from smorest_sfs.extensions.marshal.bases import BaseMsgSchema, BasePageSchema
 
 from . import models
@@ -47,7 +47,23 @@ class UserSchema(SQLAlchemyAutoSchema):
 
     class Meta:
         include_relationships = True
+        include_fk = True
         model = models.User
+        exclude = ["password"]
+
+
+class UserRegisterSchema(SQLAlchemyAutoSchema):
+    """
+    用户的序列化类
+    """
+
+    nickname = fields.Str(dump_only=True)
+
+    class Meta:
+        include_relationships = True
+        include_fk = True
+        model = models.User
+        exlcude = ["password"]
 
 
 class UserSelfSchema(SQLAlchemyAutoSchema):

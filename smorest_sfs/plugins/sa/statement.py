@@ -4,10 +4,10 @@
     sa raw sql模块
 """
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 from loguru import logger
-from sqlalchemy.sql.selectable import Select
+from sqlalchemy import select, delete, insert, update
 
 from smorest_sfs.extensions import db
 
@@ -15,18 +15,18 @@ from .abstract import RenderableStatement
 
 
 class SAStatement(RenderableStatement):
-    sa_sql: Select
+    sa_sql: Union[select, delete, insert, update]
 
     def __init__(self, *args: Any, **kwargs: Any):
         pass
 
-    def get_sa_sql(self) -> Select:
+    def get_sa_sql(self) -> Union[select, delete]:
         return self.sa_sql
 
     def get_keys(self) -> Any:
         return {}
 
-    def get_render_sql(self, size: int) -> Select:
+    def get_render_sql(self, size: int) -> select:
         return self.sa_sql.limit(size)
 
     @staticmethod

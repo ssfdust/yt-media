@@ -3,6 +3,8 @@
 """
 from typing import Any, Type, Union
 
+from sqlalchemy.exc import ResourceClosedError
+
 from smorest_sfs.extensions import db
 
 from .query import SAQuery
@@ -11,7 +13,10 @@ from .statement import SAStatement
 
 def _execute_sql(sa_sql: Any) -> Any:
     cursor = db.session.execute(sa_sql)
-    return cursor.fetchall()
+    try:
+        return cursor.fetchall()
+    except ResourceClosedError:
+        pass
 
 
 def _execute_sa(sql: SAStatement) -> Any:

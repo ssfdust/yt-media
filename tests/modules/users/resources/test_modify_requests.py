@@ -8,16 +8,21 @@ from flask import url_for
 from smorest_sfs.modules.auth import ROLES
 from smorest_sfs.modules.roles.models import Role
 from smorest_sfs.modules.users.models import User
-from tests._utils.injection import FixturesInjectBase
+from tests._utils.injection import GeneralModify
 
 
-class TestGeneralModify(FixturesInjectBase):
+class TestUserModify(GeneralModify):
 
     roles: List[Role]
     regular_user: User
     forget_passwd_user: User
     inactive_user: User
     guest_user: User
+    items = "user_items"
+    delete_param_key = "user_id"
+    item_view = "User.UserItemView"
+    view = "User.UserView"
+    login_roles = [ROLES.UserManager]
     role_dict: List[Dict[str, Union[str, int]]]
 
     fixture_names = (
@@ -27,6 +32,9 @@ class TestGeneralModify(FixturesInjectBase):
         "forget_passwd_user",
         "inactive_user",
         "guest_user",
+        "fake_roles",
+        "fake_groups",
+        "user_items",
     )
     data = {
         "phonenum": "12121212",
@@ -53,18 +61,9 @@ class TestGeneralModify(FixturesInjectBase):
         return data
 
     def test_delete(self) -> None:
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.UserManager]
-        ) as client:
-            with self.flask_app.test_request_context():
-                url = url_for("User.UserView")
-                ids = [self.forget_passwd_user.id, self.inactive_user.id]
-                resp = client.delete(url, json={"lst": ids})
-                assert (
-                    resp.status_code == 200
-                    and self.forget_passwd_user.deleted
-                    and self.inactive_user.deleted
-                )
+        _, users = self._delete_request()
+        for user in users:
+            assert not user.roles and not user.groups
 
     def test_register(self) -> None:
         with self.flask_app.test_request_context():
@@ -74,9 +73,11 @@ class TestGeneralModify(FixturesInjectBase):
             url = url_for("User.UserRegisterView")
             resp = self.flask_app_client.put(url, json=data)
             fake_user = User.get_by_keyword("fake_user")
-            assert resp.status_code == 200 and {r.name for r in fake_user.roles} == {
-                ROLES.User
-            }
+            assert (
+                resp.status_code == 200
+                and {r.name for r in fake_user.roles} >= {"a", "User"}
+                and {g.name for g in fake_user.groups} >= {"默认用户组"}
+            )
 
     def test_modify_userinfo(self) -> None:
         with self.flask_app_client.login(self.regular_user, [ROLES.User]) as client:
@@ -86,7 +87,6 @@ class TestGeneralModify(FixturesInjectBase):
                     username="asasarqwrasdasd",
                     email=self.regular_user.email,
                     phonenum="2345",
-                    roles=self.role_dict,
                 )
                 client.patch(url, json=data)
                 assert (
@@ -110,7 +110,6 @@ class TestGeneralModify(FixturesInjectBase):
                 assert (
                     resp.status_code == 200
                     and self.guest_user.phonenum == "9527"
-                    and self.guest_user.password == "7777"
                     and self.guest_user.nickname == "tt qaqa"
                     and self.guest_user.userinfo.sex_label == "女"
                     and self.guest_user.userinfo.age == 13
@@ -118,11 +117,5 @@ class TestGeneralModify(FixturesInjectBase):
                 )
 
     def test_item_delete(self) -> None:
-        with self.flask_app_client.login(
-            self.regular_user, [ROLES.SuperUser]
-        ) as client:
-            with self.flask_app.test_request_context():
-                url = url_for("User.UserItemView", user_id=self.guest_user.id)
-                resp = client.delete(url)
-                after_resp = client.get(url)
-                assert resp.status_code == 200 and after_resp.status_code == 404
+        _, user = self._item_delete_request()
+        assert user.groups == [] and user.roles == []

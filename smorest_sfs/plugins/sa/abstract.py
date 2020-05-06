@@ -10,6 +10,7 @@ from abc import ABC, abstractmethod
 from typing import Any, List
 
 import pyperclip
+import sqlparse
 from loguru import logger
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.sql.selectable import Select
@@ -31,7 +32,8 @@ class StatementAbstract(ABC):
         compiled_sql = sa_sql.compile(
             dialect=postgresql.dialect(), compile_kwargs={"literal_binds": True},
         )
-        return str(compiled_sql)
+        _raw_sql = str(compiled_sql)
+        return sqlparse.format(_raw_sql, reindent=True, reindent_aligned=False, indent_width=4)
 
     def debug_sql(self, need_copy: bool = True) -> None:
         """debug sql的abc方法"""

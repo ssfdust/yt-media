@@ -5,8 +5,8 @@ from typing import Dict
 
 from kombu import Queue
 
-from smorest_sfs.extensions import celery
-from smorest_sfs.modules.logs.models import Log, ResponseLog, db
+from smorest_sfs.extensions import celery, db
+from smorest_sfs.modules.logs.models import Log, ResponseLog
 from smorest_sfs.plugins.rpc import Subscriber
 from smorest_sfs.services.logs import LogCollecter
 

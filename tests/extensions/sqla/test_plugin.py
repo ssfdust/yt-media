@@ -22,9 +22,9 @@ class TestSASql(ItemsFixtureBase):
     fixture_names = ("TestCRUDTable", "TestSASql")
     TestSASql: Type[SAStatement]
     raw_sql = (
-        "SELECT sqla_test_crud_table.name "
-        "\nFROM sqla_test_crud_table"
-        " \nWHERE sqla_test_crud_table.name = '{name}'"
+        "SELECT sqla_test_crud_table.name\n"
+        "FROM sqla_test_crud_table\n"
+        "WHERE sqla_test_crud_table.name = '{name}'"
     )
     table_str = "╒════════╕\n" "│ name   │\n" "╞════════╡\n" "│ bbc    │\n" "╘════════╛"
 
@@ -47,9 +47,9 @@ class TestSASql(ItemsFixtureBase):
     @pytest.mark.usefixtures("TestTableTeardown", "crud_items", "inject_logger")
     def test_debug_should_rendered(self) -> None:
         debug_sql(self.TestSASql, "bbc")
-        assert self._get_debug() == "\n" + self.raw_sql.format(
+        assert pyperclip.paste() == self.raw_sql.format(
             name="bbc"
-        ) and pyperclip.paste() == self.raw_sql.format(name="bbc")
+        ) and self._get_debug() == "\n" + self.raw_sql.format(name="bbc")
 
     def _get_debug(self) -> str:
         queue: UniqueQueue[str] = UniqueQueue()
@@ -83,8 +83,8 @@ class TestSAPlugin(ItemsFixtureBase):
                 "TestOneColQuery",
                 (
                     "\n"
-                    "SELECT sqla_test_crud_table.name \n"
-                    "FROM sqla_test_crud_table \n"
+                    "SELECT sqla_test_crud_table.name\n"
+                    "FROM sqla_test_crud_table\n"
                     "WHERE sqla_test_crud_table.name = 'bbc'"
                 ),
             ),
@@ -98,29 +98,31 @@ class TestSAPlugin(ItemsFixtureBase):
                 "TestOneTableQuery",
                 (
                     "\n"
-                    "SELECT sqla_test_crud_table.id, sqla_test_crud_table.deleted, "
-                    "sqla_test_crud_table.modified, sqla_test_crud_table.created, "
-                    "sqla_test_crud_table.name \n"
-                    "FROM sqla_test_crud_table \n"
-                    "WHERE sqla_test_crud_table.deleted = false AND sqla_test_crud_table.name = "
-                    "'bbc'"
+                    "SELECT sqla_test_crud_table.id,\n"
+                    "       sqla_test_crud_table.deleted,\n"
+                    "       sqla_test_crud_table.modified,\n"
+                    "       sqla_test_crud_table.created,\n"
+                    "       sqla_test_crud_table.name\n"
+                    "FROM sqla_test_crud_table\n"
+                    "WHERE sqla_test_crud_table.deleted = false\n"
+                    "    AND sqla_test_crud_table.name = 'bbc'"
                 ),
             ),
             (
                 render_limit_results,
                 "TestOneTableQuery",
                 (
-                    '\n'
-                    '╒══════╤═══════════╤══════════════════════════'
-                    '═╤═══════════════════════════╤════════╕\n'
-                    '│   id │ deleted   │ modified                 '
-                    ' │ created                   │ name   │\n'
-                    '╞══════╪═══════════╪══════════════════════════'
-                    '═╪═══════════════════════════╪════════╡\n'
-                    '│    4 │ False     │ 1994-09-11T08:20:00+00:00'
-                    ' │ 1994-09-11T08:20:00+00:00 │ bbc    │\n'
-                    '╘══════╧═══════════╧══════════════════════════'
-                    '═╧═══════════════════════════╧════════╛'
+                    "\n"
+                    "╒══════╤═══════════╤══════════════════════════"
+                    "═╤═══════════════════════════╤════════╕\n"
+                    "│   id │ deleted   │ modified                 "
+                    " │ created                   │ name   │\n"
+                    "╞══════╪═══════════╪══════════════════════════"
+                    "═╪═══════════════════════════╪════════╡\n"
+                    "│    4 │ False     │ 1994-09-11T08:20:00+00:00"
+                    " │ 1994-09-11T08:20:00+00:00 │ bbc    │\n"
+                    "╘══════╧═══════════╧══════════════════════════"
+                    "═╧═══════════════════════════╧════════╛"
                 ),
             ),
             (
@@ -128,13 +130,20 @@ class TestSAPlugin(ItemsFixtureBase):
                 "TestTwoTablesQuery",
                 (
                     "\n"
-                    "SELECT sqla_test_crud_table.id, sqla_test_crud_table.deleted, "
-                    "sqla_test_crud_table.modified, sqla_test_crud_table.created, "
-                    "sqla_test_crud_table.name, test_crud_child_table.id, "
-                    "test_crud_child_table.deleted, test_crud_child_table.modified, "
-                    "test_crud_child_table.created, test_crud_child_table.name, "
-                    "test_crud_child_table.pid, sqla_test_crud_table.id AS crud_id \n"
-                    "FROM sqla_test_crud_table, test_crud_child_table \n"
+                    "SELECT sqla_test_crud_table.id,\n"
+                    "       sqla_test_crud_table.deleted,\n"
+                    "       sqla_test_crud_table.modified,\n"
+                    "       sqla_test_crud_table.created,\n"
+                    "       sqla_test_crud_table.name,\n"
+                    "       test_crud_child_table.id,\n"
+                    "       test_crud_child_table.deleted,\n"
+                    "       test_crud_child_table.modified,\n"
+                    "       test_crud_child_table.created,\n"
+                    "       test_crud_child_table.name,\n"
+                    "       test_crud_child_table.pid,\n"
+                    "       sqla_test_crud_table.id AS crud_id\n"
+                    "FROM sqla_test_crud_table,\n"
+                    "     test_crud_child_table\n"
                     "WHERE sqla_test_crud_table.name = 'bbc'"
                 ),
             ),

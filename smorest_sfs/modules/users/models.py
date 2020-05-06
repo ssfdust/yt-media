@@ -13,11 +13,11 @@ from sqlalchemy_utils.types import PasswordType
 
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.modules.roles.models import permission_roles
+from smorest_sfs.modules.groups.models import Group, groups_users
+from smorest_sfs.utils.sqla import RelateTableArgs, create_relation_table
 
-roles_users = db.Table(
-    "roles_users",
-    db.Column("user_id", db.Integer(), nullable=False),
-    db.Column("role_id", db.Integer(), nullable=False),
+roles_users = create_relation_table(
+    db, RelateTableArgs("roles_users", "role_id", "user_id")
 )
 
 user_permissions = db.join(
@@ -29,13 +29,16 @@ class User(Model, SurrogatePK):
     """
     用户表
 
-    :attr username: str(255) 用户名
+    :attr username required: str(255) 用户名
     :attr email: str(255) 用户邮箱
-    :attr password: str(255) 用户密码
-    :attr active: bool 是否启用
+    :attr password required: str(255) 用户密码
+    :attr phonenum: str(255) 电话号码
+    :attr active opt: bool 是否启用
     :attr confirmed_at: DateTime 确认时间
     :attr roles: Role 角色
     :attr permissions: Permission 权限
+    :attr userinfo required: UserInfo 用户详情
+    :attr groups: Group 用户组信息
     """
 
     __tablename__ = "users"
@@ -80,6 +83,19 @@ class User(Model, SurrogatePK):
             }
         },
     )
+    groups = db.relationship(
+        Group,
+        secondary=groups_users,
+        primaryjoin="User.id == groups_users.c.user_id",
+        secondaryjoin=Group.id == groups_users.c.group_id,
+        doc="组下用户",
+        foreign_keys=[groups_users.c.group_id, groups_users.c.user_id],
+        info={
+            "marshmallow": {
+                "column": ["id", "name"]
+            }
+        }
+    )
 
     @classmethod
     def get_by_keyword(cls, keyword: str) -> User:
@@ -92,10 +108,8 @@ class User(Model, SurrogatePK):
             ),
         ).first_or_404()
 
-    def __str__(self) -> str:  # pragma: no cover
-        if self.email:
-            return self.email
-        return ""
+    def __repr__(self) -> str:  # pragma: no cover
+        return self.nickname
 
     @property
     def nickname(self) -> str:
@@ -115,8 +129,6 @@ class UserInfo(SurrogatePK, Model):
     :attr first_name: str(80) 姓
     :attr second_name: str(80) 名
     """
-
-    # from app.modules.storages.models import Storages
 
     __tablename__ = "userinfo"
 
@@ -173,7 +185,7 @@ class UserInfo(SurrogatePK, Model):
         info={"marshmallow": {"dump_only": True}},
     )
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return self.user.username
 
     @property

@@ -127,6 +127,8 @@ class GeneralModify(FixturesInjectBase):
 
     def _item_modify_request(self, json: Dict[str, Any]) -> Dict[str, Any]:
         resp = self.__item_modify_request("PUT", json=json)
+        if isinstance(self.schema, str):
+            raise RuntimeError()
         schema = self.schema()
         item = self._get_modified_item()
         dumped_data = self.__get_schema_dumped(schema, item)

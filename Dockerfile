@@ -3,7 +3,8 @@ FROM ssfdust/alpine-python-poetry:latest
 ENV FLASK_ENV="production" \
       FLASK_APP="/Application/smorest_sfs/app.py" \
       HOST="0.0.0.0" \
-      PYTHONPYCACHEPREFIX="/pycache"
+      PYTHONPYCACHEPREFIX="/pycache" \
+      LOGURU_LEVEL=INFO
 
 RUN mkdir Application
 

@@ -12,6 +12,7 @@ ENABLED_MODULES = [
     "storages",
     "roles",
     "users",
+    "groups",
     "email_templates",
     "codes",
     "projects",

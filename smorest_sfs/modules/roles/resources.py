@@ -16,7 +16,7 @@
 # limitations under the License.
 
 """
-    app.modules.roles.resource
+    smorest_sfs.modules.roles.resource
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     角色权限的资源模块

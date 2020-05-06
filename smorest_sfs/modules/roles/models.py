@@ -12,11 +12,10 @@ from typing import List
 
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
 from smorest_sfs.modules.auth.permissions import ROLES
+from smorest_sfs.utils.sqla import create_relation_table, RelateTableArgs
 
-permission_roles = db.Table(
-    "permission_roles",
-    db.Column("permission_id", db.Integer(), nullable=False),
-    db.Column("role_id", db.Integer(), nullable=False),
+permission_roles = create_relation_table(
+    db, RelateTableArgs("permission_roles", "permission_id", "role_id")
 )
 
 
@@ -95,5 +94,5 @@ class Role(Model, SurrogatePK):
                 self.permissions.append(permission)
         return list(permission.name for permission in self.permissions)
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return self.name

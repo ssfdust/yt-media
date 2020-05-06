@@ -23,6 +23,7 @@ from smorest_sfs.modules.auth.decorators import (
     permission_required,
     role_required,
 )
+from smorest_sfs.services.groups import set_default_groups_for_user, parse_user_groups_change
 from smorest_sfs.services.users import create_user
 
 from . import blp, models, schemas
@@ -83,7 +84,11 @@ class UserView(MethodView):
         -------------------------------
         :param lst: list 包含id列表的字典
         """
-
+        users = models.User.where(id__in=lst).all()
+        for user in users:
+            user.groups = []
+            user.roles = []
+            parse_user_groups_change(user)
         models.User.delete_by_ids(lst)
         logger.info(f"{current_user.username}删除了用户{lst}")
 
@@ -101,7 +106,9 @@ class UserItemView(MethodView):
         """
         更新用户
         """
-        user = models.User.update_by_id(user_id, schemas.UserSchema, user)
+        user = models.User.update_by_id(user_id, schemas.UserSchema, user, commit=False)
+        parse_user_groups_change(user)
+        models.db.session.commit()
         logger.info(f"{current_user.username}更新了用户{user.id}")
 
         return {"data": user}
@@ -113,7 +120,11 @@ class UserItemView(MethodView):
         """
         删除用户
         """
-        models.User.delete_by_id(user_id)
+        user = models.User.get_by_id(user_id)
+        user.groups = []
+        parse_user_groups_change(user)
+        user.roles = []
+        user.delete()
         logger.info(f"{current_user.username}删除了用户{user_id}")
 
     @doc_login_required
@@ -130,13 +141,14 @@ class UserItemView(MethodView):
 
 @blp.route("/register")
 class UserRegisterView(MethodView):
-    @blp.arguments(schemas.UserSchema)
+    @blp.arguments(schemas.UserRegisterSchema)
     @blp.response(schemas.UserItemSchema)
     def put(self, user: models.User) -> Dict[str, models.User]:
         """
         注册用户
         """
         user = create_user(user)
+        set_default_groups_for_user(user)
         return {"data": user}
 
 

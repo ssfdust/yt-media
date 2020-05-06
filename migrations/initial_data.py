@@ -5,6 +5,7 @@ from datetime import datetime
 from getpass import getpass
 from typing import Any, List, Optional, Type
 
+from smorest_sfs.extensions import db
 from smorest_sfs.modules.auth.permissions import (
     DEFAULT_ROLES_PERMISSIONS_MAPPING as mapping,
 )
@@ -12,7 +13,8 @@ from smorest_sfs.modules.auth.permissions import PERMISSIONS, ROLES
 from smorest_sfs.modules.email_templates.models import EmailTemplate
 from smorest_sfs.modules.roles.models import Permission, Role
 from smorest_sfs.modules.storages.models import Storages
-from smorest_sfs.modules.users.models import Model, User, UserInfo, db
+from smorest_sfs.modules.users.models import Model, User, UserInfo
+from smorest_sfs.modules.groups.models import Group
 from smorest_sfs.utils.storages import load_avator_from_path
 
 
@@ -115,3 +117,10 @@ def init_email_templates() -> None:
     template = '<p>{{ message | safe }}</p><a href="{{ url }}" target="_blank">点击访问</a>'
     for name in ["default", "confirm", "reset-password"]:
         EmailTemplate.create(name=name, template=template)
+
+
+def init_groups() -> None:
+    """初始化用户组"""
+    role = Role.get_by_name(ROLES.User)
+    Group.create(name="默认用户组", description="默认用户组",
+                 default=True, roles=[role])
