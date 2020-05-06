@@ -17,6 +17,7 @@ class GroupSchema(SQLAlchemyAutoSchema):
 
     class Meta:
         model = models.Group
+        exclude = ['left', 'right']
 
 
 class GroupPageSchema(BasePageSchema):

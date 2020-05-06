@@ -21,7 +21,6 @@ def add_groups_roles_to_user(user: User, groups: List[Group]) -> None:
 def delete_groups_roles_from_user(user: User, groups: List[Group]) -> None:
     if groups:
         logger.info(f"为用户{user.nickname}删除{', '.join([g.name for g in groups])}组的权限")
-        breakpoint()
         execute(DeleteGroupFromUser, user=user, groups=groups)
 
 
@@ -37,7 +36,6 @@ def set_default_groups_for_user(user: User) -> User:
 def parse_user_groups_change(user: User) -> None:
     try:
         hist = get_histroy(user, "groups")
-        db.session.flush()
         add_groups_roles_to_user(user, hist.added)
         delete_groups_roles_from_user(user, hist.deleted)
     except ValueError:
