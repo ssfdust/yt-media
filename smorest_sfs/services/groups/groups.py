@@ -23,8 +23,8 @@ def delete_roles_from_group(group: Group, roles: List[Role]) -> None:
 
 def parse_group_change(group: Group) -> None:
     try:
-        hist = get_histroy(group, "groups")
+        hist = get_histroy(group, "roles")
         delete_roles_from_group(group, hist.deleted)
         add_roles_to_group(group, hist.added)
     except ValueError:
-        logger.debug("There is no changes in groups of user {user.nickname}")
+        logger.debug(f"There is no changes in roles of group {group.name}")

@@ -13,12 +13,12 @@ from loguru import logger
 
 from smorest_sfs.extensions.api.decorators import paginate
 from smorest_sfs.extensions.marshal.bases import (
-    BaseIntListSchema,
     BaseMsgSchema,
     GeneralParam,
 )
 from smorest_sfs.modules.auth import PERMISSIONS
 from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
+from smorest_sfs.services.groups import parse_group_change
 
 from . import blp, models, schemas
 
@@ -70,21 +70,6 @@ class GroupView(MethodView):
 
         return {"data": group}
 
-    @doc_login_required
-    @permission_required(PERMISSIONS.GroupDelete)
-    @blp.arguments(BaseIntListSchema, as_kwargs=True)
-    @blp.response(BaseMsgSchema)
-    def delete(self, lst: List[int]) -> None:
-        # pylint: disable=unused-argument
-        """
-        批量删除用户组
-        -------------------------------
-        :param lst: list 包含id列表的字典
-        """
-
-        models.Group.delete_by_ids(lst)
-        logger.info(f"{current_user.username}删除了用户组{lst}")
-
 
 @blp.route(
     "/<int:group_id>",
@@ -100,7 +85,8 @@ class GroupItemView(MethodView):
         更新用户组
         """
 
-        group = models.Group.update_by_id(group_id, schemas.GroupSchema, group)
+        group = models.Group.update_by_id(group_id, schemas.GroupSchema, group, commit=False)
+        parse_group_change(group)
         logger.info(f"{current_user.username}更新了用户组{group.id}")
 
         return {"data": group}
@@ -112,7 +98,11 @@ class GroupItemView(MethodView):
         """
         删除用户组
         """
-        models.Group.delete_by_id(group_id)
+        group = models.Group.get_by_id(group_id)
+        group.roles = []
+        parse_group_change(group)
+        group.users = []
+        group.delete()
         logger.info(f"{current_user.username}删除了用户组{group_id}")
 
     @doc_login_required

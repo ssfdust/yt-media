@@ -21,5 +21,28 @@ class TestGroupModify(GeneralModify):
     delete_param_key = "group_id"
     schema = "GroupSchema"
 
-    def test_delete(self) -> None:
-        self._delete_request()
+    def test_add(self) -> None:
+        json = {
+            "name": "test_add_group",
+            "description": "",
+            "default": False,
+            "roles": [],
+            "users": [],
+        }
+        data = self._add_request(json)
+        assert data.keys() > {"id", "name"}
+
+    def test_item_modify(self) -> None:
+        data = self._item_modify_request(
+            json={
+                "name": "qq",
+                "description": "",
+                "default": True,
+                "roles": [],
+                "users": [],
+            }
+        )
+        assert data["name"] == "qq"
+
+    def test_item_delete(self) -> None:
+        self._item_delete_request()
