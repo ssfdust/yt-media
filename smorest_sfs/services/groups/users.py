@@ -39,9 +39,3 @@ def parse_user_groups_change(user: User) -> None:
         add_groups_roles_to_user(user, hist.added)
     except ValueError:
         logger.debug(f"There is no changes in groups of user {user.nickname}")
-
-
-def clear_user_groups(user: User) -> User:
-    delete_groups_roles_from_user(user, user.groups)
-    user.groups = []
-    return user
