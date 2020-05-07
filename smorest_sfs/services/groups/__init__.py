@@ -3,7 +3,6 @@
 
 from .users import (
     add_groups_roles_to_user,
-    clear_user_groups,
     delete_groups_roles_from_user,
     parse_user_groups_change,
     set_default_groups_for_user,
@@ -15,6 +14,5 @@ __all__ = [
     "add_groups_roles_to_user",
     "delete_groups_roles_from_user",
     "set_default_groups_for_user",
-    "clear_user_groups",
     "parse_group_change"
 ]
