@@ -36,8 +36,8 @@ def set_default_groups_for_user(user: User) -> User:
 def parse_user_groups_change(user: User) -> None:
     try:
         hist = get_histroy(user, "groups")
-        add_groups_roles_to_user(user, hist.added)
         delete_groups_roles_from_user(user, hist.deleted)
+        add_groups_roles_to_user(user, hist.added)
     except ValueError:
         logger.debug("There is no changes in groups of user {user.nickname}")
 

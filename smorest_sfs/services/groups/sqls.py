@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 from typing import List, Tuple
 
-from sqlalchemy import select, literal_column
+from sqlalchemy import literal_column, select
 from sqlalchemy.sql import Join
 
 from smorest_sfs.extensions import db
 from smorest_sfs.modules.groups.models import groups_roles
+from smorest_sfs.modules.roles.models import Role
 from smorest_sfs.modules.users.models import Group, User, groups_users, roles_users
 from smorest_sfs.plugins.sa import SAStatement
 
@@ -69,14 +70,22 @@ class DeleteGroupFromUser(SAStatement):
         return (remaining_role_sql, deleted_role_sql, joined_role_sql)
 
     def _get_user_role_sql(self) -> select:
-        remaining_role_sql, deleted_role_sql, joined_role_sql = self.__get_role_sql_tuple()
-        return db.select(
-            [
-                deleted_role_sql.c.role_id,
-                remaining_role_sql.c.role_id.label("r_role_id"),
-                literal_column(str(self._user.id), db.Integer).label("user_id")
-            ]
-        ).select_from(joined_role_sql).where(remaining_role_sql.c.role_id.is_(None))
+        (
+            remaining_role_sql,
+            deleted_role_sql,
+            joined_role_sql,
+        ) = self.__get_role_sql_tuple()
+        return (
+            db.select(
+                [
+                    deleted_role_sql.c.role_id,
+                    remaining_role_sql.c.role_id.label("r_role_id"),
+                    literal_column(str(self._user.id), db.Integer).label("user_id"),
+                ]
+            )
+            .select_from(joined_role_sql)
+            .where(remaining_role_sql.c.role_id.is_(None))
+        )
 
 
 class AddUserToGroup(SAStatement):
@@ -117,4 +126,123 @@ class AddUserToGroup(SAStatement):
                 )
             )
             .distinct()
+        )
+
+
+class AddRoleToGroup(SAStatement):
+    def __init__(self, group: Group, roles: List[Role]):
+        # pylint: disable=W0231
+        self._group = group
+        self._roles = roles
+        self._build_sql()
+
+    def _build_sql(self) -> None:
+        absent_users_roles = self._get_absent_users_roles()
+        self.sa_sql = roles_users.insert().from_select(
+            ["user_id", "role_id"], absent_users_roles
+        )
+
+    def _get_absent_users_roles(self) -> select:
+        _users_roles = self._get_users_roles_sql()
+        return (
+            db.select([_users_roles.c.user_id, _users_roles.c.role_id])
+            .select_from(
+                db.outerjoin(
+                    _users_roles,
+                    roles_users,
+                    db.and_(
+                        _users_roles.c.role_id == roles_users.c.role_id,
+                        _users_roles.c.user_id == roles_users.c.user_id,
+                    ),
+                )
+            )
+            .where(roles_users.c.user_id.is_(None))
+        )
+
+    def _get_users_roles_sql(self) -> select:
+        group_users = db.alias(
+            db.select([groups_users.c.user_id]).where(
+                groups_users.c.group_id == self._group.id
+            ),
+            "group_users",
+        )
+        group_users_roles = db.join(
+            group_users, groups_users, group_users.c.user_id == groups_users.c.user_id,
+        ).join(groups_roles, groups_roles.c.group_id == groups_users.c.group_id)
+        return db.alias(
+            db.select([group_users.c.user_id, groups_roles.c.role_id,])
+            .select_from(group_users_roles)
+            .distinct(),
+            "_users_roles",
+        )
+
+
+class DeleteRoleFromGroup(SAStatement):
+    def __init__(self, group: Group, roles: List[Role]):
+        # pylint: disable=W0231
+        self._group = group
+        self._roles = roles
+        self._build_sql()
+
+    def _build_sql(self) -> None:
+        delete_users_roles_sql = self._get_delete_users_roles()
+        self.sa_sql = roles_users.delete().where(
+            db.and_(
+                roles_users.c.role_id == delete_users_roles_sql.c.role_id,
+                roles_users.c.user_id == delete_users_roles_sql.c.user_id,
+            )
+        )
+
+    def _get_delete_users_roles(self) -> select:
+        remain_users_roles, deleted_users_roles = self._get_absent_users_roles()
+        return db.select([
+            deleted_users_roles.c.role_id,
+            deleted_users_roles.c.user_id
+        ]).select_from(
+            deleted_users_roles.outerjoin(remain_users_roles, db.and_(
+                remain_users_roles.c.role_id == deleted_users_roles.c.role_id,
+                remain_users_roles.c.user_id == deleted_users_roles.c.user_id,
+            ))
+        ).where(
+            remain_users_roles.c.role_id.is_(None)
+        )
+
+    def _get_absent_users_roles(self) -> Tuple[select, select]:
+        _users_group_roles = self._get_users_group_roles_sql()
+        remaining_users_roles_sql = db.alias(
+            db.select([_users_group_roles.c.user_id,
+                       _users_group_roles.c.role_id]).where(
+                db.or_(
+                    _users_group_roles.c.group_id != self._group.id,
+                    _users_group_roles.c.role_id.notin_([r.id for r in self._roles])
+                )
+            ),
+            "reamaining_role_sql"
+        )
+        deleted_users_roles_sql = db.alias(
+            db.select([_users_group_roles.c.user_id,
+                       _users_group_roles.c.role_id]).where(
+                           db.and_(
+                               _users_group_roles.c.group_id == self._group.id,
+                               _users_group_roles.c.role_id.in_([r.id for r in self._roles])
+                           )
+                       ),
+            "deleted_users_roles_sql"
+        )
+        return (remaining_users_roles_sql, deleted_users_roles_sql)
+
+    def _get_users_group_roles_sql(self) -> select:
+        group_users = db.alias(
+            db.select([groups_users.c.user_id]).where(
+                groups_users.c.group_id == self._group.id
+            ),
+            "group_users",
+        )
+        group_users_roles = db.join(
+            group_users, groups_users, group_users.c.user_id == groups_users.c.user_id,
+        ).join(groups_roles, groups_roles.c.group_id == groups_users.c.group_id)
+        return db.alias(
+            db.select([group_users.c.user_id, groups_users.c.group_id, groups_roles.c.role_id])
+            .select_from(group_users_roles),
+            "_users_roles",
         )

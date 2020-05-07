@@ -76,7 +76,9 @@ class TestUserGroupManager(GeneralModify):
         for group_idxlst, role_idlst in [
             ([0], ["f", "a", "c", "b"]),
             ([0, 1, 2], ["a", "b", "c", "f", "d", "e"]),
+            ([0, 1], ["a", "b", "c", "f"]),
             ([2], ["e", "d", "c"]),
+            ([1, 3], ["f", "c"]),
         ]:
             self._modify_user_groups(group_idxlst, set(role_idlst))
 
