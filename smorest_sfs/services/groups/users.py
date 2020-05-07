@@ -4,7 +4,6 @@ from typing import List
 
 from loguru import logger
 
-from smorest_sfs.extensions import db
 from smorest_sfs.modules.users.models import Group, User
 from smorest_sfs.plugins.sa import execute
 from smorest_sfs.utils.sqla import get_histroy
@@ -14,13 +13,13 @@ from .sqls import AddUserToGroup, DeleteGroupFromUser
 
 def add_groups_roles_to_user(user: User, groups: List[Group]) -> None:
     if groups:
-        logger.info(f"为用户{user.nickname}添加{', '.join([g.name for g in groups])}组的权限")
+        logger.info(f"为用户{user.nickname}添加{', '.join([g.name for g in groups])}组的角色")
         execute(AddUserToGroup, user=user, groups=groups)
 
 
 def delete_groups_roles_from_user(user: User, groups: List[Group]) -> None:
     if groups:
-        logger.info(f"为用户{user.nickname}删除{', '.join([g.name for g in groups])}组的权限")
+        logger.info(f"为用户{user.nickname}删除{', '.join([g.name for g in groups])}组的角色")
         execute(DeleteGroupFromUser, user=user, groups=groups)
 
 

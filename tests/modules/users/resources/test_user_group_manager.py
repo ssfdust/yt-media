@@ -24,13 +24,9 @@ class TestUserGroupManager(GeneralModify):
         "flask_app_client",
         "flask_app",
         "regular_user",
-        "forget_passwd_user",
-        "inactive_user",
-        "guest_user",
         "fake_roles",
         "fake_groups",
         "fake_users",
-        "UserSchema",
     )
     schema = "UserSchema"
     item_view = "User.UserItemView"
