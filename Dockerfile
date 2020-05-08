@@ -5,7 +5,7 @@ ENV FLASK_ENV="production" \
       HOST="0.0.0.0" \
       PYTHONPYCACHEPREFIX="/pycache" \
       LOGURU_LEVEL=INFO \
-      DOCKERIZE_VERSION v0.6.1 \
+      DOCKERIZE_VERSION="v0.6.1" \
       APP="web"
 
 RUN mkdir Application
