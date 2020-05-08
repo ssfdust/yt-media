@@ -5,6 +5,7 @@ ENV FLASK_ENV="production" \
       HOST="0.0.0.0" \
       PYTHONPYCACHEPREFIX="/pycache" \
       LOGURU_LEVEL=INFO \
+      DOCKERIZE_VERSION v0.6.1 \
       APP="web"
 
 RUN mkdir Application
@@ -16,12 +17,17 @@ COPY pyproject.toml poetry.lock /
 RUN /entrypoint.sh \
         -a zlib \
         -a libjpeg \
+        -a openssl \
         -a postgresql-libs \
         -b zlib-dev \
         -b libffi-dev \
         -b jpeg-dev \
         -b freetype-dev \
         -b postgresql-dev
+
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 CMD [
     "dockerize",
