@@ -29,4 +29,4 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-CMD dockerize -wait tcp://db:5432 -wait tcp://redis:6379 -wait tcp://rabbitmq:5672 bash scripts/initapp.sh
+CMD dockerize -timeout 300s -wait tcp://db:5432 -wait tcp://redis:6379 -wait tcp://rabbitmq:5672 bash scripts/initapp.sh

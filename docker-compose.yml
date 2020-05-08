@@ -29,6 +29,10 @@ services:
             - "80:80"
         volumes:
             - /var/run/docker.sock:/tmp/docker.sock:ro
+        depends_on:
+            - pgadmin4
+            - rabbitmq
+            - web
 
     web:
         image: ssfdust/smorest-sfs
