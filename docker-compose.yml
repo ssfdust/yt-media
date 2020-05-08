@@ -32,7 +32,7 @@ services:
 
     web:
         image: ssfdust/smorest-sfs
-        command: sh scripts/initapp.sh
+        command: dockerize -wait tcp://db:5432 -wait tcp://redis:6379 -wait tcp://rabbitmq:5672 bash scripts/initapp.sh
         volumes:
             - .:/Application 
         restart: on-failure
@@ -48,19 +48,21 @@ services:
 
     beat:
         image: ssfdust/smorest-sfs
-        command: celery beat --app=smorest_sfs.app:celery_app -S redbeat.RedBeatScheduler
         volumes:
             - .:/Application 
         depends_on:
             - web
+        environment:
+            APP: beat
 
     celery:
         image: ssfdust/smorest-sfs
-        command: celery --app=smorest_sfs.app:celery_app worker -l INFO -E
         volumes:
             - .:/Application 
         depends_on:
             - web
+        environment:
+            APP: celery
 
     pgadmin:
         image: dpage/pgadmin4

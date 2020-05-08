@@ -15,7 +15,7 @@ from migrations import initial_data
 
 def upgrade():
     from smorest_sfs.services.users import create_user
-    from smorest_sfs.modules.users.schemas import UserSchema
+    from smorest_sfs.modules.users.schemas import UserRegisterSchema
     db.create_all()
     initial_data.init_permission()
     data = {
@@ -27,7 +27,7 @@ def upgrade():
         "active": True,
         "userinfo": {"first_name": "飘", "last_name": "尘", "sex": 1, "age": 26}
     }
-    user = UserSchema().load(data)
+    user = UserRegisterSchema().load(data)
     create_user(user, is_admin=True)
     initial_data.init_email_templates()
 
