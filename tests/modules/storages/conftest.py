@@ -17,6 +17,7 @@ def store() -> FileStorage:
 
 @pytest.fixture
 def storage(store: FileStorage) -> Storages:
+    # pylint: disable=W0621
     return Storages(name="test.txt", storetype="foo", store=store)
 
 
@@ -27,6 +28,7 @@ def next_store() -> FileStorage:
 
 @pytest.fixture
 def add_storage(store: FileStorage) -> Storages:
+    # pylint: disable=W0621
     factory = StorageFactory(Storages(name="test.txt", storetype="foo", store=store))
     storage: Storages = factory.save()
     return storage

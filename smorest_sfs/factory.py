@@ -42,7 +42,7 @@ def create_app(module_names: List[str], config_name: str = "development") -> Fla
     app.config.from_toml(CONFIG_MAPPGING[config_type])
 
     app.config["ENABLED_MODULES"] = module_names
-    
+
     init_app(app)
 
     register_modules(app)

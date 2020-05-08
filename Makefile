@@ -7,21 +7,21 @@ all:
 		-t ssfdust/yt-media .
 
 services:
-	sudo systemctl start postgresql rabbitmq redis docker
+	sudo systemctl start postgresql rabbitmq redis
 
 services-off:
 	sudo systemctl stop postgresql rabbitmq redis
 
-deploy:
-	sudo docker-compose up -d db rabbitmq redis pgadmin 
+up:
+	sudo podman-compose up -d db rabbitmq redis pgadmin 
 	sleep 20
-	sudo docker-compose up -d web celery beat
+	sudo podman-compose up -d web celery beat
 	sleep 5
-	sudo docker-compose up -d nginx
+	sudo podman-compose up -d nginx
 
 stop:
-	sudo docker-compose exec beat rm -f celerybeat.pid
-	sudo docker-compose stop
+	sudo podman-compose exec beat rm -f celerybeat.pid
+	sudo podman-compose stop
 
 start:
-	sudo docker-compose start
+	sudo podman-compose start

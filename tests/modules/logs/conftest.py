@@ -3,16 +3,17 @@
 from typing import Any, Callable, Iterator, Tuple, Type
 
 import pytest
+from flask import Flask
 from marshmallow import Schema
 
 from smorest_sfs.modules.logs.models import Log, ResponseLog
 
 
 @pytest.fixture
-@pytest.mark.usefixtures("flask_app")
 def log_items(
-    temp_db_instance_helper: Callable[..., Iterator[Any]],
+    flask_app: Flask, temp_db_instance_helper: Callable[..., Iterator[Any]],
 ) -> Iterator[Tuple[Log, ...]]:
+    # pylint: disable=W0613
     for _ in temp_db_instance_helper(
         Log(
             module="test.info",
@@ -83,10 +84,10 @@ def log_items(
 
 
 @pytest.fixture
-@pytest.mark.usefixtures("flask_app")
 def resp_log_items(
-    temp_db_instance_helper: Callable[..., Iterator[Any]],
+    flask_app: Flask, temp_db_instance_helper: Callable[..., Iterator[Any]],
 ) -> Iterator[Tuple[ResponseLog, ...]]:
+    # pylint: disable=W0613
     for _ in temp_db_instance_helper(
         ResponseLog(
             module="test.test_1",
@@ -156,8 +157,8 @@ def resp_log_items(
 
 
 @pytest.fixture
-def LogSchema() -> Type[Schema]:
-    # pylint: disable=W0621
+def LogSchema(flask_app: Flask) -> Type[Schema]:
+    # pylint: disable=W0621, W0613
     from smorest_sfs.modules.logs.schemas import LogSchema
 
     return LogSchema

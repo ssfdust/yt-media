@@ -33,7 +33,9 @@ class StatementAbstract(ABC):
             dialect=postgresql.dialect(), compile_kwargs={"literal_binds": True},
         )
         _raw_sql = str(compiled_sql)
-        return sqlparse.format(_raw_sql, reindent=True, reindent_aligned=False, indent_width=4)
+        return sqlparse.format(
+            _raw_sql, reindent=True, reindent_aligned=False, indent_width=4
+        )
 
     def debug_sql(self, need_copy: bool = True) -> None:
         """debug sql的abc方法"""

@@ -12,8 +12,8 @@ from marshmallow.validate import OneOf, Range
 from sqlalchemy_utils.types import PasswordType
 
 from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
-from smorest_sfs.modules.roles.models import permission_roles
 from smorest_sfs.modules.groups.models import Group, groups_users
+from smorest_sfs.modules.roles.models import permission_roles
 from smorest_sfs.utils.sqla import RelateTableArgs, create_relation_table
 
 roles_users = create_relation_table(
@@ -90,11 +90,7 @@ class User(Model, SurrogatePK):
         secondaryjoin=Group.id == groups_users.c.group_id,
         doc="组下用户",
         foreign_keys=[groups_users.c.group_id, groups_users.c.user_id],
-        info={
-            "marshmallow": {
-                "column": ["id", "name"]
-            }
-        }
+        info={"marshmallow": {"column": ["id", "name"]}},
     )
 
     @classmethod
@@ -186,7 +182,7 @@ class UserInfo(SurrogatePK, Model):
     )
 
     def __repr__(self) -> str:
-        return self.user.username
+        return self.nickname
 
     @property
     def nickname(self) -> str:

@@ -3,6 +3,7 @@
 from typing import Iterator, Type
 
 import pytest
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema
 
@@ -10,8 +11,10 @@ from smorest_sfs.services.menus.import_menus import import_menus_from_filepath, 
 
 
 @pytest.fixture
-@pytest.mark.usefixtures("flask_app", "MenuSchema")
-def fake_menus(db: SQLAlchemy) -> Iterator[None]:
+def fake_menus(
+    flask_app: Flask, MenuSchema: Type[Schema], db: SQLAlchemy
+) -> Iterator[None]:
+    # pylint: disable=W0621, W0613
     import_menus_from_filepath("tests/data/menus/test-menus.xlsx")
     yield
     db.session.execute(
@@ -21,8 +24,8 @@ def fake_menus(db: SQLAlchemy) -> Iterator[None]:
 
 
 @pytest.fixture
-def MenuSchema() -> Type[Schema]:
-    # pylint: disable=W0621
+def MenuSchema(flask_app: Flask) -> Type[Schema]:
+    # pylint: disable=W0621, W0613
     from smorest_sfs.modules.menus.schemas import MenuSchema
 
     return MenuSchema

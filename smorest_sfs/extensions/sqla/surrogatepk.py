@@ -8,7 +8,9 @@ from typing import Any, List, Type, Union
 from flask_sqlalchemy import _QueryProperty
 from marshmallow import Schema
 from sqlalchemy import Boolean, Column, DateTime, Integer
-from sqlalchemy_utils.types.enriched_datetime.enriched_datetime_type import EnrichedDateTimeType
+from sqlalchemy_utils.types.enriched_datetime.enriched_datetime_type import (
+    EnrichedDateTimeType,
+)
 
 from .db_instance import db
 from .helpers import utcnow

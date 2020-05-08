@@ -35,7 +35,7 @@ class ROLES:
     CodeManager = "CodeManager"
     MenuManager = "MenuManager"
     LogManager = "LogManager"
-    groupManager = 'groupManager'
+    groupManager = "groupManager"
     # End Of ROLES
 
 
@@ -87,10 +87,10 @@ class PERMISSIONS:
     LogDelete = "LogDeletePrivilege"
     LogQuery = "LogQueryPrivilege"
     # groupManager
-    groupAdd = 'groupAddPrivilege'
-    groupEdit = 'groupEditPrivilege'
-    groupDelete = 'groupDeletePrivilege'
-    groupQuery = 'groupQueryPrivilege'
+    groupAdd = "groupAddPrivilege"
+    groupEdit = "groupEditPrivilege"
+    groupDelete = "groupDeletePrivilege"
+    groupQuery = "groupQueryPrivilege"
     # End Of PERMISSIONS
 
 
@@ -144,8 +144,10 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.LogEdit,
         PERMISSIONS.LogQuery,
         # 用户组管理
-        PERMISSIONS.groupAdd, PERMISSIONS.groupDelete,
-        PERMISSIONS.groupEdit, PERMISSIONS.groupQuery,
+        PERMISSIONS.groupAdd,
+        PERMISSIONS.groupDelete,
+        PERMISSIONS.groupEdit,
+        PERMISSIONS.groupQuery,
         # End Of SuperUser
     ],
     ROLES.GroupManager: [
@@ -197,8 +199,10 @@ DEFAULT_ROLES_PERMISSIONS_MAPPING = {
         PERMISSIONS.LogQuery,
     ],
     ROLES.groupManager: [
-        PERMISSIONS.groupAdd, PERMISSIONS.groupDelete,
-        PERMISSIONS.groupEdit, PERMISSIONS.groupQuery
+        PERMISSIONS.groupAdd,
+        PERMISSIONS.groupDelete,
+        PERMISSIONS.groupEdit,
+        PERMISSIONS.groupQuery,
     ],
     # End Of Permissions Mapping
 }

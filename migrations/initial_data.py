@@ -122,5 +122,4 @@ def init_email_templates() -> None:
 def init_groups() -> None:
     """初始化用户组"""
     role = Role.get_by_name(ROLES.User)
-    Group.create(name="默认用户组", description="默认用户组",
-                 default=True, roles=[role])
+    Group.create(name="默认用户组", description="默认用户组", default=True, roles=[role])

@@ -4,21 +4,33 @@
 
     用户组模块的Schemas
 """
-from smorest_sfs.extensions.marshal import BasePageSchema, BaseMsgSchema, SQLAlchemyAutoSchema
-from marshmallow import fields, Schema
+from marshmallow import Schema, fields
+
+from smorest_sfs.extensions.marshal import (
+    auto_field,
+    BaseMsgSchema,
+    BasePageSchema,
+    SQLAlchemySchema,
+    SQLAlchemyAutoSchema,
+)
 
 from . import models
 
 
-class GroupSchema(SQLAlchemyAutoSchema):
+class GroupSchema(SQLAlchemySchema):
     """
     用户组的序列化类
     """
+    id = auto_field(dump_only=True)
+    name = auto_field()
+    default = auto_field()
+    description = auto_field()
+    roles = auto_field()
+    users = auto_field(dump_only=True)
 
     class Meta:
         model = models.Group
-        include_relationship = True
-        fields = ['id', 'name', 'description', 'default', 'users', 'roles']
+        load_instance = True
 
 
 class GroupPageSchema(BasePageSchema):
@@ -37,7 +49,7 @@ class GroupOptsSchema(Schema):
     """用户组的选项"""
 
     class Meta:
-        fields = ('id', 'name')
+        fields = ("id", "name")
 
 
 class GroupListSchema(Schema):

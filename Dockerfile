@@ -4,7 +4,8 @@ ENV FLASK_ENV="production" \
       FLASK_APP="/Application/smorest_sfs/app.py" \
       HOST="0.0.0.0" \
       PYTHONPYCACHEPREFIX="/pycache" \
-      LOGURU_LEVEL=INFO
+      LOGURU_LEVEL=INFO \
+      APP="web"
 
 RUN mkdir Application
 
@@ -22,4 +23,10 @@ RUN /entrypoint.sh \
         -b freetype-dev \
         -b postgresql-dev
 
-CMD ["scripts/initapp.sh"]
+CMD [
+    "dockerize",
+    "-wait", "tcp://db:5432",
+    "-wait", "tcp://redis:6379",
+    "-wait", "tcp://rabbitmq:5672",
+    "scripts/initapp.sh"
+]

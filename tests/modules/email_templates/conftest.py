@@ -3,16 +3,17 @@
 from typing import Any, Callable, Iterator, Tuple, Type
 
 import pytest
+from flask import Flask
 from marshmallow import Schema
 
 from smorest_sfs.modules.email_templates.models import EmailTemplate
 
 
 @pytest.fixture
-@pytest.mark.usefixtures("flask_app")
 def email_template_items(
-    temp_db_instance_helper: Callable[..., Iterator[Any]],
+    flask_app: Flask, temp_db_instance_helper: Callable[..., Iterator[Any]],
 ) -> Iterator[Tuple[EmailTemplate, EmailTemplate, EmailTemplate]]:
+    # pylint: disable=W0613
     for _ in temp_db_instance_helper(
         *(EmailTemplate(name=str(_), template="qq") for _ in range(3))
     ):
@@ -20,8 +21,8 @@ def email_template_items(
 
 
 @pytest.fixture
-def EmailTemplateSchema() -> Type[Schema]:
-    # pylint: disable=W0621
+def EmailTemplateSchema(flask_app: Flask) -> Type[Schema]:
+    # pylint: disable=W0621, W0613
     from smorest_sfs.modules.email_templates.schemas import EmailTemplateSchema
 
     return EmailTemplateSchema

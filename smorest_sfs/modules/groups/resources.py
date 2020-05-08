@@ -12,10 +12,7 @@ from flask_sqlalchemy import BaseQuery
 from loguru import logger
 
 from smorest_sfs.extensions.api.decorators import paginate
-from smorest_sfs.extensions.marshal.bases import (
-    BaseMsgSchema,
-    GeneralParam,
-)
+from smorest_sfs.extensions.marshal.bases import BaseMsgSchema, GeneralParam
 from smorest_sfs.modules.auth import PERMISSIONS
 from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
 from smorest_sfs.services.groups import parse_group_change
@@ -85,7 +82,9 @@ class GroupItemView(MethodView):
         更新用户组
         """
 
-        group = models.Group.update_by_id(group_id, schemas.GroupSchema, group, commit=False)
+        group = models.Group.update_by_id(
+            group_id, schemas.GroupSchema, group, commit=False
+        )
         parse_group_change(group)
         logger.info(f"{current_user.username}更新了用户组{group.id}")
 

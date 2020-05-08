@@ -23,7 +23,10 @@ from smorest_sfs.modules.auth.decorators import (
     permission_required,
     role_required,
 )
-from smorest_sfs.services.groups import set_default_groups_for_user, parse_user_groups_change
+from smorest_sfs.services.groups import (
+    parse_user_groups_change,
+    set_default_groups_for_user,
+)
 from smorest_sfs.services.users import create_user
 
 from . import blp, models, schemas

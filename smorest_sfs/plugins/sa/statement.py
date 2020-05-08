@@ -7,7 +7,7 @@
 from typing import Any, Dict, List, Union
 
 from loguru import logger
-from sqlalchemy import select, delete, insert, update
+from sqlalchemy import delete, insert, select, update
 
 from smorest_sfs.extensions import db
 

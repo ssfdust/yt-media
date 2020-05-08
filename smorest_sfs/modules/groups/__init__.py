@@ -7,4 +7,4 @@
 """
 from flask_smorest import Blueprint
 
-blp = Blueprint('Group', __name__, url_prefix='/groups', description='用户组模块')
+blp = Blueprint("Group", __name__, url_prefix="/groups", description="用户组模块")

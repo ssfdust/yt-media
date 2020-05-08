@@ -64,4 +64,11 @@ class TestRespLogListView(GeneralGet):
         data = self._get_list(**params)
         assert len(data) == count
         if count:
-            assert data[0].keys() > {"id", "module", "status_code", "ip", "method", "url"}
+            assert data[0].keys() > {
+                "id",
+                "module",
+                "status_code",
+                "ip",
+                "method",
+                "url",
+            }

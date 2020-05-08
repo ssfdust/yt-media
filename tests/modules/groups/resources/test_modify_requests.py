@@ -1,13 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import Dict
-
-import pytest
 
 from smorest_sfs.modules.auth import ROLES
 from smorest_sfs.modules.groups.models import Group
-from smorest_sfs.modules.groups.schemas import GroupSchema
-from tests._utils.helpers import param_helper
 from tests._utils.injection import GeneralModify
 
 
@@ -27,7 +22,6 @@ class TestGroupModify(GeneralModify):
             "description": "",
             "default": False,
             "roles": [],
-            "users": [],
         }
         data = self._add_request(json)
         assert data.keys() > {"id", "name"}
@@ -39,7 +33,6 @@ class TestGroupModify(GeneralModify):
                 "description": "",
                 "default": True,
                 "roles": [],
-                "users": [],
             }
         )
         assert data["name"] == "qq"

@@ -5,8 +5,8 @@ from typing import Callable, List, Type
 import pytest
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema
-from werkzeug.exceptions import NotFound
 from pendulum import datetime
+from werkzeug.exceptions import NotFound
 
 from smorest_sfs.extensions.sqla import Model
 from tests._utils.injection import FixturesInjectBase

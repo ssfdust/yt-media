@@ -3,11 +3,14 @@
 from typing import List
 
 from loguru import logger
-from smorest_sfs.modules.users.models import Group
+
 from smorest_sfs.modules.roles.models import Role
+from smorest_sfs.modules.users.models import Group
 from smorest_sfs.plugins.sa import execute
 from smorest_sfs.utils.sqla import get_histroy
+
 from .sqls import AddRoleToGroup, DeleteRoleFromGroup
+
 
 def add_roles_to_group(group: Group, roles: List[Role]) -> None:
     if roles:

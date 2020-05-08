@@ -5,12 +5,18 @@
     用户组的ORM模块
 """
 from __future__ import annotations
-from sqlalchemy_mptt import BaseNestedSets
-from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
-from smorest_sfs.utils.sqla import create_relation_table, RelateTableArgs
 
-groups_users = create_relation_table(db, RelateTableArgs("groups_users", "group_id", "user_id"))
-groups_roles = create_relation_table(db, RelateTableArgs("groups_roles", "group_id", "role_id"))
+from sqlalchemy_mptt import BaseNestedSets
+
+from smorest_sfs.extensions.sqla import Model, SurrogatePK, db
+from smorest_sfs.utils.sqla import RelateTableArgs, create_relation_table
+
+groups_users = create_relation_table(
+    db, RelateTableArgs("groups_users", "group_id", "user_id")
+)
+groups_roles = create_relation_table(
+    db, RelateTableArgs("groups_roles", "group_id", "role_id")
+)
 
 
 class Group(Model, SurrogatePK, BaseNestedSets):
@@ -38,6 +44,7 @@ class Group(Model, SurrogatePK, BaseNestedSets):
         foreign_keys="[groups_users.c.group_id, groups_users.c.user_id]",
         active_history=True,
         lazy="joined",
+        info={"marshmallow": {"column": ["id", "username"]}}
     )
     roles = db.relationship(
         "Role",
@@ -48,6 +55,7 @@ class Group(Model, SurrogatePK, BaseNestedSets):
         foreign_keys="[groups_roles.c.group_id, groups_roles.c.role_id]",
         active_history=True,
         lazy="joined",
+        info={"marshmallow": {"column": ["id", "name"]}}
     )
 
     @classmethod

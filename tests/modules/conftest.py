@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from typing import Any, Callable, Iterator, Tuple
+
 import pytest
+from flask import Flask
+
 from smorest_sfs.modules.groups.models import Group
 from smorest_sfs.modules.roles.models import Role
 from smorest_sfs.modules.users.models import User, UserInfo
@@ -9,8 +12,9 @@ from smorest_sfs.modules.users.models import User, UserInfo
 
 @pytest.fixture
 def fake_roles(
-    temp_db_instance_helper: Callable[..., Iterator[Any]],
+    flask_app: Flask, temp_db_instance_helper: Callable[..., Iterator[Any]],
 ) -> Iterator[Tuple[Role, ...]]:
+    # pylint: disable=W0613
     for _ in temp_db_instance_helper(
         Role(name="a", user_default=True),
         Role(name="b"),
@@ -24,8 +28,9 @@ def fake_roles(
 
 @pytest.fixture
 def fake_groups(
-    temp_db_instance_helper: Callable[..., Iterator[Any]],
+    flask_app: Flask, temp_db_instance_helper: Callable[..., Iterator[Any]],
 ) -> Iterator[Tuple[Group, ...]]:
+    # pylint: disable=W0613
     for _ in temp_db_instance_helper(
         Group(
             id=4,
@@ -51,8 +56,9 @@ def fake_groups(
 
 @pytest.fixture
 def fake_users(
-    temp_db_instance_helper: Callable[..., Iterator[Any]],
+    flask_app: Flask, temp_db_instance_helper: Callable[..., Iterator[Any]],
 ) -> Iterator[Tuple[User, ...]]:
+    # pylint: disable=W0613
     for _ in temp_db_instance_helper(
         User(
             username="fake_1",

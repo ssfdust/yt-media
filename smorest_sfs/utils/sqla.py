@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from typing import List, Optional
 from collections import namedtuple
-from sqlalchemy import Table, inspect, UniqueConstraint
+from typing import List, Optional
+
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Table, UniqueConstraint, inspect
+
 from smorest_sfs.extensions.sqla import Model
 
 RelateTableArgs = namedtuple(
     "RelateTableArgs", ["tablename", "related_key", "the_ohter_related_key"]
 )
+
 
 class AttrHistory:
     def __init__(self, added: Optional[List[Model]], deleted: Optional[List[Model]]):
@@ -21,7 +24,7 @@ def create_relation_table(db: SQLAlchemy, table_args: RelateTableArgs) -> Table:
         table_args.tablename,
         db.Column(table_args.related_key, db.Integer(), nullable=False),
         db.Column(table_args.the_ohter_related_key, db.Integer(), nullable=False),
-        UniqueConstraint(table_args.related_key, table_args.the_ohter_related_key)
+        UniqueConstraint(table_args.related_key, table_args.the_ohter_related_key),
     )
 
 

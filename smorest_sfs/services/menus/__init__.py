@@ -3,5 +3,4 @@
 
 from .import_menus import MenuTransformer, import_menus_from_filepath
 
-
 __all__ = ["MenuTransformer", "import_menus_from_filepath"]
