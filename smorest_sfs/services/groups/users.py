@@ -4,6 +4,7 @@ from typing import List
 
 from loguru import logger
 
+from smorest_sfs.extensions import db
 from smorest_sfs.modules.users.models import Group, User
 from smorest_sfs.plugins.sa import execute
 from smorest_sfs.utils.sqla import get_histroy
@@ -34,8 +35,9 @@ def set_default_groups_for_user(user: User) -> User:
 
 def parse_user_groups_change(user: User) -> None:
     try:
-        hist = get_histroy(user, "groups")
-        delete_groups_roles_from_user(user, hist.deleted)
-        add_groups_roles_to_user(user, hist.added)
+        with db.session.no_autoflush:
+            hist = get_histroy(user, "groups")
+            delete_groups_roles_from_user(user, hist.deleted)
+            add_groups_roles_to_user(user, hist.added)
     except ValueError:
         logger.debug(f"There is no changes in groups of user {user.nickname}")

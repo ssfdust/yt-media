@@ -257,3 +257,44 @@ class DeleteRoleFromGroup(SAStatement):
             ).select_from(group_users_roles),
             "_users_roles",
         )
+
+
+class AddMultiUserToGroup(AddRoleToGroup):
+    def __init__(self, group: Group, users: List[User]):
+        self._users = users
+        super().__init__(group=group, roles=group.roles)
+
+    def __build_sql(self) -> None:
+        absent_users_roles = db.alias(
+            self._get_absent_users_roles(), "absent_users_roles"
+        )
+        self.sa_sql = roles_users.insert().from_select(
+            ["user_id", "role_id"],
+            db.select([absent_users_roles]).where(
+                absent_users_roles.c.user_id.in_([u.id for u in self._users])
+            ),
+        )
+
+
+class DeleteMultiUserFromGroup(DeleteRoleFromGroup):
+    def __init__(self, group: Group, users: List[User]):
+        self._users = users
+        super().__init__(group=group, roles=group.roles)
+
+    def _build_sql(self) -> None:
+        delete_users_roles_sql = db.alias(
+            self._get_delete_users_roles(), "delete_users_roles"
+        )
+        target_delete_users_roles = db.alias(
+            db.select([delete_users_roles_sql]).where(
+                delete_users_roles_sql.c.user_id.in_([u.id for u in self._users])
+            ),
+            "target_delete_users_roles",
+        )
+        self._debug = db.select([delete_users_roles_sql])
+        self.sa_sql = roles_users.delete().where(
+            db.and_(
+                roles_users.c.role_id == target_delete_users_roles.c.role_id,
+                roles_users.c.user_id == target_delete_users_roles.c.user_id,
+            )
+        )

@@ -3,6 +3,7 @@
 
 
 from typing import Any, Dict, List, Set
+from functools import reduce
 
 import pytest
 
@@ -15,11 +16,8 @@ from tests._utils.injection import GeneralModify
 
 def get_roles(res: Dict[str, Any]) -> Set[str]:
     uids = [i["id"] for i in res["users"]]
-    _roles: Set[str] = set()
-    for user in User.where(id__in=uids).all():
-        for r in user.roles:
-            _roles.add(r.name)
-    return _roles
+    roles_iter = iter(set(r.name for r in user.roles) for user in User.where(id__in=uids).all())
+    return reduce(lambda x, y: x & y, roles_iter)
 
 
 class TestGroupRoleManager(GeneralModify):

@@ -15,7 +15,7 @@ from smorest_sfs.extensions.api.decorators import paginate
 from smorest_sfs.extensions.marshal.bases import BaseMsgSchema, GeneralParam
 from smorest_sfs.modules.auth import PERMISSIONS
 from smorest_sfs.modules.auth.decorators import doc_login_required, permission_required
-from smorest_sfs.services.groups import parse_group_change
+from smorest_sfs.services.groups import parse_group_change, parse_group_users_change
 
 from . import blp, models, schemas
 
@@ -87,6 +87,7 @@ class GroupItemView(MethodView):
         )
         parse_group_change(group)
         logger.info(f"{current_user.username}更新了用户组{group.id}")
+        models.db.session.commit()
 
         return {"data": group}
 
@@ -113,5 +114,28 @@ class GroupItemView(MethodView):
         获取单条用户组
         """
         group = models.Group.get_by_id(group_id)
+
+        return {"data": group}
+
+
+@blp.route(
+    "/<int:group_id>/members",
+    parameters=[{"in": "path", "name": "group_id", "description": "用户组id"}],
+)
+class GroupMemberView(MethodView):
+    @doc_login_required
+    @permission_required(PERMISSIONS.GroupEdit)
+    @blp.arguments(schemas.GroupUserSchema)
+    @blp.response(schemas.GroupItemSchema)
+    def put(self, group: models.Group, group_id: int) -> Dict[str, models.Group]:
+        """
+        更新用户组成员
+        """
+        group = models.Group.update_by_id(
+            group_id, schemas.GroupSchema, group, commit=False
+        )
+        parse_group_users_change(group)
+        logger.info(f"{current_user.username}更新了用户组{group.id}")
+        models.db.session.commit()
 
         return {"data": group}

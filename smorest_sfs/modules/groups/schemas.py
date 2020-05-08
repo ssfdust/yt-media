@@ -33,6 +33,17 @@ class GroupSchema(SQLAlchemySchema):
         load_instance = True
 
 
+class GroupUserSchema(SQLAlchemySchema):
+    """
+    用户组的序列化类
+    """
+    users = auto_field(dump_only=True)
+
+    class Meta:
+        model = models.Group
+        load_instance = True
+
+
 class GroupPageSchema(BasePageSchema):
     """用户组的分页"""
 
