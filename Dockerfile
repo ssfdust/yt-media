@@ -5,7 +5,6 @@ ENV FLASK_ENV="production" \
       HOST="0.0.0.0" \
       PYTHONPYCACHEPREFIX="/pycache" \
       LOGURU_LEVEL=INFO \
-      DOCKERIZE_VERSION="v0.6.1" \
       APP="web"
 
 RUN mkdir Application
@@ -17,7 +16,6 @@ COPY pyproject.toml poetry.lock /
 RUN /entrypoint.sh \
         -a zlib \
         -a libjpeg \
-        -a openssl \
         -a postgresql-libs \
         -b zlib-dev \
         -b libffi-dev \
@@ -25,8 +23,7 @@ RUN /entrypoint.sh \
         -b freetype-dev \
         -b postgresql-dev
 
-RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+RUN wget https://raw.githubusercontent.com/eficode/wait-for/master/wait-for -O /usr/bin/waitfor \
+    && chmod 755 /usr/bin/waitfor
 
-CMD dockerize -wait tcp://db:5432 -wait tcp://redis:6379 -wait tcp://rabbitmq:5672 -timeout 300s bash scripts/initapp.sh
+CMD waitfor db:5432 redis:6379 rabbitmq:5672 -t 300 -- bash scripts/initapp.sh
