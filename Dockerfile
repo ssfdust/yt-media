@@ -26,4 +26,4 @@ RUN /entrypoint.sh \
 RUN wget https://raw.githubusercontent.com/eficode/wait-for/master/wait-for -O /usr/bin/waitfor \
     && chmod 755 /usr/bin/waitfor
 
-CMD waitfor -t 300 db:5432 redis:6379 rabbitmq:5672 -- bash scripts/initapp.sh
+CMD ["/bin/sh", "scripts/initapp.sh"]
