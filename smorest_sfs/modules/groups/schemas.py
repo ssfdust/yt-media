@@ -37,7 +37,7 @@ class GroupUserSchema(SQLAlchemySchema):
     """
     用户组的序列化类
     """
-    users = auto_field(dump_only=True)
+    users = auto_field(load_only=True)
 
     class Meta:
         model = models.Group

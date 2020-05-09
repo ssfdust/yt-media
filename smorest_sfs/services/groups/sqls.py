@@ -264,6 +264,10 @@ class AddMultiUserToGroup(AddRoleToGroup):
         self._users = users
         super().__init__(group=group, roles=group.roles)
 
+    def _build_sql(self) -> None:
+        db.session.flush()
+        self.__build_sql()
+
     def __build_sql(self) -> None:
         absent_users_roles = db.alias(
             self._get_absent_users_roles(), "absent_users_roles"

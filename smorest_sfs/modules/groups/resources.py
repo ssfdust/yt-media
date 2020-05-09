@@ -119,10 +119,10 @@ class GroupItemView(MethodView):
 
 
 @blp.route(
-    "/<int:group_id>/members",
+    "/<int:group_id>/users",
     parameters=[{"in": "path", "name": "group_id", "description": "用户组id"}],
 )
-class GroupMemberView(MethodView):
+class GroupUserView(MethodView):
     @doc_login_required
     @permission_required(PERMISSIONS.GroupEdit)
     @blp.arguments(schemas.GroupUserSchema)
@@ -132,7 +132,7 @@ class GroupMemberView(MethodView):
         更新用户组成员
         """
         group = models.Group.update_by_id(
-            group_id, schemas.GroupSchema, group, commit=False
+            group_id, schemas.GroupUserSchema, group, commit=False
         )
         parse_group_users_change(group)
         logger.info(f"{current_user.username}更新了用户组{group.id}")

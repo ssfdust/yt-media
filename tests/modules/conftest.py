@@ -95,5 +95,19 @@ def fake_users(
             groups=[Group.get_by_id(6)],
             userinfo=UserInfo(),
         ),
+        User(
+            username="fake_5",
+            password="password",
+            email="fake_5",
+            active=True,
+            userinfo=UserInfo(),
+        ),
+        User(
+            username="fake_6",
+            password="password",
+            email="fake_6",
+            active=True,
+            userinfo=UserInfo(),
+        ),
     ):
         yield _
