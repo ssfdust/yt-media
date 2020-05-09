@@ -13,16 +13,17 @@ services-off:
 	sudo systemctl stop postgresql rabbitmq redis
 
 pull:
-	sudo podman pull ssfdust/psql_jieba_swsc
-	sudo podman pull redis:5.0.9-alpine
-	sudo podman pull rabbitmq:3.8.3-management-alpine
-	sudo podman pull jwilder/nginx-proxy
-	sudo podman pull ssfdust/smorest-sfs
-	sudo podman pull dpage/pgadmin4
+	sudo podman-compose pull
+
+up:
+	sudo podman-compose up -d
+
+down:
+	sudo podman-compose down
 
 stop:
-	sudo podman-compose exec beat rm -f celerybeat.pid
 	sudo podman-compose stop
+	rm -rf ./celery.pid
 
 start:
 	sudo podman-compose start

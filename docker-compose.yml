@@ -36,7 +36,6 @@ services:
 
     web:
         image: ssfdust/smorest-sfs
-        command: dockerize -wait tcp://db:5432 -wait tcp://redis:6379 -wait tcp://rabbitmq:5672 bash scripts/initapp.sh
         volumes:
             - .:/Application 
         restart: on-failure
