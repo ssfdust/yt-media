@@ -28,7 +28,7 @@ services:
         ports:
             - "80:80"
         volumes:
-            - /var/run/docker.sock:/tmp/docker.sock:ro
+            - /tmp/podman.sock:/tmp/docker.sock:ro
         depends_on:
             - pgadmin4
             - rabbitmq

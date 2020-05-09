@@ -16,6 +16,7 @@ pull:
 	sudo podman-compose pull
 
 up:
+	sudo podman system service --timeout 500000 unix://tmp/podman.sock &
 	sudo podman-compose up -d
 
 down:
