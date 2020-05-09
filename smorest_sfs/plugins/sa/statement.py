@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Union
 
 from loguru import logger
 from sqlalchemy import delete, insert, select, update
+from sqlalchemy.sql import Select
 
 from smorest_sfs.extensions import db
 
@@ -27,7 +28,7 @@ class SAStatement(RenderableStatement):
         return {}
 
     def get_render_sql(self, size: int) -> select:
-        if not isinstance(self.sa_sql, select):
+        if not isinstance(self.sa_sql, Select):
             raise ValueError("Only select is supported")
         return self.sa_sql.limit(size)
 
