@@ -96,6 +96,7 @@ class TestUpdateBySchema(FixturesInjectBase):
     TestParentSchema: Type[Schema]
     item: Model
     fixture_names = ("TestParentTable", "TestParentSchema")
+    schema: Type[Schema]
 
     def do_init_update_by_schema(self, **kwargs: Any) -> Any:
         temp_instance = self.TestParentTable(**kwargs)
@@ -190,6 +191,7 @@ class TestComplexParentChildrenUpdateBySchema(FixturesInjectBase):
     TestParentTable: Model
     TestParentSchema: Schema
     TestChildSchema: Schema
+    sqla_db: Type[SQLAlchemy]
 
     @pytest.fixture
     def children_lst(self) -> List[Model]:

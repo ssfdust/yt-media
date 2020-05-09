@@ -7,13 +7,13 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, List
+from typing import Any, List, Union
 
 import pyperclip
 import sqlparse
 from loguru import logger
 from sqlalchemy.dialects import postgresql
-from sqlalchemy.sql.selectable import Select
+from sqlalchemy import delete, insert, select, update
 
 from .render import TableRender
 
@@ -22,7 +22,7 @@ class StatementAbstract(ABC):
     """Statement的抽象类"""
 
     @abstractmethod
-    def get_sa_sql(self) -> Select:
+    def get_sa_sql(self) -> Union[select, insert, update, delete]:
         """获取sa_sql的abc方法"""
         raise NotImplementedError
 
@@ -49,7 +49,7 @@ class RenderableStatement(StatementAbstract, TableRender):
     """渲染模块"""
 
     @abstractmethod
-    def get_sa_sql(self) -> Select:
+    def get_sa_sql(self) -> Union[select, insert, update, delete]:
         """获取sa_sql的abc方法"""
         raise NotImplementedError
 

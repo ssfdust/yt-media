@@ -7,12 +7,12 @@
 from marshmallow import Schema, fields
 
 from smorest_sfs.extensions import ma
-from smorest_sfs.extensions.marshal import BaseMsgSchema
+from smorest_sfs.extensions.marshal import BaseMsgSchema, SQLAlchemyAutoSchema
 
 from . import models
 
 
-class MenuSchema(ma.SQLAlchemyAutoSchema):
+class MenuSchema(SQLAlchemyAutoSchema):
     """
     菜单的序列化类
     """

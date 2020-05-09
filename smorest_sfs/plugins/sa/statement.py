@@ -20,13 +20,15 @@ class SAStatement(RenderableStatement):
     def __init__(self, *args: Any, **kwargs: Any):
         pass
 
-    def get_sa_sql(self) -> Union[select, delete]:
+    def get_sa_sql(self) -> Union[select, insert, update, delete]:
         return self.sa_sql
 
     def get_keys(self) -> Any:
         return {}
 
     def get_render_sql(self, size: int) -> select:
+        if not isinstance(self.sa_sql, select):
+            raise ValueError("Only select is supported")
         return self.sa_sql.limit(size)
 
     @staticmethod
