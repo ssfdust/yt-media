@@ -16,6 +16,7 @@ COPY pyproject.toml poetry.lock /
 RUN /entrypoint.sh \
         -a zlib \
         -a libjpeg \
+        -a freetype \
         -a postgresql-libs \
         -b zlib-dev \
         -b libffi-dev \

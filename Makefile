@@ -13,18 +13,17 @@ services-off:
 	sudo systemctl stop postgresql rabbitmq redis
 
 pull:
-	sudo podman-compose pull
+	podman-compose pull
 
 up:
-	sudo podman system service --timeout 500000 unix://tmp/podman.sock &
-	sudo podman-compose up -d
+	podman-compose up -d
 
 down:
-	sudo podman-compose down
+	podman-compose down
 
 stop:
-	sudo podman-compose stop
+	podman-compose stop
 	rm -rf ./celery.pid
 
 start:
-	sudo podman-compose start
+	podman-compose start
