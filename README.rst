@@ -15,9 +15,13 @@ Smart-Smorest
 .. image:: https://travis-ci.org/ssfdust/yt-media.svg?branch=master
     :target: https://travis-ci.org/ssfdust/yt-media
 
-.. image:: https://img.shields.io/docker/cloud/build/ssfdust/smorest-sfs   :alt: Docker Cloud Build Status
+.. image:: https://img.shields.io/docker/cloud/build/ssfdust/smorest-sfs
+    :alt: Docker Cloud Build Status
+    :target: https://hub.docker.com/r/ssfdust/smorest-sfs
 
-.. image:: https://img.shields.io/docker/image-size/ssfdust/smorest-sfs   :alt: Docker Image Size (latest by date)
+.. image:: https://img.shields.io/docker/image-size/ssfdust/smorest-sfs
+    :alt: Docker Image Size (latest by date)
+    :target: https://hub.docker.com/r/ssfdust/smorest-sfs
 
 Online View
 =====================

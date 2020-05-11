@@ -26,7 +26,7 @@ RUN /entrypoint.sh \
     && mkdir Application
 
 RUN addgroup -g ${PGID} webapp && \
-    adduser -D -u ${PUID} -G wepapp webapp
+    adduser -D -u ${PUID} -G webapp webapp
 
 WORKDIR /Application/
 
