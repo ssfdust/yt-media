@@ -5,11 +5,9 @@ ENV FLASK_ENV="production" \
       HOST="0.0.0.0" \
       PYTHONPYCACHEPREFIX="/pycache" \
       LOGURU_LEVEL=INFO \
+      PUID=1000 \
+      PGID=1000 \
       APP="web"
-
-RUN mkdir Application
-
-WORKDIR /Application/
 
 COPY pyproject.toml poetry.lock /
 
@@ -22,9 +20,16 @@ RUN /entrypoint.sh \
         -b libffi-dev \
         -b jpeg-dev \
         -b freetype-dev \
-        -b postgresql-dev
+        -b postgresql-dev \
+    && wget https://raw.githubusercontent.com/eficode/wait-for/master/wait-for -O /usr/bin/waitfor \
+    && chmod 755 /usr/bin/waitfor \
+    && mkdir Application
 
-RUN wget https://raw.githubusercontent.com/eficode/wait-for/master/wait-for -O /usr/bin/waitfor \
-    && chmod 755 /usr/bin/waitfor
+RUN addgroup -g ${PGID} webapp && \
+    adduser -D -u ${PUID} -G wepapp webapp
+
+WORKDIR /Application/
+
+USER webapp
 
 CMD ["/bin/sh", "scripts/initapp.sh"]
