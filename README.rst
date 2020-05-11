@@ -24,6 +24,7 @@ Smart-Smorest
    :target: https://hub.docker.com/r/ssfdust/smorest-sfs
 
 .. image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
+   :target: https://github.com/ssfudst/yt-media
    :alt: LICENSE
 
 Online View
