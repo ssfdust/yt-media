@@ -23,6 +23,11 @@ Smart-Smorest
     :alt: Docker Image Size (latest by date)
     :target: https://hub.docker.com/r/ssfdust/smorest-sfs
 
+.. image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
+
+.. image:: https://img.shields.io/badge/python-3.7%20|%203.8-0366d6
+    :target: https://www.python.org
+
 Online View
 =====================
  http://49.233.220.200/doc/redoc
