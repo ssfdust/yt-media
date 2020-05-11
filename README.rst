@@ -15,6 +15,10 @@ Smart-Smorest
 .. image:: https://travis-ci.org/ssfdust/yt-media.svg?branch=master
     :target: https://travis-ci.org/ssfdust/yt-media
 
+.. image:: https://img.shields.io/docker/cloud/build/ssfdust/smorest-sfs   :alt: Docker Cloud Build Status
+
+.. image:: https://img.shields.io/docker/image-size/ssfdust/smorest-sfs   :alt: Docker Image Size (latest by date)
+
 Online View
 =====================
  http://49.233.220.200/doc/redoc
